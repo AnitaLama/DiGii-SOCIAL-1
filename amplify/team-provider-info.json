@@ -1,0 +1,14 @@
+{
+    "staging": {
+        "awscloudformation": {
+            "AuthRoleName": "digii-social-20190611124418-authRole",
+            "UnauthRoleArn": "arn:aws:iam::388772689968:role/digii-social-20190611124418-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::388772689968:role/digii-social-20190611124418-authRole",
+            "Region": "ap-southeast-2",
+            "DeploymentBucketName": "digii-social-20190611124418-deployment",
+            "UnauthRoleName": "digii-social-20190611124418-unauthRole",
+            "StackName": "digii-social-20190611124418",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:388772689968:stack/digii-social-20190611124418/93400e30-8c03-11e9-a0e0-06b4de3fdf3e"
+        }
+    }
+}
