@@ -18,9 +18,8 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-// request the avatar for a user
 export const test = (state, action) => {
-  console.log('here');
+  console.log('here', action);
   return { ...state, loading: !state.loading };
 };
 
