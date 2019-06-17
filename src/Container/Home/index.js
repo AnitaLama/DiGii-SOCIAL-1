@@ -1,15 +1,16 @@
 import React from 'react';
-import logo from '../assets/images/logo.jpg';
+import { Images } from '../../Theme';
+
 import './App.css';
 
-function App() {
+function Home() {
   return (
     <div className="container">
       <div className="row" style={{ marginTop: '25%' }}>
         <div className="col-md col-lg col-sm">
           <header className="App-header">
             <img
-              src={logo}
+              src={Images.logo}
               className="App-logo"
               alt="logo"
               style={{ width: 500 }}
@@ -45,7 +46,7 @@ function App() {
           <div className="help-block">
             <h6>Forgot Password</h6>
             <h6>
-              Don't have an account ?
+              {'Don\'t have an account ?'}
               {' '}
               <a>Sign Up</a>
             </h6>
@@ -56,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

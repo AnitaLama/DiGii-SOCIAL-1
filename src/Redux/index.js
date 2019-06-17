@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 
+const TestReduxes = require('./TestRedux');
+
 const allReducers = combineReducers({
-  test: require('./TestRedux').reducer
+  test: TestReduxes.reducer
 });
 
 export default allReducers;
