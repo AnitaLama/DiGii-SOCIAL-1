@@ -1,16 +1,16 @@
-import React from "react";
-import logo from "./../assets/images/logo.jpg";
+import React from 'react';
+import { Images } from '../../Theme';
+
 import './App.css';
 
-
-function App() {
+function Home() {
   return (
     <div className="container">
-      <div className="row" style={{ marginTop: "25%" }}>
+      <div className="row" style={{ marginTop: '25%' }}>
         <div className="col-md col-lg col-sm">
           <header className="App-header">
             <img
-              src={logo}
+              src={Images.logo}
               className="App-logo"
               alt="logo"
               style={{ width: 500 }}
@@ -19,7 +19,7 @@ function App() {
         </div>
 
         <div className="col-md col-lg col-sm offset-2">
-         <h1>Log In</h1>
+          <h1>Log In</h1>
           <div className="form-group">
             <input
               type="email"
@@ -36,11 +36,20 @@ function App() {
             />
           </div>
 
-          <button type="submit" class="col-md col-lg col-sm btn btn-danger btn-lg rounded-border">Login</button>
+          <button
+            type="submit"
+            className="col-md col-lg col-sm btn btn-danger btn-lg rounded-border"
+          >
+            Login
+          </button>
 
           <div className="help-block">
             <h6>Forgot Password</h6>
-            <h6>Don't have an account ? <a>Sign Up</a></h6>
+            <h6>
+              {'Don\'t have an account ?'}
+              {' '}
+              <a>Sign Up</a>
+            </h6>
           </div>
         </div>
       </div>
@@ -48,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
