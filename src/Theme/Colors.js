@@ -10,7 +10,8 @@ const Colors = {
     pen: '#373745',
     pencil: '#E2E1E1',
     placeholder: '#E9E9E9',
-    snow: '#fff'
+    snow: '#fff',
+    background: '#f1f3f4'
   }
 };
 

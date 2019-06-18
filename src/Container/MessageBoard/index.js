@@ -3,7 +3,7 @@ import {
   ContainerWrapper,
   ContentWrapper
 } from '../../Component/StyledComponents';
-import { Header } from '../../Component/MessageBoard';
+import { Header, Features, NewPost } from '../../Component/MessageBoard';
 
 class MessageBoard extends Component {
   render() {
@@ -11,6 +11,8 @@ class MessageBoard extends Component {
       <ContainerWrapper>
         <ContentWrapper>
           <Header />
+          <Features />
+          <NewPost />
         </ContentWrapper>
       </ContainerWrapper>
     );

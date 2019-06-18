@@ -1,16 +1,16 @@
 import styled from '@emotion/styled';
 import { Colors, fontSize } from '../../Theme';
 
-const { pink, peach, snow } = Colors.colors;
+const { peach, pencil } = Colors.colors;
 
 const FormInput = styled.input`
   width: 100%;
   border-radius: 40px;
   padding: 10px 15px;
   outline: none;
-  border: 1px solid #ced4da;
+  border: 1px solid ${pencil};
   color: #495057;
-  &::placeholderfocus {
+  &::placeholder {
     ${fontSize(14)};
     color: rgba(0, 0, 0, 0.2);
   }

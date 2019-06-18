@@ -9,15 +9,22 @@ const Button = styled.button`
   width: 100%;
   padding: 10px;
   border: 0;
-  opacity: 1;
-  transition: opacity 1s ease-in-out;
+  outline: 0;
+  font-weight: 400;
+  background-size: 100% 100%;
+  transition: all 0.4s ease-in-out;
   &.rounded {
     border-radius: 40px !important;
   }
   &:hover {
-    opacity: 1;
     background-image: linear-gradient(to right, ${peach}, ${pink});
+    font-weight: 900;
+    background-position: 100% 0;
     color: ${snow};
+    transition: all 0.4s ease-in-out;
+  }
+  &:focus {
+    outline: 0;
   }
 `;
 
