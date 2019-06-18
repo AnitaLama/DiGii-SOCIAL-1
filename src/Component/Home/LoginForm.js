@@ -1,20 +1,45 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { BrandLogo, LoginForm } from '../../Component/Home';
-import './App.css';
+import { Button } from '../StyledComponents';
 
-const HomeContainer = styled.div`
-  display: grid;
-  grid-template-columns: 60% 40%;
-  min-height: 100vh;
+const FormWrapper = styled.div`
+  margin: auto 40px;
 `;
-
 function Home() {
   return (
-    <HomeContainer>
-      <BrandLogo />
-      <LoginForm />
-    </HomeContainer>
+    <FormWrapper>
+      <div className="col-md col-lg col-sm">
+        <h1>Log In</h1>
+        <div className="form-group">
+          <input
+            type="email"
+            className="form-control form-control-lg rounded-border"
+            placeholder="Username"
+          />
+        </div>
+
+        <div className="form-group">
+          <input
+            type="password"
+            className="form-control form-control-lg rounded-border"
+            placeholder="Password"
+          />
+        </div>
+
+        <Button type="submit" className="rounded">
+          Login
+        </Button>
+
+        <div className="help-block">
+          <h6>Forgot Password</h6>
+          <h6>
+            {'Don\'t have an account ?'}
+            {' '}
+            <a>Sign Up</a>
+          </h6>
+        </div>
+      </div>
+    </FormWrapper>
   );
 }
 
