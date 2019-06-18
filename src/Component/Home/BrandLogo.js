@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Images, centerContent } from '../../Theme';
+import { BigLogo } from '../StyledComponents';
 
 const LogoWrapper = styled.div`
   ${centerContent};
@@ -8,7 +9,7 @@ const LogoWrapper = styled.div`
 
 const BrandLogo = () => (
   <LogoWrapper>
-    <img src={Images.logo} width="100%" alt="logo-of-digii-social" />
+    <BigLogo src={Images.logo} alt="logo-of-digii-social" />
   </LogoWrapper>
 );
 export default BrandLogo;

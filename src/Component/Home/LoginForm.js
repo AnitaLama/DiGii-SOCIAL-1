@@ -1,97 +1,119 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from '@emotion/styled';
-import { Button } from '../StyledComponents';
+import { Formik } from 'formik';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Button, FormInput } from '../StyledComponents';
+import LoginActions from '../../Redux/LoginRedux';
+import { Colors } from '../../Theme';
 
 const FormWrapper = styled.div`
   margin: auto 40px;
 `;
-function Home() {
-  return (
-    <FormWrapper>
-      <div className="col-md col-lg col-sm">
-        <h1>Log In</h1>
-        <div className="form-group">
-          <input
-            type="email"
-            className="form-control form-control-lg rounded-border"
-            placeholder="Username"
-          />
-        </div>
+const HelpBlock = styled.div`
+  margin-top: 10px;
+  h6 {
+    color: ${Colors.colors.pen};
+  }
+  a {
+    cursor: pointer;
+    &:hover {
+      color: ${Colors.colors.peach} !important;
+    }
+  }
+`;
+class LoginForm extends Component {
+  render() {
+    return (
+      <FormWrapper>
+        <div className="col-md col-lg col-sm">
+          <h1>Log In</h1>
+          <Formik
+            initialValues={{ email: '', password: '' }}
+            validate={values => {
+              const errors = {};
+              if (!values.email) {
+                errors.email = 'Required';
+              } else if (
+                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+              ) {
+                errors.email = 'Invalid email address';
+              }
+              return errors;
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              const { onFormLogin } = this.props;
+              console.log(values);
+              onFormLogin(values);
+              setSubmitting(false);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting
+              /* and other goodies */
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <FormInput
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  placeholder="Username"
+                />
 
-        <div className="form-group">
-          <input
-            type="password"
-            className="form-control form-control-lg rounded-border"
-            placeholder="Password"
-          />
-        </div>
+                <p>
+                  {' '}
+                  {errors.email && touched.email && errors.email}
+                </p>
+                <FormInput
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  placeholder="Password"
+                />
 
-        <Button type="submit" className="rounded">
-          Login
-        </Button>
-
-        <div className="help-block">
-          <h6>Forgot Password</h6>
-          <h6>
-            {'Don\'t have an account ?'}
-            {' '}
-            <a>Sign Up</a>
-          </h6>
+                <p>{errors.password && touched.password && errors.password}</p>
+                <Button
+                  type="submit"
+                  className="rounded"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </Button>
+                <HelpBlock>
+                  <h6>Forgot Password</h6>
+                  <h6>
+                    {'Don\'t have an account ?'}
+                    {' '}
+                    <a>Sign Up</a>
+                  </h6>
+                </HelpBlock>
+              </form>
+            )}
+          </Formik>
         </div>
-      </div>
-    </FormWrapper>
-  );
+      </FormWrapper>
+    );
+  }
 }
 
-export default Home;
+LoginForm.propTypes = {
+  onFormLogin: PropTypes.func
+};
+const mapDispatchToProps = dispatch => ({
+  onFormLogin: values => dispatch(LoginActions.onFormLoginRequest(values))
+});
 
-//
-// <div className="container">
-//   <div className="row" style={{ marginTop: '25%' }}>
-//     <div className="col-md col-lg col-sm">
-//       <header className="App-header">
-//         <img
-//           src={Images.logo}
-//           className="App-logo"
-//           alt="logo"
-//           style={{ width: 500 }}
-//         />
-//       </header>
-//     </div>
-//
-//     <div className="col-md col-lg col-sm offset-2">
-//       <h1>Log In</h1>
-//       <div className="form-group">
-//         <input
-//           type="email"
-//           className="form-control form-control-lg rounded-border"
-//           placeholder="Username"
-//         />
-//       </div>
-//
-//       <div className="form-group">
-//         <input
-//           type="password"
-//           className="form-control form-control-lg rounded-border"
-//           placeholder="Password"
-//         />
-//       </div>
-//
-//       <button
-//         type="submit"
-//         className="col-md col-lg col-sm btn btn-danger btn-lg rounded-border"
-//       >
-//         Login
-//       </button>
-//
-//       <div className="help-block">
-//         <h6>Forgot Password</h6>
-//         <h6>
-//           {'Don\'t have an account ?'}
-//           {' '}
-//           <a>Sign Up</a>
-//         </h6>
-//       </div>
-//     </div>
-//   </div>
-// </div>
+export default connect(
+  null,
+  mapDispatchToProps
+)(LoginForm);

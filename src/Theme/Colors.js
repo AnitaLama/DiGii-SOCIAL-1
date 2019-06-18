@@ -8,7 +8,7 @@ const Colors = {
     peach: '#F78360',
     grey: '#DFDFDF',
     pen: '#373745',
-    pencil: '#8FA4D5',
+    pencil: '#E2E1E1',
     placeholder: '#E9E9E9',
     snow: '#fff'
   }
