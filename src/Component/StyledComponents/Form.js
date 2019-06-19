@@ -10,6 +10,7 @@ const FormInput = styled.input`
   outline: none;
   border: 1px solid ${pencil};
   color: #495057;
+  margin-bottom: 10px;
   &::placeholder {
     ${fontSize(14)};
     color: rgba(0, 0, 0, 0.2);

@@ -8,6 +8,9 @@ const HeaderWrapper = styled.div`
   padding: 20px 0;
   display: grid;
   grid-template-columns: 50% 50%;
+  @media (max-width: 560px) {
+    grid-template-columns: auto auto;
+  }
 `;
 
 const UserInfoWrapper = styled.div`

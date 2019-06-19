@@ -4,63 +4,64 @@ import {
   FiGift, FiSend, FiCreditCard, FiPlus
 } from 'react-icons/fi';
 import { Badge } from 'antd';
-import { grid } from '../../Theme';
+import PropTypes from 'prop-types';
+import { grid, Colors, fontSize } from '../../Theme';
 
-const FeatureWrapper = styled.div`
-  padding: 10px 0;
+const FeatureContentWrapper = styled.div`
   ${grid(4, '1fr')};
 `;
-const Feature = styled.div`
+const FeatureContent = styled.div`
   text-align: center;
   cursor: pointer;
   i {
     padding-right: 6px;
-    font-size: 22px;
-  }
-  span {
-    padding-right: 4px;
+    ${fontSize(22)};
+    &:hover {
+      font-weight: 900;
+    }
   }
 `;
-class Features extends Component {
+const FeatureText = styled.span`
+  padding-right: 4px;
+  &:hover {
+    font-weight: bold;
+  }
+  @media (max-width: 560px) {
+    padding: 0;
+  }
+  @media (max-width: 480px) {
+    display: none;
+  }
+`;
+const Feature = props => {
+  const { count, icon, text } = props;
+  return (
+    <FeatureContent>
+      <Badge count={count} style={{ backgroundColor: Colors.colors.peach }}>
+        <i>{icon}</i>
+        <FeatureText>{text}</FeatureText>
+      </Badge>
+    </FeatureContent>
+  );
+};
+
+class FeatureContents extends Component {
   render() {
     return (
-      <FeatureWrapper>
-        <Feature>
-          <Badge count={5}>
-            <i>
-              <FiCreditCard />
-            </i>
-            <span>Send DiGii-T's</span>
-          </Badge>
-        </Feature>
-        <Feature>
-          <Badge count={5}>
-            <i>
-              <FiPlus />
-            </i>
-            <span>Add DiGii-T's</span>
-          </Badge>
-        </Feature>
-        <Feature>
-          <Badge count={125}>
-            <i>
-              <FiGift />
-            </i>
-            <span>See Gifts</span>
-            {' '}
-          </Badge>
-        </Feature>
-        <Feature>
-          <Badge count={5}>
-            <i>
-              <FiSend />
-            </i>
-            <span>Notifications</span>
-          </Badge>
-        </Feature>
-      </FeatureWrapper>
+      <FeatureContentWrapper>
+        <Feature count={5} icon=<FiCreditCard /> text="Send DiGii-T's" />
+        <Feature count={5} icon=<FiPlus /> text="Add DiGii-T's" />
+        <Feature count={5} icon=<FiGift /> text="See Gifts" />
+        <Feature count={5} icon=<FiSend /> text="Notifications" />
+      </FeatureContentWrapper>
     );
   }
 }
 
-export default Features;
+Feature.propTypes = {
+  text: PropTypes.string,
+  count: PropTypes.number,
+  icon: PropTypes.object
+};
+
+export default FeatureContents;

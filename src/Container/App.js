@@ -56,7 +56,7 @@ const Routes = () => (
       }
     `}
   >
-    {routes.map((route, i) => <ActualRoute key={i} {...route} />)}
+    {routes.map(route => <ActualRoute key={route.title} {...route} />)}
   </Switch>
 );
 
