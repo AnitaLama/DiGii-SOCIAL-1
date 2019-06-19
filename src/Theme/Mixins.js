@@ -64,6 +64,11 @@ const fullViewPort = () => `
   height: 100vh;
 `;
 
+// center the contents
+const centerContent = () => `
+  margin:auto
+`;
+
 // Uses the traditional absolute centering of items.
 const absoluteFixed = () => `
   position: absolute;
@@ -135,6 +140,7 @@ export {
   media,
   boxShadow,
   absoluteFixed,
+  centerContent,
   absoluteCentering,
   visuallyHidden,
   flexCentering,

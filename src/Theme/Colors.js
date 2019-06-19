@@ -8,8 +8,10 @@ const Colors = {
     peach: '#F78360',
     grey: '#DFDFDF',
     pen: '#373745',
-    pencil: '#8FA4D5',
-    placeholder: '#E9E9E9'
+    pencil: '#E2E1E1',
+    placeholder: '#E9E9E9',
+    snow: '#fff',
+    background: '#f1f3f4'
   }
 };
 

@@ -9,6 +9,7 @@ export {
   media,
   boxShadow,
   absoluteFixed,
+  centerContent,
   absoluteCentering,
   visuallyHidden,
   flexCentering,
