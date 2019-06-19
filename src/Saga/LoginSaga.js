@@ -7,7 +7,7 @@ export default function* onLoginRequest(action) {
   try {
     const { data } = yield call(
       axios.post,
-      'http://localhost:4000/user',
+      'http://localhost:4000/login',
       action.data
     );
     if (data.success) {
