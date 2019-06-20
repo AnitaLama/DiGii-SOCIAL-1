@@ -5,7 +5,7 @@ const TestReduxes = require('./TestRedux');
 
 const allReducers = combineReducers({
   test: TestReduxes.reducer,
-  login: LoginRedux.reducer
+  user: LoginRedux.reducer
 });
 
 export default allReducers;

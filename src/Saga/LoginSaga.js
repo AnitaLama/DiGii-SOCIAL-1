@@ -10,9 +10,12 @@ export default function* onLoginRequest(action) {
       'http://localhost:4000/login',
       action.data
     );
+    console.log(data);
     if (data.success) {
       yield put(LoginActions.onFormLoginSuccess(data.result));
       history.push('/messageboard');
+    } else {
+      yield put(LoginActions.onFormLoginFailure(data.message));
     }
   } catch (err) {
     console.log(err);
