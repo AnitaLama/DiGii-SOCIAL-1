@@ -10,7 +10,7 @@ import { grid, fontSize } from '../../Theme';
 
 const NewPostWrapper = styled.div`
   background: #e9e9e9;
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 10px;
   border-radius: 20px;
 `;
