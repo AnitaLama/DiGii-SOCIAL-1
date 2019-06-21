@@ -6,7 +6,7 @@ import {
 } from 'react-icons/ti';
 import PropTypes from 'prop-types';
 import { FormInput } from '../StyledComponents';
-import { grid, fontSize } from '../../Theme';
+import { grid, fontSize, flexCentering } from '../../Theme';
 
 const NewPostWrapper = styled.div`
   background: #e9e9e9;
@@ -30,15 +30,27 @@ const NewPostOptionContent = styled.div`
   margin: auto;
   padding: 2px 0;
   cursor: pointer;
-  svg {
-    margin-right: 6px;
-    &:hover {
+  &:hover {
+    svg {
       font-weight: 900;
     }
+    span {
+      font-weight: bolder;
+    }
+  }
+  svg {
+    margin-right: 6px;
   }
   span {
-    &:hover {
-      font-weight: bolder;
+  }
+  @media (max-width: 480px) {
+    ${flexCentering('column')};
+    span:last-child {
+      text-align: center;
+      ${fontSize(10)};
+    }
+    svg {
+      margin: 0;
     }
   }
 `;
@@ -63,7 +75,7 @@ const Input = styled.div`
   svg {
     position: absolute;
     right: 10px;
-    font-size: 22px;
+    ${fontSize(22)};
     height: 100%;
   }
 `;

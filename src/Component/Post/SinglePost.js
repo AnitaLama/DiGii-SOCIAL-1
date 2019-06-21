@@ -83,7 +83,8 @@ class SinglePost extends Component {
   render() {
     const { data } = this.props;
     const { post } = data;
-    console.log(post);
+    console.clear();
+    console.log(data);
     return (
       <PostWrapper>
         <Author data={data} />

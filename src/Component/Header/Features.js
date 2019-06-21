@@ -21,15 +21,15 @@ const FeatureContent = styled.div`
     }
   }
 `;
+
 const FeatureText = styled.span`
   padding-right: 4px;
   &:hover {
     font-weight: bold;
   }
-  @media (max-width: 560px) {
-    padding: 0;
-  }
+
   @media (max-width: 480px) {
+    ${fontSize(10)};
     display: none;
   }
 `;
@@ -49,7 +49,7 @@ class FeatureContents extends Component {
   render() {
     return (
       <FeatureContentWrapper>
-        <Feature count={5} icon=<FiCreditCard /> text="Send DiGii-T's" />
+        <Feature count={5} icon=<FiCreditCard /> text="Spend DiGii-T's" />
         <Feature count={5} icon=<FiPlus /> text="Add DiGii-T's" />
         <Feature count={5} icon=<FiGift /> text="See Gifts" />
         <Feature count={5} icon=<FiSend /> text="Notifications" />
