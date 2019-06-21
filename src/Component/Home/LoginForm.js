@@ -17,15 +17,20 @@ const HelpBlock = styled.div`
   h6 {
     color: ${Colors.colors.pen};
   }
+`;
+const ClickableSpan = styled.h6`
+  cursor: pointer;
+  span {
+    color: ${Colors.colors.peach} !important;
+    &:hover {
+      font-weight: 900;
+    }
+  }
   a {
-    cursor: pointer;
     &:hover {
       color: ${Colors.colors.peach} !important;
     }
   }
-`;
-const ClickableSpan = styled.h6`
-  cursor: pointer;
 `;
 class LoginForm extends Component {
   constructor() {
@@ -109,13 +114,13 @@ class LoginForm extends Component {
               </Button>
               <HelpBlock>
                 <ClickableSpan onClick={this.openModal}>
-                  Forgot Password
+                  <a>Forgot Password</a>
                 </ClickableSpan>
-                <h6>
-                  {'Don\'t have an account ?'}
-                  {' '}
-                </h6>
-                <ClickableSpan>Sign Up</ClickableSpan>
+
+                <ClickableSpan>
+                  {'Don\'t have an account ? '}
+                  <span>Sign Up</span>
+                </ClickableSpan>
               </HelpBlock>
               {error && <ErrorMessage error={error} />}
             </form>

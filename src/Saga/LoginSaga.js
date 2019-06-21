@@ -8,8 +8,8 @@ export default function* onLoginRequest(action) {
   try {
     const { data } = yield call(axios.post, `${DEV_URL}/login`, action.data);
     if (data.success) {
-      yield put(LoginActions.onFormLoginSuccess(data.result));
       history.push('/messageboard');
+      yield put(LoginActions.onFormLoginSuccess(data.result));
     } else {
       yield put(LoginActions.onFormLoginFailure(data.message));
     }
