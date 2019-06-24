@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, FormInput } from '../StyledComponents';
+import { Button, FormInput, ErrorMessage } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import { Colors } from '../../Theme';
 import ResetPasswordModal from './ResetPasswordModal';
@@ -47,6 +47,7 @@ class LoginForm extends Component {
 
   render() {
     const { isModalVisible } = this.state;
+    const { error } = this.props.user;
     return (
       <FormWrapper>
         <h1>Log In</h1>
@@ -65,7 +66,6 @@ class LoginForm extends Component {
           }}
           onSubmit={(values, { setSubmitting }) => {
             const { onFormLogin } = this.props;
-            console.log(values);
             onFormLogin(values);
             setSubmitting(false);
           }}
@@ -114,9 +114,10 @@ class LoginForm extends Component {
                 <h6>
                   {'Don\'t have an account ?'}
                   {' '}
-                  <ClickableSpan>Sign Up</ClickableSpan>
                 </h6>
+                <ClickableSpan>Sign Up</ClickableSpan>
               </HelpBlock>
+              {error && <ErrorMessage error={error} />}
             </form>
           )}
         </Formik>
@@ -133,11 +134,14 @@ class LoginForm extends Component {
 LoginForm.propTypes = {
   onFormLogin: PropTypes.func
 };
+const mapStateToProps = state => ({
+  user: state.user
+});
 const mapDispatchToProps = dispatch => ({
   onFormLogin: values => dispatch(LoginActions.onFormLoginRequest(values))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(LoginForm);
