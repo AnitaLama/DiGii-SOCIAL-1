@@ -5,6 +5,8 @@ import { FiSettings } from 'react-icons/fi';
 import { connect } from 'react-redux';
 import { Images, flexCentering, Colors } from '../../Theme';
 import { Logo, Button } from '../StyledComponents';
+import LoginActions from '../../Redux/LoginRedux';
+import history from '../../history';
 
 const HeaderWrapper = styled.div`
   padding: 20px 0;
@@ -32,11 +34,69 @@ const User = styled.img`
   margin-right: 20px;
   margin-left: 10px;
 `;
-const Settings = styled.div`
-  color: ${Colors.colors.pencil};
+const SettingsSubList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: -10px;
+  position: absolute;
+
+  right: 0;
+  background: #e9e9e9;
+  z-index: 10000;
+  &:before {
+    content: ' ';
+    position: absolute;
+    right: 4px;
+    top: -15px;
+    border-top: none;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    border-bottom: 15px solid #e9e9e9;
+  }
+  li {
+    padding: 10px;
+    cursor: pointer;
+    &:hover {
+      display: block;
+      background: ${Colors.colors.pen};
+      color: ${Colors.colors.snow};
+    }
+  }
 `;
+const Settings = styled.div`
+  position: relative;
+  svg {
+    color: ${Colors.colors.pencil};
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
 class Header extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isListVisible: false
+    };
+  }
+
+  handleSettingsButtonClick = () => {
+    const { isListVisible } = this.state;
+    this.setState({ isListVisible: !isListVisible }, () => {
+      console.log('clicked', isListVisible);
+    });
+  };
+
+  logOut = () => {
+    const { onLogOut } = this.props;
+    history.push('/');
+    onLogOut();
+  };
+
   render() {
+    const { isListVisible } = this.state;
     const { users } = this.props;
     const { user } = users;
 
@@ -48,7 +108,15 @@ class Header extends Component {
           <Name>{user.firstName}</Name>
           <User src={Images.stockImage} />
           <Settings>
-            <FiSettings style={{ height: '50px' }} />
+            <FiSettings
+              style={{ height: '50px' }}
+              onClick={this.handleSettingsButtonClick}
+            />
+            {isListVisible && (
+              <SettingsSubList>
+                <li onClick={this.logOut}>LOGOUT</li>
+              </SettingsSubList>
+            )}
           </Settings>
         </UserInfoWrapper>
       </HeaderWrapper>
@@ -61,4 +129,10 @@ Header.propTypes = {
 const mapStateToProps = state => ({
   users: state.user
 });
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+  onLogOut: () => dispatch(LoginActions.onLogOut())
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

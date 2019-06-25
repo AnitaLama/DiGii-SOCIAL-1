@@ -30,6 +30,7 @@ const NewPostOptionContent = styled.div`
   margin: auto;
   padding: 2px 0;
   cursor: pointer;
+  ${flexCentering('row')};
   &:hover {
     svg {
       font-weight: 900;

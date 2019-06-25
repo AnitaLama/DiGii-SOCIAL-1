@@ -6,7 +6,8 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   onFormLoginRequest: ['data'],
   onFormLoginSuccess: ['data'],
-  onFormLoginFailure: ['data']
+  onFormLoginFailure: ['data'],
+  onLogOut: []
 });
 
 export const LoginTypes = Types;
@@ -54,10 +55,12 @@ const onFormLoginFailure = (state, action) => {
   return { ...state, error: data, loading: false };
 };
 
+const onLogOut = state => INITIAL_STATE;
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FORM_LOGIN_REQUEST]: onFormLogin,
   [Types.ON_FORM_LOGIN_SUCCESS]: onFormLoginSuccess,
-  [Types.ON_FORM_LOGIN_FAILURE]: onFormLoginFailure
+  [Types.ON_FORM_LOGIN_FAILURE]: onFormLoginFailure,
+  [Types.ON_LOG_OUT]: onLogOut
 });

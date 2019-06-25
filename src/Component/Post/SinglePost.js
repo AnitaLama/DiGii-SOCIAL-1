@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fa';
 import { Colors, flex, fontSize } from '../../Theme';
 import Author from './Author';
+import Comment from './Comment';
 
 const { snow, pink, peach } = Colors.colors;
 const PostWrapper = styled.div`
@@ -67,24 +68,35 @@ const Icon = styled.span`
     // font-size: 26px;
   }
 `;
-const Reaction = ({ item }) => {
+const Reaction = ({ item, handleReactionClick }) => {
   const { icon, color } = item;
-  return <Icon style={{ color }}>{icon}</Icon>;
+  return (
+    <Icon
+      style={{ color }}
+      onClick={() => {
+        handleReactionClick(item);
+      }}
+    >
+      {icon}
+    </Icon>
+  );
 };
 const reactions = [
-  { icon: <FaThumbsUp />, color: pink },
-  { icon: <FaHeart />, color: 'red' },
-  { icon: <FaLaugh />, color: 'yellow' },
-  { icon: <FaFrown />, color: 'blue' },
-  { icon: <FaSadCry />, color: 'yellow' },
-  { icon: <FaAngry />, color: 'red' }
+  { icon: <FaThumbsUp />, color: pink, value: 'like' },
+  { icon: <FaHeart />, color: 'red', value: 'heart' },
+  { icon: <FaLaugh />, color: 'yellow', value: 'laugh' },
+  { icon: <FaFrown />, color: 'blue', value: 'sad' },
+  { icon: <FaSadCry />, color: 'yellow', value: 'cry' },
+  { icon: <FaAngry />, color: 'red', value: 'angry' }
 ];
 class SinglePost extends Component {
+  handleReactionClick = reaction => {
+    console.log(reaction);
+  };
+
   render() {
     const { data } = this.props;
-    const { post } = data;
-    console.clear();
-    console.log(data);
+    const { post, comments } = data;
     return (
       <PostWrapper>
         <Author data={data} />
@@ -92,9 +104,22 @@ class SinglePost extends Component {
         <DisplayText>
           <h5>LIKE</h5>
           <Reactions>
-            {reactions.map(reaction => <Reaction item={reaction} />)}
+            {reactions.map((reaction, i) => (
+              <Reaction
+                key={reaction + i}
+                item={reaction}
+                handleReactionClick={this.handleReactionClick}
+              />
+            ))}
           </Reactions>
         </DisplayText>
+        <div>
+          {comments.map((comment, i) => (
+            <div key={comment + i}>
+              <Comment data={comment} />
+            </div>
+          ))}
+        </div>
       </PostWrapper>
     );
   }

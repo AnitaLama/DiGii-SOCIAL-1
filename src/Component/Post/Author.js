@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { flex, Images } from '../../Theme';
+import { flex, Images, fontSize } from '../../Theme';
 
 const months = [
   'Jan',
@@ -28,8 +28,12 @@ const AuthorInfo = styled.div`
   margin: auto 0;
   padding: 0 10px;
 `;
-const Name = styled.div``;
-const PostedDate = styled.div``;
+const Name = styled.div`
+  font-weight: bold;
+`;
+const PostedDate = styled.div`
+  ${fontSize(12)};
+`;
 
 class Author extends Component {
   render() {

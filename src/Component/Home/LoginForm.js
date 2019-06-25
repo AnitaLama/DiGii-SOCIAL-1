@@ -26,11 +26,6 @@ const ClickableSpan = styled.h6`
       font-weight: 900;
     }
   }
-  a {
-    &:hover {
-      color: ${Colors.colors.peach} !important;
-    }
-  }
 `;
 class LoginForm extends Component {
   constructor() {
@@ -114,7 +109,7 @@ class LoginForm extends Component {
               </Button>
               <HelpBlock>
                 <ClickableSpan onClick={this.openModal}>
-                  <a>Forgot Password</a>
+                  <span>Forgot Password</span>
                 </ClickableSpan>
 
                 <ClickableSpan>

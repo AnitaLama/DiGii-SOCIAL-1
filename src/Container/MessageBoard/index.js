@@ -8,6 +8,10 @@ import {
 } from '../../Component/MessageBoard';
 
 class MessageBoard extends Component {
+  componentWillMount() {
+    console.log();
+  }
+
   render() {
     return (
       <ContainerWrapper>

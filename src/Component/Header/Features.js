@@ -16,16 +16,23 @@ const FeatureContent = styled.div`
   i {
     padding-right: 6px;
     ${fontSize(22)};
-    &:hover {
-      font-weight: 900;
+    
+  }
+  &:hover {
+    i{   
+      font-weight: 900;   
+    }  
+    span{
+      font-weight: bold;
     }
+        
   }
 `;
 
 const FeatureText = styled.span`
   padding-right: 4px;
   &:hover {
-    font-weight: bold;
+    
   }
 
   @media (max-width: 480px) {
