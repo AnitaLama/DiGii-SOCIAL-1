@@ -11,6 +11,10 @@ class ActualRoute extends React.Component {
     NProgress.start();
   }
 
+  componentWillUnmount() {
+    NProgress.start();
+  }
+
   componentDidMount() {
     NProgress.done();
   }
