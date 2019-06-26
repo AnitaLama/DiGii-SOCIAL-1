@@ -27,20 +27,21 @@ const CommentDiv = styled.div`
 class Comment extends Component {
   render() {
     const { data } = this.props;
-    const { createdAt } = data;
+    const { createdAt, user } = data;
+    console.log(user.fi);
     return (
       <CommentWrapper>
         <Avatar src={Images.stockImage} />
         <CommentDiv>
           <span>
-            {data.commenterFirstName}
+            {user.firstName}
             {' '}
-            {data.commenterLastName}
+            {user.lastName}
           </span>
           <span className="date">
             {new Date(createdAt).toLocaleDateString()}
           </span>
-          <span>{data.comment}</span>
+          <span>{data.commentDescription}</span>
         </CommentDiv>
       </CommentWrapper>
     );

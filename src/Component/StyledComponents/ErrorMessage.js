@@ -22,7 +22,7 @@ const ErroMessage = ({ error }) => (
   <ErrorStyles>
     <p>
       <strong>Error:</strong>
-      {error}
+      {error.replace('Error: ', '')}
     </p>
   </ErrorStyles>
 );
