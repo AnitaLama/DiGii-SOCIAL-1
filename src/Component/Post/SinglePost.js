@@ -13,15 +13,16 @@ import { Colors, flex, fontSize } from '../../Theme';
 import Author from './Author';
 import Comment from './Comment';
 
-const { snow, pink, peach } = Colors.colors;
+const { snow, primary, secondary } = Colors.colors;
 const PostWrapper = styled.div`
   background: ${snow};
-  margin: 6px 0;
+  margin: 22px 0;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 40px;
+  box-shadow: 5px 5px 10px -1px rgba(0, 0, 0, 0.25);
 `;
 const Post = styled.div`
-  padding: 10px 0;
+  padding: 6px 0;
 `;
 const Reactions = styled.div`
   ${flex('row')};
@@ -36,7 +37,7 @@ const DisplayText = styled.div`
     border-radius: 4px;
     color: ${snow};
     padding: 0 20px;
-    background: ${pink};
+    background: ${primary};
     display: inline;
   }
   div {
@@ -50,7 +51,7 @@ const DisplayText = styled.div`
   }
   &:hover {
     h5 {
-      background: ${peach};
+      background: ${secondary};
     }
     div {
       display: block;
@@ -82,7 +83,7 @@ const Reaction = ({ item, handleReactionClick }) => {
   );
 };
 const reactions = [
-  { icon: <FaThumbsUp />, color: pink, value: 'like' },
+  { icon: <FaThumbsUp />, color: primary, value: 'like' },
   { icon: <FaHeart />, color: 'red', value: 'heart' },
   { icon: <FaLaugh />, color: 'yellow', value: 'laugh' },
   { icon: <FaFrown />, color: 'blue', value: 'sad' },
@@ -125,5 +126,8 @@ class SinglePost extends Component {
   }
 }
 SinglePost.propTypes = { data: PropTypes.object };
-Reaction.propTypes = { item: PropTypes.object };
+Reaction.propTypes = {
+  item: PropTypes.object,
+  handleReactionClick: PropTypes.func
+};
 export default SinglePost;

@@ -8,7 +8,7 @@ const ErrorStyles = styled.div`
   background: white;
   margin: 1rem 0;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-left: 5px solid ${Colors.colors.pink};
+  border-left: 5px solid ${Colors.colors.primary};
   p {
     margin: 0;
     font-weight: 100;

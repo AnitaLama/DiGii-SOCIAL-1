@@ -9,7 +9,7 @@ const LogoWrapper = styled.div`
 
 const BrandLogo = () => (
   <LogoWrapper>
-    <BigLogo src={Images.logo} alt="logo-of-digii-social" />
+    <BigLogo src={Images.digii5.logo} alt="logo-of-digii-social" />
   </LogoWrapper>
 );
 export default BrandLogo;

@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { FiSettings } from 'react-icons/fi';
 import { connect } from 'react-redux';
-import { Images, flexCentering, Colors } from '../../Theme';
-import { Logo, Button } from '../StyledComponents';
+import {
+  Images, flexCentering, Colors, fontSize
+} from '../../Theme';
+import { Logo, WhiteButton, Button } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
 
+const { pen, secondary, snow } = Colors.colors;
 const HeaderWrapper = styled.div`
   padding: 20px 0;
   display: grid;
@@ -20,13 +23,13 @@ const HeaderWrapper = styled.div`
 const UserInfoWrapper = styled.div`
   ${flexCentering};
   justify-content: space-between;
-  background: ${Colors.colors.snow};
   padding: 0 10px;
   border-radius: 6px;
 `;
 const Name = styled.span`
-  color: ${Colors.colors.pen};
+  color: ${pen};
   margin-left: 20px;
+  ${fontSize(22)}
 `;
 const User = styled.img`
   height: 50px;
@@ -59,18 +62,19 @@ const SettingsSubList = styled.ul`
     cursor: pointer;
     &:hover {
       display: block;
-      background: ${Colors.colors.pen};
-      color: ${Colors.colors.snow};
+      background: ${pen};
+      color: ${snow};
     }
   }
 `;
 const Settings = styled.div`
   position: relative;
   svg {
-    color: ${Colors.colors.pencil};
+    color: ${secondary};
+    font-weight: bolder;
     &:hover {
       cursor: pointer;
-    }
+    }whtebutton
   }
 `;
 
@@ -102,9 +106,12 @@ class Header extends Component {
 
     return (
       <HeaderWrapper>
-        <Logo src={Images.logo} />
+        <Logo src={Images.digii5.logo} />
         <UserInfoWrapper>
-          <Button className="rounded">Need help</Button>
+          <WhiteButton className="rounded shadowed">Need help</WhiteButton>
+          <Button className="rounded short" style={{ marginLeft: '20px' }}>
+            100
+          </Button>
           <Name>{user.firstName}</Name>
           <User src={Images.stockImage} />
           <Settings>
@@ -124,7 +131,8 @@ class Header extends Component {
   }
 }
 Header.propTypes = {
-  users: PropTypes.object
+  users: PropTypes.object,
+  onLogOut: PropTypes.func
 };
 const mapStateToProps = state => ({
   users: state.user

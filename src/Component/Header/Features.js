@@ -44,7 +44,7 @@ const Feature = props => {
   const { count, icon, text } = props;
   return (
     <FeatureContent>
-      <Badge count={count} style={{ backgroundColor: Colors.colors.peach }}>
+      <Badge count={count} style={{ backgroundColor: Colors.colors.secondary }}>
         <i>{icon}</i>
         <FeatureText>{text}</FeatureText>
       </Badge>

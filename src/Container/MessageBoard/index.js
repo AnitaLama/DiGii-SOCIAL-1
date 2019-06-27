@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   ContainerWrapper,
   ContentWrapper
-} from '../../Component/StyledComponents';
-import {
-  Header, Features, NewPost, Posts
-} from '../../Component/MessageBoard';
+} from "../../Component/StyledComponents";
+import { Header, Features, Body } from "../../Component/MessageBoard";
 
 class MessageBoard extends Component {
   componentWillMount() {
@@ -17,9 +15,9 @@ class MessageBoard extends Component {
       <ContainerWrapper>
         <ContentWrapper>
           <Header />
-          <Features />
-          <NewPost />
-          <Posts />
+          {/*<Features />
+           */}
+          <Body />
         </ContentWrapper>
       </ContainerWrapper>
     );

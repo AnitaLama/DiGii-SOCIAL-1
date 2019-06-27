@@ -1,7 +1,7 @@
 import ErrorMessage from './ErrorMessage';
 
 export { ErrorMessage };
-export { Button } from './Button';
+export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';
 export { ContainerWrapper, ContentWrapper } from './Wrapper';
-export { FormInput } from './Form';
+export { FormInput, FormTextArea } from './Form';

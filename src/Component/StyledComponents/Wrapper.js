@@ -10,7 +10,7 @@ const ContainerWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin: auto;
-  width: 960px;
+  width: 1080px;
   @media (max-width: 960px) {
     width: 100%;
     padding: 0 20px;

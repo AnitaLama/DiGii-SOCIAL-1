@@ -21,7 +21,7 @@ const HelpBlock = styled.div`
 const ClickableSpan = styled.h6`
   cursor: pointer;
   span {
-    color: ${Colors.colors.peach} !important;
+    color: ${Colors.colors.secondary} !important;
     &:hover {
       font-weight: 900;
     }

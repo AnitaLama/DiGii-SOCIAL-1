@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Colors, fontSize } from '../../Theme';
 
-const { peach, pencil } = Colors.colors;
+const { secondary, pencil } = Colors.colors;
 
 const FormInput = styled.input`
   width: 100%;
@@ -16,8 +16,25 @@ const FormInput = styled.input`
     color: rgba(0, 0, 0, 0.2);
   }
   &:focus {
-    box-shadow: 0 0 6px ${peach};
+    box-shadow: 0 0 6px ${secondary};
   }
 `;
 
-export { FormInput };
+const FormTextArea = styled.textarea`
+  width: 100%;
+  border-radius: 40px;
+  padding: 10px 15px;
+  outline: none;
+  border: 0;
+  outline:0
+  color: #495057;
+  margin-bottom: 10px;
+  resize:none;
+  height: 100px;
+  &::placeholder {
+    ${fontSize(14)};
+    color: rgba(0, 0, 0, 0.2);
+  }
+
+`;
+export { FormInput, FormTextArea };
