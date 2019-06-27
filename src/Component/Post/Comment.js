@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
-import { Images, flex, fontSize } from '../../Theme';
+import React, { Component } from "react";
+import styled from "@emotion/styled";
+import PropTypes from "prop-types";
+import { Images, flex, fontSize } from "../../Theme";
 
 const CommentWrapper = styled.div`
   ${flex};
@@ -13,7 +13,7 @@ const Avatar = styled.img`
   margin-right: 5px;
 `;
 const CommentDiv = styled.div`
-  ${flex('column')};
+  ${flex("column")};
   span:first-of-type {
     font-weight: bold;
   }
@@ -28,15 +28,12 @@ class Comment extends Component {
   render() {
     const { data } = this.props;
     const { createdAt, user } = data;
-    console.log(user.fi);
     return (
       <CommentWrapper>
         <Avatar src={Images.stockImage} />
         <CommentDiv>
           <span>
-            {user.firstName}
-            {' '}
-            {user.lastName}
+            {user.firstName} {user.lastName}
           </span>
           <span className="date">
             {new Date(createdAt).toLocaleDateString()}
