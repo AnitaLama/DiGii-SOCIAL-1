@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { FaYoutube } from 'react-icons/fa';
-import { Colors, fontSize, absoluteFixed } from '../../Theme';
+import { Colors, fontSize } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 
 const {
