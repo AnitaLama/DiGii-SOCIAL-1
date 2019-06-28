@@ -30,7 +30,7 @@ const media = Object.keys(sizes).reduce((accumulator, label) => {
 // End Media Queries
 
 const boxShadow = () => `
-  box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.30);
+box-shadow: 5px 5px 10px -1px rgba(0, 0, 0, 0.25);
 `;
 
 const resetList = () => `
@@ -119,16 +119,6 @@ const flex = (direction = 'row', wrap = 'nowrap') => `
   flex-wrap: ${wrap};
 `;
 
-const calculateRem = pxSize => {
-  const remSize = pxSize / 16;
-  return `${remSize * 1}rem`;
-};
-
-const fontSize = pxSize => `
-  font-size: ${pxSize}px;
-  font-size: ${calculateRem(pxSize)}
-`;
-
 const grid = (columns, columnSize, gap = 0) => `
   display: grid;
   grid-gap: ${gap}px;
@@ -150,8 +140,6 @@ export {
   fullViewPort,
   size,
   flex,
-  fontSize,
-  calculateRem,
   resetList,
   grid
 };

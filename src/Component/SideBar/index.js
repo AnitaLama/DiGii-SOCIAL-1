@@ -8,7 +8,7 @@ const { primary, grey, secondary } = Colors.colors;
 const SideBarContainer = styled.div`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: auto 100px;
+  grid-template-columns: auto auto;
   margin: 10px 0;
 `;
 const SideBarWrapper = styled.div`

@@ -71,10 +71,9 @@ const Settings = styled.div`
   position: relative;
   svg {
     color: ${secondary};
-    font-weight: bolder;
     &:hover {
       cursor: pointer;
-    }whtebutton
+    }
   }
 `;
 
@@ -108,8 +107,11 @@ class Header extends Component {
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
         <UserInfoWrapper>
-          <WhiteButton className="rounded shadowed">Need help</WhiteButton>
-          <Button className="rounded short" style={{ marginLeft: '20px' }}>
+          <WhiteButton className="roundedShadow">Need help</WhiteButton>
+          <Button
+            className="roundedShadow short"
+            style={{ marginLeft: '20px' }}
+          >
             100
           </Button>
           <Name>{user.firstName}</Name>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { Colors } from '../../Theme';
+import { Colors, fontWeight } from '../../Theme';
 
 const ErrorStyles = styled.div`
   padding: 1.2rem;
@@ -11,7 +11,7 @@ const ErrorStyles = styled.div`
   border-left: 5px solid ${Colors.colors.primary};
   p {
     margin: 0;
-    font-weight: 100;
+    ${fontWeight(100)}
   }
   strong {
     margin-right: 1rem;

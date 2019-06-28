@@ -5,7 +5,9 @@ import {
 } from 'react-icons/fi';
 import { Badge } from 'antd';
 import PropTypes from 'prop-types';
-import { grid, Colors, fontSize } from '../../Theme';
+import {
+  grid, Colors, fontSize, fontWeight
+} from '../../Theme';
 
 const FeatureContentWrapper = styled.div`
   ${grid(4, '1fr')};
@@ -16,23 +18,20 @@ const FeatureContent = styled.div`
   i {
     padding-right: 6px;
     ${fontSize(22)};
-    
   }
   &:hover {
-    i{   
-      font-weight: 900;   
-    }  
-    span{
-      font-weight: bold;
+    i {
+      ${fontWeight('900')};
     }
-        
+    span {
+      ${fontWeight('bold')};
+    }
   }
 `;
 
 const FeatureText = styled.span`
   padding-right: 4px;
   &:hover {
-    
   }
 
   @media (max-width: 480px) {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, FormInput, ErrorMessage } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
-import { Colors } from '../../Theme';
+import { Colors, fontWeight } from '../../Theme';
 import ResetPasswordModal from './ResetPasswordModal';
 
 const FormWrapper = styled.div`
@@ -23,7 +23,7 @@ const ClickableSpan = styled.h6`
   span {
     color: ${Colors.colors.secondary} !important;
     &:hover {
-      font-weight: 900;
+      ${fontWeight('900')}
     }
   }
 `;
@@ -47,7 +47,8 @@ class LoginForm extends Component {
 
   render() {
     const { isModalVisible } = this.state;
-    const { error } = this.props.user;
+    const { user } = this.props;
+    const { error } = user;
     return (
       <FormWrapper>
         <h1>Log In</h1>
@@ -132,7 +133,8 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  onFormLogin: PropTypes.func
+  onFormLogin: PropTypes.func,
+  user: PropTypes.object
 };
 const mapStateToProps = state => ({
   user: state.user

@@ -19,8 +19,10 @@ export {
   fullViewPort,
   size,
   flex,
-  fontSize,
-  calculateRem,
   resetList,
   grid
 } from './Mixins';
+
+export {
+  calculateRem, fontSize, fontFilson, fontWeight
+} from './Fonts';

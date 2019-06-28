@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
-import { Colors } from '../../Theme';
+import {
+  Colors,
+  fontSize,
+  fontWeight,
+  boxShadow,
+  fontFilson
+} from '../../Theme';
 
 const {
   primary, secondary, snow, pen
@@ -12,15 +18,20 @@ const Button = styled.button`
   padding: 10px;
   border: 0;
   outline: 0;
-  font-weight: 400;
+  ${fontWeight('400')};
+  ${fontFilson()};
   background-size: 100% 100%;
   transition: all 0.4s ease-in-out;
   &.rounded {
     border-radius: 40px !important;
   }
+  &.roundedShadow {
+    border-radius: 40px !important;
+    ${boxShadow()}
+  }
   &:hover {
     background-image: linear-gradient(to right, ${secondary}, ${primary});
-    font-weight: 900;
+    ${fontWeight('900')}
     background-position: 100% 0;
     color: ${snow};
     transition: all 0.4s ease-in-out;
@@ -37,21 +48,23 @@ const WhiteButton = styled.button`
   background: ${snow};
   border: 2px solid ${snow};
   color: ${pen};
+  ${fontSize(15)};
+  ${fontFilson()};
   width: 100%;
   padding: 10px;
-  border: 0;
   outline: 0;
-  font-weight: 400;
-  &.shadowed {
-    box-shadow: 5px 5px 10px -1px rgba(0, 0, 0, 0.25);
-  }
+  border: 2px solid ${snow};
+  ${fontWeight('400')}
   &.rounded {
     border-radius: 40px !important;
+  }
+  &.roundedShadow {
+    border-radius: 40px !important;
+    ${boxShadow()}
   }
   &:hover {
     border: 2px solid ${primary};
     color: ${primary};
-    font-weight: 900;
   }
 
   &:focus {

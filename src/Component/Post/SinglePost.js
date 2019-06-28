@@ -9,9 +9,12 @@ import {
   FaFrown,
   FaThumbsUp
 } from 'react-icons/fa';
-import { Colors, flex, fontSize } from '../../Theme';
+import {
+  Colors, flex, fontSize, grid, boxShadow
+} from '../../Theme';
 import Author from './Author';
 import Comment from './Comment';
+import CommentBox from './CommentBox';
 
 const { snow, primary, secondary } = Colors.colors;
 const PostWrapper = styled.div`
@@ -19,7 +22,8 @@ const PostWrapper = styled.div`
   margin: 22px 0;
   padding: 20px;
   border-radius: 40px;
-  box-shadow: 5px 5px 10px -1px rgba(0, 0, 0, 0.25);
+  ${boxShadow()};
+  ${grid(2, '1fr')};
 `;
 const Post = styled.div`
   padding: 6px 0;
@@ -69,6 +73,9 @@ const Icon = styled.span`
     // font-size: 26px;
   }
 `;
+const CommentContainer = styled.div`
+  position: relative;
+`;
 const Reaction = ({ item, handleReactionClick }) => {
   const { icon, color } = item;
   return (
@@ -100,9 +107,11 @@ class SinglePost extends Component {
     const { post, comments } = data;
     return (
       <PostWrapper>
-        <Author data={data} />
-        <Post>{post}</Post>
-        <DisplayText>
+        <div>
+          <Author data={data} />
+          <Post>{post}</Post>
+        </div>
+        {/* <DisplayText>
           <h5>LIKE</h5>
           <Reactions>
             {reactions.map((reaction, i) => (
@@ -113,14 +122,15 @@ class SinglePost extends Component {
               />
             ))}
           </Reactions>
-        </DisplayText>
-        <div>
+        </DisplayText> */}
+        <CommentContainer>
           {comments.map((comment, i) => (
             <div key={comment + i}>
               <Comment data={comment} />
             </div>
           ))}
-        </div>
+          <CommentBox />
+        </CommentContainer>
       </PostWrapper>
     );
   }

@@ -3,17 +3,24 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { FormTextArea } from '../StyledComponents';
 import {
-  grid, fontSize, flexCentering, Colors, Images
+  grid,
+  fontSize,
+  flexCentering,
+  Colors,
+  Images,
+  boxShadow,
+  fontWeight,
+  fontFilson
 } from '../../Theme';
 
-const { snow, pencil, pen } = Colors.colors;
+const { snow, pencil } = Colors.colors;
 
 const NewPostWrapper = styled.div`
   background: ${snow};
   margin: 10px 0;
   padding: 10px;
   border-radius: 40px;
-  box-shadow: 5px 5px 10px -1px rgba(0, 0, 0, 0.25);
+  ${boxShadow()}
 `;
 const NewPostContainer = styled.div`
   display: grid;
@@ -38,11 +45,12 @@ const NewPostOptionContent = styled.div`
   ${flexCentering('row')};
   span {
     color: ${pencil};
-    ${fontSize(12)}
+    ${fontSize(12)};
+    ${fontFilson()};
   }
   &:hover {
     span {
-      font-weight: bolder;
+      ${fontWeight('bolder')}
       color: #373745;
     }
   }
