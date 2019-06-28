@@ -4,7 +4,9 @@ import { FaYoutube } from 'react-icons/fa';
 import { Colors, fontSize } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 
-const { primary, grey, secondary } = Colors.colors;
+const {
+  primary, grey, secondary, pen
+} = Colors.colors;
 const SideBarContainer = styled.div`
   box-sizing: border-box;
   display: grid;
@@ -20,15 +22,24 @@ const GroupOne = styled.div`
   border-radius: 40px;
   padding: 10px 20px;
 `;
-const GroupElement = styled.div`
-  padding: 4px 0;
-  ${fontSize(16)};
-  color: ${grey};
-`;
 const Icon = styled.span`
   color: ${secondary};
   ${fontSize(22)};
   margin-right: 10px;
+`;
+const GroupElement = styled.div`
+  padding: 4px 0;
+  ${fontSize(16)};
+  color: ${grey};
+  &:hover {
+    cursor: pointer;
+    span:first-of-type {
+      color: ${primary};
+    }
+    span {
+      color: ${pen};
+    }
+  }
 `;
 const Type = styled.span``;
 

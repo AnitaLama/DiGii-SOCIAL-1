@@ -9,6 +9,7 @@ const { grey } = Colors.colors;
 const CommentWrapper = styled.div`
   ${flex};
   padding: 8px 0;
+  width: 100%;
 `;
 const Avatar = styled.img`
   border-radius: 12px;

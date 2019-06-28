@@ -20,7 +20,7 @@ const { snow, primary, secondary } = Colors.colors;
 const PostWrapper = styled.div`
   background: ${snow};
   margin: 22px 0;
-  padding: 20px;
+  padding: 24px;
   border-radius: 40px;
   ${boxShadow()};
   ${grid(2, '1fr')};
@@ -74,7 +74,10 @@ const Icon = styled.span`
   }
 `;
 const CommentContainer = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
 `;
 const Reaction = ({ item, handleReactionClick }) => {
   const { icon, color } = item;
@@ -125,9 +128,7 @@ class SinglePost extends Component {
         </DisplayText> */}
         <CommentContainer>
           {comments.map((comment, i) => (
-            <div key={comment + i}>
-              <Comment data={comment} />
-            </div>
+            <Comment key={comment + i} data={comment} />
           ))}
           <CommentBox />
         </CommentContainer>

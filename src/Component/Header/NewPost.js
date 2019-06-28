@@ -13,7 +13,7 @@ import {
   fontFilson
 } from '../../Theme';
 
-const { snow, pencil } = Colors.colors;
+const { snow, pencil, grey } = Colors.colors;
 
 const NewPostWrapper = styled.div`
   background: ${snow};
@@ -50,8 +50,8 @@ const NewPostOptionContent = styled.div`
   }
   &:hover {
     span {
-      ${fontWeight('bolder')}
-      color: #373745;
+      ${fontWeight('bolder')};
+      color: ${grey};
     }
   }
 
