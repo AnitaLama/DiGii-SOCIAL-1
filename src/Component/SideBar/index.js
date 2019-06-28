@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { FaYoutube } from 'react-icons/fa';
-import { Colors, fontSize } from '../../Theme';
+import { Colors, fontSize, absoluteFixed } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 
 const {
-  primary, grey, secondary, pen
+  primary, grey, secondary, pen, lightGrey
 } = Colors.colors;
 const SideBarContainer = styled.div`
   box-sizing: border-box;
@@ -21,6 +21,15 @@ const GroupOne = styled.div`
   border: 12px solid ${primary};
   border-radius: 40px;
   padding: 10px 20px;
+  margin-bottom: 40px;
+  min-height: 204px;
+  position: relative;
+`;
+const Last = styled.div`
+  background: ${lightGrey};
+  min-height: 140px;
+  margin: 10px 0;
+  border-radius: 20px;
 `;
 const Icon = styled.span`
   color: ${secondary};
@@ -63,6 +72,9 @@ class SideBar extends Component {
                 <Type>{item.menu}</Type>
               </GroupElement>
             ))}
+          </GroupOne>
+          <GroupOne>
+            <Last />
           </GroupOne>
         </SideBarWrapper>
         <Tabs />

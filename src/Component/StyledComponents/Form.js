@@ -30,7 +30,7 @@ const FormTextArea = styled.textarea`
   color: #495057;
   margin-bottom: 10px;
   resize:none;
-  height: 100px;
+  height: 150px;
   &::placeholder {
     ${fontSize(14)};
     color: rgba(0, 0, 0, 0.2);

@@ -36,6 +36,9 @@ const Close = styled.div`
   right: 0;
   color: ${pink};
   cursor: pointer;
+  svg {
+    ${fontSize(24)};
+  }
 `;
 class Comment extends Component {
   constructor() {
