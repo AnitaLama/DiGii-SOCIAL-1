@@ -4,10 +4,14 @@ import PropTypes from 'prop-types';
 import { flexCentering, Colors, fontSize } from '../../Theme';
 import history from '../../history';
 
-const { primary, secondary, pencil } = Colors.colors;
+const {
+  blue, primary, secondary, pencil
+} = Colors.colors;
 const TabsWrapper = styled.div`
   ${flexCentering('column')};
+  justify-content: flex-start;
   cursor: pointer;
+  margin-top: 200px;
 `;
 const Tab = styled.div`
   width: 50px;
@@ -17,7 +21,7 @@ const Tab = styled.div`
   padding: 10px 6px;
   border: 4px solid ${pencil};
   &.active {
-    border: 4px solid ${primary};
+    border: 4px solid ${blue};
   }
 `;
 const Box = styled.div`
@@ -30,7 +34,10 @@ const Box = styled.div`
 `;
 const TabName = styled.div`
   text-align: center;
-  ${fontSize(8)}
+  ${fontSize(8)};
+  &.active {
+    color: ${blue};
+  }
 `;
 const SingleTab = props => {
   const { data, handleTabChange } = props;
@@ -44,7 +51,7 @@ const SingleTab = props => {
       <Tab className={selected && 'active'}>
         <Box className={selected && 'active'} />
       </Tab>
-      <TabName>{data.tab}</TabName>
+      <TabName className={selected && 'active'}>{data.tab}</TabName>
     </div>
   );
 };

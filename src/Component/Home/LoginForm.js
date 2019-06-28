@@ -5,12 +5,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, FormInput, ErrorMessage } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
-import { Colors, fontWeight } from '../../Theme';
+import {
+  Colors, fontWeight, fontFilson, fontSize
+} from '../../Theme';
 import ResetPasswordModal from './ResetPasswordModal';
 
 const FormWrapper = styled.div`
   margin: auto 40px;
   width: 80%;
+`;
+const FormTitle = styled.h1`
+  ${fontFilson};
+  ${fontWeight('bold')};
+  ${fontSize(32)};
 `;
 const HelpBlock = styled.div`
   margin-top: 10px;
@@ -51,7 +58,7 @@ class LoginForm extends Component {
     const { error } = user;
     return (
       <FormWrapper>
-        <h1>Log In</h1>
+        <FormTitle>Log In</FormTitle>
         <Formik
           initialValues={{ email: '', password: '' }}
           validate={values => {
@@ -110,7 +117,7 @@ class LoginForm extends Component {
               </Button>
               <HelpBlock>
                 <ClickableSpan onClick={this.openModal}>
-                  <span>Forgot Password</span>
+                  <span>Forgot account?</span>
                 </ClickableSpan>
 
                 <ClickableSpan>

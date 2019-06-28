@@ -104,7 +104,7 @@ class Header extends Component {
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
         <UserInfoWrapper>
-          <WhiteButton className="roundedShadow">Need help</WhiteButton>
+          <WhiteButton className="roundedShadow">Need help?</WhiteButton>
           <Button
             className="roundedShadow short"
             style={{ marginLeft: '20px' }}

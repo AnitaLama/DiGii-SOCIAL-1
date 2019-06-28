@@ -1,7 +1,6 @@
 import { sizes } from './Mixins';
 
 const Colors = {
-  breakpoints: Object.values(sizes).map(size => size / 16), // convert sizes to em
   // colors: {
   //   primary: '#F67B61',
   //   primary: '#F54962',
