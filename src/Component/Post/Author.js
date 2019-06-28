@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { flex, Images, fontSize } from '../../Theme';
+import {
+  flex, Images, fontSize, fontWeight, fontFilson
+} from '../../Theme';
 
 const months = [
   'Jan',
@@ -29,7 +31,8 @@ const AuthorInfo = styled.div`
   padding: 0 10px;
 `;
 const Name = styled.div`
-  font-weight: bold;
+  ${fontWeight('bold')};
+  ${fontFilson()}
 `;
 const PostedDate = styled.div`
   ${fontSize(12)};
@@ -38,13 +41,13 @@ const PostedDate = styled.div`
 class Author extends Component {
   render() {
     const { data } = this.props;
-    const { firstName, lastName, createdAt } = data;
-    const postedDate = new Date(Date.parse(createdAt));
-    let postDate = months[postedDate.getMonth()];
-    postDate += ` ${postedDate.getDate()}`;
-    postDate += ` at ${postedDate.getHours() % 12}:${postedDate.getMinutes()}`;
-    postDate += ` ${postedDate.getHours()}` > 12 ? 'pm' : 'am';
-
+    const { user } = data;
+    const { firstName, lastName } = user;
+    // const postedDate = new Date(Date.parse(createdAt));
+    // let postDate = months[postedDate.getMonth()];
+    // postDate += ` ${postedDate.getDate()}`;
+    // postDate += ` at ${postedDate.getHours() % 12}:${postedDate.getMinutes()}`;
+    // postDate += ` ${postedDate.getHours()}` > 12 ? 'pm' : 'am';
     return (
       <AuthorWrapper>
         <AuthorImage src={Images.stockImage} />
@@ -54,7 +57,7 @@ class Author extends Component {
             {' '}
             {lastName}
           </Name>
-          <PostedDate>{postDate}</PostedDate>
+          {/*  <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
       </AuthorWrapper>
     );

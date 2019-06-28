@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { Images, flex, fontSize } from '../../Theme';
+import {
+  Images, flex, fontSize, fontWeight, Colors
+} from '../../Theme';
 
+const { grey } = Colors.colors;
 const CommentWrapper = styled.div`
   ${flex};
-  padding: 8px;
+  padding: 8px 0;
+  width: 100%;
 `;
 const Avatar = styled.img`
   border-radius: 12px;
@@ -15,7 +19,7 @@ const Avatar = styled.img`
 const CommentDiv = styled.div`
   ${flex('column')};
   span:first-of-type {
-    font-weight: bold;
+    ${fontWeight('bold')}
   }
   span:not(:first-of-type) {
     ${fontSize(12)};
@@ -23,24 +27,27 @@ const CommentDiv = styled.div`
   span.date {
     ${fontSize(10)};
   }
+  span:last-of-type {
+    color: ${grey};
+  }
 `;
 class Comment extends Component {
   render() {
     const { data } = this.props;
-    const { createdAt } = data;
+    const { user } = data;
     return (
       <CommentWrapper>
         <Avatar src={Images.stockImage} />
         <CommentDiv>
           <span>
-            {data.commenterFirstName}
+            {user.firstName}
             {' '}
-            {data.commenterLastName}
+            {user.lastName}
           </span>
-          <span className="date">
+          {/* <span className="date">
             {new Date(createdAt).toLocaleDateString()}
-          </span>
-          <span>{data.comment}</span>
+          </span> */}
+          <span>{data.commentDescription}</span>
         </CommentDiv>
       </CommentWrapper>
     );

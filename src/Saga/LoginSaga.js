@@ -7,11 +7,12 @@ import { DEV_URL } from '../config';
 export default function* onLoginRequest(action) {
   try {
     const { data } = yield call(axios.post, `${DEV_URL}/login`, action.data);
+    console.log(data);
     if (data.success) {
       history.push('/messageboard');
       yield put(LoginActions.onFormLoginSuccess(data.result));
     } else {
-      yield put(LoginActions.onFormLoginFailure(data.message));
+      yield put(LoginActions.onFormLoginFailure(data.error));
     }
   } catch (err) {
     console.log(err);

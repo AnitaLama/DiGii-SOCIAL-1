@@ -1,52 +1,63 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
-import { FiSend } from 'react-icons/fi';
-import {
-  TiLightbulb, TiImageOutline, TiImage, TiDelete
-} from 'react-icons/ti';
 import PropTypes from 'prop-types';
-import { FormInput } from '../StyledComponents';
-import { grid, fontSize, flexCentering } from '../../Theme';
+import { FormTextArea } from '../StyledComponents';
+import {
+  grid,
+  fontSize,
+  flexCentering,
+  Colors,
+  Images,
+  boxShadow,
+  fontWeight,
+  fontFilson
+} from '../../Theme';
+
+const { snow, pencil, grey } = Colors.colors;
 
 const NewPostWrapper = styled.div`
-  background: #e9e9e9;
+  background: ${snow};
   margin: 10px 0;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 40px;
+  ${boxShadow()}
 `;
 const NewPostContainer = styled.div`
   display: grid;
-  grid-template-columns: 95% 5%;
+  // grid-template-columns: 95% 5%;
 `;
 const Icon = styled.span`
   margin: auto;
-  ${fontSize(22)};
   cursor: pointer;
+  img {
+    height: 20.73px;
+    margin-right: 6px;
+  }
 `;
 const NewPostOptionContainer = styled.div`
-  ${grid(3, '1fr')};
+  ${grid(6, '1fr')};
+  padding: 0 15px;
 `;
 const NewPostOptionContent = styled.div`
   margin: auto;
   padding: 2px 0;
   cursor: pointer;
   ${flexCentering('row')};
-  &:hover {
-    svg {
-      font-weight: 900;
-    }
-    span {
-      font-weight: bolder;
-    }
-  }
-  svg {
-    margin-right: 6px;
-  }
   span {
+    color: ${pencil};
+    ${fontSize(12)};
+    ${fontFilson()};
   }
-  @media (max-width: 480px) {
+  &:hover {
+    span {
+      ${fontWeight('bolder')};
+      color: ${grey};
+    }
+  }
+
+  @media (max-width: 840px) {
     ${flexCentering('column')};
-    span:last-child {
+    span:last-of-type {
       text-align: center;
       ${fontSize(10)};
     }
@@ -63,7 +74,9 @@ const NewPostOption = ({ option, handleButtonClick }) => {
         handleButtonClick(option);
       }}
     >
-      <Icon>{icon}</Icon>
+      <Icon>
+        <img src={icon} alt={`Digii-${icon}`} />
+      </Icon>
       <span>{text}</span>
     </NewPostOptionContent>
   );
@@ -82,40 +95,41 @@ const Input = styled.div`
 `;
 
 const options = [
-  { text: 'Add a picture / video', icon: <TiImage />, value: 'image' },
-  { text: 'Add a feeling', icon: <TiLightbulb />, value: 'feeling' },
-  { text: 'Start a poll', icon: <TiImageOutline />, value: 'poll' },
-  { text: 'Make a banner', icon: <TiImage />, value: 'banner' },
-  { text: 'Tag a friend', icon: <TiImage />, value: 'tag' },
-  { text: 'Use a GIF', icon: <TiImage />, value: 'gif' }
+  { text: 'PHOTO/VIDEO', icon: Images.digii5.Photo, value: 'image' },
+  { text: 'BANNER', icon: Images.digii5.Banner, value: 'banner' },
+  { text: 'FEELING', icon: Images.digii5.Feeling, value: 'feeling' },
+  { text: 'TAG', icon: Images.digii5.Tag, value: 'tag' },
+  { text: 'POLL', icon: Images.digii5.Poll, value: 'poll' },
+  { text: 'GIF', icon: Images.digii5.GIF, value: 'gif' }
 ];
 
 class NewPost extends Component {
   constructor() {
     super();
     this.state = {
-      post: 'post'
+      // post: 'post'
     };
   }
 
   handleButtonClick = option => {
-    console.log(option);
-    const { value } = option;
-    this.setState({ post: value });
+    // const { value } = option;
+    // this.setState({ post: value });
   };
 
   render() {
-    const { post } = this.state;
     return (
       <NewPostWrapper>
         <NewPostContainer>
           <Input>
-            <FormInput placeholder={`New ${post}`} style={{ margin: 0 }} />
-            <TiDelete />
+            <FormTextArea
+              placeholder="What do you want to post?"
+              style={{ margin: 0 }}
+            />
+            {/* <TiDelete /> */}
           </Input>
-          <Icon>
+          {/* <Icon>
             <FiSend />
-          </Icon>
+          </Icon> */}
         </NewPostContainer>
         <NewPostOptionContainer>
           {options.map(option => (

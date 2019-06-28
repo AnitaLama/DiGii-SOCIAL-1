@@ -9,19 +9,24 @@ import {
   FaFrown,
   FaThumbsUp
 } from 'react-icons/fa';
-import { Colors, flex, fontSize } from '../../Theme';
+import {
+  Colors, flex, fontSize, grid, boxShadow
+} from '../../Theme';
 import Author from './Author';
 import Comment from './Comment';
+import CommentBox from './CommentBox';
 
-const { snow, pink, peach } = Colors.colors;
+const { snow, primary, secondary } = Colors.colors;
 const PostWrapper = styled.div`
   background: ${snow};
-  margin: 6px 0;
-  padding: 20px;
-  border-radius: 10px;
+  margin: 22px 0;
+  padding: 24px;
+  border-radius: 40px;
+  ${boxShadow()};
+  ${grid(2, '1fr')};
 `;
 const Post = styled.div`
-  padding: 10px 0;
+  padding: 6px 0;
 `;
 const Reactions = styled.div`
   ${flex('row')};
@@ -36,7 +41,7 @@ const DisplayText = styled.div`
     border-radius: 4px;
     color: ${snow};
     padding: 0 20px;
-    background: ${pink};
+    background: ${primary};
     display: inline;
   }
   div {
@@ -50,7 +55,7 @@ const DisplayText = styled.div`
   }
   &:hover {
     h5 {
-      background: ${peach};
+      background: ${secondary};
     }
     div {
       display: block;
@@ -68,6 +73,12 @@ const Icon = styled.span`
     // font-size: 26px;
   }
 `;
+const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+`;
 const Reaction = ({ item, handleReactionClick }) => {
   const { icon, color } = item;
   return (
@@ -82,7 +93,7 @@ const Reaction = ({ item, handleReactionClick }) => {
   );
 };
 const reactions = [
-  { icon: <FaThumbsUp />, color: pink, value: 'like' },
+  { icon: <FaThumbsUp />, color: primary, value: 'like' },
   { icon: <FaHeart />, color: 'red', value: 'heart' },
   { icon: <FaLaugh />, color: 'yellow', value: 'laugh' },
   { icon: <FaFrown />, color: 'blue', value: 'sad' },
@@ -99,9 +110,11 @@ class SinglePost extends Component {
     const { post, comments } = data;
     return (
       <PostWrapper>
-        <Author data={data} />
-        <Post>{post}</Post>
-        <DisplayText>
+        <div>
+          <Author data={data} />
+          <Post>{post}</Post>
+        </div>
+        {/* <DisplayText>
           <h5>LIKE</h5>
           <Reactions>
             {reactions.map((reaction, i) => (
@@ -112,18 +125,20 @@ class SinglePost extends Component {
               />
             ))}
           </Reactions>
-        </DisplayText>
-        <div>
+        </DisplayText> */}
+        <CommentContainer>
           {comments.map((comment, i) => (
-            <div key={comment + i}>
-              <Comment data={comment} />
-            </div>
+            <Comment key={comment + i} data={comment} />
           ))}
-        </div>
+          <CommentBox />
+        </CommentContainer>
       </PostWrapper>
     );
   }
 }
 SinglePost.propTypes = { data: PropTypes.object };
-Reaction.propTypes = { item: PropTypes.object };
+Reaction.propTypes = {
+  item: PropTypes.object,
+  handleReactionClick: PropTypes.func
+};
 export default SinglePost;
