@@ -18,6 +18,7 @@ const Colors = {
     secondary: '#61BBF7',
     blue: '#7E81F6',
     grey: '#9D9D9D',
+    pink: '#F54962',
     ink: '#373745',
     pen: '#676674',
     pencil: '#E2E1E1',

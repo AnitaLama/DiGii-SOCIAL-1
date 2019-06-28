@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import {
   Images, flexCentering, Colors, fontSize
 } from '../../Theme';
-import { Logo, WhiteButton, Button } from '../StyledComponents';
+import {
+  Logo, WhiteButton, Button, Avatar
+} from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
 
@@ -31,12 +33,7 @@ const Name = styled.span`
   margin-left: 20px;
   ${fontSize(22)}
 `;
-const User = styled.img`
-  height: 50px;
-  border-radius: 32px;
-  margin-right: 20px;
-  margin-left: 10px;
-`;
+
 const SettingsSubList = styled.ul`
   list-style-type: none;
   padding: 0;
@@ -115,7 +112,12 @@ class Header extends Component {
             100
           </Button>
           <Name>{user.firstName}</Name>
-          <User src={Images.stockImage} />
+          <Avatar
+            src={Images.stockImage}
+            height={50}
+            leftMargin={10}
+            rightMargin={20}
+          />
           <Settings>
             <FiSettings
               style={{ height: '50px' }}

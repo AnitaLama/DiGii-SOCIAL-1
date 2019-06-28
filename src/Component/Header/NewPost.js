@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { FormTextArea } from '../StyledComponents';
+import { FormTextArea, Avatar } from '../StyledComponents';
 import {
   grid,
   fontSize,
@@ -18,7 +18,7 @@ const { snow, pencil, grey } = Colors.colors;
 const NewPostWrapper = styled.div`
   background: ${snow};
   margin: 10px 0;
-  padding: 10px;
+  padding: 20px;
   border-radius: 40px;
   ${boxShadow()}
 `;
@@ -31,12 +31,11 @@ const Icon = styled.span`
   cursor: pointer;
   img {
     height: 20.73px;
-    margin-right: 6px;
+    margin-right: 4px;
   }
 `;
 const NewPostOptionContainer = styled.div`
   ${grid(6, '1fr')};
-  padding: 0 15px;
 `;
 const NewPostOptionContent = styled.div`
   margin: auto;
@@ -61,9 +60,6 @@ const NewPostOptionContent = styled.div`
       text-align: center;
       ${fontSize(10)};
     }
-    svg {
-      margin: 0;
-    }
   }
 `;
 const NewPostOption = ({ option, handleButtonClick }) => {
@@ -75,7 +71,7 @@ const NewPostOption = ({ option, handleButtonClick }) => {
       }}
     >
       <Icon>
-        <img src={icon} alt={`Digii-${icon}`} />
+        <img src={icon} alt={`icon-${text}`} />
       </Icon>
       <span>{text}</span>
     </NewPostOptionContent>
@@ -92,6 +88,8 @@ const Input = styled.div`
     ${fontSize(22)};
     height: 100%;
   }
+  display: flex;
+  flex-direction: 'column';
 `;
 
 const options = [
@@ -111,7 +109,7 @@ class NewPost extends Component {
     };
   }
 
-  handleButtonClick = option => {
+  handleButtonClick = () => {
     // const { value } = option;
     // this.setState({ post: value });
   };
@@ -121,6 +119,7 @@ class NewPost extends Component {
       <NewPostWrapper>
         <NewPostContainer>
           <Input>
+            <Avatar src={Images.stockImage} height={53} radius={30} />
             <FormTextArea
               placeholder="What do you want to post?"
               style={{ margin: 0 }}
