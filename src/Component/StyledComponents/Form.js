@@ -6,7 +6,7 @@ const { secondary, pencil } = Colors.colors;
 const FormInput = styled.input`
   width: 100%;
   border-radius: 40px;
-  padding: 10px 15px;
+  padding: 10px 20px;
   outline: none;
   border: 1px solid ${pencil};
   color: #495057;

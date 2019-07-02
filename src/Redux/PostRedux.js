@@ -6,7 +6,8 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   onListPosts: [],
   onListPostsSuccess: ['data'],
-  onListPostsFailure: ['data']
+  onListPostsFailure: ['data'],
+  onPostSubmit: ['data']
 });
 
 export const PostTypes = Types;
@@ -36,10 +37,17 @@ const onListPostsFailure = (state, action) => ({
   error: action.data
 });
 
+const onPostSubmit = (state, action) => {
+  console.log(action);
+  return {
+    ...state
+  };
+};
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_LIST_POSTS]: onListPosts,
   [Types.ON_LIST_POSTS_SUCCESS]: onListPostsSuccess,
-  [Types.ON_LIST_POSTS_FAILURE]: onListPostsFailure
+  [Types.ON_LIST_POSTS_FAILURE]: onListPostsFailure,
+  [Types.ON_POST_SUBMIT]: onPostSubmit
 });

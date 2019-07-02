@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { FiSend } from 'react-icons/fi';
+import { connect } from 'react-redux';
+import PostActions from '../../Redux/PostRedux';
+import PostTypeActions from '../../Redux/PostTypeRedux';
 import { FormTextArea, Avatar } from '../StyledComponents';
 import {
   grid,
@@ -13,7 +17,9 @@ import {
   fontFilson
 } from '../../Theme';
 
-const { snow, pencil, grey } = Colors.colors;
+const {
+  snow, pencil, grey, blue
+} = Colors.colors;
 
 const NewPostWrapper = styled.div`
   background: ${snow};
@@ -49,7 +55,7 @@ const NewPostOptionContent = styled.div`
   }
   &:hover {
     span {
-      ${fontWeight('bolder')};
+      ${fontWeight('500')};
       color: ${grey};
     }
   }
@@ -84,9 +90,10 @@ const Input = styled.div`
   }
   svg {
     position: absolute;
-    right: 10px;
     ${fontSize(22)};
-    height: 100%;
+    right: 10px;
+    top: 10px;
+    color: ${blue};
   }
   display: flex;
   flex-direction: 'column';
@@ -105,30 +112,77 @@ class NewPost extends Component {
   constructor() {
     super();
     this.state = {
-      // post: 'post'
+      isPostButtonVisible: false,
+      hasPost: false,
+      postText: '',
+      type: 'text'
     };
   }
 
-  handleButtonClick = () => {
-    // const { value } = option;
-    // this.setState({ post: value });
+  componentWillMount() {
+    const { onListPostTypes } = this.props;
+    onListPostTypes();
+  }
+
+  handleButtonClick = option => {
+    const { text } = option;
+    console.log(text);
+    this.setState({ type: text });
+  };
+
+  showPostButton = () => {
+    this.setState({ isPostButtonVisible: true });
+  };
+
+  hidePostButton = () => {
+    this.setState({ isPostButtonVisible: false });
+  };
+
+  handlePostText = e => {
+    const { value } = e.target;
+    this.setState({ postText: value.trim(), hasPost: value.trim().length > 0 });
+  };
+
+  onSubmitPost = () => {
+    const { postText, type } = this.state;
+    const { postType, user, onPostSubmit } = this.props;
+    const { postTypes } = postType;
+    const selectedPostType = postTypes.find(
+      item => item.pt_title === type.toLowerCase()
+    );
+
+    const post = {
+      p_pt_id: selectedPostType.pt_id,
+      p_body: postText,
+      p_st_id: user.user.id
+    };
+    console.log(user);
+    console.log({ post });
+    this.setState({ postText: '' });
+    // onPostSubmit(post);
   };
 
   render() {
+    const { isPostButtonVisible, hasPost, postText } = this.state;
+    const { user } = this.props;
+    const { firstname } = user.user;
+    const shouldShowPostButton = isPostButtonVisible || hasPost;
     return (
       <NewPostWrapper>
         <NewPostContainer>
           <Input>
             <Avatar src={Images.stockImage} height={53} radius={30} />
             <FormTextArea
-              placeholder="What do you want to post?"
+              placeholder={`What do you want to post, ${firstname}?`}
               style={{ margin: 0 }}
+              onFocus={this.showPostButton}
+              onBlur={this.hidePostButton}
+              onChange={this.handlePostText}
+              value={postText}
             />
             {/* <TiDelete /> */}
+            {shouldShowPostButton && <FiSend onClick={this.onSubmitPost} />}
           </Input>
-          {/* <Icon>
-            <FiSend />
-          </Icon> */}
         </NewPostContainer>
         <NewPostOptionContainer>
           {options.map(option => (
@@ -148,4 +202,20 @@ NewPostOption.propTypes = {
   option: PropTypes.object,
   handleButtonClick: PropTypes.func
 };
-export default NewPost;
+NewPost.propTypes = {
+  postType: PropTypes.object,
+  user: PropTypes.object,
+  onPostSubmit: PropTypes.func
+};
+const mapStateToProps = state => ({
+  postType: state.postType,
+  user: state.user
+});
+const mapDispatchToProps = dispatch => ({
+  onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
+  onListPostTypes: () => dispatch(PostTypeActions.onListPostTypes())
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewPost);

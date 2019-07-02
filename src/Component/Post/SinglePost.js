@@ -107,12 +107,11 @@ class SinglePost extends Component {
 
   render() {
     const { data } = this.props;
-    const { comments } = data;
     return (
       <PostWrapper>
         <div>
           <Author data={data} />
-          {/* <Post>{post}</Post> */}
+          {/* }   <Post>{post}</Post> */}
         </div>
         {/* <DisplayText>
           <h5>LIKE</h5>
@@ -127,9 +126,9 @@ class SinglePost extends Component {
           </Reactions>
         </DisplayText> */}
         <CommentContainer>
-          {comments.map((comment, i) => (
+          {/* }{comments.map((comment, i) => (
             <Comment key={comment + i} data={comment} />
-          ))}
+          ))} */}
           <CommentBox />
         </CommentContainer>
       </PostWrapper>

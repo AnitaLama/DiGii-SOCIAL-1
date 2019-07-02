@@ -99,7 +99,6 @@ class Header extends Component {
     const { isListVisible } = this.state;
     const { users } = this.props;
     const { user } = users;
-
     return (
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
@@ -111,7 +110,7 @@ class Header extends Component {
           >
             100
           </Button>
-          <Name>{user.firstName}</Name>
+          <Name>{user.firstname}</Name>
           <Avatar
             src={Images.stockImage}
             height={50}

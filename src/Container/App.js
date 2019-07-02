@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import NProgress from 'nprogress';
 import { css } from '@emotion/core';
 import HomePage from './Home';
+import StudentLogin from './StudentLogin';
 import MessageBoard from './MessageBoard';
 import './styles.css';
 
@@ -29,6 +30,12 @@ const routes = [
     path: '/',
     exact: true,
     component: HomePage
+  },
+  {
+    title: 'Login',
+    path: '/student/login',
+    exact: true,
+    component: StudentLogin
   },
   {
     title: 'MessageBoard',
@@ -60,7 +67,9 @@ const Routes = () => (
       }
     `}
   >
-    {routes.map(route => <ActualRoute key={route.title} {...route} />)}
+    {routes.map(route => (
+      <ActualRoute key={route.title} {...route} />
+    ))}
   </Switch>
 );
 

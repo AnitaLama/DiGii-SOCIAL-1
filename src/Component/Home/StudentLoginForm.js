@@ -60,16 +60,20 @@ class LoginForm extends Component {
       <FormWrapper>
         <FormTitle>Log In</FormTitle>
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ school: '', username: '', password: '' }}
           validate={values => {
             const errors = {};
-            if (!values.email) {
-              errors.email = 'Required';
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = 'Invalid email address';
+            if (!values.username) {
+              errors.username = 'Required';
             }
+            if (!values.school) {
+              errors.school = 'Required';
+            }
+            // else if (
+            //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.username)
+            // ) {
+            //   errors.username = 'Invalid username address';
+            // }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
@@ -91,16 +95,28 @@ class LoginForm extends Component {
             <form onSubmit={handleSubmit}>
               <FormInput
                 type="text"
-                name="email"
+                name="school"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
+                value={values.school}
+                placeholder="School name"
+              />
+              <p>
+                {' '}
+                {errors.school && touched.school && errors.school}
+              </p>
+              <FormInput
+                type="text"
+                name="username"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.username}
                 placeholder="Username"
               />
 
               <p>
                 {' '}
-                {errors.email && touched.email && errors.email}
+                {errors.username && touched.username && errors.username}
               </p>
               <FormInput
                 type="password"
@@ -147,7 +163,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 const mapDispatchToProps = dispatch => ({
-  onFormLogin: values => dispatch(LoginActions.onFormLoginRequest(values))
+  onFormLogin: values => dispatch(LoginActions.onStudentFormLoginRequest(values))
 });
 
 export default connect(

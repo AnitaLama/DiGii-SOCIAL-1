@@ -32,23 +32,19 @@ const Post = styled.div`
 class Author extends Component {
   render() {
     const { data } = this.props;
-    const { user, post } = data;
-    const { firstName, lastName } = user;
-    // const postedDate = new Date(Date.parse(createdAt));
-    // let postDate = months[postedDate.getMonth()];
-    // postDate += ` ${postedDate.getDate()}`;
-    // postDate += ` at ${postedDate.getHours() % 12}:${postedDate.getMinutes()}`;
-    // postDate += ` ${postedDate.getHours()}` > 12 ? 'pm' : 'am';
+    const { student, p_body } = data;
+    const firstname = student ? student.st_firstname : '';
+    const lastname = student ? student.st_lastname : '';
     return (
       <AuthorWrapper>
         <Avatar src={Images.stockImage} height={53} />
         <AuthorInfo>
           <Name>
-            {firstName}
+            {firstname}
             {' '}
-            {lastName}
+            {lastname}
           </Name>
-          <Post>{post}</Post>
+          <Post>{p_body}</Post>
           {/*  <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
       </AuthorWrapper>

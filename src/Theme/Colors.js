@@ -1,5 +1,3 @@
-import { sizes } from './Mixins';
-
 const Colors = {
   // colors: {
   //   primary: '#F67B61',
