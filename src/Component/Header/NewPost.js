@@ -140,7 +140,7 @@ class NewPost extends Component {
 
   handlePostText = e => {
     const { value } = e.target;
-    this.setState({ postText: value.trim(), hasPost: value.trim().length > 0 });
+    this.setState({ postText: value, hasPost: value.trim().length > 0 });
   };
 
   onSubmitPost = () => {
@@ -156,10 +156,8 @@ class NewPost extends Component {
       p_body: postText,
       p_st_id: user.user.id
     };
-    console.log(user);
-    console.log({ post });
     this.setState({ postText: '' });
-    // onPostSubmit(post);
+    onPostSubmit(post);
   };
 
   render() {

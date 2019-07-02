@@ -25,24 +25,24 @@ const INITIAL_STATE = Immutable({
 
 const onListPosts = (state, action) => ({ ...state, loading: true });
 
-const onListPostsSuccess = (state, action) => ({
-  ...state,
-  loading: false,
-  posts: action.data,
-  error: null
-});
+const onListPostsSuccess = (state, action) => {
+  console.log(action.data);
+  return {
+    ...state,
+    loading: false,
+    posts: action.data,
+    error: null
+  };
+};
 const onListPostsFailure = (state, action) => ({
   ...state,
   loading: false,
   error: action.data
 });
 
-const onPostSubmit = (state, action) => {
-  console.log(action);
-  return {
-    ...state
-  };
-};
+const onPostSubmit = (state, action) => ({
+  ...state
+});
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {

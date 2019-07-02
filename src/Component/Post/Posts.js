@@ -13,6 +13,7 @@ class Posts extends Component {
   render() {
     const { post } = this.props;
     const { posts } = post;
+    posts.sort((a, b) => b.p_id - a.p_id);
     return (
       <div>
         {posts.length > 0
