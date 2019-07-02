@@ -129,7 +129,7 @@ class SinglePost extends Component {
           {/* }{comments.map((comment, i) => (
             <Comment key={comment + i} data={comment} />
           ))} */}
-          <CommentBox />
+          <CommentBox post={data} />
         </CommentContainer>
       </PostWrapper>
     );

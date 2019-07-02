@@ -95,7 +95,7 @@ class LoginForm extends Component {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
-                placeholder="Username"
+                placeholder="Email"
               />
 
               <p>
