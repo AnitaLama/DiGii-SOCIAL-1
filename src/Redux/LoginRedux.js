@@ -29,7 +29,8 @@ export const INITIAL_STATE = Immutable({
     password: '',
     isStudent: false,
     id: '',
-    isFirstTimePosting: true
+    isFirstTimePosting: true,
+    groupId: null
   },
   error: null
 });
@@ -38,12 +39,17 @@ export const INITIAL_STATE = Immutable({
 
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
-  console.log('success', action.data);
   const {
-    u_id, u_name, u_activated, user_profile
+    u_id, u_name, u_activated, user_profile, user_groups
   } = action.data;
   const firstname = user_profile.up_firstname || '';
   const lastname = user_profile.up_lastname || '';
+  // const { user_groups } = user_profile;
+  // const { ug_scg_id } = user_groups[0];
+  const groups = [];
+  user_groups.map(item => {
+    groups.push(item.school_group.scg_id);
+  });
   return {
     ...state,
     loading: true,
@@ -55,7 +61,8 @@ const onFormLoginSuccess = (state, action) => {
       lastname,
       id: u_id,
       isStudent: false,
-      isActivated: u_activated
+      isActivated: u_activated,
+      groupId: groups
     }
   };
 };
@@ -70,21 +77,31 @@ const onStudentFormLoginSuccess = (state, action) => {
   const {
     st_username, st_firstname, st_lastname, st_id
   } = action.data;
-  return {
-    ...state,
-    userType: 'Student',
-    loading: true,
-    error: null,
-    user: {
-      ...state.user,
-      username: st_username,
-      firstname: st_firstname,
-      lastname: st_lastname,
-      password: null,
-      id: st_id,
-      isStudent: true
-    }
-  };
+  return state.set('user', {
+    ...state.get('user'),
+    username: st_username,
+    firstname: st_firstname,
+    lastname: st_lastname,
+    password: null,
+    id: st_id,
+    isStudent: true
+  });
+
+  // return {
+  //   ...state
+  //   // userType: 'Student',
+  //   // loading: true,
+  //   // error: null,
+  //   // user: {
+  //   //   ...state.user,
+  //   //   username: st_username,
+  //   //   firstname: st_firstname,
+  //   //   lastname: st_lastname,
+  //   //   password: null,
+  //   //   id: st_id,
+  //   //   isStudent: true
+  //   // }
+  // };
 };
 
 const onStudentFormLoginFailure = (state, action) => {

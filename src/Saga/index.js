@@ -13,22 +13,37 @@ import onGetPostActivitiesOfAUser from './PostActivitySaga';
 import onSubmitComment from './CommentSaga';
 
 export default function* root() {
-  yield all([takeLatest(TestTypes.ON_TEST_REQUEST, testFunction)]);
-  yield all([takeLatest(LoginTypes.ON_FORM_LOGIN_REQUEST, onLoginRequest)]);
   yield all([
-    takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest)
-  ]);
-  yield all([takeLatest(PostTypes.ON_LIST_POSTS, onListPosts)]);
-  yield all([takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts)]);
-  yield all([takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit)]);
-  yield all([takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes)]);
-  yield all([
-    takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment)
-  ]);
-  yield all([
+    takeLatest(TestTypes.ON_TEST_REQUEST, testFunction),
+    takeLatest(LoginTypes.ON_FORM_LOGIN_REQUEST, onLoginRequest),
+    takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
+
+    takeLatest(PostTypes.ON_LIST_POSTS, onListPosts),
+
+    takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts),
+    takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit),
+    takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),
+    takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment),
     takeLatest(
       PostActivityTypes.ON_GET_POST_ACTIVITIES_OF_A_USER,
       onGetPostActivitiesOfAUser
     )
   ]);
+  // yield all([takeLatest(LoginTypes.ON_FORM_LOGIN_REQUEST, onLoginRequest)]);
+  // yield all([
+  //   takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest)
+  // ]);
+  // yield all([takeLatest(PostTypes.ON_LIST_POSTS, onListPosts)]);
+  // yield all([takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts)]);
+  // yield all([takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit)]);
+  // yield all([takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes)]);
+  // yield all([
+  //   takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment)
+  // ]);
+  // yield all([
+  //   takeLatest(
+  //     PostActivityTypes.ON_GET_POST_ACTIVITIES_OF_A_USER,
+  //     onGetPostActivitiesOfAUser
+  //   )
+  // ]);
 }

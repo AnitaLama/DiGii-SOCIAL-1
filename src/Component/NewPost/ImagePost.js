@@ -69,6 +69,7 @@ class ImagePost extends Component {
       image_name,
       imageData
     };
+    this.setState({ isModalVisible: false });
     // console.log(imageObject);
     onSaveImage(imageData);
   };
@@ -107,7 +108,7 @@ class ImagePost extends Component {
           </div>
         </PhotoOptionContent>
         <Modal
-          title="Reset new password"
+          title="Take a new picture"
           visible={this.state.isModalVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -123,14 +124,16 @@ class ImagePost extends Component {
             </button>
           ]}
         >
-          <Webcam
-            audio={false}
-            height={350}
-            ref={this.setRef}
-            screenshotFormat="image/jpeg"
-            width={350}
-            videoConstraints={videoConstraints}
-          />
+          {this.state.isModalVisible && (
+            <Webcam
+              audio={false}
+              height={350}
+              ref={this.setRef}
+              screenshotFormat="image/jpeg"
+              width={350}
+              videoConstraints={videoConstraints}
+            />
+          )}
           {this.state.saveImage ? this.saveForm() : null}
         </Modal>
       </PhotoOptionContainer>

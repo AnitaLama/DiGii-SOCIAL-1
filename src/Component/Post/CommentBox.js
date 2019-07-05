@@ -34,7 +34,6 @@ class CommentBox extends Component {
   }
 
   handleComment = event => {
-    console.log(event.target.value);
     this.setState({ commentText: event.target.value });
   };
 
@@ -62,6 +61,7 @@ class CommentBox extends Component {
           placeholder="Write a comment"
           onChange={this.handleComment}
           style={{ height: '24px', marginLeft: '6px', marginBottom: 0 }}
+          value={this.state.commentText}
         />
         <button onClick={this.handleCommentReply}>
           <FaCaretRight />

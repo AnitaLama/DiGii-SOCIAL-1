@@ -20,11 +20,14 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
+    console.log('here');
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/post/find`,
       action.data
     );
+    console.log('saga>>>>>>>>>', data);
+    console.log('saga', data, action.data);
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
     } else {

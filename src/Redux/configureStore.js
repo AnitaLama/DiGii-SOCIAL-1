@@ -22,7 +22,7 @@ export default () => {
 
   return { store, persistor };
 };
-//
+
 // const sagaMiddleware = createSagaMiddleware();
 //
 // export default () => {

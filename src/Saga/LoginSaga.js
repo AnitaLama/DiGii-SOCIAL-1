@@ -8,8 +8,9 @@ export function* onLoginRequest(action) {
   try {
     const { data } = yield call(axios.post, `${DEV_URL}/login`, action.data);
     if (data.success) {
-      history.push('/messageboard');
       yield put(LoginActions.onFormLoginSuccess(data.result));
+      localStorage.setItem('user', JSON.stringify(data.result));
+      history.push('/messageboard');
     } else {
       yield put(LoginActions.onFormLoginFailure(data.error));
     }
@@ -27,8 +28,9 @@ export function* onStudentLoginRequest(action) {
       action.data
     );
     if (data.success) {
-      history.push('/messageboard');
       yield put(LoginActions.onStudentFormLoginSuccess(data.result));
+      localStorage.setItem('user', JSON.stringify(data.result));
+      history.push('/messageboard');
     } else {
       yield put(LoginActions.onStudentFormLoginFailure(data.error));
     }

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { FiSend } from 'react-icons/fi';
 import { connect } from 'react-redux';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import PostActivityActions from '../../Redux/PostActivityRedux';
 import PostTypeActions from '../../Redux/PostTypeRedux';
-import { Avatar } from '../StyledComponents';
+import { Avatar, Button } from '../StyledComponents';
 import {
   grid,
   fontSize,
@@ -20,9 +19,7 @@ import {
 } from '../../Theme';
 import { NewPostType, FilterKeyWords, warnings } from './index';
 
-const {
-  snow, pencil, grey, blue
-} = Colors.colors;
+const { snow, pencil, grey } = Colors.colors;
 
 const NewPostWrapper = styled.div`
   background: ${snow};
@@ -91,12 +88,12 @@ const Input = styled.div`
   input {
     width: 100%;
   }
-  svg {
+  button {
     position: absolute;
     ${fontSize(22)};
     right: 10px;
     top: 10px;
-    color: ${blue};
+    width: 86.76px;
   }
   display: flex;
   flex-direction: 'column';
@@ -243,7 +240,11 @@ class NewPost extends Component {
             <Avatar src={Images.stockImage} height={53} radius={30} />
             {this.postArea()}
             {/* <TiDelete /> */}
-            {shouldShowPostButton && <FiSend onClick={this.onSubmitPost} />}
+            {shouldShowPostButton && (
+              <Button className="rounded" onClick={this.onSubmitPost}>
+                POST
+              </Button>
+            )}
           </Input>
         </NewPostContainer>
         <NewPostOptionContainer>

@@ -21,17 +21,21 @@ class Posts extends Component {
       onListPosts, onFindPosts, user, post
     } = this.props;
     const { posts } = post;
-    const { isStudent, id } = user.user;
     // onListPosts();
+    const { isStudent, id } = user.user;
+
     onFindPosts({ isStudent, actorId: id });
-    this.setState({ posts });
+    this.setState({ posts: post.posts });
+    // await onFindPosts({ isStudent, actorId: id });
   }
 
   componentDidMount() {
+    const { user, onFindPosts, post } = this.props;
     const { posts } = this.state;
+    const { groupId } = user.user;
     this.socket.on('news', data => {
-      // console.log('socket data', data);
-      if (posts !== data.result) {
+      // console.log('socket data', data, groupId, groupId.includes(data.group));
+      if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
     });
