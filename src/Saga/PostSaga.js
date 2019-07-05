@@ -11,8 +11,30 @@ export function* onListPosts() {
     if (data.success) {
       yield put(PostActions.onListPostsSuccess(data.result));
     } else {
-      yield put(PostActions.onListPostsFailure(data.message));
+      yield put(PostActions.onListPostsFailure(data.error));
     }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onFindPosts(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${DEV_URL}/post/find`,
+      action.data
+    );
+    if (data.success) {
+      yield put(PostActions.onFindPostsSuccess(data.result));
+    } else {
+      yield put(PostActions.onFindPostsFailure(data.error));
+    }
+    // if (data.success) {
+    //   yield put(PostActions.onListPostsSuccess(data.result));
+    // } else {
+    //   yield put(PostActions.onListPostsFailure(data.message));
+    // }
   } catch (err) {
     console.log(err);
     // yield put(PostActions.onListPostsFailure(err.toString()));
@@ -22,10 +44,12 @@ export function* onListPosts() {
 
 export function* onPostSubmit(action) {
   try {
+    // console.log(action);
     const { data } = yield call(axios.post, `${URL}/addPost`, action.data);
-    if (data.success) {
-      yield put(PostActions.onListPosts());
-    }
+    // console.log(data);
+    // if (data.success) {
+    //   yield put(PostActions.onListPosts());
+    // }
   } catch (err) {
     console.log(err);
   }

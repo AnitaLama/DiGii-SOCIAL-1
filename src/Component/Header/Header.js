@@ -31,7 +31,8 @@ const UserInfoWrapper = styled.div`
 const Name = styled.span`
   color: ${pen};
   margin-left: 20px;
-  ${fontSize(22)}
+  ${fontSize(22)};
+  text-transform: capitalize;
 `;
 
 const SettingsSubList = styled.ul`
@@ -73,7 +74,9 @@ const Settings = styled.div`
     }
   }
 `;
-
+const DiGiiIcon = styled.img`
+  height: 20.91px;
+`;
 class Header extends Component {
   constructor() {
     super();
@@ -109,6 +112,7 @@ class Header extends Component {
             style={{ marginLeft: '20px' }}
           >
             100
+            <DiGiiIcon src={Images.digii5.DiGiit} />
           </Button>
           <Name>{user.firstname}</Name>
           <Avatar

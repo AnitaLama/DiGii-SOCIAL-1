@@ -30,6 +30,9 @@ const CommentDiv = styled.div`
   span:last-of-type {
     color: ${grey};
   }
+  span {
+    text-transform: capitalize;
+  }
 `;
 const Close = styled.div`
   position: absolute;
@@ -55,15 +58,30 @@ class Comment extends Component {
   render() {
     const { isCommentHidden } = this.state;
     const { data } = this.props;
-    const { user } = data;
+
+    let firstname = '';
+    let lastname = '';
+
+    if (data.pc_is_student) {
+      const { student } = data;
+      firstname = student.st_firstname || '';
+      lastname = student.st_lastname || '';
+    } else {
+      const { user } = data;
+      const { user_profile } = user;
+      const { up_firstname, up_lastname } = user_profile;
+      firstname = up_firstname;
+      lastname = up_lastname;
+    }
+
     return !isCommentHidden ? (
       <CommentWrapper>
         <Avatar src={Images.stockImage} height={24} rightMargin={6} />
         <CommentDiv>
           <span>
-            {user.firstName}
+            {firstname}
             {' '}
-            {user.lastName}
+            {lastname}
           </span>
           <Close onClick={this.hideComment}>
             <FaTimesCircle />
@@ -71,7 +89,7 @@ class Comment extends Component {
           {/* <span className="date">
             {new Date(createdAt).toLocaleDateString()}
           </span> */}
-          <span>{data.commentDescription}</span>
+          <span>{data.pc_body}</span>
         </CommentDiv>
       </CommentWrapper>
     ) : (

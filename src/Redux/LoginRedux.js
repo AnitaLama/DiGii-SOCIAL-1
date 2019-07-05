@@ -10,7 +10,8 @@ const { Types, Creators } = createActions({
   onLogOut: [],
   onStudentFormLoginRequest: ['data'],
   onStudentFormLoginSuccess: ['data'],
-  onStudentFormLoginFailure: ['data']
+  onStudentFormLoginFailure: ['data'],
+  onDisableFirstTimePosting: []
 });
 
 export const LoginTypes = Types;
@@ -26,8 +27,9 @@ export const INITIAL_STATE = Immutable({
     firstname: '',
     lastname: '',
     password: '',
-    userType: '',
-    id: ''
+    isStudent: false,
+    id: '',
+    isFirstTimePosting: true
   },
   error: null
 });
@@ -36,9 +38,12 @@ export const INITIAL_STATE = Immutable({
 
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
-  const { u_name, u_password, user_profile } = action.data[0];
-  const { up_firstname, up_lastname, up_u_id } = user_profile;
-  console.log({ user_profile });
+  console.log('success', action.data);
+  const {
+    u_id, u_name, u_activated, user_profile
+  } = action.data;
+  const firstname = user_profile.up_firstname || '';
+  const lastname = user_profile.up_lastname || '';
   return {
     ...state,
     loading: true,
@@ -46,10 +51,11 @@ const onFormLoginSuccess = (state, action) => {
     user: {
       ...state.user,
       username: u_name,
-      firstname: up_firstname,
-      lastname: up_lastname,
-      password: u_password,
-      id: up_u_id
+      firstname,
+      lastname,
+      id: u_id,
+      isStudent: false,
+      isActivated: u_activated
     }
   };
 };
@@ -63,7 +69,7 @@ const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const {
     st_username, st_firstname, st_lastname, st_id
-  } = action.data[0];
+  } = action.data;
   return {
     ...state,
     userType: 'Student',
@@ -76,7 +82,7 @@ const onStudentFormLoginSuccess = (state, action) => {
       lastname: st_lastname,
       password: null,
       id: st_id,
-      type: 'Student'
+      isStudent: true
     }
   };
 };
@@ -87,6 +93,14 @@ const onStudentFormLoginFailure = (state, action) => {
 };
 
 const onLogOut = () => INITIAL_STATE;
+
+const onDisableFirstTimePosting = state => ({
+  ...state,
+  user: {
+    ...state.user,
+    isFirstTimePosting: false
+  }
+});
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -96,5 +110,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_STUDENT_FORM_LOGIN_REQUEST]: onStudentFormLogin,
   [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
   [Types.ON_STUDENT_FORM_LOGIN_FAILURE]: onStudentFormLoginFailure,
-  [Types.ON_LOG_OUT]: onLogOut
+  [Types.ON_LOG_OUT]: onLogOut,
+  [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting
 });

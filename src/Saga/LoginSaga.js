@@ -26,7 +26,6 @@ export function* onStudentLoginRequest(action) {
       `${DEV_URL}/student/login`,
       action.data
     );
-
     if (data.success) {
       history.push('/messageboard');
       yield put(LoginActions.onStudentFormLoginSuccess(data.result));

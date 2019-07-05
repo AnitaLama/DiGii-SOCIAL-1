@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { FaCaretRight } from 'react-icons/fa';
 import { Images } from '../../Theme';
 import { FormInput } from '../StyledComponents';
+import CommentActions from '../../Redux/CommentRedux';
 
 const CommentBoxWrapper = styled.div`
   display: grid;
@@ -44,12 +45,13 @@ class CommentBox extends Component {
     const { p_id } = post;
     const comment = {
       pc_p_id: p_id,
-      pc_u_id: user.user.id,
+      pc_is_student: user.user.isStudent,
+      pc_commentator_id: user.user.id,
       pc_title: 'Comment',
       pc_body: commentText
     };
-    console.log(comment, user);
-    // onSubmitComment(comment);
+    this.setState({ commentText: '' });
+    onSubmitComment(comment);
   };
 
   render() {
@@ -72,7 +74,9 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  onSubmitComment: value => dispatch(CommentActions.onSubmitCommentRequest(value))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

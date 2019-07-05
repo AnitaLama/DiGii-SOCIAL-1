@@ -22,7 +22,8 @@ const AuthorInfo = styled.div`
 `;
 const Name = styled.div`
   ${fontWeight('bold')};
-  ${fontFilson()}
+  ${fontFilson()};
+  text-transform: capitalize;
 `;
 
 const Post = styled.div`
@@ -32,9 +33,21 @@ const Post = styled.div`
 class Author extends Component {
   render() {
     const { data } = this.props;
-    const { student, p_body } = data;
-    const firstname = student ? student.st_firstname : '';
-    const lastname = student ? student.st_lastname : '';
+    const { p_body } = data;
+    let firstname = '';
+    let lastname = '';
+    if (data.p_isStudent) {
+      const { student } = data;
+
+      firstname = student.st_firstname;
+      lastname = student.st_lastname;
+    } else {
+      const { user } = data;
+      const { user_profile } = user;
+      const { up_firstname, up_lastname } = user_profile;
+      firstname = up_firstname;
+      lastname = up_lastname;
+    }
     return (
       <AuthorWrapper>
         <Avatar src={Images.stockImage} height={53} />

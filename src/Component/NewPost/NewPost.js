@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import { FiSend } from 'react-icons/fi';
 import { connect } from 'react-redux';
 import PostActions from '../../Redux/PostRedux';
+import LoginActions from '../../Redux/LoginRedux';
+import PostActivityActions from '../../Redux/PostActivityRedux';
 import PostTypeActions from '../../Redux/PostTypeRedux';
-import { FormTextArea, Avatar } from '../StyledComponents';
+import { Avatar } from '../StyledComponents';
 import {
   grid,
   fontSize,
@@ -16,6 +18,7 @@ import {
   fontWeight,
   fontFilson
 } from '../../Theme';
+import { NewPostType, FilterKeyWords, warnings } from './index';
 
 const {
   snow, pencil, grey, blue
@@ -115,22 +118,42 @@ class NewPost extends Component {
       isPostButtonVisible: false,
       hasPost: false,
       postText: '',
-      type: 'text'
+      type: 'text',
+      isBad: false,
+      imageObject: null
     };
   }
 
   componentWillMount() {
-    const { onListPostTypes } = this.props;
+    const {
+      post,
+      onGetPostActivitiesOfAUser,
+      onListPostTypes,
+      user
+    } = this.props;
     onListPostTypes();
+    const { posts } = post;
+    const { isStudent, id } = user.user;
+    onGetPostActivitiesOfAUser({ isStudent, id });
   }
 
   handleButtonClick = option => {
     const { text } = option;
-    console.log(text);
     this.setState({ type: text });
   };
 
   showPostButton = () => {
+    const { user, disableFirstTimePosting, post } = this.props;
+    const { posts } = post;
+    // console.log(posts);
+    const isFirstTimePosting = posts.find(
+      item => item.p_actor_id === user.user.id
+    );
+
+    if (user.user.isStudent && !isFirstTimePosting) {
+      alert('Congratulations!!! it\'s your first time posting.');
+    }
+    disableFirstTimePosting();
     this.setState({ isPostButtonVisible: true });
   };
 
@@ -140,11 +163,34 @@ class NewPost extends Component {
 
   handlePostText = e => {
     const { value } = e.target;
-    this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    if (value[value.length - 1] === '@') {
+      console.log('show users');
+    }
+    const { postActivity } = this.props;
+    if (value.trim().length > 500) {
+      alert('Please keep the length within 500 characters');
+      this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    } else {
+      const blacklistedWord = FilterKeyWords(value);
+      if (blacklistedWord) {
+        const index = postActivity.postActivity.length > 2
+          ? 2
+          : postActivity.postActivity.length;
+        alert(`${warnings[index]}`);
+        this.setState({ isBad: true });
+      }
+      this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    }
+  };
+
+  onSaveImage = imageObject => {
+    this.setState({ imageObject, hasPost: true });
   };
 
   onSubmitPost = () => {
-    const { postText, type } = this.state;
+    const {
+      postText, type, isBad, imageObject
+    } = this.state;
     const { postType, user, onPostSubmit } = this.props;
     const { postTypes } = postType;
     const selectedPostType = postTypes.find(
@@ -153,31 +199,49 @@ class NewPost extends Component {
 
     const post = {
       p_pt_id: selectedPostType.pt_id,
-      p_body: postText,
-      p_st_id: user.user.id
+      p_body: type === 'text' ? postText : imageObject,
+      p_isStudent: user.user.isStudent,
+      p_actor_id: user.user.id,
+      isBad
     };
-    this.setState({ postText: '' });
+    this.setState({ postText: '', isBad: false });
+
     onPostSubmit(post);
   };
 
-  render() {
-    const { isPostButtonVisible, hasPost, postText } = this.state;
+  onChangeHandler = event => {
+    // console.log(event.target.files[0]);
+    this.setState({ postText: event.target.files[0] });
+  };
+
+  postArea = () => {
+    const { type, postText } = this.state;
     const { user } = this.props;
-    const { firstname } = user.user;
+    let { firstname } = user.user;
+    firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+    return (
+      <NewPostType
+        firstname={firstname}
+        postText={postText}
+        type={type}
+        handlePostText={this.handlePostText}
+        showPostButton={this.showPostButton}
+        hidePostButton={this.hidePostButton}
+        onSaveImage={this.onSaveImage}
+      />
+    );
+  };
+
+  render() {
+    const { isPostButtonVisible, hasPost } = this.state;
+
     const shouldShowPostButton = isPostButtonVisible || hasPost;
     return (
       <NewPostWrapper>
         <NewPostContainer>
           <Input>
             <Avatar src={Images.stockImage} height={53} radius={30} />
-            <FormTextArea
-              placeholder={`What do you want to post, ${firstname}?`}
-              style={{ margin: 0 }}
-              onFocus={this.showPostButton}
-              onBlur={this.hidePostButton}
-              onChange={this.handlePostText}
-              value={postText}
-            />
+            {this.postArea()}
             {/* <TiDelete /> */}
             {shouldShowPostButton && <FiSend onClick={this.onSubmitPost} />}
           </Input>
@@ -207,11 +271,15 @@ NewPost.propTypes = {
 };
 const mapStateToProps = state => ({
   postType: state.postType,
-  user: state.user
+  user: state.user,
+  post: state.post,
+  postActivity: state.postActivity
 });
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
-  onListPostTypes: () => dispatch(PostTypeActions.onListPostTypes())
+  onListPostTypes: () => dispatch(PostTypeActions.onListPostTypes()),
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onGetPostActivitiesOfAUser: value => dispatch(PostActivityActions.onGetPostActivitiesOfAUser(value))
 });
 export default connect(
   mapStateToProps,
