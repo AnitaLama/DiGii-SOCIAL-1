@@ -14,6 +14,7 @@ class Posts extends Component {
       posts: []
     };
     this.socket = socketClient(SOCKET_URL);
+    console.log(SOCKET_URL);
   }
 
   componentWillMount() {

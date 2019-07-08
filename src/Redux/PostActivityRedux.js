@@ -22,17 +22,17 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const onGetPostActivitiesOfAUser = state => ({
+const onGetPostActivitiesOfAUser = state => ({
   ...state,
   loading: true
 });
-export const onGetPostActivitiesOfAUserSuccess = (state, action) => ({
+const onGetPostActivitiesOfAUserSuccess = (state, action) => ({
   ...state,
   loading: false,
   postActivity: action.data,
   error: null
 });
-export const onGetPostActivitiesOfAUserFailure = (state, action) => ({
+const onGetPostActivitiesOfAUserFailure = (state, action) => ({
   ...state,
   loading: false,
   error: action.data

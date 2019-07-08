@@ -6,7 +6,7 @@ import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import PostActivityActions from '../../Redux/PostActivityRedux';
 import PostTypeActions from '../../Redux/PostTypeRedux';
-import { Avatar, Button } from '../StyledComponents';
+import { Avatar, Button, Modal } from '../StyledComponents';
 import {
   grid,
   fontSize,
@@ -17,6 +17,7 @@ import {
   fontWeight,
   fontFilson
 } from '../../Theme';
+
 import { NewPostType, FilterKeyWords, warnings } from './index';
 
 const { snow, pencil, grey } = Colors.colors;
@@ -89,7 +90,6 @@ const Input = styled.div`
     width: 100%;
   }
   button {
-    position: absolute;
     ${fontSize(22)};
     right: 10px;
     top: 10px;
@@ -122,14 +122,8 @@ class NewPost extends Component {
   }
 
   componentWillMount() {
-    const {
-      post,
-      onGetPostActivitiesOfAUser,
-      onListPostTypes,
-      user
-    } = this.props;
+    const { onGetPostActivitiesOfAUser, onListPostTypes, user } = this.props;
     onListPostTypes();
-    const { posts } = post;
     const { isStudent, id } = user.user;
     onGetPostActivitiesOfAUser({ isStudent, id });
   }
@@ -146,7 +140,6 @@ class NewPost extends Component {
     const isFirstTimePosting = posts.find(
       item => item.p_actor_id === user.user.id
     );
-
     if (user.user.isStudent && !isFirstTimePosting) {
       alert('Congratulations!!! it\'s your first time posting.');
     }
@@ -235,15 +228,17 @@ class NewPost extends Component {
     const shouldShowPostButton = isPostButtonVisible || hasPost;
     return (
       <NewPostWrapper>
+        <Modal message="hello" />
+;
         <NewPostContainer>
           <Input>
             <Avatar src={Images.stockImage} height={53} radius={30} />
             {this.postArea()}
             {/* <TiDelete /> */}
             {shouldShowPostButton && (
-              <Button className="rounded" onClick={this.onSubmitPost}>
+            <Button className="rounded" onClick={this.onSubmitPost}>
                 POST
-              </Button>
+            </Button>
             )}
           </Input>
         </NewPostContainer>
@@ -268,7 +263,12 @@ NewPostOption.propTypes = {
 NewPost.propTypes = {
   postType: PropTypes.object,
   user: PropTypes.object,
-  onPostSubmit: PropTypes.func
+  onPostSubmit: PropTypes.func,
+  disableFirstTimePosting: PropTypes.func,
+  onListPostTypes: PropTypes.func,
+  onGetPostActivitiesOfAUser: PropTypes.func,
+  post: PropTypes.object,
+  postActivity: PropTypes.object
 };
 const mapStateToProps = state => ({
   postType: state.postType,
