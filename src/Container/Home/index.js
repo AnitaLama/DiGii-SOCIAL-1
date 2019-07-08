@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { BrandLogo, LoginForm } from '../../Component/Home';
 import './App.css';
 import { flexCentering } from '../../Theme';
+import { SessionHOC } from '../HOC';
 
 const HomeContainer = styled.div`
   display: grid;
@@ -22,7 +23,7 @@ function Home() {
   );
 }
 
-export default Home;
+export default SessionHOC(Home);
 
 //
 // <div className="container">

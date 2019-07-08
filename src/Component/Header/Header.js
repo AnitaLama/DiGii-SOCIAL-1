@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import {
   Images, flexCentering, Colors, fontSize
 } from '../../Theme';
-import { Logo, WhiteButton, Button } from '../StyledComponents';
+import {
+  Logo, WhiteButton, Button, Avatar
+} from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
 
@@ -29,14 +31,10 @@ const UserInfoWrapper = styled.div`
 const Name = styled.span`
   color: ${pen};
   margin-left: 20px;
-  ${fontSize(22)}
+  ${fontSize(22)};
+  text-transform: capitalize;
 `;
-const User = styled.img`
-  height: 50px;
-  border-radius: 32px;
-  margin-right: 20px;
-  margin-left: 10px;
-`;
+
 const SettingsSubList = styled.ul`
   list-style-type: none;
   padding: 0;
@@ -76,7 +74,9 @@ const Settings = styled.div`
     }
   }
 `;
-
+const DiGiiIcon = styled.img`
+  height: 20.91px;
+`;
 class Header extends Component {
   constructor() {
     super();
@@ -94,6 +94,7 @@ class Header extends Component {
 
   logOut = () => {
     const { onLogOut } = this.props;
+    localStorage.removeItem('user');
     history.push('/');
     onLogOut();
   };
@@ -102,20 +103,25 @@ class Header extends Component {
     const { isListVisible } = this.state;
     const { users } = this.props;
     const { user } = users;
-
     return (
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
         <UserInfoWrapper>
-          <WhiteButton className="roundedShadow">Need help</WhiteButton>
+          <WhiteButton className="roundedShadow">Need help?</WhiteButton>
           <Button
             className="roundedShadow short"
             style={{ marginLeft: '20px' }}
           >
             100
+            <DiGiiIcon src={Images.digii5.DiGiit} />
           </Button>
-          <Name>{user.firstName}</Name>
-          <User src={Images.stockImage} />
+          <Name>{user.firstname}</Name>
+          <Avatar
+            src={Images.stockImage}
+            height={50}
+            leftMargin={10}
+            rightMargin={20}
+          />
           <Settings>
             <FiSettings
               style={{ height: '50px' }}

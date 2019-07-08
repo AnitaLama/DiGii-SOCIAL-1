@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
 const BigLogo = styled.img`
-  height: 300px;
+  height: ${props => `${props.height}px` || '300px'};
   @media (max-width: 840px) {
-    height: 200px;
+    height: 150px;
   }
   @media (max-width: 720px) {
-    height: 200px;
+    height: 150px;
   }
 `;
 const Logo = styled.img`

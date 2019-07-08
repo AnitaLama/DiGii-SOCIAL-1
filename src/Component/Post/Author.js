@@ -2,29 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {
-  flex, Images, fontSize, fontWeight, fontFilson
+  flex,
+  Images,
+  fontSize,
+  fontWeight,
+  fontFilson,
+  Colors
 } from '../../Theme';
+import { Avatar } from '../StyledComponents';
 
-const months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-];
+const { grey } = Colors.colors;
+
 const AuthorWrapper = styled.div`
   ${flex()};
-`;
-const AuthorImage = styled.img`
-  height: 40px;
-  border-radius: 20px;
 `;
 const AuthorInfo = styled.div`
   margin: auto 0;
@@ -32,31 +22,42 @@ const AuthorInfo = styled.div`
 `;
 const Name = styled.div`
   ${fontWeight('bold')};
-  ${fontFilson()}
-`;
-const PostedDate = styled.div`
-  ${fontSize(12)};
+  ${fontFilson()};
+  text-transform: capitalize;
 `;
 
+const Post = styled.div`
+  ${fontSize(14)};
+  color: ${grey};
+`;
 class Author extends Component {
   render() {
     const { data } = this.props;
-    const { user } = data;
-    const { firstName, lastName } = user;
-    // const postedDate = new Date(Date.parse(createdAt));
-    // let postDate = months[postedDate.getMonth()];
-    // postDate += ` ${postedDate.getDate()}`;
-    // postDate += ` at ${postedDate.getHours() % 12}:${postedDate.getMinutes()}`;
-    // postDate += ` ${postedDate.getHours()}` > 12 ? 'pm' : 'am';
+    const { p_body } = data;
+    let firstname = '';
+    let lastname = '';
+    if (data.p_isStudent) {
+      const { student } = data;
+
+      firstname = student.st_firstname;
+      lastname = student.st_lastname;
+    } else {
+      const { user } = data;
+      const { user_profile } = user;
+      const { up_firstname, up_lastname } = user_profile;
+      firstname = up_firstname;
+      lastname = up_lastname;
+    }
     return (
       <AuthorWrapper>
-        <AuthorImage src={Images.stockImage} />
+        <Avatar src={Images.stockImage} height={53} />
         <AuthorInfo>
           <Name>
-            {firstName}
+            {firstname}
             {' '}
-            {lastName}
+            {lastname}
           </Name>
+          <Post>{p_body}</Post>
           {/*  <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
       </AuthorWrapper>

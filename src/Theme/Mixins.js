@@ -30,7 +30,7 @@ const media = Object.keys(sizes).reduce((accumulator, label) => {
 // End Media Queries
 
 const boxShadow = () => `
-box-shadow: 5px 5px 10px -1px rgba(0, 0, 0, 0.25);
+box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
 `;
 
 const resetList = () => `

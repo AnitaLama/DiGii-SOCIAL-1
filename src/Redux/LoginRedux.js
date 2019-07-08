@@ -7,7 +7,11 @@ const { Types, Creators } = createActions({
   onFormLoginRequest: ['data'],
   onFormLoginSuccess: ['data'],
   onFormLoginFailure: ['data'],
-  onLogOut: []
+  onLogOut: [],
+  onStudentFormLoginRequest: ['data'],
+  onStudentFormLoginSuccess: ['data'],
+  onStudentFormLoginFailure: ['data'],
+  onDisableFirstTimePosting: []
 });
 
 export const LoginTypes = Types;
@@ -18,12 +22,15 @@ export default Creators;
 export const INITIAL_STATE = Immutable({
   loading: false,
   user: {
-    userName: '',
+    username: '',
     email: '',
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     password: '',
-    userType: ''
+    isStudent: false,
+    id: '',
+    isFirstTimePosting: true,
+    groupId: null
   },
   error: null
 });
@@ -33,19 +40,29 @@ export const INITIAL_STATE = Immutable({
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
   const {
-    userName, email, firstName, lastName, password
-  } = action.data[0];
+    u_id, u_name, u_activated, user_profile, user_groups
+  } = action.data;
+  const firstname = user_profile.up_firstname || '';
+  const lastname = user_profile.up_lastname || '';
+  // const { user_groups } = user_profile;
+  // const { ug_scg_id } = user_groups[0];
+  const groups = [];
+  user_groups.map(item => {
+    groups.push(item.school_group.scg_id);
+  });
   return {
     ...state,
     loading: true,
     error: null,
     user: {
       ...state.user,
-      userName,
-      email,
-      firstName,
-      lastName,
-      password
+      username: u_name,
+      firstname,
+      lastname,
+      id: u_id,
+      isStudent: false,
+      isActivated: u_activated,
+      groupId: groups
     }
   };
 };
@@ -55,12 +72,61 @@ const onFormLoginFailure = (state, action) => {
   return { ...state, error: data, loading: false };
 };
 
-const onLogOut = state => INITIAL_STATE;
+const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
+const onStudentFormLoginSuccess = (state, action) => {
+  const {
+    st_username, st_firstname, st_lastname, st_id
+  } = action.data;
+  return state.set('user', {
+    ...state.get('user'),
+    username: st_username,
+    firstname: st_firstname,
+    lastname: st_lastname,
+    password: null,
+    id: st_id,
+    isStudent: true
+  });
+
+  // return {
+  //   ...state
+  //   // userType: 'Student',
+  //   // loading: true,
+  //   // error: null,
+  //   // user: {
+  //   //   ...state.user,
+  //   //   username: st_username,
+  //   //   firstname: st_firstname,
+  //   //   lastname: st_lastname,
+  //   //   password: null,
+  //   //   id: st_id,
+  //   //   isStudent: true
+  //   // }
+  // };
+};
+
+const onStudentFormLoginFailure = (state, action) => {
+  const { data } = action;
+  return { ...state, error: data, loading: false };
+};
+
+const onLogOut = () => INITIAL_STATE;
+
+const onDisableFirstTimePosting = state => ({
+  ...state,
+  user: {
+    ...state.user,
+    isFirstTimePosting: false
+  }
+});
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FORM_LOGIN_REQUEST]: onFormLogin,
   [Types.ON_FORM_LOGIN_SUCCESS]: onFormLoginSuccess,
   [Types.ON_FORM_LOGIN_FAILURE]: onFormLoginFailure,
-  [Types.ON_LOG_OUT]: onLogOut
+  [Types.ON_STUDENT_FORM_LOGIN_REQUEST]: onStudentFormLogin,
+  [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
+  [Types.ON_STUDENT_FORM_LOGIN_FAILURE]: onStudentFormLoginFailure,
+  [Types.ON_LOG_OUT]: onLogOut,
+  [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting
 });

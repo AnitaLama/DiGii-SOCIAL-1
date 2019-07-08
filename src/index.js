@@ -13,6 +13,7 @@ import * as serviceWorker from './serviceWorker';
 import configureStore from './Redux/configureStore';
 
 const { store, persistor } = configureStore();
+// const { store } = configureStore();
 
 ReactDOM.render(
   <Router history={history}>

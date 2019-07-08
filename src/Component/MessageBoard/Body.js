@@ -4,7 +4,7 @@ import { NewPost, Posts, SideBar } from './index';
 
 const BodyWrapper = styled.div`
   display: grid;
-  grid-template-columns: 70% auto;
+  grid-template-columns: auto auto;
 `;
 class Body extends Component {
   render() {
