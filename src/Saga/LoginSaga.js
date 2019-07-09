@@ -16,7 +16,7 @@ export function* onLoginRequest(action) {
     }
   } catch (err) {
     console.log(err);
-    yield put(LoginActions.onFormLoginFailure(err.toString()));
+    // yield put(LoginActions.onFormLoginFailure(err.toString()));
   }
 }
 
@@ -36,6 +36,6 @@ export function* onStudentLoginRequest(action) {
     }
   } catch (err) {
     console.log(err);
-    yield put(LoginActions.onStudentFormLoginFailure(err.toString()));
+    // yield put(LoginActions.onStudentFormLoginFailure(err.toString()));
   }
 }

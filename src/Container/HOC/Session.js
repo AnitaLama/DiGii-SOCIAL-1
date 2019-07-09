@@ -3,7 +3,8 @@ import history from '../../history';
 
 const LoginPageWrapper = WrappedComponent => class LoginPageContainer extends Component {
   componentWillMount() {
-    console.log('hello');
+    // console.log('hello');
+    localStorage.removeItem('user');
   }
 
   async componentDidMount() {

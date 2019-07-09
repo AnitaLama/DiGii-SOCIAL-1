@@ -90,6 +90,7 @@ const Input = styled.div`
     width: 100%;
   }
   button {
+    position: absolute;
     ${fontSize(22)};
     right: 10px;
     top: 10px;
@@ -117,7 +118,9 @@ class NewPost extends Component {
       postText: '',
       type: 'text',
       isBad: false,
-      imageObject: null
+      imageObject: null,
+      isModalVisible: false,
+      alertMessage: null
     };
   }
 
@@ -140,10 +143,19 @@ class NewPost extends Component {
     const isFirstTimePosting = posts.find(
       item => item.p_actor_id === user.user.id
     );
-    if (user.user.isStudent && !isFirstTimePosting) {
-      alert('Congratulations!!! it\'s your first time posting.');
+    console.log('isFirstTimePosting', isFirstTimePosting, user.user);
+    if (
+      user.user.isStudent
+      && !isFirstTimePosting
+      && user.user.isFirstTimePosting
+    ) {
+      disableFirstTimePosting();
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Congratulations!!! it\'s your first time posting.'
+      });
+      // alert('Congratulations!!! it\'s your first time posting.');
     }
-    disableFirstTimePosting();
     this.setState({ isPostButtonVisible: true });
   };
 
@@ -158,7 +170,11 @@ class NewPost extends Component {
     }
     const { postActivity } = this.props;
     if (value.trim().length > 500) {
-      alert('Please keep the length within 500 characters');
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Please keep the length within 500 characters'
+      });
+      // alert('Please keep the length within 500 characters');
       this.setState({ postText: value, hasPost: value.trim().length > 0 });
     } else {
       const blacklistedWord = FilterKeyWords(value);
@@ -166,7 +182,11 @@ class NewPost extends Component {
         const index = postActivity.postActivity.length > 2
           ? 2
           : postActivity.postActivity.length;
-        alert(`${warnings[index]}`);
+        this.setState({
+          isModalVisible: true,
+          alertMessage: `${warnings[index]}`
+        });
+        // alert(`${warnings[index]}`);
         this.setState({ isBad: true });
       }
       this.setState({ postText: value, hasPost: value.trim().length > 0 });
@@ -222,23 +242,33 @@ class NewPost extends Component {
     );
   };
 
+  hideModal = () => {
+    this.setState({
+      isModalVisible: false,
+      alertMessage: null
+    });
+  };
+
   render() {
-    const { isPostButtonVisible, hasPost } = this.state;
+    const {
+      isPostButtonVisible,
+      hasPost,
+      isModalVisible,
+      alertMessage
+    } = this.state;
 
     const shouldShowPostButton = isPostButtonVisible || hasPost;
     return (
       <NewPostWrapper>
-        <Modal message="hello" />
-;
         <NewPostContainer>
           <Input>
             <Avatar src={Images.stockImage} height={53} radius={30} />
             {this.postArea()}
             {/* <TiDelete /> */}
             {shouldShowPostButton && (
-            <Button className="rounded" onClick={this.onSubmitPost}>
+              <Button className="rounded" onClick={this.onSubmitPost}>
                 POST
-            </Button>
+              </Button>
             )}
           </Input>
         </NewPostContainer>
@@ -251,6 +281,9 @@ class NewPost extends Component {
             />
           ))}
         </NewPostOptionContainer>
+        {isModalVisible && (
+          <Modal message={alertMessage} hideModal={this.hideModal} />
+        )}
       </NewPostWrapper>
     );
   }

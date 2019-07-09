@@ -44,11 +44,11 @@ const onListPostsFailure = (state, action) => ({
 const onPostSubmit = (state, action) => ({
   ...state
 });
-const onSaveImage = (state, action) => {
-  console.log(action);
-  return { ...state };
-};
-
+const onSaveImage = (
+  state,
+  action
+  // console.log(action);
+) => ({ ...state });
 const onFindPosts = (state, action) => ({ ...state, loading: true });
 
 const onFindPostsSuccess = (state, action) => {
@@ -58,8 +58,8 @@ const onFindPostsSuccess = (state, action) => {
     if (item.user || item.student) {
       posts.push(item);
     }
+    return true;
   });
-  // console.log('reducer', action.data, posts);
   return { ...state, posts: action.data };
 };
 /* ------------- Hookup Reducers To Types ------------- */

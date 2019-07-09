@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { FormTextArea } from '../StyledComponents';
-import { ImagePost } from './index';
+import { ImagePost, GifContainer } from './index';
 
 const NewPostTypeContainer = styled.div`
   min-height: 150px;
@@ -51,6 +51,19 @@ class NewPostType extends Component {
         );
       case 'PHOTO/VIDEO':
         return <ImagePost onSaveImage={onSaveImage} />;
+      case 'TAG':
+        return (
+          <FormTextArea
+            placeholder={`What do you want to post, ${firstname}?`}
+            style={{ margin: 0 }}
+            onFocus={showPostButton}
+            onBlur={hidePostButton}
+            onChange={handlePostText}
+            value={postText || '@'}
+          />
+        );
+      case 'GIF':
+        return <GifContainer />;
       default:
         return (
           <FormTextArea

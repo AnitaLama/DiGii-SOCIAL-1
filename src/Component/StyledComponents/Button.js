@@ -42,6 +42,9 @@ const Button = styled.button`
   &.short {
     width: 50%;
   }
+  &.small {
+    padding: 0;
+  }
 `;
 
 const WhiteButton = styled.button`

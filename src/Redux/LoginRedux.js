@@ -42,6 +42,7 @@ const onFormLoginSuccess = (state, action) => {
   const {
     u_id, u_name, u_activated, user_profile, user_groups
   } = action.data;
+  console.log(action.data);
   const firstname = user_profile.up_firstname || '';
   const lastname = user_profile.up_lastname || '';
   // const { user_groups } = user_profile;
@@ -49,6 +50,7 @@ const onFormLoginSuccess = (state, action) => {
   const groups = [];
   user_groups.map(item => {
     groups.push(item.school_group.scg_id);
+    return true;
   });
   return {
     ...state,
@@ -74,18 +76,31 @@ const onFormLoginFailure = (state, action) => {
 
 const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
+  console.log(action.data);
+  const groups = [];
   const {
-    st_username, st_firstname, st_lastname, st_id
+    st_username,
+    st_firstname,
+    st_lastname,
+    st_id,
+    student_group
   } = action.data;
-  return state.set('user', {
-    ...state.get('user'),
-    username: st_username,
-    firstname: st_firstname,
-    lastname: st_lastname,
-    password: null,
-    id: st_id,
-    isStudent: true
-  });
+  const { school_group } = student_group;
+  const { scg_gr_id } = school_group;
+  groups.push(scg_gr_id);
+  return {
+    ...state,
+    user: {
+      ...state.user,
+      username: st_username,
+      firstname: st_firstname,
+      lastname: st_lastname,
+      password: null,
+      id: st_id,
+      isStudent: true,
+      groupId: groups
+    }
+  };
 
   // return {
   //   ...state
