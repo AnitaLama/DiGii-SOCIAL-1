@@ -23,7 +23,7 @@ function Home() {
   );
 }
 
-export default Home;
+export default SessionHOC(Home);
 
 //
 // <div className="container">

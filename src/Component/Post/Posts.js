@@ -14,7 +14,6 @@ class Posts extends Component {
       posts: []
     };
     this.socket = socketClient(SOCKET_URL);
-    console.log(SOCKET_URL);
   }
 
   componentWillMount() {
@@ -30,8 +29,11 @@ class Posts extends Component {
     const { user } = this.props;
     const { posts } = this.state;
     const { groupId } = user.user;
-    this.socket.on('news', data => {
-      console.log('socket data user', user);
+    console.log('socket data user', user, this.socket);
+    this.socket.on('time', data => {
+      console.log('>>>>>>>>>>>>>>>>>>>>>', data);
+    });
+    this.socket.on('posts', data => {
       console.log('socket data', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });

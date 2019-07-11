@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import { connect } from 'react-redux';
 import { FormTextArea } from '../StyledComponents';
-import { ImagePost, GifContainer } from './index';
+import {
+  GifContainer,
+  TextPost,
+  FeelingsPost,
+  PhotoVideoPost,
+  BannerPost
+} from './index';
 
 const NewPostTypeContainer = styled.div`
-  min-height: 150px;
   width: 100%;
 `;
 
@@ -13,68 +19,55 @@ class NewPostType extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      postText: props.postText,
-      firstname: props.firstname,
-      type: props.type
+      type: props.type,
+      selectedGif: props.selectedGif
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps) {
       this.setState({
-        postText: nextProps.postText,
-        firstname: nextProps.firstname,
-        type: nextProps.type
+        type: nextProps.type,
+        selectedGif: nextProps.selectedGif
       });
     }
   }
 
   getPostArea = () => {
-    const { postText, firstname, type } = this.state;
-    const {
-      showPostButton,
-      hidePostButton,
-      handlePostText,
-      onSaveImage
-    } = this.props;
+    const { type, selectedGif } = this.state;
+    const { postType, user, resetPostType } = this.props;
+    const { postTypes } = postType;
+    const { firstname } = user.user;
+    const selectedPostType = postTypes.find(
+      item => item.pt_title === type.toLowerCase()
+    );
+    const props = {
+      postTypeId: selectedPostType.pt_id,
+      username: firstname,
+      resetPostType
+    };
     switch (type) {
       case 'text':
-        return (
-          <FormTextArea
-            placeholder={`What do you want to post, ${firstname}?`}
-            style={{ margin: 0 }}
-            onFocus={showPostButton}
-            onBlur={hidePostButton}
-            onChange={handlePostText}
-            value={postText}
-          />
-        );
+        return <TextPost {...props} />;
       case 'PHOTO/VIDEO':
-        return <ImagePost onSaveImage={onSaveImage} />;
+        return <PhotoVideoPost {...props} />;
+      // return <ImagePost {...props} />;
       case 'TAG':
         return (
           <FormTextArea
-            placeholder={`What do you want to post, ${firstname}?`}
+            placeholder="What do you want to post?"
             style={{ margin: 0 }}
-            onFocus={showPostButton}
-            onBlur={hidePostButton}
-            onChange={handlePostText}
-            value={postText || '@'}
+            {...props}
           />
         );
       case 'GIF':
-        return <GifContainer />;
+        return <GifContainer {...props} selectedGif={selectedGif} />;
+      case 'FEELING':
+        return <FeelingsPost {...props} />;
+      case 'BANNER':
+        return <BannerPost {...props} />;
       default:
-        return (
-          <FormTextArea
-            placeholder={`What do you want to post, ${firstname}?`}
-            style={{ margin: 0 }}
-            onFocus={this.showPostButton}
-            onBlur={this.hidePostButton}
-            onChange={this.handlePostText}
-            value={postText}
-          />
-        );
+        return <TextPost {...props} />;
     }
   };
 
@@ -84,12 +77,11 @@ class NewPostType extends Component {
 }
 
 NewPostType.propTypes = {
-  postText: PropTypes.string,
-  firstname: PropTypes.string,
-  type: PropTypes.string,
-  showPostButton: PropTypes.func,
-  hidePostButton: PropTypes.func,
-  handlePostText: PropTypes.func,
-  onSaveImage: PropTypes.func
+  type: PropTypes.string
 };
-export default NewPostType;
+
+const mapStateToProps = state => ({
+  postType: state.postType,
+  user: state.user
+});
+export default connect(mapStateToProps)(NewPostType);

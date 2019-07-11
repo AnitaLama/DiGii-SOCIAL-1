@@ -4,6 +4,7 @@ import {
   ContentWrapper
 } from '../../Component/StyledComponents';
 import { Header, Body } from '../../Component/MessageBoard';
+import { SessionHOC } from '../HOC';
 
 class MessageBoard extends Component {
   render() {
@@ -20,4 +21,4 @@ class MessageBoard extends Component {
   }
 }
 
-export default MessageBoard;
+export default SessionHOC(MessageBoard);
