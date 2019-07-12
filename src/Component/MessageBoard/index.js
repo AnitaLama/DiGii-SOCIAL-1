@@ -3,8 +3,8 @@ import { Header } from '../Header';
 import SideBar from '../SideBar';
 import { Body } from './Body';
 import Tabs from './Tabs';
-import { NewPost } from '../NewPost';
+import { NewPost, Container } from '../NewPost';
 
 export {
-  Header, Tabs, NewPost, Posts, SinglePost, SideBar, Body
+  Header, Tabs, NewPost, Posts, SinglePost, SideBar, Body, Container
 };

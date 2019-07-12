@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 const ContainerWrapper = styled.div`
   min-height: 100vh;
-  min-width: 100vw;
   max-width: 100%;
 `;
 

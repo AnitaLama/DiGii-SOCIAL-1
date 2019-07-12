@@ -9,14 +9,14 @@ export function* onLoginRequest(action) {
     const { data } = yield call(axios.post, `${DEV_URL}/login`, action.data);
     if (data.success) {
       yield put(LoginActions.onFormLoginSuccess(data.result));
-      localStorage.setItem('user', JSON.stringify(data.result));
+      yield localStorage.setItem('user', JSON.stringify(data.result));
       history.push('/messageboard');
     } else {
       yield put(LoginActions.onFormLoginFailure(data.error));
     }
   } catch (err) {
     console.log(err);
-    yield put(LoginActions.onFormLoginFailure(err.toString()));
+    // yield put(LoginActions.onFormLoginFailure(err.toString()));
   }
 }
 
@@ -29,13 +29,13 @@ export function* onStudentLoginRequest(action) {
     );
     if (data.success) {
       yield put(LoginActions.onStudentFormLoginSuccess(data.result));
-      localStorage.setItem('user', JSON.stringify(data.result));
+      yield localStorage.setItem('user', JSON.stringify(data.result));
       history.push('/messageboard');
     } else {
       yield put(LoginActions.onStudentFormLoginFailure(data.error));
     }
   } catch (err) {
     console.log(err);
-    yield put(LoginActions.onStudentFormLoginFailure(err.toString()));
+    // yield put(LoginActions.onStudentFormLoginFailure(err.toString()));
   }
 }

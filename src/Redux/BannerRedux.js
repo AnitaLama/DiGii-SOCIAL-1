@@ -4,10 +4,10 @@ import Immutable from 'seamless-immutable';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  onSubmitCommentRequest: ['data']
+  onGetAllBanners: []
 });
 
-export const CommentTypes = Types;
+export const BannerTypes = Types;
 export default Creators;
 
 /* ------------- Initial State ------------- */
@@ -18,13 +18,13 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const onSubmitCommentRequest = (state, action) => ({
-  ...state,
-  loading: true
-});
+export const test = (state, action) => {
+  console.log('here', action);
+  return { ...state, loading: !state.loading };
+};
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.ON_SUBMIT_COMMENT_REQUEST]: onSubmitCommentRequest
+  // [Types.ON_TEST_REQUEST]: test
 });

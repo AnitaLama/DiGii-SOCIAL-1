@@ -23,12 +23,12 @@ const FormInput = styled.input`
 const FormTextArea = styled.textarea`
   width: 100%;
   border-radius: 40px;
-  padding: 10px 15px;
   outline: none;
   border: 0;
   outline:0
   color: #495057;
   margin-bottom: 10px;
+  background:transparent;
   resize:none;
   height: 150px;
   &::placeholder {

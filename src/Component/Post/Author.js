@@ -30,10 +30,33 @@ const Post = styled.div`
   ${fontSize(14)};
   color: ${grey};
 `;
+const Gif = styled.img`
+  height: 100px;
+  width: 100px;
+`;
 class Author extends Component {
+  getContent = () => {
+    const { data } = this.props;
+    // console.log('.>>>>>>>>>>>>>', data);
+    const { p_body, post_type, p_text } = data;
+    const type = post_type.pt_title;
+    switch (type) {
+      case 'text':
+        return <span>{p_body}</span>;
+      case 'gif':
+        return (
+          <div>
+            <div>{p_text}</div>
+            <Gif src={`${p_body}`} />
+          </div>
+        );
+    }
+  };
+
   render() {
     const { data } = this.props;
-    const { p_body } = data;
+    const { p_body, post_type } = data;
+    const type = post_type.pt_title;
     let firstname = '';
     let lastname = '';
     if (data.p_isStudent) {
@@ -57,7 +80,7 @@ class Author extends Component {
             {' '}
             {lastname}
           </Name>
-          <Post>{p_body}</Post>
+          <Post>{this.getContent()}</Post>
           {/*  <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
       </AuthorWrapper>

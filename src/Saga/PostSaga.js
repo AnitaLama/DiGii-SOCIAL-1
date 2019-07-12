@@ -20,14 +20,11 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
-    console.log('here');
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/post/find`,
       action.data
     );
-    console.log('saga>>>>>>>>>', data);
-    console.log('saga', data, action.data);
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
     } else {
@@ -53,6 +50,33 @@ export function* onPostSubmit(action) {
     // if (data.success) {
     //   yield put(PostActions.onListPosts());
     // }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onFindGif(action) {
+  try {
+    const { data } = yield call(
+      axios,
+      `http://api.giphy.com/v1/gifs/search?q=${
+        action.data
+      }&api_key=dc6zaTOxFJmzC`
+    );
+    if (data) {
+      yield put(PostActions.onFindGifSuccess(data.data));
+    } else {
+      yield put(PostActions.onFindGifFailure('Couldn\'t find gif'));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onPostImage(action) {
+  try {
+    const data = yield call(axios.post, `${URL}/upload`, action.data);
+    console.log(data);
   } catch (err) {
     console.log(err);
   }

@@ -11,7 +11,12 @@ const { Types, Creators } = createActions({
   onListPostsSuccess: ['data'],
   onListPostsFailure: ['data'],
   onPostSubmit: ['data'],
-  onSaveImage: ['data']
+  onSaveImage: ['data'],
+  onFindGif: ['data'],
+  onFindGifSuccess: ['data'],
+  onFindGifFailure: ['data'],
+  clearGifList: [],
+  onPostImage: ['data']
 });
 
 export const PostTypes = Types;
@@ -22,7 +27,8 @@ export default Creators;
 const INITIAL_STATE = Immutable({
   loading: false,
   posts: [],
-  error: null
+  error: null,
+  gif: []
 });
 
 /* ------------- Reducers ------------- */
@@ -38,18 +44,20 @@ const onListPostsSuccess = (state, action) => ({
 const onListPostsFailure = (state, action) => ({
   ...state,
   loading: false,
-  error: action.data
+  error: action.data,
+
+  gif: []
 });
 
 const onPostSubmit = (state, action) => ({
   ...state
 });
-const onSaveImage = (state, action) => {
-  console.log(action);
-  return { ...state };
-};
-
-const onFindPosts = (state, action) => ({ ...state, loading: true });
+const onSaveImage = (
+  state,
+  action
+  // console.log(action);
+) => ({ ...state });
+const onFindPosts = (state, action) => ({ ...state, loading: true, gif: [] });
 
 const onFindPostsSuccess = (state, action) => {
   const { data } = action;
@@ -58,10 +66,22 @@ const onFindPostsSuccess = (state, action) => {
     if (item.user || item.student) {
       posts.push(item);
     }
+    return true;
   });
-  // console.log('reducer', action.data, posts);
-  return { ...state, posts: action.data };
+  return { ...state, posts: action.data, gif: [] };
 };
+
+const onFindGifSuccess = (state, action) => {
+  console.log(action.data);
+  return { ...state, gif: action.data, error: null };
+};
+
+const onFindGifFailure = (state, action) => {
+  console.log(action.data);
+  return { ...state, gif: action.data, error: null };
+};
+const clearGifList = state => ({ ...state, gif: [] });
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -72,5 +92,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FIND_POSTS_SUCCESS]: onFindPostsSuccess,
   // [Types.ON_FIND_POSTS_FAILURE]: onFindPostsFailure,
   [Types.ON_POST_SUBMIT]: onPostSubmit,
-  [Types.ON_SAVE_IMAGE]: onSaveImage
+  [Types.ON_SAVE_IMAGE]: onSaveImage,
+  [Types.ON_FIND_GIF_SUCCESS]: onFindGifSuccess,
+  [Types.ON_FIND_GIF_FAILURE]: onFindGifFailure,
+  [Types.CLEAR_GIF_LIST]: clearGifList
 });

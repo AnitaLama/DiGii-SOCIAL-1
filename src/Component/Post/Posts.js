@@ -14,32 +14,42 @@ class Posts extends Component {
       posts: []
     };
     this.socket = socketClient(SOCKET_URL);
-    console.log(SOCKET_URL);
   }
 
   componentWillMount() {
-    const {
-      onListPosts, onFindPosts, user, post
-    } = this.props;
+    const { onFindPosts, user, post } = this.props;
     const { posts } = post;
-    // onListPosts();
     const { isStudent, id } = user.user;
 
     onFindPosts({ isStudent, actorId: id });
-    this.setState({ posts: post.posts });
-    // await onFindPosts({ isStudent, actorId: id });
+    this.setState({ posts });
   }
 
   componentDidMount() {
-    const { user, onFindPosts, post } = this.props;
+    const { user } = this.props;
     const { posts } = this.state;
     const { groupId } = user.user;
-    this.socket.on('news', data => {
-      // console.log('socket data', data, groupId, groupId.includes(data.group));
+    console.log('socket data user', user, this.socket);
+    this.socket.on('time', data => {
+      console.log('>>>>>>>>>>>>>>>>>>>>>', data);
+    });
+    this.socket.on('posts', data => {
+      console.log('socket data', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
     });
+  }
+
+  componentWillReceiveProps(nextProp) {
+    const { post } = this.props;
+    const { posts } = post;
+    if (
+      posts !== nextProp.post.posts
+      && this.state.posts !== nextProp.post.posts
+    ) {
+      this.setState({ posts: nextProp.post.posts });
+    }
   }
 
   componentWillUnmount() {
@@ -62,7 +72,9 @@ class Posts extends Component {
   }
 }
 Posts.propTypes = {
-  onListPosts: PropTypes.func
+  onFindPosts: PropTypes.func,
+  user: PropTypes.object,
+  post: PropTypes.object
 };
 
 const mapStateToProps = state => ({

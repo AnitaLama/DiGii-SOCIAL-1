@@ -5,7 +5,9 @@ const LoginRedux = require('./LoginRedux');
 const PostRedux = require('./PostRedux');
 const PostTypeRedux = require('./PostTypeRedux');
 const CommentRedux = require('./CommentRedux');
+const StrikeRedux = require('./StrikeRedux');
 const PostActivityRedux = require('./PostActivityRedux');
+const BannerRedux = require('./BannerRedux');
 
 const allReducers = combineReducers({
   test: TestReduxes.reducer,
@@ -13,7 +15,9 @@ const allReducers = combineReducers({
   post: PostRedux.reducer,
   postType: PostTypeRedux.reducer,
   postActivity: PostActivityRedux.reducer,
-  comment: CommentRedux.reducer
+  strike: StrikeRedux.reducer,
+  comment: CommentRedux.reducer,
+  banner: BannerRedux.reducer
 });
 
 export default allReducers;
