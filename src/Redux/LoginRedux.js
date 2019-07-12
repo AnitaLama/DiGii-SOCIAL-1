@@ -6,12 +6,11 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   onFormLoginRequest: ['data'],
   onFormLoginSuccess: ['data'],
-  onFormLoginFailure: ['data'],
   onLogOut: [],
   onStudentFormLoginRequest: ['data'],
   onStudentFormLoginSuccess: ['data'],
-  onStudentFormLoginFailure: ['data'],
-  onDisableFirstTimePosting: []
+  onDisableFirstTimePosting: [],
+  onBlockUser: ['data']
 });
 
 export const LoginTypes = Types;
@@ -42,7 +41,6 @@ const onFormLoginSuccess = (state, action) => {
   const {
     u_id, u_name, u_activated, user_profile, user_groups
   } = action.data;
-  console.log(action.data);
   const firstname = user_profile.up_firstname || '';
   const lastname = user_profile.up_lastname || '';
   // const { user_groups } = user_profile;
@@ -69,14 +67,13 @@ const onFormLoginSuccess = (state, action) => {
   };
 };
 
-const onFormLoginFailure = (state, action) => {
-  const { data } = action;
-  return { ...state, error: data, loading: false };
-};
+// const onFormLoginFailure = (state, action) => {
+//   const { data } = action;
+//   return { ...state, error: data, loading: false };
+// };
 
 const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
-  console.log(action.data);
   const groups = [];
   const {
     st_username,
@@ -99,7 +96,8 @@ const onStudentFormLoginSuccess = (state, action) => {
       id: st_id,
       isStudent: true,
       groupId: groups
-    }
+    },
+    error: null
   };
 
   // return {
@@ -119,18 +117,14 @@ const onStudentFormLoginSuccess = (state, action) => {
   // };
 };
 
-const onStudentFormLoginFailure = (state, action) => {
-  const { data } = action;
-  return { ...state, error: data, loading: false };
-};
-
 const onLogOut = () => INITIAL_STATE;
 
 const onDisableFirstTimePosting = state => ({
   ...state,
   user: {
     ...state.user,
-    isFirstTimePosting: false
+    isFirstTimePosting: false,
+    error: null
   }
 });
 /* ------------- Hookup Reducers To Types ------------- */
@@ -138,10 +132,9 @@ const onDisableFirstTimePosting = state => ({
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FORM_LOGIN_REQUEST]: onFormLogin,
   [Types.ON_FORM_LOGIN_SUCCESS]: onFormLoginSuccess,
-  [Types.ON_FORM_LOGIN_FAILURE]: onFormLoginFailure,
+  // [Types.ON_FORM_LOGIN_FAILURE]: onFormLoginFailure,
   [Types.ON_STUDENT_FORM_LOGIN_REQUEST]: onStudentFormLogin,
   [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
-  [Types.ON_STUDENT_FORM_LOGIN_FAILURE]: onStudentFormLoginFailure,
   [Types.ON_LOG_OUT]: onLogOut,
   [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting
 });

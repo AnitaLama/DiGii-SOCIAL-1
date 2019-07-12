@@ -54,8 +54,8 @@ class LoginForm extends Component {
 
   render() {
     const { isModalVisible } = this.state;
-    const { user } = this.props;
-    const { error } = user;
+    const { loginErrors } = this.props;
+    const { studentLoginError } = loginErrors;
     return (
       <FormWrapper>
         <FormTitle>Log In</FormTitle>
@@ -141,7 +141,7 @@ class LoginForm extends Component {
                   <span>Sign Up</span>
                 </ClickableSpan>
               </HelpBlock>
-              {error && <ErrorMessage error={error} />}
+              {studentLoginError && <ErrorMessage error={studentLoginError} />}
             </form>
           )}
         </Formik>
@@ -157,10 +157,10 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   onFormLogin: PropTypes.func,
-  user: PropTypes.object
+  loginErrors: PropTypes.object
 };
 const mapStateToProps = state => ({
-  user: state.user
+  loginErrors: state.error
 });
 const mapDispatchToProps = dispatch => ({
   onFormLogin: values => dispatch(LoginActions.onStudentFormLoginRequest(values))

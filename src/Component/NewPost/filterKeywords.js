@@ -1,5 +1,5 @@
 const insults = ['idiot', 'moron', 'loser'];
-const puttingDown = ['dumb', 'stupid', 'loser'];
+const puttingDown = ['dumb', 'stupid', 'i hate you'];
 const blacklist = [
   { array: insults, type: 'insults' },
   { array: puttingDown, type: 'puttingDown' }

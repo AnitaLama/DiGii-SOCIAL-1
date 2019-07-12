@@ -61,7 +61,7 @@ class Comment extends Component {
 
     let firstname = '';
     let lastname = '';
-
+    console.log(data);
     if (data.pc_is_student) {
       const { student } = data;
       firstname = student.st_firstname || '';

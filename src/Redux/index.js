@@ -8,6 +8,7 @@ const CommentRedux = require('./CommentRedux');
 const StrikeRedux = require('./StrikeRedux');
 const PostActivityRedux = require('./PostActivityRedux');
 const BannerRedux = require('./BannerRedux');
+const ErrorRedux = require('./ErrorRedux');
 
 const allReducers = combineReducers({
   test: TestReduxes.reducer,
@@ -17,7 +18,8 @@ const allReducers = combineReducers({
   postActivity: PostActivityRedux.reducer,
   strike: StrikeRedux.reducer,
   comment: CommentRedux.reducer,
-  banner: BannerRedux.reducer
+  banner: BannerRedux.reducer,
+  error: ErrorRedux.reducer
 });
 
 export default allReducers;

@@ -37,7 +37,6 @@ const Gif = styled.img`
 class Author extends Component {
   getContent = () => {
     const { data } = this.props;
-    // console.log('.>>>>>>>>>>>>>', data);
     const { p_body, post_type, p_text } = data;
     const type = post_type.pt_title;
     switch (type) {
@@ -55,10 +54,11 @@ class Author extends Component {
 
   render() {
     const { data } = this.props;
-    const { p_body, post_type } = data;
-    const type = post_type.pt_title;
+    const { p_body } = data;
+    // const type = post_type.pt_title;
     let firstname = '';
     let lastname = '';
+    // console.log('data author', data);
     if (data.p_isStudent) {
       const { student } = data;
 

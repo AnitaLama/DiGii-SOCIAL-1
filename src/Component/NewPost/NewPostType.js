@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { FormTextArea } from '../StyledComponents';
+import PostTypeActions from '../../Redux/PostTypeRedux';
 import {
   GifContainer,
   TextPost,
@@ -24,6 +25,11 @@ class NewPostType extends Component {
     };
   }
 
+  componentWillMount() {
+    const { onListPostTypes } = this.props;
+    onListPostTypes();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps) {
       this.setState({
@@ -38,9 +44,9 @@ class NewPostType extends Component {
     const { postType, user, resetPostType } = this.props;
     const { postTypes } = postType;
     const { firstname } = user.user;
-    const selectedPostType = postTypes.find(
-      item => item.pt_title === type.toLowerCase()
-    );
+    let selectedPostType = '';
+    selectedPostType = postTypes.length > 0
+      && postTypes.find(item => item.pt_title === type.toLowerCase());
     const props = {
       postTypeId: selectedPostType.pt_id,
       username: firstname,
@@ -84,4 +90,10 @@ const mapStateToProps = state => ({
   postType: state.postType,
   user: state.user
 });
-export default connect(mapStateToProps)(NewPostType);
+const mapDispatchToProps = dispatch => ({
+  onListPostTypes: () => dispatch(PostTypeActions.onListPostTypes())
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewPostType);

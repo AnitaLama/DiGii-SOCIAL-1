@@ -8,7 +8,11 @@ import { PostTypeTypes } from '../Redux/PostTypeRedux';
 import { PostActivityTypes } from '../Redux/PostActivityRedux';
 import { CommentTypes } from '../Redux/CommentRedux';
 import { BannerTypes } from '../Redux/BannerRedux';
-import { onLoginRequest, onStudentLoginRequest } from './LoginSaga';
+import {
+  onLoginRequest,
+  onStudentLoginRequest,
+  onBlockUser
+} from './LoginSaga';
 import {
   onListPosts,
   onFindPosts,
@@ -26,6 +30,7 @@ export default function* root() {
   yield all([
     takeLatest(TestTypes.ON_TEST_REQUEST, testFunction),
     takeLatest(LoginTypes.ON_FORM_LOGIN_REQUEST, onLoginRequest),
+    takeLatest(LoginTypes.ON_BLOCK_USER, onBlockUser),
     takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
 
     takeLatest(PostTypes.ON_LIST_POSTS, onListPosts),

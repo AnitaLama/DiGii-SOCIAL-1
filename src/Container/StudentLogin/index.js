@@ -22,4 +22,4 @@ function Home() {
   );
 }
 
-export default SessionHOC(Home);
+export default Home;

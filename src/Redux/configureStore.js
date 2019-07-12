@@ -8,8 +8,8 @@ import rootReducer from './index';
 
 const persistConfig = {
   key: 'root',
-  storage
-  // blacklist: ['user']
+  storage,
+  blacklist: ['error']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

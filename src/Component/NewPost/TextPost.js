@@ -18,7 +18,8 @@ class TextPost extends Component {
       postText: '',
       hasPost: false,
       username: props.username,
-      postTypeId: props.postTypeId
+      postTypeId: props.postTypeId,
+      blockUser: false
     };
   }
 
@@ -36,7 +37,7 @@ class TextPost extends Component {
   };
 
   handlePostText = e => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { onGetStrikesCountOfAUser, user, onBlockUser } = this.props;
     const { isStudent, id } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
@@ -57,6 +58,8 @@ class TextPost extends Component {
       if (blacklistedWord) {
         if (strike.strikes >= 10) {
           console.log('block the student');
+          this.setState({ blockUser: true });
+          // onBlockUser({ isStudent, id });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
           index -= 1;
@@ -93,6 +96,7 @@ class TextPost extends Component {
         isModalVisible: true,
         alertMessage: 'Congratulations!!! it\'s your first time posting.'
       });
+
       // alert('Congratulations!!! it\'s your first time posting.');
     }
     this.setState({
@@ -109,9 +113,11 @@ class TextPost extends Component {
 
   submitTextPost = async () => {
     const {
-      postText, isBad, postTypeId, strikeType
+      postText, isBad, postTypeId, strikeType, blockUser
     } = this.state;
-    const { user, onPostSubmit, resetPostType } = this.props;
+    const {
+      user, onPostSubmit, resetPostType, onBlockUser
+    } = this.props;
     const { isStudent, id } = user.user;
     const post = {
       p_pt_id: postTypeId,
@@ -121,9 +127,13 @@ class TextPost extends Component {
       isBad,
       str_type: strikeType
     };
-    resetPostType();
-    this.setState({ postText: '', isBad: false });
+    console.log('on post', post);
     await onPostSubmit(post);
+    this.setState({ postText: '', isBad: false });
+    resetPostType();
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    } // onBlockUser()
   };
 
   render() {
@@ -177,7 +187,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting())
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 export default connect(
   mapStateToProps,

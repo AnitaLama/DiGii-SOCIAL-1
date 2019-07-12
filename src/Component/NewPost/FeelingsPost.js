@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { emojify } from 'react-emojione';
 import styled from '@emotion/styled';
 import { PostWrapper } from './index';
 import { Button } from '../StyledComponents';
@@ -45,7 +44,7 @@ class FeelingsPost extends Component {
       username, postText, isFocused, showText
     } = this.state;
 
-    const alteredText = emojify(postText);
+    const alteredText = postText;
     console.log('>>>', this.actualInput ? this.actualInput.innerText : '');
 
     return (
@@ -63,7 +62,7 @@ class FeelingsPost extends Component {
             }}
             value={postText}
             style={{
-              border: '1px solid red'
+              border: '1px solid black'
             }}
           />
           <span className="textContainer" ref={r => (this.actualInput = r)}>
@@ -71,6 +70,7 @@ class FeelingsPost extends Component {
           </span>
           <p>{postText}</p>
         </Input>
+
         <div>
           <Button className="small rounded" onClick={this.submitTextPost}>
             Post

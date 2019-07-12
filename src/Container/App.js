@@ -9,15 +9,15 @@ import './styles.css';
 
 class ActualRoute extends React.Component {
   componentWillMount() {
-    // NProgress.start();
+    NProgress.start();
   }
 
   componentWillUnmount() {
-    // NProgress.start();
+    NProgress.start();
   }
 
   componentDidMount() {
-    // NProgress.done();
+    NProgress.done();
   }
 
   render() {
