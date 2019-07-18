@@ -12,6 +12,9 @@ import FeelingsPost from './FeelingsPost';
 import PhotoVideoPost from './PhotoVideoPost';
 import VideoPost from './VideoPost';
 import BannerPost from './BannerPost';
+import FeelingsList from './FeelingsList';
+import TagPost from './TagPost';
+import PollPost from './PollPost';
 
 export {
   NewPost,
@@ -25,19 +28,26 @@ export {
   FeelingsPost,
   PhotoVideoPost,
   VideoPost,
-  BannerPost
+  BannerPost,
+  FeelingsList,
+  TagPost,
+  PollPost
 };
 
 export const PostWrapper = styled.div`
   padding: 10px 15px;
+  display: grid;
+  grid-template-columns: auto 86.76px;
   button {
     &.small {
       ${fontSize(22)};
       top: 10px;
       right: 10px;
       width: 86.76px;
-      position: absolute;
     }
   }
-  height: 150px;
+  min-height: 150px;
+  .redFont {
+    color: red;
+  }
 `;

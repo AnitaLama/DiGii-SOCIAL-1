@@ -7,7 +7,7 @@ export default function* onGetStrikesCountOfAUser(action) {
   try {
     const { data } = yield call(
       axios.post,
-      `${DEV_URL}/strikes/find`,
+      `${DEV_URL}/strikes/getUserStrikeCount`,
       action.data
     );
     if (data.success) {
@@ -16,6 +16,6 @@ export default function* onGetStrikesCountOfAUser(action) {
       yield put(StrikeActions.onGetStrikesCountOfAUserFailure(data.error));
     }
   } catch (err) {
-    console.log(err);
+    yield put(StrikeActions.onGetStrikesCountOfAUserFailure(err.toString()));
   }
 }

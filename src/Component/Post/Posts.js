@@ -5,6 +5,7 @@ import socketClient from 'socket.io-client';
 import PostAction from '../../Redux/PostRedux';
 import SinglePost from './SinglePost';
 import { SOCKET_URL } from '../../config';
+import { ErrorAlertMessage } from '../StyledComponents';
 
 // const socket = io.connect('http://localhost:4000');
 class Posts extends Component {
@@ -32,7 +33,6 @@ class Posts extends Component {
     // console.log('socket data user', user, this.socket);
 
     this.socket.on('posts', data => {
-      console.log('socket data', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
@@ -55,10 +55,13 @@ class Posts extends Component {
   }
 
   render() {
+    const { post } = this.props;
+
     let { posts } = this.state;
     posts = posts.length > 1 ? posts.sort((a, b) => b.p_id - a.p_id) : posts;
     return (
       <div key={posts}>
+        {post.error && <ErrorAlertMessage error={post.error} />}
         {posts.length > 0
           && posts.map((item, i) => (item.user || item.student ? (
             <SinglePost key={item + i} data={item} />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import { FeelingsList } from '../NewPost/index';
 import {
   flex,
   Images,
@@ -24,38 +25,26 @@ const Name = styled.div`
   ${fontWeight('bold')};
   ${fontFilson()};
   text-transform: capitalize;
+  span.emoji {
+    font-family: 'Segoe UI Emoji';
+    color: ${Colors.colors.light};
+    ${fontSize(14)};
+    font-family: Lato;
+    text-transform: none;
+  }
 `;
 
 const Post = styled.div`
   ${fontSize(14)};
   color: ${grey};
 `;
-const Gif = styled.img`
-  height: 100px;
-  width: 100px;
-`;
-class Author extends Component {
-  getContent = () => {
-    const { data } = this.props;
-    const { p_body, post_type, p_text } = data;
-    const type = post_type.pt_title;
-    switch (type) {
-      case 'text':
-        return <span>{p_body}</span>;
-      case 'gif':
-        return (
-          <div>
-            <div>{p_text}</div>
-            <Gif src={`${p_body}`} />
-          </div>
-        );
-    }
-  };
 
+class Author extends Component {
   render() {
     const { data } = this.props;
-    const { p_body } = data;
-    // const type = post_type.pt_title;
+    const { post_type, p_text } = data;
+    const type = post_type.pt_title;
+    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     let firstname = '';
     let lastname = '';
     // console.log('data author', data);
@@ -79,9 +68,19 @@ class Author extends Component {
             {firstname}
             {' '}
             {lastname}
+            {' '}
+            {type === 'feeling' && (
+              <span>
+                {' '}
+                <span className="emoji">
+                  {`- is feeling ${p_text} ${emoji.emoji}`}
+                </span>
+              </span>
+            )}
           </Name>
-          <Post>{this.getContent()}</Post>
-          {/*  <PostedDate>{postDate}</PostedDate> */}
+          {' '}
+          {/* <Post>{this.getContent()}</Post>
+            <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
       </AuthorWrapper>
     );

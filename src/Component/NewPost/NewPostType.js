@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
-import { FormTextArea } from '../StyledComponents';
 import PostTypeActions from '../../Redux/PostTypeRedux';
 import {
   GifContainer,
   TextPost,
   FeelingsPost,
   PhotoVideoPost,
-  BannerPost
+  BannerPost,
+  TagPost,
+  PollPost
 } from './index';
 
 const NewPostTypeContainer = styled.div`
@@ -59,19 +60,15 @@ class NewPostType extends Component {
         return <PhotoVideoPost {...props} />;
       // return <ImagePost {...props} />;
       case 'TAG':
-        return (
-          <FormTextArea
-            placeholder="What do you want to post?"
-            style={{ margin: 0 }}
-            {...props}
-          />
-        );
+        return <TagPost {...props} />;
       case 'GIF':
         return <GifContainer {...props} selectedGif={selectedGif} />;
       case 'FEELING':
         return <FeelingsPost {...props} />;
       case 'BANNER':
         return <BannerPost {...props} />;
+      case 'POLL':
+        return <PollPost {...props} />;
       default:
         return <TextPost {...props} />;
     }

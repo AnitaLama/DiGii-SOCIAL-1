@@ -25,21 +25,15 @@ class Container extends Component {
     return (
       <div>
         {gif
-          && gif.map((item, i) => {
-            {
-              /* console.log(i, item.images.downsized_small.mp4);
-            return <p>{item.images.downsized_small.mp4}</p>; */
-            }
-            return (
-              <Gif
-                key={`${item}+${i}`}
-                src={item.images.downsized_medium.url}
-                onClick={() => {
-                  this.selectGif(item);
-                }}
-              />
-            );
-          })}
+          && gif.map((item, i) => (
+            <Gif
+              key={`${item}+${i}`}
+              src={item.images.downsized_medium.url}
+              onClick={() => {
+                this.selectGif(item);
+              }}
+            />
+          ))}
       </div>
     );
   }

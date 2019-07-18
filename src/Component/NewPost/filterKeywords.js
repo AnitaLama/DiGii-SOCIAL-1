@@ -12,6 +12,7 @@ const FilterKeyWords = input => {
     const abc = blacklistType.array.find(item => input.includes(item));
 
     value = abc ? blacklistType.type : value;
+    return true;
   });
   return value;
 };

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
+import { FaRegTimesCircle } from 'react-icons/fa';
 import { Colors, fontSize, Images } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 
 const {
-  blue, grey, secondary, pen, lightGrey
+  blue, grey, pen, lightGrey
 } = Colors.colors;
 const SideBarContainer = styled.div`
   box-sizing: border-box;
@@ -21,7 +22,7 @@ const GroupOne = styled.div`
   border-radius: 40px;
   padding: 10px 20px;
   margin-bottom: 40px;
-  min-height: 204px;
+  // min-height: 204px;
   position: relative;
 `;
 const Last = styled.div`
@@ -49,7 +50,14 @@ const GroupElement = styled.div`
   }
 `;
 const Type = styled.span``;
-
+const Title = styled.div`
+  font-weight: bold;
+`;
+const Count = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+`;
 const SideBarMenus = [
   { menu: 'Videos', icon: Images.digii5.Video },
   { menu: 'Tutorials', icon: Images.digii5.Video },
@@ -70,7 +78,12 @@ class SideBar extends Component {
             ))}
           </GroupOne>
           <GroupOne>
-            <Last />
+            <Title>Report Meter</Title>
+            <Count>
+              <FaRegTimesCircle />
+              <FaRegTimesCircle />
+              <FaRegTimesCircle />
+            </Count>
           </GroupOne>
         </SideBarWrapper>
         <Tabs />

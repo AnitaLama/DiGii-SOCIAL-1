@@ -2,18 +2,15 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 // import VideoRecorder from 'react-video-recorder';
 import ReactMediaRecorder from 'react-media-recorder';
-import { flexCentering, Images } from '../../Theme';
+import { connect } from 'react-redux';
+import { flexCentering } from '../../Theme';
+import PostActions from '../../Redux/PostRedux';
 
 const VideoPostWrapper = styled.div`
   ${flexCentering()};
   height: 100%;
 `;
 
-const DisconnectedView = () => (
-  <div>
-    <img src={Images.digii5.Video} />
-  </div>
-);
 class VideoPost extends Component {
   constructor() {
     super();
@@ -33,7 +30,33 @@ class VideoPost extends Component {
     };
   };
 
+  submitPost = () => {
+    const { videoSrc } = this.state;
+    const formData = new FormData();
+    formData.append('file', videoSrc);
+    this.props.onPostImage(formData);
+  };
+
   render() {
+    const { videoSrc } = this.state;
+    console.log('videoSrc', videoSrc);
+    if (videoSrc) {
+      return (
+        <div>
+          <video
+            src={videoSrc}
+            controls
+            style={{
+              height: '200px',
+              width: '200px'
+            }}
+          />
+          <div>
+            <button onClick={this.submitPost}>Post</button>
+          </div>
+        </div>
+      );
+    }
     return (
       <VideoPostWrapper>
         <ReactMediaRecorder
@@ -43,14 +66,7 @@ class VideoPost extends Component {
           }) => (
             <div>
               <p>{status}</p>
-              <video
-                src={mediaBlob}
-                controls
-                style={{
-                  height: '200px',
-                  width: '200px'
-                }}
-              />
+
               <div>
                 <button
                   onClick={() => {
@@ -73,18 +89,15 @@ class VideoPost extends Component {
             </div>
           )}
         />
-        {/*  here video
-        <video
-          src={this.state.videoSrc}
-          controls
-          style={{
-            height: '200px',
-            width: '200px'
-          }}
-        /> */}
       </VideoPostWrapper>
     );
   }
 }
 
-export default VideoPost;
+const mapDispatchToProps = dispatch => ({
+  onPostImage: value => dispatch(PostActions.onPostImage(value))
+});
+export default connect(
+  null,
+  mapDispatchToProps
+)(VideoPost);

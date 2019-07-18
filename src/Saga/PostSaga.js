@@ -14,44 +14,36 @@ export function* onListPosts() {
       yield put(PostActions.onListPostsFailure(data.error));
     }
   } catch (err) {
-    console.log(err);
+    yield put(PostActions.onListPostsFailure(err.toString()));
   }
 }
 
 export function* onFindPosts(action) {
   try {
-    console.log('saga input', action.data);
     const { data } = yield call(
       axios.post,
-      `${DEV_URL}/post/find`,
+      `${DEV_URL}/post/findFeedsOfAGroup`,
       action.data
     );
-    console.log('saga output', data);
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
     } else {
       yield put(PostActions.onFindPostsFailure(data.error));
     }
-    // if (data.success) {
-    //   yield put(PostActions.onListPostsSuccess(data.result));
-    // } else {
-    //   yield put(PostActions.onListPostsFailure(data.message));
-    // }
   } catch (err) {
-    console.log(err);
-    // yield put(PostActions.onListPostsFailure(err.toString()));
-    // yield put(PostActions.onListPostsFailure(err.toString()));
+    console.log(err.toString());
+    yield put(PostActions.onFindPostsFailure(err.toString()));
   }
 }
 
 export function* onPostSubmit(action) {
   try {
-    // console.log(action);
     const { data } = yield call(axios.post, `${URL}/addPost`, action.data);
-    // console.log(data);
-    // if (data.success) {
-    //   yield put(PostActions.onListPosts());
-    // }
+    if (data.success) {
+      yield put(PostActions.onPostSubmitSuccess(data.result));
+    } else {
+      yield put(PostActions.onPostSubmitFailure(data.error));
+    }
   } catch (err) {
     console.log(err);
   }
@@ -77,8 +69,16 @@ export function* onFindGif(action) {
 
 export function* onPostImage(action) {
   try {
-    const data = yield call(axios.post, `${URL}/upload`, action.data);
-    console.log(data);
+    const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
+    console.log('saga data', data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+export function* onPostPoll(action) {
+  try {
+    const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
+    console.log('saga data', data);
   } catch (err) {
     console.log(err);
   }

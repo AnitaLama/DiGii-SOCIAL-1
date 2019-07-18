@@ -7,7 +7,7 @@ export default function* onGetPostActivitiesOfAUser(action) {
   try {
     const { data } = yield call(
       axios.post,
-      `${DEV_URL}/postActivity/find`,
+      `${DEV_URL}/postActivity/findUserActivities`,
       action.data
     );
     if (data.success) {

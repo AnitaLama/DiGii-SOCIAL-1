@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import styled from '@emotion/styled';
-import { FormInput, Button } from '../StyledComponents';
-import { FilterKeyWords, warnings, PostWrapper } from './index';
+import { FormTextArea, Button } from '../StyledComponents';
+import { FilterKeyWords, PostWrapper } from './index';
 import PostActions from '../../Redux/PostRedux';
 import { Colors } from '../../Theme';
 
 const { primary } = Colors.colors;
+const GifInputForm = styled.div`
+  display: flex;
+`;
 const GifImage = styled.img`
   height: 70px;
   width: 70px;
@@ -91,18 +94,20 @@ class GifContainer extends Component {
   };
 
   render() {
-    const { showPostButton, selectedGif } = this.state;
+    const { selectedGif } = this.state;
     // const { selectedGif } = this.props;
     if (!selectedGif) {
       return (
         <PostWrapper>
-          <FormInput
-            onFocus={this.showButton}
-            onChange={this.handleInputChange}
-            placeholder="Type in ..."
-          />
           <div>
-            <Button className="rounded" onClick={this.findGif}>
+            <input
+              onFocus={this.showButton}
+              onChange={this.handleInputChange}
+              placeholder="Type in ..."
+            />
+          </div>
+          <div>
+            <Button className="rounded small short" onClick={this.findGif}>
               Find
             </Button>
           </div>
@@ -111,17 +116,19 @@ class GifContainer extends Component {
     }
     return (
       <PostWrapper>
-        <div>
-          <FormInput
-            placeholder="Write something..."
-            onChange={this.handleCaptionText}
-          />
+        <GifInputForm>
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <GifImage src={selectedGif.images.downsized_medium.url} />
             <CloseButton onClick={this.removeGif}>
               <FaTimes />
             </CloseButton>
           </div>
+          <FormTextArea
+            placeholder="Write something..."
+            onChange={this.handleCaptionText}
+          />
+        </GifInputForm>
+        <div>
           <Button className="rounded small" onClick={this.submitPost}>
             Post
           </Button>

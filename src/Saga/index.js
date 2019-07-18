@@ -18,7 +18,8 @@ import {
   onFindPosts,
   onPostSubmit,
   onFindGif,
-  onPostImage
+  onPostImage,
+  onPostPoll
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import onGetPostActivitiesOfAUser from './PostActivitySaga';
@@ -39,6 +40,7 @@ export default function* root() {
     takeLatest(PostTypes.ON_FIND_GIF, onFindGif),
     takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit),
     takeLatest(PostTypes.ON_POST_IMAGE, onPostImage),
+    takeLatest(PostTypes.ON_POST_POLL, onPostPoll),
     takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),
     takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment),
     takeLatest(

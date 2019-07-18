@@ -37,7 +37,7 @@ class TextPost extends Component {
   };
 
   handlePostText = e => {
-    const { onGetStrikesCountOfAUser, user, onBlockUser } = this.props;
+    const { onGetStrikesCountOfAUser, user } = this.props;
     const { isStudent, id } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
@@ -127,7 +127,6 @@ class TextPost extends Component {
       isBad,
       str_type: strikeType
     };
-    console.log('on post', post);
     await onPostSubmit(post);
     this.setState({ postText: '', isBad: false });
     resetPostType();
@@ -144,7 +143,6 @@ class TextPost extends Component {
       username,
       postText
     } = this.state;
-
     return (
       <PostWrapper>
         <FormTextArea

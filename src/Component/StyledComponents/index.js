@@ -1,8 +1,10 @@
-import ErrorMessage from './ErrorMessage';
+import { ErrorMessage, ErrorAlertMessage } from './ErrorMessage';
 import Avatar from './Avatar';
-import Modal from './Modal';
+import { Modal, ImageModal } from './Modal';
 
-export { ErrorMessage, Avatar, Modal };
+export {
+  ErrorMessage, ErrorAlertMessage, Avatar, Modal, ImageModal
+};
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';
 export { ContainerWrapper, ContentWrapper } from './Wrapper';

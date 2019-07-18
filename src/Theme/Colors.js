@@ -22,7 +22,9 @@ const Colors = {
     pencil: '#E2E1E1',
     placeholder: '#E9E9E9',
     snow: '#fff',
-    background: '#f1f3f4'
+    background: '#f1f3f4',
+    dark: '#5E5E5E',
+    light: '#777777'
   }
 };
 

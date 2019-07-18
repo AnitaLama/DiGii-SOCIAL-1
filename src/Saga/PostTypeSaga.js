@@ -14,6 +14,6 @@ export default function* onListPostTypes() {
       yield put(PostTypeRedux.onListPostTypesFailure(data.error));
     }
   } catch (err) {
-    console.log(err);
+    yield put(PostTypeRedux.onListPostTypesFailure(err.toString()));
   }
 }

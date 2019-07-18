@@ -134,7 +134,7 @@ class NewPost extends Component {
 
   postArea = () => {
     const { type, selectedGif } = this.state;
-    const { user } = this.props;
+    // const { user } = this.props;
     // let { firstname } = user.user;
     // firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
     return (
