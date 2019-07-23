@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import styled from '@emotion/styled';
-// import VideoRecorder from 'react-video-recorder';
-import ReactMediaRecorder from 'react-media-recorder';
-import { connect } from 'react-redux';
-import { flexCentering } from '../../Theme';
-import PostActions from '../../Redux/PostRedux';
+import React, { Component } from "react";
+import VideoRecorder from "react-video-recorder";
+import styled from "@emotion/styled";
+import { flexCentering } from "../../Theme";
+import { connect } from "react-redux";
+import PostActions from "../../Redux/PostRedux";
 
 const VideoPostWrapper = styled.div`
   ${flexCentering()};
@@ -19,84 +18,78 @@ class VideoPost extends Component {
     };
   }
 
-  onChange = () => {
-    const video = this.videoPlayerContainer;
+  actionHandler = data => {
+    const urlCreator = window.URL || window.webkitURL;
+    console.log("Camera on off", data);
 
-    const url = URL.createObjectURL(this.state.videoSrc);
-    video.src = url;
-    video.load();
-    video.onloadeddata = function () {
-      video.play();
-    };
-  };
+    const videoUrl = urlCreator.createObjectURL(data);
+    console.log("VideoURL", videoUrl);
 
-  submitPost = () => {
-    const { videoSrc } = this.state;
-    const formData = new FormData();
-    formData.append('file', videoSrc);
-    this.props.onPostImage(formData);
+    this.props.onVideoPost(data);
   };
 
   render() {
-    const { videoSrc } = this.state;
-    console.log('videoSrc', videoSrc);
-    if (videoSrc) {
-      return (
-        <div>
-          <video
-            src={videoSrc}
-            controls
-            style={{
-              height: '200px',
-              width: '200px'
-            }}
-          />
-          <div>
-            <button onClick={this.submitPost}>Post</button>
-          </div>
-        </div>
-      );
-    }
+    const VideoDisplay = () => (
+      // eslint-disable-next-line jsx-a11y/media-has-caption
+      <renderLoadingView
+        src={this.state.videoSrc}
+        controls
+        style={{
+          height: "200px",
+          width: "200px"
+        }}
+      />
+    );
+    // if (this.state.videoSrc) {
+    //   return (
+    //     <div>
+    //       {VideoDisplay()}
+
+    //       <div>
+    //         <button onClick={this.submitPost}>Post</button>
+    //       </div>
+
+    //       <h2> Here new vedio document is created </h2>
+    //     </div>
+    //   );
+    // }
+    const handleRecordingComplete = (
+      videoBlob,
+      startedAt,
+      thumbnailBlob,
+      duration
+    ) => {
+      const urlCreator = window.URL || window.webkitURL;
+      const thumbUrl =
+        thumbnailBlob && urlCreator.createObjectURL(thumbnailBlob);
+      const videoUrl = urlCreator.createObjectURL(videoBlob);
+
+      console.log("Video Blob", videoBlob.size, videoBlob, videoUrl);
+      console.log("Thumb Blob", thumbnailBlob, thumbUrl);
+      console.log("Started:", startedAt);
+      console.log("Duration:", duration);
+
+      this.setState({ videoSrc: videoUrl }, () => {
+        console.log("State properties", this.state.videoSrc);
+      });
+    };
     return (
       <VideoPostWrapper>
-        <ReactMediaRecorder
-          video
-          render={({
-            status, startRecording, stopRecording, mediaBlob
-          }) => (
-            <div>
-              <p>{status}</p>
-
-              <div>
-                <button
-                  onClick={() => {
-                    startRecording();
-                    console.log('mediaBlob', mediaBlob);
-                  }}
-                >
-                  Start Recording
-                </button>
-                <button onClick={stopRecording}>Stop Recording</button>
-                <button
-                  onClick={() => {
-                    console.log(mediaBlob);
-                    this.setState({ videoSrc: mediaBlob });
-                  }}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          )}
+        <VideoRecorder
+          onRecordingComplete={handleRecordingComplete}
+          renderLoadingView={VideoDisplay}
+          // onOpenVideoInput={this.actionHandler}
+          // onStopReplaying={this.actionHandler}
+          // onError={this.actionHandler}
         />
       </VideoPostWrapper>
     );
   }
 }
-
 const mapDispatchToProps = dispatch => ({
-  onPostImage: value => dispatch(PostActions.onPostImage(value))
+  onVideoPost: value => dispatch(PostActions.onVideoPost(value))
 });
+
 export default connect(
   null,
   mapDispatchToProps

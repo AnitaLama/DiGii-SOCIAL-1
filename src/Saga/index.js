@@ -1,31 +1,32 @@
-import { takeLatest, all } from 'redux-saga/effects';
-import { TestTypes } from '../Redux/TestRedux';
-import testFunction from './TestSaga';
-import { LoginTypes } from '../Redux/LoginRedux';
-import { PostTypes } from '../Redux/PostRedux';
-import { StrikeTypes } from '../Redux/StrikeRedux';
-import { PostTypeTypes } from '../Redux/PostTypeRedux';
-import { PostActivityTypes } from '../Redux/PostActivityRedux';
-import { CommentTypes } from '../Redux/CommentRedux';
-import { BannerTypes } from '../Redux/BannerRedux';
+import { takeLatest, all } from "redux-saga/effects";
+import { TestTypes } from "../Redux/TestRedux";
+import testFunction from "./TestSaga";
+import { LoginTypes } from "../Redux/LoginRedux";
+import { PostTypes } from "../Redux/PostRedux";
+import { StrikeTypes } from "../Redux/StrikeRedux";
+import { PostTypeTypes } from "../Redux/PostTypeRedux";
+import { PostActivityTypes } from "../Redux/PostActivityRedux";
+import { CommentTypes } from "../Redux/CommentRedux";
+import { BannerTypes } from "../Redux/BannerRedux";
 import {
   onLoginRequest,
   onStudentLoginRequest,
   onBlockUser
-} from './LoginSaga';
+} from "./LoginSaga";
 import {
   onListPosts,
   onFindPosts,
   onPostSubmit,
   onFindGif,
   onPostImage,
-  onPostPoll
-} from './PostSaga';
-import onListPostTypes from './PostTypeSaga';
-import onGetPostActivitiesOfAUser from './PostActivitySaga';
-import onSubmitComment from './CommentSaga';
-import onGetStrikesCountOfAUser from './StrikeSaga';
-import onGetAllBanners from './BannerSaga';
+  onPostPoll,
+  onVideoPost
+} from "./PostSaga";
+import onListPostTypes from "./PostTypeSaga";
+import onGetPostActivitiesOfAUser from "./PostActivitySaga";
+import onSubmitComment from "./CommentSaga";
+import onGetStrikesCountOfAUser from "./StrikeSaga";
+import onGetAllBanners from "./BannerSaga";
 
 export default function* root() {
   yield all([
@@ -35,6 +36,7 @@ export default function* root() {
     takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
 
     takeLatest(PostTypes.ON_LIST_POSTS, onListPosts),
+    takeLatest(PostTypes.ON_VIDEO_POST, onVideoPost),
 
     takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts),
     takeLatest(PostTypes.ON_FIND_GIF, onFindGif),
