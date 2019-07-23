@@ -21,7 +21,9 @@ const { Types, Creators } = createActions({
   onFindGifFailure: ['data'],
   clearGifList: [],
   onPostImage: ['data'],
-  onPostPoll: ['data']
+  onPostPoll: ['data'],
+  onUploadImage: ['data'],
+  onRespondToPoll: ['data']
 });
 
 export const PostTypes = Types;

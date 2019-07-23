@@ -68,13 +68,13 @@ const Points = styled.div`
   }
 `;
 const Image = styled.img`
-  height: 320px;
-  width: 320px;
+  // height: auto;
+  width: 100%;
 `;
 const ImageWrapper = styled.div``;
 const ImageBackground = styled.div`
   position: relative;
-  width: 320px;
+  width: 100%;
 `;
 const ImageOverlay = styled.div`
   position: absolute;
@@ -111,9 +111,9 @@ class Modal extends Component {
             marginTop: '200px'
           }}
         >
-          <div className="close">
+          {/*  <div className="close">
             <CloseButton onClick={hideModal}>x</CloseButton>
-          </div>
+          </div> */}
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
@@ -152,53 +152,42 @@ class ImageModal extends Component {
   }
 
   componentDidMount() {
-    let img = new window.Image();
-    img.crossOrigin = 'anonymous';
-    img = this.banner;
+    const { canvas } = this;
+    const img = this.bannerImg;
+    const image = new window.Image();
 
-    const c = this.finalBanner;
-    const ctx = c.getContext('2d');
-    ctx.drawImage(img, 0, 0);
+    const ctx = canvas.getContext('2d');
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+
+      // console.log(ctx.toDataURL());
+    };
+    img.crossOrigin = 'anonymous';
   }
 
   handleTextChange = e => {
     const { value } = e.target;
-    // const splittedWords = value.split(' ');
-    // const ctx = this.canvas.getContext('2d');
-    // ctx.font = '20px Courier';
-    // const x = 50;
-    // let y = 50;
-    // console.log(x, y);
-    // splittedWords.map(item => {
-    //   ctx.fillText(value, x, y);
-    //   y += 20;
-    // });
-    this.setState({ text: value });
 
-    const c = this.finalBanner;
-    const ctx = c.getContext('2d');
-    ctx.fillText(value, 50, 50);
+    this.setState({ text: value });
   };
 
   saveBanner = () => {
     const c = this.finalBanner;
-    console.log(c);
-    // const imgurl = c.toDataURL();
-    // console.log(imgurl);
-    // setTimeout(() => {}, 5000);
-    // const img = this.banner;
-    // const ctx = this.canvas.getContext('2d');
-    // ctx.drawImage(img, 0, 0);
-    // html2canvas(this.finalBanner)
-    //   .then(canvas => {
-    //     console.log('canvas', canvas);
-    //     const url = canvas.toDataURL();
-    //     console.log('canvas url', url);
-    //     this.setState({ imgURL: url });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    html2canvas(c, {
+      allowTaint: true,
+      useCORS: true,
+      taintTest: false,
+      /* proxy:"lib/html2canvas_proxy/html2canvasproxy.php", */
+      onrendered(canvas) {
+        const result = canvas.toDataURL();
+        console.log('result>>>>>>>>>>>');
+        console.log(result);
+      }
+    }).then(canvas => {
+      console.log(canvas, { allowTaint: true });
+      const imgData = canvas.toDataURL('image/png');
+      console.log(imgData);
+    });
   };
 
   render() {
@@ -208,48 +197,46 @@ class ImageModal extends Component {
       <ModalContainer>
         <ModalBox
           style={{
-            marginTop: '100px'
+            marginTop: '50px'
           }}
         >
-          <div className="close">
+          {/* <div className="close">
             <CloseButton onClick={hideModal}>x</CloseButton>
-          </div>
+          </div> */}
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
               Digii
             </div>
             <Points>
-              <span>-5</span>
+              {/* <span>-5</span>
               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
+        */}
+              {' '}
             </Points>
           </Header>
-          {/*  <div>
-            <FormInput onChange={this.handleTextChange} />
-            <Image
-              ref={r => (this.banner = r)}
-              src={`${url}/${data.Key}`}
-              style={{ display: 'none' }}
-            />
-          </div> */}
 
           <ImageWrapper>
-            here
-            <FormInput onChange={this.handleTextChange} />
-            <canvas ref={r => (this.finalBanner = r)} />
-            <Image
-              ref={r => (this.banner = r)}
-              src={`${url}/${data.Key}`}
-              style={{ display: 'none' }}
+            <FormInput
+              onChange={this.handleTextChange}
+              placeholder="What do you want to say?"
             />
+            <canvas ref={r => (this.canvas = r)} />
+            <ImageBackground ref={r => (this.finalBanner = r)}>
+              <Image
+                ref={r => (this.bannerImg = r)}
+                src={`${url}/${data.Key}`}
+              />
+              <ImageOverlay>{text}</ImageOverlay>
+            </ImageBackground>
           </ImageWrapper>
 
           <ButtonWrapper>
-            <Button className="rounded short" onClick={this.saveBanner}>
+            {/*  <Button className="rounded short" onClick={this.saveBanner}>
               SAVE
-            </Button>
-            <Button className="rounded short" onClick={hideModal}>
-              OK
+            </Button> */}
+            <Button className="rounded short" onClick={this.saveBanner}>
+              POST
             </Button>
           </ButtonWrapper>
         </ModalBox>
@@ -259,7 +246,6 @@ class ImageModal extends Component {
 }
 
 ImageModal.propTypes = {
-  message: PropTypes.string,
   hideModal: PropTypes.func
 };
 

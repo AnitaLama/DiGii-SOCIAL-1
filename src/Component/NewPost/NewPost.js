@@ -128,15 +128,11 @@ class NewPost extends Component {
   };
 
   onChangeHandler = event => {
-    // console.log(event.target.files[0]);
     this.setState({ postText: event.target.files[0] });
   };
 
   postArea = () => {
     const { type, selectedGif } = this.state;
-    // const { user } = this.props;
-    // let { firstname } = user.user;
-    // firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
     return (
       <NewPostType
         type={type}
@@ -153,27 +149,35 @@ class NewPost extends Component {
 
   render() {
     const { type } = this.state;
+    const { post } = this.props;
+    const { gif } = post;
     return (
-      <NewPostWrapper>
-        <NewPostContainer>
-          <Input>
-            <Avatar src={Images.stockImage} height={53} radius={30} />
-            {this.postArea()}
-            {/* <TiDelete /> */}
-          </Input>
-        </NewPostContainer>
-        <NewPostOptionContainer>
-          {options.map(option => (
-            <NewPostOption
-              key={option.text}
-              option={option}
-              handleButtonClick={this.handleButtonClick}
-              selected={type}
-            />
-          ))}
-        </NewPostOptionContainer>
-        <Container selectGif={this.selectGif} />
-      </NewPostWrapper>
+      <div>
+        <NewPostWrapper>
+          <NewPostContainer>
+            <Input>
+              <Avatar src={Images.stockImage} height={53} radius={30} />
+              {this.postArea()}
+              {/* <TiDelete /> */}
+            </Input>
+          </NewPostContainer>
+          <NewPostOptionContainer>
+            {options.map(option => (
+              <NewPostOption
+                key={option.text}
+                option={option}
+                handleButtonClick={this.handleButtonClick}
+                selected={type}
+              />
+            ))}
+          </NewPostOptionContainer>
+        </NewPostWrapper>
+        {gif.length > 0 && (
+          <NewPostWrapper>
+            <Container selectGif={this.selectGif} />
+          </NewPostWrapper>
+        )}
+      </div>
     );
   }
 }
@@ -183,7 +187,7 @@ NewPostOption.propTypes = {
   handleButtonClick: PropTypes.func
 };
 NewPost.propTypes = {
-  user: PropTypes.object
+  post: PropTypes.object
 };
 const mapStateToProps = state => ({
   postType: state.postType,

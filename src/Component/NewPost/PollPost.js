@@ -59,20 +59,17 @@ class PollPost extends Component {
         {
           id: Math.random(0, 1).toFixed(3),
           text: '',
-          img: '',
-          value: ''
+          img: ''
         },
         {
           id: Math.random(0, 1).toFixed(3),
           text: '',
-          img: '',
-          value: ''
+          img: ''
         },
         {
           id: Math.random(0, 1).toFixed(3),
           text: '',
-          img: '',
-          value: ''
+          img: ''
         }
       ]
     };
@@ -95,10 +92,18 @@ class PollPost extends Component {
   selectImage = (e, option) => {
     const { options } = this.state;
     const newArr = [];
+
+    let fileName = e.target.files[0].name.replace(/\s/g, '-');
+    const currentDate = new Date();
+    fileName = currentDate.getTime() + fileName;
     options.forEach(item => (option.id === item.id
-      ? newArr.push({ ...item, img: e.target.files[0] })
+      ? newArr.push({
+        ...item,
+        img: e.target.files[0],
+        name: fileName,
+        url: URL.createObjectURL(e.target.files[0])
+      })
       : newArr.push(item)));
-    console.log(option.id, newArr);
     this.setState({ options: newArr });
   };
 
@@ -116,11 +121,15 @@ class PollPost extends Component {
             this.openFileSystem(`openFSInput${item.id}`);
           }}
         >
-          <FaImage />
+          {item.url ? (
+            <img src={item.url} height={25} width={25} />
+          ) : (
+            <FaImage />
+          )}
           <input
             type="file"
             id={`openFSInput${item.id}`}
-            multiple=""
+            multiple
             onChange={e => {
               this.selectImage(e, item);
             }}
@@ -169,7 +178,7 @@ class PollPost extends Component {
             id: Math.random(0, 100).toFixed(3),
             text: '',
             img: '',
-            value: ''
+            name: ''
           }
         ]
       }));
@@ -182,10 +191,34 @@ class PollPost extends Component {
   };
 
   onPostPoll = () => {
-    const { question, options } = this.state;
-    const { onPostPoll } = this.props;
-    console.log('poll values', question, options);
-    onPostPoll({ question, options });
+    const { question, options, postTypeId } = this.state;
+    const { onPostPoll, user, resetPostType } = this.props;
+    const { isStudent, id } = user.user;
+    // console.log('poll values', question, options);
+    const newArr = [];
+    options.map(item => {
+      if (item.text || item.url) {
+        newArr.push(item);
+      }
+    });
+
+    const imgArr = newArr.map(item => {
+      const formData = new FormData();
+      if (item.img) {
+        formData.append('file', item.img);
+        formData.append('name', item.name);
+        this.props.onUploadImage(formData);
+      }
+      // return item.img;
+    });
+    this.props.onPostPoll({
+      question,
+      options: newArr,
+      isStudent,
+      id,
+      type: postTypeId
+    });
+    resetPostType();
   };
 
   render() {
@@ -213,10 +246,14 @@ class PollPost extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user
+});
 const mapDispatchToProps = dispatch => ({
-  onPostPoll: value => dispatch(PostActions.onPostPoll(value))
+  onPostPoll: value => dispatch(PostActions.onPostPoll(value)),
+  onUploadImage: value => dispatch(PostActions.onUploadImage(value))
 });
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PollPost);

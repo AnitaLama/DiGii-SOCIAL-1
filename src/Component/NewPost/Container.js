@@ -9,7 +9,6 @@ const Gif = styled.img`
 `;
 class Container extends Component {
   selectGif = gif => {
-    // console.log(gif);
     this.props.selectGif(gif);
     this.props.clearGifList();
   };
@@ -17,10 +16,6 @@ class Container extends Component {
   render() {
     const { post } = this.props;
     const { gif } = post;
-    // console.log(gif);
-    // gif.map((item, i) => {
-    //   console.log(i, item.images.downsized_small.mp4);
-    // });
 
     return (
       <div>

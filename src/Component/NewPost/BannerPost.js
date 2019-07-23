@@ -58,7 +58,7 @@ class BannerPost extends Component {
   };
 
   render() {
-    const { username, showModal, banner } = this.state;
+    const { showModal, banner } = this.state;
 
     return (
       <PostWrapper>

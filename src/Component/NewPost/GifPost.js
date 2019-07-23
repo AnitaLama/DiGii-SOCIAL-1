@@ -11,6 +11,12 @@ const { primary } = Colors.colors;
 const GifInputForm = styled.div`
   display: flex;
 `;
+const Input = styled.div`
+  input {
+    border: 0;
+    outline: 0;
+  }
+`;
 const GifImage = styled.img`
   height: 70px;
   width: 70px;
@@ -99,13 +105,13 @@ class GifContainer extends Component {
     if (!selectedGif) {
       return (
         <PostWrapper>
-          <div>
+          <Input>
             <input
               onFocus={this.showButton}
               onChange={this.handleInputChange}
               placeholder="Type in ..."
             />
-          </div>
+          </Input>
           <div>
             <Button className="rounded small short" onClick={this.findGif}>
               Find

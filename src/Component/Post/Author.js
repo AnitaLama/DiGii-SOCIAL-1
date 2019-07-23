@@ -47,7 +47,7 @@ class Author extends Component {
     const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     let firstname = '';
     let lastname = '';
-    // console.log('data author', data);
+    // post typet,po ypepost console.log('data author', data);
     if (data.p_isStudent) {
       const { student } = data;
 
