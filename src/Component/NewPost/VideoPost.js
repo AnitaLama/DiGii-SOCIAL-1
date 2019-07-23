@@ -30,29 +30,20 @@ class VideoPost extends Component {
 
   render() {
     const VideoDisplay = () => (
-      // eslint-disable-next-line jsx-a11y/media-has-caption
-      <renderLoadingView
+      <video
         src={this.state.videoSrc}
         controls
-        style={{
-          height: "200px",
-          width: "200px"
-        }}
+        // style={{
+        //   height: "200px",
+        //   width: "200px"
+        // }}
       />
     );
-    // if (this.state.videoSrc) {
-    //   return (
-    //     <div>
-    //       {VideoDisplay()}
 
-    //       <div>
-    //         <button onClick={this.submitPost}>Post</button>
-    //       </div>
+    if (this.state.videoSrc) {
+      return <div>{VideoDisplay()}</div>;
+    }
 
-    //       <h2> Here new vedio document is created </h2>
-    //     </div>
-    //   );
-    // }
     const handleRecordingComplete = (
       videoBlob,
       startedAt,
