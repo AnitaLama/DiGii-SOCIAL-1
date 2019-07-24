@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import Avatar, { Piece } from 'avataaars';
+import Avatar from 'avataaars';
 
 class UserAvatar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      avatarStyle: 'Circle',
       topType: 'LongHairMiaWallace',
       accessoriesType: 'Prescription02',
       hairColor: 'BrownDark',
       facialHairType: 'Blank',
+      facialHairColor: 'Black',
       clotheType: 'Hoodie',
       clotheColor: 'PastelBlue',
       eyeType: 'Happy',
@@ -18,23 +20,44 @@ class UserAvatar extends Component {
     };
   }
 
+  onChange = e => {
+    console.log('Here is the value selected', e.target.value);
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
   render() {
+    console.log(this.state);
+    const {
+      avatarStyle,
+      topType,
+      accessoriesType,
+      hairColor,
+      facialHairType,
+      clotheType,
+      clotheColor,
+      eyeType,
+      eyebrowType,
+      mouthType,
+      skinColor,
+      facialHairColor
+    } = this.state;
     return (
       <div>
         Your avatar:
         <Avatar
           style={{ width: '100px', height: '100px' }}
-          avatarStyle="Circle"
-          topType="LongHairMiaWallace"
-          accessoriesType="Prescription02"
-          hairColor="BrownDark"
-          facialHairType="Blank"
-          clotheType="Hoodie"
-          clotheColor="PastelBlue"
-          eyeType="Happy"
-          eyebrowType="Default"
-          mouthType="Smile"
-          skinColor="Light"
+          avatarStyle={avatarStyle}
+          topType={topType}
+          accessoriesType={accessoriesType}
+          hairColor={hairColor}
+          facialHairType={facialHairType}
+          clotheType={clotheType}
+          clotheColor={clotheColor}
+          eyeType={eyeType}
+          eyebrowType={eyebrowType}
+          mouthType={mouthType}
+          skinColor={skinColor}
+          facialHairColor={facialHairColor}
         />
         <form className="form-horizontal">
           <div className="row form-group">
@@ -44,8 +67,9 @@ class UserAvatar extends Component {
             <div className="col-sm-9">
               <label>
                 <input
+                  onChange={e => this.onChange(e)}
                   type="radio"
-                  id="avatar-style-circle"
+                  id="avatarStyle"
                   name="avatar-style"
                   value="Circle"
                 />
@@ -55,8 +79,9 @@ class UserAvatar extends Component {
               {' '}
               <label>
                 <input
+                  onChange={e => this.onChange(e)}
                   type="radio"
-                  id="avatar-style-transparent"
+                  id="avatarStyle"
                   name="avatar-style"
                   value="Transparent"
                 />
@@ -70,7 +95,11 @@ class UserAvatar extends Component {
               Top
             </label>
             <div className="col-sm-9">
-              <select id="topType" className="form-control">
+              <select
+                id="topType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="NoHair">NoHair</option>
                 <option value="Eyepatch">Eyepatch</option>
                 <option value="Hat">Hat</option>
@@ -120,7 +149,11 @@ class UserAvatar extends Component {
               ↳ 👓 Accessories
             </label>
             <div className="col-sm-9">
-              <select id="accessoriesType" className="form-control">
+              <select
+                id="accessoriesType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Blank">Blank</option>
                 <option value="Kurt">Kurt</option>
                 <option value="Prescription01">Prescription01</option>
@@ -136,7 +169,11 @@ class UserAvatar extends Component {
               ↳ 💈 Hair Color
             </label>
             <div className="col-sm-9">
-              <select id="hairColor" className="form-control">
+              <select
+                id="hairColor"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Auburn">Auburn</option>
                 <option value="Black">Black</option>
                 <option value="Blonde">Blonde</option>
@@ -155,7 +192,11 @@ class UserAvatar extends Component {
               Facial Hair
             </label>
             <div className="col-sm-9">
-              <select id="facialHairType" className="form-control">
+              <select
+                id="facialHairType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Blank">Blank</option>
                 <option value="BeardMedium">BeardMedium</option>
                 <option value="BeardLight">BeardLight</option>
@@ -170,7 +211,11 @@ class UserAvatar extends Component {
               ↳ ✂️ Facial Hair Color
             </label>
             <div className="col-sm-9">
-              <select id="facialHairColor" className="form-control">
+              <select
+                id="facialHairColor"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Auburn">Auburn</option>
                 <option value="Black">Black</option>
                 <option value="Blonde">Blonde</option>
@@ -187,7 +232,11 @@ class UserAvatar extends Component {
               👔 Clothes
             </label>
             <div className="col-sm-9">
-              <select id="clotheType" className="form-control">
+              <select
+                id="clotheType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="BlazerShirt">BlazerShirt</option>
                 <option value="BlazerSweater">BlazerSweater</option>
                 <option value="CollarSweater">CollarSweater</option>
@@ -201,11 +250,43 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
+            <label htmlFor="clotheColor" className="col-sm-3 control-label">
+              ↳ Color Fabric
+            </label>
+            <div className="col-sm-9">
+              <select
+                id="clotheColor"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
+                <option value="Black">Black</option>
+                <option value="Blue01">Blue01</option>
+                <option value="Blue02">Blue02</option>
+                <option value="Blue03">Blue03</option>
+                <option value="Gray01">Gray01</option>
+                <option value="Gray02">Gray02</option>
+                <option value="Heather">Heather</option>
+                <option value="PastelBlue">PastelBlue</option>
+                <option value="PastelGreen">PastelGreen</option>
+                <option value="PastelOrange">PastelOrange</option>
+                <option value="PastelRed">PastelRed</option>
+                <option value="PastelYellow">PastelYellow</option>
+                <option value="Pink">Pink</option>
+                <option value="Red">Red</option>
+                <option value="White">White</option>
+              </select>
+            </div>
+          </div>
+          <div className="row form-group">
             <label htmlFor="eyeType" className="col-sm-3 control-label">
               👁 Eyes
             </label>
             <div className="col-sm-9">
-              <select id="eyeType" className="form-control">
+              <select
+                id="eyeType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Close">Close</option>
                 <option value="Cry">Cry</option>
                 <option value="Default">Default</option>
@@ -226,7 +307,11 @@ class UserAvatar extends Component {
               ✏️ Eyebrow
             </label>
             <div className="col-sm-9">
-              <select id="eyebrowType" className="form-control">
+              <select
+                id="eyebrowType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Angry">Angry</option>
                 <option value="AngryNatural">AngryNatural</option>
                 <option value="Default">Default</option>
@@ -249,7 +334,11 @@ class UserAvatar extends Component {
               👄 Mouth
             </label>
             <div className="col-sm-9">
-              <select id="mouthType" className="form-control">
+              <select
+                id="mouthType"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Concerned">Concerned</option>
                 <option value="Default">Default</option>
                 <option value="Disbelief">Disbelief</option>
@@ -270,7 +359,11 @@ class UserAvatar extends Component {
               🎨 Skin
             </label>
             <div className="col-sm-9">
-              <select id="skinColor" className="form-control">
+              <select
+                id="skinColor"
+                className="form-control"
+                onChange={e => this.onChange(e)}
+              >
                 <option value="Tanned">Tanned</option>
                 <option value="Yellow">Yellow</option>
                 <option value="Pale">Pale</option>
@@ -279,15 +372,6 @@ class UserAvatar extends Component {
                 <option value="DarkBrown">DarkBrown</option>
                 <option value="Black">Black</option>
               </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <div className="offset-sm-3 col-sm-9 col-sm-offset-3">
-              More options coming soon,
-              {' '}
-              <a href="http://eepurl.com/c_7fN9" target="_blank">
-                subscribe for updates
-              </a>
             </div>
           </div>
         </form>

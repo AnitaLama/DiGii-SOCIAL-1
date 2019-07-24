@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import VideoRecorder from 'react-video-recorder';
-import styled from '@emotion/styled';
-import { connect } from 'react-redux';
-import { flexCentering } from '../../Theme';
-import PostActions from '../../Redux/PostRedux';
-import { FormTextArea, Button } from '../StyledComponents';
-import { PostWrapper } from './index';
+import React, { Component } from "react";
+import VideoRecorder from "react-video-recorder";
+import styled from "@emotion/styled";
+
+import { connect } from "react-redux";
+import { flexCentering } from "../../Theme";
+import PostActions from "../../Redux/PostRedux";
+import { FormTextArea, Button } from "../StyledComponents";
+import { PostWrapper } from "./index";
 
 const VideoPostWrapper = styled.div`
   ${flexCentering()};
@@ -21,8 +22,8 @@ class VideoPost extends Component {
       videoSrc: null,
       postTypeId: props.postTypeId,
       username: props.username,
-      description: '',
-      videoSrc: '',
+      description: "",
+      videoSrc: "",
       video: null
     };
   }
@@ -43,8 +44,8 @@ class VideoPost extends Component {
       src={this.state.videoSrc}
       controls
       style={{
-        height: '200px',
-        width: '200px'
+        height: "200px",
+        width: "200px"
       }}
     />
   );
@@ -56,12 +57,12 @@ class VideoPost extends Component {
     const { user, resetPostType } = this.props;
     const { isStudent, id } = user.user;
     const { video, videoSrc, description } = this.state;
-    formData.append('file', video);
-    formData.append('name', username + currentDate.getTime());
-    formData.append('id', id);
-    formData.append('isStudent', isStudent);
-    formData.append('description', description);
-    formData.append('postTypeId', postTypeId);
+    formData.append("file", video);
+    formData.append("name", username + currentDate.getTime());
+    formData.append("id", id);
+    formData.append("isStudent", isStudent);
+    formData.append("description", description);
+    formData.append("postTypeId", postTypeId);
     this.props.onVideoPost(formData);
     setTimeout(() => {
       resetPostType();
