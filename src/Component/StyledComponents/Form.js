@@ -22,7 +22,7 @@ const FormInput = styled.input`
 
 const FormTextArea = styled.textarea`
   width: 100%;
-  border-radius: 40px;
+  border-radius: 10px;
   outline: none;
   border: 0;
   outline:0

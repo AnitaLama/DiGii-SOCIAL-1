@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import PostActions from '../../Redux/PostRedux';
 
 const Gif = styled.img`
@@ -9,19 +10,15 @@ const Gif = styled.img`
 `;
 class Container extends Component {
   selectGif = gif => {
-    // console.log(gif);
-    this.props.selectGif(gif);
-    this.props.clearGifList();
+    const { selectGif, clearGifList } = this.props;
+    selectGif(gif);
+    clearGifList();
   };
 
   render() {
     const { post } = this.props;
     const { gif } = post;
-    // console.log(gif);
-    // gif.map((item, i) => {
-    //   console.log(i, item.images.downsized_small.mp4);
-    // });
-
+    // DISPLAY ALL THE GIFS IN THE STORE
     return (
       <div>
         {gif
@@ -38,7 +35,11 @@ class Container extends Component {
     );
   }
 }
-
+Container.propTypes = {
+  post: PropTypes.object,
+  clearGifList: PropTypes.func,
+  selectGif: PropTypes.func
+};
 const mapStateToProps = state => ({
   post: state.post
 });

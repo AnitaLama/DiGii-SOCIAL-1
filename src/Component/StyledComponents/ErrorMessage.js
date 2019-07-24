@@ -47,7 +47,6 @@ class ErrorAlertMessage extends Component {
   }
 
   componentWillMount() {
-    const { show } = this.state;
     setTimeout(() => {
       this.setState({ show: false });
     }, 5000);

@@ -8,6 +8,8 @@ import { PostTypeTypes } from '../Redux/PostTypeRedux';
 import { PostActivityTypes } from '../Redux/PostActivityRedux';
 import { CommentTypes } from '../Redux/CommentRedux';
 import { BannerTypes } from '../Redux/BannerRedux';
+import { GroupTypes } from '../Redux/GroupRedux';
+import { ProfileTypes } from '../Redux/ProfileRedux';
 import {
   onLoginRequest,
   onStudentLoginRequest,
@@ -19,13 +21,19 @@ import {
   onPostSubmit,
   onFindGif,
   onPostImage,
-  onPostPoll
+  onPostPoll,
+  onUploadImage,
+  onRespondToPoll,
+  onSubmitTagPost,
+  onVideoPost
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import onGetPostActivitiesOfAUser from './PostActivitySaga';
 import onSubmitComment from './CommentSaga';
 import onGetStrikesCountOfAUser from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
+import onGetAllUsersOfAGroup from './GroupSaga';
+import onGetUserInfo from './ProfileSaga';
 
 export default function* root() {
   yield all([
@@ -41,6 +49,10 @@ export default function* root() {
     takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit),
     takeLatest(PostTypes.ON_POST_IMAGE, onPostImage),
     takeLatest(PostTypes.ON_POST_POLL, onPostPoll),
+    takeLatest(PostTypes.ON_UPLOAD_IMAGE, onUploadImage),
+    takeLatest(PostTypes.ON_VIDEO_POST, onVideoPost),
+    takeLatest(PostTypes.ON_SUBMIT_TAG_POST, onSubmitTagPost),
+    takeLatest(PostTypes.ON_RESPOND_TO_POLL, onRespondToPoll),
     takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),
     takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment),
     takeLatest(
@@ -51,23 +63,8 @@ export default function* root() {
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser
     ),
-    takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners)
+    takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
+    takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
+    takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo)
   ]);
-  // yield all([takeLatest(LoginTypes.ON_FORM_LOGIN_REQUEST, onLoginRequest)]);
-  // yield all([
-  //   takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest)
-  // ]);
-  // yield all([takeLatest(PostTypes.ON_LIST_POSTS, onListPosts)]);
-  // yield all([takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts)]);
-  // yield all([takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit)]);
-  // yield all([takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes)]);
-  // yield all([
-  //   takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment)
-  // ]);
-  // yield all([
-  //   takeLatest(
-  //     PostActivityTypes.ON_GET_POST_ACTIVITIES_OF_A_USER,
-  //     onGetPostActivitiesOfAUser
-  //   )
-  // ]);
 }

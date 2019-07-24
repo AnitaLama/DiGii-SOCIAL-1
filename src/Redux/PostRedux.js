@@ -21,7 +21,11 @@ const { Types, Creators } = createActions({
   onFindGifFailure: ['data'],
   clearGifList: [],
   onPostImage: ['data'],
-  onPostPoll: ['data']
+  onPostPoll: ['data'],
+  onUploadImage: ['data'],
+  onRespondToPoll: ['data'],
+  onSubmitTagPost: ['data'],
+  onVideoPost: ['data']
 });
 
 export const PostTypes = Types;
@@ -54,10 +58,13 @@ const onListPostsFailure = (state, action) => ({
   gif: []
 });
 
-const onPostSubmit = (state, action) => ({
-  ...state,
-  loading: true
-});
+const onPostSubmit = (state, action) => {
+  console.log('reducer>>>');
+  return {
+    ...state,
+    loading: true
+  };
+};
 const onPostSubmitSuccess = state => ({
   ...state,
   loading: false

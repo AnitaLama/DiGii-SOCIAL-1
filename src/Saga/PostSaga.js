@@ -14,7 +14,8 @@ export function* onListPosts() {
       yield put(PostActions.onListPostsFailure(data.error));
     }
   } catch (err) {
-    yield put(PostActions.onListPostsFailure(err.toString()));
+    console.log(err);
+    // yield put(PostActions.onListPostsFailure(err.toString()));
   }
 }
 
@@ -32,7 +33,7 @@ export function* onFindPosts(action) {
     }
   } catch (err) {
     console.log(err.toString());
-    yield put(PostActions.onFindPostsFailure(err.toString()));
+    // yield put(PostActions.onFindPostsFailure(err.toString()));
   }
 }
 
@@ -75,10 +76,56 @@ export function* onPostImage(action) {
     console.log(err);
   }
 }
+
+export function* onUploadImage(action) {
+  try {
+    const data = yield call(axios.post, `${URL}/uploadImage`, action.data);
+    console.log('saga data', data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* onPostPoll(action) {
   try {
-    const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
+    const data = yield call(axios.post, `${URL}/addNewPoll`, action.data);
     console.log('saga data', data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onVideoPost(action) {
+  try {
+    console.log(action);
+    const data = yield call(axios.post, `${URL}/uploadVideo`, action.data);
+    console.log('saga data', data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onRespondToPoll(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${URL}/voteForThePoll`,
+      action.data
+    );
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onSubmitTagPost(action) {
+  try {
+    console.log('saga input', action.data);
+    const { data } = yield call(
+      axios.post,
+      `${URL}/addNewTagPost`,
+      action.data
+    );
   } catch (err) {
     console.log(err);
   }

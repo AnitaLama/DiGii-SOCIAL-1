@@ -31,7 +31,6 @@ class ImagePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageData: null,
       isWebcamModalVisible: false,
       isModalVisible: false,
       postTypeId: props.postTypeId,
@@ -67,9 +66,8 @@ class ImagePost extends Component {
     const { username } = user.user;
     const imageSrc = this.webcam.getScreenshot();
     let currentDate = new Date();
-    currentDate = Date.parse(currentDate) + new Date(currentDate).toLocaleString();
-    currentDate = currentDate.replace(/\s/g, '');
-
+    currentDate = Date.getTime();
+    // NAME THE IMAGE CAPTURED
     const imageObject = {
       image_name: `${username}-${currentDate}`,
       imageData: imageSrc
@@ -78,7 +76,6 @@ class ImagePost extends Component {
       imageData: imageSrc,
       imageObject
     }));
-    // this.setState({ imageData: imageSrc });
   };
 
   onClickRetake = e => {
@@ -95,17 +92,17 @@ class ImagePost extends Component {
     const {
       imageObject,
       fromWebcam,
-      selectedImage,
-      fileName,
+
       file,
       postTypeId,
       postText,
       strikeType,
       isBad
     } = this.state;
-    const { user } = this.props;
+    const { user, resetPostType } = this.props;
     const { isStudent, id } = user.user;
     const { onPostImage } = this.props;
+    // APPEND THE NECESSARY INFO WITH FORMDATA
     if (!fromWebcam) {
       const formData = new FormData();
       formData.append('file', file[0]);
@@ -117,6 +114,7 @@ class ImagePost extends Component {
       formData.append('str_type', strikeType);
       onPostImage(formData);
     } else {
+      // IMAGE CAPTURED VIA WEBCAM
       const data = {
         file: imageObject.imageData,
         fileName: imageObject.image_name,
@@ -137,9 +135,7 @@ class ImagePost extends Component {
       alertMessage: null,
       strikeType: null
     });
-    setTimeout(() => {
-      // resetPostType();
-    }, 3000);
+    resetPostType();
   };
 
   selectImage = e => {
@@ -161,23 +157,20 @@ class ImagePost extends Component {
     const { isStudent, id } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
-    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-      // console.log('show users');
-    }
+
     const { strike } = this.props;
+    // LIMIT LENGTH OF POST TO 500
     if (value.trim().length > 500) {
       this.setState({
         isModalVisible: true,
         alertMessage: 'Please keep the length within 500 characters'
       });
-      // alert('Please keep the length within 500 characters');
-      this.setState({ postText: value, hasPost: value.trim().length > 0 });
+      this.setState({ postText: value });
     } else {
       const blacklistedWord = FilterKeyWords(value);
 
       if (blacklistedWord) {
         if (strike.strikes >= 10) {
-          console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
         } else {
@@ -195,7 +188,7 @@ class ImagePost extends Component {
           alertMessage: null
         });
       }
-      this.setState({ postText: value, hasPost: value.trim().length > 0 });
+      this.setState({ postText: value });
     }
   };
 
@@ -205,25 +198,28 @@ class ImagePost extends Component {
       height: 720,
       facingMode: 'user'
     };
-    const { isModalVisible, alertMessage } = this.state;
+    const {
+      isModalVisible,
+      alertMessage,
+      selectedImage,
+      imageObject,
+      isWebcamModalVisible
+    } = this.state;
     return (
       <PostWrapper>
         <PhotoOptionContainer>
-          {!!this.state.selectedImage && (
+          {!!selectedImage && (
             <ImageWrapper>
-              <img src={this.state.selectedImage} alt="selectedImage" />
+              <img src={selectedImage} alt="selectedImage" />
               <FormTextArea
                 placeholder="Write something..."
                 onChange={this.handleCaption}
               />
             </ImageWrapper>
           )}
-          {!!this.state.imageObject && (
+          {!!imageObject && (
             <ImageWrapper>
-              <img
-                src={`${this.state.imageObject.imageData} `}
-                alt="imageData"
-              />
+              <img src={`${imageObject.imageData} `} alt="imageData" />
               <FormTextArea
                 placeholder="Write something..."
                 onChange={this.handleCaption}
@@ -231,7 +227,7 @@ class ImagePost extends Component {
             </ImageWrapper>
           )}
 
-          {!this.state.imageObject && !this.state.selectedImage && (
+          {!imageObject && !selectedImage && (
             <PhotoOptionContent>
               <input type="file" multiple="" onChange={this.selectImage} />
               <div style={{ textAlign: 'center' }}>
@@ -243,11 +239,11 @@ class ImagePost extends Component {
           )}
           <Modal
             title="Take a new picture"
-            visible={this.state.isWebcamModalVisible}
+            visible={isWebcamModalVisible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             footer={
-              !this.state.imageObject
+              !imageObject
                 ? [
                   <button type="submit" onClick={this.capture}>
                       Capture
@@ -266,9 +262,9 @@ class ImagePost extends Component {
                 ]
             }
           >
-            {this.state.isWebcamModalVisible && (
+            {isWebcamModalVisible && (
               <div>
-                {!this.state.imageObject && (
+                {!imageObject && (
                   <Webcam
                     audio={false}
                     height={350}
@@ -278,22 +274,23 @@ class ImagePost extends Component {
                     videoConstraints={videoConstraints}
                   />
                 )}
-                {!!this.state.imageObject && (
+                {!!imageObject && (
                   <div>
-                    <img src={`${this.state.imageObject.imageData} `} />
+                    <img
+                      src={`${imageObject.imageData} `}
+                      alt={`${imageObject.imageData} `}
+                    />
                   </div>
                 )}
               </div>
             )}
           </Modal>
         </PhotoOptionContainer>
-        {this.state.showPostButton && (
-          <div>
-            <Button className="rounded small" onClick={this.postImage}>
-              Post
-            </Button>
-          </div>
-        )}
+        <div>
+          <Button className="rounded small" onClick={this.postImage}>
+            Post
+          </Button>
+        </div>
         {isModalVisible && (
           <AlertModal message={alertMessage} hideModal={this.hideModal} />
         )}

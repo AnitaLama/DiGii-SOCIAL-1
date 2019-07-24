@@ -4,9 +4,7 @@ import { FaRegTimesCircle } from 'react-icons/fa';
 import { Colors, fontSize, Images } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 
-const {
-  blue, grey, pen, lightGrey
-} = Colors.colors;
+const { blue, grey, pen } = Colors.colors;
 const SideBarContainer = styled.div`
   box-sizing: border-box;
   display: grid;
@@ -25,12 +23,12 @@ const GroupOne = styled.div`
   // min-height: 204px;
   position: relative;
 `;
-const Last = styled.div`
-  background: ${lightGrey};
-  min-height: 140px;
-  margin: 10px 0;
-  border-radius: 20px;
-`;
+// const Last = styled.div`
+//   background: ${lightGrey};
+//   min-height: 140px;
+//   margin: 10px 0;
+//   border-radius: 20px;
+// `;
 const Icon = styled.img`
   margin-right: 10px;
   height: 20.99px;

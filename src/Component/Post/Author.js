@@ -12,7 +12,7 @@ import {
 } from '../../Theme';
 import { Avatar } from '../StyledComponents';
 
-const { grey } = Colors.colors;
+// const { grey } = Colors.colors;
 
 const AuthorWrapper = styled.div`
   ${flex()};
@@ -27,27 +27,78 @@ const Name = styled.div`
   text-transform: capitalize;
   span.emoji {
     font-family: 'Segoe UI Emoji';
+    font-family: Lato;
     color: ${Colors.colors.light};
     ${fontSize(14)};
-    font-family: Lato;
     text-transform: none;
   }
 `;
 
-const Post = styled.div`
-  ${fontSize(14)};
-  color: ${grey};
+// const Post = styled.div`
+//   ${fontSize(14)};
+//   color: ${grey};
+// `;
+const TaggedList = styled.span`
+  span {
+    font-family: Lato;
+    color: ${Colors.colors.light};
+    ${fontSize(14)};
+    text-transform: none;
+    &::after {
+      content: ', ';
+    }
+  }
+  span:first-of-type {
+    &::before {
+      content: ' with - ';
+    }
+  }
+  span:last-of-type {
+    &::after {
+      content: '';
+    }
+  }
 `;
-
 class Author extends Component {
+  getExtraInfo = () => {
+    const { data } = this.props;
+    const { post_type, p_text, notifications } = data;
+    const type = post_type.pt_title;
+    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
+
+    if (type === 'feeling') {
+      return (
+        <span className="emoji">
+          {` - is feeling ${p_text} ${emoji.emoji}`}
+        </span>
+      );
+    }
+    if (type === 'tag') {
+      return (
+        <TaggedList>
+          {notifications.map((item, i) => {
+            const { n_is_student, student, user } = item;
+            if (n_is_student) {
+              return (
+                <span key={`${item}-${student}-${i}`}>
+                  {student.st_username}
+                </span>
+              );
+            }
+            return <span key={`${item}-${user}-${i}`}>{user.u_name}</span>;
+          })}
+        </TaggedList>
+      );
+    }
+  };
+
   render() {
     const { data } = this.props;
     const { post_type, p_text } = data;
     const type = post_type.pt_title;
-    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     let firstname = '';
     let lastname = '';
-    // console.log('data author', data);
+    // post typet,po ypepost console.log('data author', data);
     if (data.p_isStudent) {
       const { student } = data;
 
@@ -69,14 +120,7 @@ class Author extends Component {
             {' '}
             {lastname}
             {' '}
-            {type === 'feeling' && (
-              <span>
-                {' '}
-                <span className="emoji">
-                  {`- is feeling ${p_text} ${emoji.emoji}`}
-                </span>
-              </span>
-            )}
+            {this.getExtraInfo()}
           </Name>
           {' '}
           {/* <Post>{this.getContent()}</Post>

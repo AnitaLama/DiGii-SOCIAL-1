@@ -27,7 +27,6 @@ const NewPostWrapper = styled.div`
 `;
 const NewPostContainer = styled.div`
   display: grid;
-  // grid-template-columns: 95% 5%;
 `;
 const Icon = styled.span`
   margin: auto;
@@ -106,10 +105,7 @@ class NewPost extends Component {
   constructor() {
     super();
     this.state = {
-      postText: '',
       type: 'text',
-      imageObject: null,
-      alertMessage: null,
       selectedGif: null
     };
   }
@@ -123,25 +119,12 @@ class NewPost extends Component {
     this.setState({ type: text });
   };
 
-  onSaveImage = imageObject => {
-    this.setState({ imageObject, hasPost: true });
-  };
-
-  onChangeHandler = event => {
-    // console.log(event.target.files[0]);
-    this.setState({ postText: event.target.files[0] });
-  };
-
   postArea = () => {
     const { type, selectedGif } = this.state;
-    // const { user } = this.props;
-    // let { firstname } = user.user;
-    // firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
     return (
       <NewPostType
         type={type}
         selectedGif={selectedGif}
-        onSaveImage={this.onSaveImage}
         resetPostType={this.resetPostType}
       />
     );
@@ -153,37 +136,46 @@ class NewPost extends Component {
 
   render() {
     const { type } = this.state;
+    const { post } = this.props;
+    const { gif } = post;
     return (
-      <NewPostWrapper>
-        <NewPostContainer>
-          <Input>
-            <Avatar src={Images.stockImage} height={53} radius={30} />
-            {this.postArea()}
-            {/* <TiDelete /> */}
-          </Input>
-        </NewPostContainer>
-        <NewPostOptionContainer>
-          {options.map(option => (
-            <NewPostOption
-              key={option.text}
-              option={option}
-              handleButtonClick={this.handleButtonClick}
-              selected={type}
-            />
-          ))}
-        </NewPostOptionContainer>
-        <Container selectGif={this.selectGif} />
-      </NewPostWrapper>
+      <div>
+        <NewPostWrapper>
+          <NewPostContainer>
+            <Input>
+              <Avatar src={Images.stockImage} height={53} radius={30} />
+              {this.postArea()}
+              {/* <TiDelete /> */}
+            </Input>
+          </NewPostContainer>
+          <NewPostOptionContainer>
+            {options.map(option => (
+              <NewPostOption
+                key={option.text}
+                option={option}
+                handleButtonClick={this.handleButtonClick}
+                selected={type}
+              />
+            ))}
+          </NewPostOptionContainer>
+        </NewPostWrapper>
+        {gif.length > 0 && (
+          <NewPostWrapper>
+            <Container selectGif={this.selectGif} />
+          </NewPostWrapper>
+        )}
+      </div>
     );
   }
 }
 
 NewPostOption.propTypes = {
   option: PropTypes.object,
-  handleButtonClick: PropTypes.func
+  handleButtonClick: PropTypes.func,
+  selected: PropTypes.string
 };
 NewPost.propTypes = {
-  user: PropTypes.object
+  post: PropTypes.object
 };
 const mapStateToProps = state => ({
   postType: state.postType,

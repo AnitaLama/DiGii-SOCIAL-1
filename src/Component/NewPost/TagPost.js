@@ -1,11 +1,73 @@
 import React, { Component } from 'react';
-import ContentEditable from 'react-contenteditable';
+import { connect } from 'react-redux';
+import styled from '@emotion/styled';
+import { Tag } from 'antd';
 import { PostWrapper } from './index';
 import { FormTextArea, Button } from '../StyledComponents';
+import GroupActions from '../../Redux/GroupRedux';
+import PostActions from '../../Redux/PostRedux';
+import { Colors, boxShadow } from '../../Theme';
 
-function extractUsers(text) {
-  return text.match(/(\s*@[a-zA-Z0-9_-]+\s*)/gi);
-}
+const {
+  primary, blue, grey, snow, secondary
+} = Colors.colors;
+
+const ChipContainer = styled.div`
+  position: relative;
+  input{
+    z-index: 1000,
+    background: transparent;
+    outline:0
+
+  }
+`;
+const ChipsWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  color: ${blue};
+`;
+const PostWrapperContainer = styled.div`
+  // position: relative;
+`;
+const UserListWrapper = styled.div`
+  position: relative;
+  margin-left: -53px;
+  span {
+    color: ${blue};
+    &::after {
+      content: ',';
+    }
+  }
+  span:last-of-type {
+    &::after {
+      content: '';
+    }
+  }
+`;
+const UserList = styled.ul`
+  border: 1px solid ${grey};
+  ${boxShadow()};
+  background: ${snow};
+  position: absolute;
+  overflow-y: scroll;
+  height: 130px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  left: 0;
+  min-width: 150px;
+  li {
+    padding: 4px 10px;
+    &:hover {
+      cursor: pointer;
+      background-image: linear-gradient(to right, ${primary}, ${secondary});
+      color: ${snow};
+    }
+  }
+`;
 
 class TagPost extends Component {
   constructor(props) {
@@ -14,73 +76,183 @@ class TagPost extends Component {
       username: props.username,
       postTypeId: props.postTypeId,
       text: '',
-      hasTaggedFriends: false
+      hasTaggedFriends: false,
+      showUsers: false,
+      taggedUsers: [],
+      users: []
     };
   }
 
-  tagFriends = e => {
-    const { value } = e.target;
-    const checkUsername = extractUsers(value);
-    // const newArr = checkUsername && checkUsername.map(item => value.replace(item, ' '));
-    console.log('>>>>', value, checkUsername);
-    let tempValue = value;
+  componentDidMount() {
+    const { user, onGetAllUsersOfAGroup, group } = this.props;
+    const { groupId } = user;
+    const { users } = group;
 
-    checkUsername
-      && checkUsername.map(item => {
-        item = item.replace(' ', '');
-        tempValue = tempValue.replace(
-          item,
-          `<span  style="color:red">${item}</span>`
-        );
-      });
-    this.setState({ text: tempValue });
+    onGetAllUsersOfAGroup(groupId);
+    this.setState({ users });
+  }
+
+  handleKeyDown = event => {
+    // const start = event.target.selectionStart;
+    // const end = event.target.selectionEnd;
+    // console.log(start, end);
+  };
+
+  handleTextChange = e => {
+    const { group } = this.props;
+    const { users } = group;
+    const { value } = e.target;
+
+    this.setState({ text: value });
   };
 
   onFocus = () => {
-    const { text } = this.state;
-    if (text === 'Tag your friends') {
-      this.setState({ text: '' });
-    }
+    const { group } = this.props;
+
+    this.setState({ showUsers: group.users.length > 0 });
+  };
+
+  onBlur = () => {
+    this.setState({ showUsers: false });
   };
 
   finishedTagging = () => {
-    this.setState({ hasTaggedFriends: true });
+    const { taggedUsers, text, postTypeId } = this.state;
+    const { user, onSubmitTagPost } = this.props;
+    const { isStudent, id } = user.user;
+    const data = {
+      p_pt_id: postTypeId,
+      p_isStudent: isStudent,
+      p_actor_id: id,
+      p_text: text,
+      taggedUsers
+    };
+    onSubmitTagPost(data);
+  };
+
+  selectUser = user => {
+    const { taggedUsers, users } = this.state;
+    const newArr = [];
+    users.map(item => {
+      if (
+        item.u_name !== user.u_name
+        || item.st_username !== user.st_username
+      ) {
+        newArr.push(item);
+      }
+    });
+    const data = {
+      userName: user.u_name || user.st_username,
+      isStudent: !!user.st_username,
+      id: user.u_id || user.st_id
+    };
+
+    this.setState(prevState => ({
+      taggedUsers: [...prevState.taggedUsers, data],
+      users: newArr,
+      showUsers: false
+    }));
+  };
+
+  remove = user => {
+    const { users, taggedUsers } = this.state;
+    const { group } = this.props;
+    const removedUser = group.users.find(
+      item => item.u_name === user || item.st_username === user
+    );
+    const newArr = taggedUsers.filter(item => item !== user && item !== user);
+    this.setState(prevState => ({
+      users: [...prevState.users, removedUser],
+      taggedUsers: newArr
+    }));
   };
 
   render() {
-    const { username } = this.props;
+    const { showUsers, taggedUsers, users } = this.state;
     const { text, hasTaggedFriends } = this.state;
-    if (hasTaggedFriends) {
-      return (
+
+    return (
+      <PostWrapperContainer>
         <PostWrapper>
-          {text}
-          <FormTextArea placeholder="Write something..." />
+          <FormTextArea
+            placeholder="Tag your friends"
+            onChange={this.handleTextChange}
+            onKeyDown={this.handleKeyDown}
+            ref={r => (this.textarea = r)}
+          />
           <div>
             <Button className="rounded small" onClick={this.finishedTagging}>
               OK
             </Button>
           </div>
         </PostWrapper>
-      );
-    }
-    return (
-      <PostWrapper>
-        {' '}
-        <ContentEditable
-          placeholder="Tag your friends"
-          style={{ margin: 0, border: '1px solid red', height: '100px' }}
-          onChange={this.tagFriends}
-          onFocus={this.onFocus}
-          html={text}
-        />
-        <div>
-          <Button className="rounded small" onClick={this.finishedTagging}>
-            OK
-          </Button>
-        </div>
-      </PostWrapper>
+        <UserListWrapper>
+          <div>
+            {/* ---------SHOW USERS-----------------*/}
+            with -
+            {taggedUsers.map((user, i) => (
+              <span key={`${user}${i}`}>
+                {' '}
+                {user.userName}
+              </span>
+            ))}
+          </div>
+          {/* ---------SHOW USERS IN CHIPS-----------------*/}
+
+          <ChipContainer>
+            <input
+              onFocus={() => {
+                this.setState({ showUsers: true });
+              }}
+            />
+            <ChipsWrapper>
+              {taggedUsers.map((user, i) => (
+                <Tag
+                  onClick={() => {
+                    this.remove(user);
+                  }}
+                  key={`${i}${user}`}
+                >
+                  {user.userName}
+                  {' '}
+x
+                </Tag>
+              ))}
+            </ChipsWrapper>
+          </ChipContainer>
+          {/* ---------LIST OF USERS IN THAT GROUP-----------------*/}
+
+          {showUsers && (
+            <UserList>
+              {users.map((item, i) => (
+                <li
+                  key={`${item}${i}`}
+                  onClick={() => {
+                    this.selectUser(item);
+                  }}
+                >
+                  {item.u_name || item.st_username}
+                </li>
+              ))}
+            </UserList>
+          )}
+        </UserListWrapper>
+      </PostWrapperContainer>
     );
   }
 }
 
-export default TagPost;
+const mapStateToProps = state => ({
+  user: state.user,
+  group: state.group
+});
+
+const mapDispatchToProps = dispatch => ({
+  onGetAllUsersOfAGroup: value => dispatch(GroupActions.onGetAllUsersOfAGroup(value)),
+  onSubmitTagPost: value => dispatch(PostActions.onSubmitTagPost(value))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TagPost);
