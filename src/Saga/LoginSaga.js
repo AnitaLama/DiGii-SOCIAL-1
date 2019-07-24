@@ -12,6 +12,7 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
+    console.log('login saga', data);
     if (data.success) {
       yield put(LoginActions.onFormLoginSuccess(data.result));
       yield localStorage.setItem('user', JSON.stringify(data.result));
@@ -20,6 +21,7 @@ export function* onLoginRequest(action) {
       yield put(ErrorActions.onFormLoginFailure(data.error));
     }
   } catch (err) {
+    yield put(ErrorActions.onFormLoginFailure(err.toString()));
     console.log(err);
     // yield put(LoginActions.onFormLoginFailure(err.toString()));
   }
@@ -40,6 +42,7 @@ export function* onStudentLoginRequest(action) {
       yield put(ErrorActions.onStudentFormLoginFailure(data.error));
     }
   } catch (err) {
+    yield put(ErrorActions.onStudentFormLoginFailure(err.toString()));
     console.log(err);
     // yield put(LoginActions.onStudentFormLoginFailure(err.toString()));
   }

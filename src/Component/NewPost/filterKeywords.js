@@ -8,10 +8,11 @@ const blacklist = [
 const FilterKeyWords = input => {
   // const value = blacklist.find(item => (input.toLowerCase().includes(item.toLowerCase()) ? 'insults' : undefined));
   let value;
+  const inputText = input.toLowerCase();
   blacklist.map(blacklistType => {
-    const abc = blacklistType.array.find(item => input.includes(item));
+    const check = blacklistType.array.find(item => inputText.includes(item));
 
-    value = abc ? blacklistType.type : value;
+    value = check ? blacklistType.type : value;
     return true;
   });
   return value;

@@ -26,14 +26,9 @@ class VideoPost extends Component {
     console.log("VideoURL", videoUrl);
 
     this.props.onVideoPost(data);
-
-    
   };
 
-
   render() {
- 
-    
     const VideoDisplay = () => (
       <video
         src={this.state.videoSrc}
@@ -43,7 +38,6 @@ class VideoPost extends Component {
           width: "200px"
         }}
       />
-      
     );
 
     if (this.state.videoSrc) {

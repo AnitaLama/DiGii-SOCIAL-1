@@ -5,6 +5,7 @@ import { css } from '@emotion/core';
 import HomePage from './Home';
 import StudentLogin from './StudentLogin';
 import MessageBoard from './MessageBoard';
+import UserProfile from './UserProfile';
 import './styles.css';
 
 class ActualRoute extends React.Component {
@@ -41,6 +42,11 @@ const routes = [
     title: 'MessageBoard',
     path: '/messageboard',
     component: MessageBoard
+  },
+  {
+    title: 'Profile',
+    path: '/userProfile/:isStudent/:user',
+    component: UserProfile
   }
 ];
 

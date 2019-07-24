@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import html2canvas from 'html2canvas';
 import { Colors, Images } from '../../Theme';
 import { Button, FormInput } from './index';
 
@@ -35,15 +34,7 @@ const ModalBox = styled.div`
     text-align: right;
   }
 `;
-const Banner = styled.div`
-  display: flex;
-  min-width: 50%;
-  flex-direction: column;
-  input {
-    width: 50%;
-    z-index: 10000;
-  }
-`;
+
 const Icon = styled.img`
   height: 60px;
   &.small {
@@ -68,13 +59,13 @@ const Points = styled.div`
   }
 `;
 const Image = styled.img`
-  height: 320px;
-  width: 320px;
+  // height: auto;
+  width: 100%;
 `;
 const ImageWrapper = styled.div``;
 const ImageBackground = styled.div`
   position: relative;
-  width: 320px;
+  width: 100%;
 `;
 const ImageOverlay = styled.div`
   position: absolute;
@@ -87,6 +78,8 @@ const ImageOverlay = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
+  font-size: 18px;
+  color: ${snow};
 `;
 class Modal extends Component {
   constructor() {
@@ -98,11 +91,10 @@ class Modal extends Component {
 
   handleTextChange = e => {
     const { value } = e.target;
-    this.setState({ text: e.target.value });
+    this.setState({ text: value });
   };
 
   render() {
-    const { text } = this.state;
     const { message, hideModal } = this.props;
     return (
       <ModalContainer>
@@ -111,9 +103,9 @@ class Modal extends Component {
             marginTop: '200px'
           }}
         >
-          <div className="close">
+          {/*  <div className="close">
             <CloseButton onClick={hideModal}>x</CloseButton>
-          </div>
+          </div> */}
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
@@ -151,105 +143,72 @@ class ImageModal extends Component {
     };
   }
 
-  componentDidMount() {
-    let img = new window.Image();
-    img.crossOrigin = 'anonymous';
-    img = this.banner;
-
-    const c = this.finalBanner;
-    const ctx = c.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-  }
-
   handleTextChange = e => {
     const { value } = e.target;
-    // const splittedWords = value.split(' ');
-    // const ctx = this.canvas.getContext('2d');
-    // ctx.font = '20px Courier';
-    // const x = 50;
-    // let y = 50;
-    // console.log(x, y);
-    // splittedWords.map(item => {
-    //   ctx.fillText(value, x, y);
-    //   y += 20;
-    // });
-    this.setState({ text: value });
 
-    const c = this.finalBanner;
-    const ctx = c.getContext('2d');
-    ctx.fillText(value, 50, 50);
+    this.setState({ text: value });
   };
 
   saveBanner = () => {
-    const c = this.finalBanner;
-    console.log(c);
-    // const imgurl = c.toDataURL();
-    // console.log(imgurl);
-    // setTimeout(() => {}, 5000);
-    // const img = this.banner;
-    // const ctx = this.canvas.getContext('2d');
-    // ctx.drawImage(img, 0, 0);
-    // html2canvas(this.finalBanner)
-    //   .then(canvas => {
-    //     console.log('canvas', canvas);
-    //     const url = canvas.toDataURL();
-    //     console.log('canvas url', url);
-    //     this.setState({ imgURL: url });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    const { text } = this.state;
+    const {
+      data, user, postTypeId, onSubmitPost
+    } = this.props;
+    const { isStudent, id } = user;
+    // const data = {};
+    const saveData = {
+      p_pt_id: postTypeId,
+      p_isStudent: isStudent,
+      p_actor_id: id,
+      p_body: `${url}/${data.Key}`,
+      p_text: text
+    };
+    onSubmitPost(saveData);
   };
 
   render() {
     const { text } = this.state;
-    const { data, hideModal } = this.props;
+    const { data } = this.props;
     return (
       <ModalContainer>
         <ModalBox
           style={{
-            marginTop: '100px'
+            marginTop: '50px'
           }}
         >
-          <div className="close">
+          {/* <div className="close">
             <CloseButton onClick={hideModal}>x</CloseButton>
-          </div>
+          </div> */}
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
               Digii
             </div>
             <Points>
-              <span>-5</span>
+              {/* <span>-5</span>
               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
+        */}
+              {' '}
             </Points>
           </Header>
-          {/*  <div>
-            <FormInput onChange={this.handleTextChange} />
-            <Image
-              ref={r => (this.banner = r)}
-              src={`${url}/${data.Key}`}
-              style={{ display: 'none' }}
-            />
-          </div> */}
 
           <ImageWrapper>
-            here
-            <FormInput onChange={this.handleTextChange} />
-            <canvas ref={r => (this.finalBanner = r)} />
-            <Image
-              ref={r => (this.banner = r)}
-              src={`${url}/${data.Key}`}
-              style={{ display: 'none' }}
+            <FormInput
+              onChange={this.handleTextChange}
+              placeholder="What do you want to say?"
             />
+            <ImageBackground>
+              <Image src={`${url}/${data.Key}`} />
+              <ImageOverlay>{text}</ImageOverlay>
+            </ImageBackground>
           </ImageWrapper>
 
           <ButtonWrapper>
-            <Button className="rounded short" onClick={this.saveBanner}>
+            {/*  <Button className="rounded short" onClick={this.saveBanner}>
               SAVE
-            </Button>
-            <Button className="rounded short" onClick={hideModal}>
-              OK
+            </Button> */}
+            <Button className="rounded short" onClick={this.saveBanner}>
+              POST
             </Button>
           </ButtonWrapper>
         </ModalBox>
@@ -259,7 +218,6 @@ class ImageModal extends Component {
 }
 
 ImageModal.propTypes = {
-  message: PropTypes.string,
   hideModal: PropTypes.func
 };
 

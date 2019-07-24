@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import LoginActions from '../../Redux/LoginRedux';
+// import { connect } from 'react-redux';
+// import { compose } from 'redux';
+// import LoginActions from '../../Redux/LoginRedux';
 
 const TabClosedHandler = WrappedComponent => class LoginPageContainer extends Component {
   constructor() {
@@ -25,14 +25,14 @@ const TabClosedHandler = WrappedComponent => class LoginPageContainer extends Co
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-  onCloseTab: () => dispatch(LoginActions.onLogOut())
-});
-const composedWrapper = compose(
-  connect(
-    null,
-    mapDispatchToProps
-  ),
-  TabClosedHandler
-);
+// const mapDispatchToProps = dispatch => ({
+//   onCloseTab: () => dispatch(LoginActions.onLogOut())
+// });
+// const composedWrapper = compose(
+//   connect(
+//     null,
+//     mapDispatchToProps
+//   ),
+//   TabClosedHandler
+// );
 export default TabClosedHandler;

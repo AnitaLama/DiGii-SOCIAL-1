@@ -10,6 +10,7 @@ import {
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
+import PropTypes from 'prop-types';
 
 const strikeCount = 3;
 
@@ -24,7 +25,7 @@ const Input = styled.div`
     font-weight: bold;
   }
   span.emoji {
-    font-family: 'Segoe UI Emoji';
+    font-family: Segoe UI Emoji;
   }
 `;
 
@@ -50,15 +51,9 @@ class FeelingsPost extends Component {
       username: props.username,
       feeling: null,
       postText: '',
-      showPostButton: false,
-      isFocused: false,
-      showText: false,
       isModalVisible: false,
       alertMessage: null
     };
-    setInterval(() => {
-      this.setState({ showText: !this.state.showText });
-    }, 1000);
   }
 
   hideModal = () => {
@@ -71,27 +66,24 @@ class FeelingsPost extends Component {
   handleTextChange = e => {
     const { onGetStrikesCountOfAUser, user } = this.props;
     const { isStudent, id } = user.user;
+    // GET STRIKE COUNT FOR THE USER
     onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
-    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-      console.log('show users');
-    }
     const { strike } = this.props;
+    // LIMIT THE LENGTH TO 500
     if (value.trim().length > 500) {
       this.setState({
         isModalVisible: true,
         alertMessage: 'Please keep the length within 500 characters'
       });
-      // alert('Please keep the length within 500 characters');
       this.setState({ postText: value, hasPost: value.trim().length > 0 });
     } else {
+      // CHECK FOR ANY BLACKLISTED WORD AND ITS TYPE
       const blacklistedWord = FilterKeyWords(value);
-      console.log('here', blacklistedWord);
       if (blacklistedWord) {
         if (strike.strikes >= 10) {
           console.log('block the student');
           this.setState({ blockUser: true });
-          // onBlockUser({ isStudent, id });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
           index -= 1;
@@ -109,8 +101,6 @@ class FeelingsPost extends Component {
       }
       this.setState({ postText: value });
     }
-    // const { value } = e.target;
-    // this.setState({ postText: value });
   };
 
   handleEmotionSelection = value => {
@@ -130,8 +120,8 @@ class FeelingsPost extends Component {
       p_text: feeling.name
     };
     onPostSubmit(data);
+    // this.setState({ selectedGif: null });
     resetPostType();
-    this.setState({ selectedGif: null });
   };
 
   render() {
@@ -146,6 +136,7 @@ class FeelingsPost extends Component {
       return (
         <PostWrapper>
           <FeelingsDisplayWrapper>
+            {/* -----DISPLAY ALL THE FEELINGS IN A GRID ---------*/}
             {FeelingsList.map((item, i) => (
               <span
                 onClick={() => {
@@ -176,12 +167,6 @@ class FeelingsPost extends Component {
             // tme="feelingype="text"
             placeholder={` How are you feeling, ${username}?`}
             onChange={this.handleTextChange}
-            onFocus={() => {
-              this.setState({ isFocused: true });
-            }}
-            onBlur={() => {
-              this.setState({ isFocused: false });
-            }}
             value={postText}
           />
         </Input>
@@ -199,6 +184,19 @@ class FeelingsPost extends Component {
   }
 }
 
+FeelingsPost.propTypes = {
+  username: PropTypes.string,
+  postTypeId: PropTypes.number,
+  postActivity: PropTypes.object,
+  user: PropTypes.object,
+  post: PropTypes.object,
+  strike: PropTypes.object,
+  onPostSubmit: PropTypes.func,
+  onGetStrikesCountOfAUser: PropTypes.func,
+  disableFirstTimePosting: PropTypes.func,
+  onBlockUser: PropTypes.func,
+  resetPostType: PropTypes.func
+};
 const mapStateToProps = state => ({
   postActivity: state.postActivity,
   user: state.user,

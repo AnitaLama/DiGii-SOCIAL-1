@@ -16,6 +16,7 @@ export default function* onGetStrikesCountOfAUser(action) {
       yield put(StrikeActions.onGetStrikesCountOfAUserFailure(data.error));
     }
   } catch (err) {
-    yield put(StrikeActions.onGetStrikesCountOfAUserFailure(err.toString()));
+    console.log(err);
+    // yield put(StrikeActions.onGetStrikesCountOfAUserFailure(err.toString()));
   }
 }
