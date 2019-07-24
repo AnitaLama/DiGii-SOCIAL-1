@@ -76,12 +76,16 @@ class Author extends Component {
     if (type === 'tag') {
       return (
         <TaggedList>
-          {notifications.map(item => {
+          {notifications.map((item, i) => {
             const { n_is_student, student, user } = item;
             if (n_is_student) {
-              return <span>{student.st_username}</span>;
+              return (
+                <span key={`${item}-${student}-${i}`}>
+                  {student.st_username}
+                </span>
+              );
             }
-            return <span>{user.u_name}</span>;
+            return <span key={`${item}-${user}-${i}`}>{user.u_name}</span>;
           })}
         </TaggedList>
       );

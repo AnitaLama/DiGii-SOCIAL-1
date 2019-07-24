@@ -43,7 +43,6 @@ export default function* root() {
     takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
 
     takeLatest(PostTypes.ON_LIST_POSTS, onListPosts),
-    takeLatest(PostTypes.ON_VIDEO_POST, onVideoPost),
 
     takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts),
     takeLatest(PostTypes.ON_FIND_GIF, onFindGif),
@@ -51,6 +50,7 @@ export default function* root() {
     takeLatest(PostTypes.ON_POST_IMAGE, onPostImage),
     takeLatest(PostTypes.ON_POST_POLL, onPostPoll),
     takeLatest(PostTypes.ON_UPLOAD_IMAGE, onUploadImage),
+    takeLatest(PostTypes.ON_VIDEO_POST, onVideoPost),
     takeLatest(PostTypes.ON_SUBMIT_TAG_POST, onSubmitTagPost),
     takeLatest(PostTypes.ON_RESPOND_TO_POLL, onRespondToPoll),
     takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),

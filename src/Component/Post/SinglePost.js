@@ -128,6 +128,9 @@ const Reactions = ({ handleReactionSelection }) => (
 const Gif = styled.img`
   width: 100%;
 `;
+const Video = styled.video`
+  width: 100%;
+`;
 const BannerWrapper = styled.div`
   // background: ${props => `url(${props.image})`};
   width: 100%;
@@ -184,10 +187,19 @@ class SinglePost extends Component {
           </div>
         );
       case 'photo/video':
+        const { p_is_image } = data;
+        if (p_is_image) {
+          return (
+            <div>
+              <div className="captions">{p_text}</div>
+              <Gif src={`${p_body}`} />
+            </div>
+          );
+        }
         return (
           <div>
             <div className="captions">{p_text}</div>
-            <Gif src={`${p_body}`} />
+            <Video src={`${p_body}`} controls />
           </div>
         );
       case 'poll':
