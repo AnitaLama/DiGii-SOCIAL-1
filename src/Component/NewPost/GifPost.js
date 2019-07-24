@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import { FormTextArea, Button } from '../StyledComponents';
 import { FilterKeyWords, PostWrapper } from './index';
 import PostActions from '../../Redux/PostRedux';
@@ -88,7 +89,7 @@ class GifContainer extends Component {
     };
     onPostSubmit(data);
     resetPostType();
-    this.setState({ selectedGif: null });
+    // this.setState({ selectedGif: null });
   };
 
   removeGif = () => {
@@ -101,7 +102,7 @@ class GifContainer extends Component {
 
   render() {
     const { selectedGif } = this.state;
-    // const { selectedGif } = this.props;
+
     if (!selectedGif) {
       return (
         <PostWrapper>
@@ -120,6 +121,7 @@ class GifContainer extends Component {
         </PostWrapper>
       );
     }
+    // SHOW SELECTED GIF IN THE POST BOX
     return (
       <PostWrapper>
         <GifInputForm>
@@ -143,6 +145,14 @@ class GifContainer extends Component {
     );
   }
 }
+
+GifContainer.propTypes = {
+  postTypeId: PropTypes.string,
+  user: PropTypes.object,
+  onFindGif: PropTypes.func,
+  onPostSubmit: PropTypes.func,
+  resetPostType: PropTypes.func
+};
 const mapStateToProps = state => ({
   user: state.user
 });

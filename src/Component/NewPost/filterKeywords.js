@@ -10,9 +10,9 @@ const FilterKeyWords = input => {
   let value;
   const inputText = input.toLowerCase();
   blacklist.map(blacklistType => {
-    const abc = blacklistType.array.find(item => inputText.includes(item));
+    const check = blacklistType.array.find(item => inputText.includes(item));
 
-    value = abc ? blacklistType.type : value;
+    value = check ? blacklistType.type : value;
     return true;
   });
   return value;

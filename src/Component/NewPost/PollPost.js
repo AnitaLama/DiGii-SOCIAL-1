@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { FaImage } from 'react-icons/fa';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { PostWrapper } from './index';
 import { Button } from '../StyledComponents';
-import { flexCentering, Colors, fontSize } from '../../Theme';
+import { flexCentering, fontSize } from '../../Theme';
 import PostActions from '../../Redux/PostRedux';
 
 const SingleOption = styled.div`
@@ -31,6 +32,7 @@ const ImageIcon = styled.div`
 const QuestionWrapper = styled.div`
   input {
     border: 0;
+    outline: 0;
     &:focus {
       border: 0;
     }
@@ -94,6 +96,7 @@ class PollPost extends Component {
     const newArr = [];
 
     let fileName = e.target.files[0].name.replace(/\s/g, '-');
+    // SAVE NAME ALONG WITH CURRENT TIME FOR UNIQUE NAME
     const currentDate = new Date();
     fileName = currentDate.getTime() + fileName;
     options.forEach(item => (option.id === item.id
@@ -108,7 +111,6 @@ class PollPost extends Component {
   };
 
   openFileSystem = id => {
-    console.log('open fs', id);
     document.getElementById(id).click();
   };
 
@@ -122,7 +124,7 @@ class PollPost extends Component {
           }}
         >
           {item.url ? (
-            <img src={item.url} height={25} width={25} />
+            <img src={item.url} height={25} width={25} alt={item.name} />
           ) : (
             <FaImage />
           )}
@@ -156,6 +158,7 @@ class PollPost extends Component {
   };
 
   removeOption = option => {
+    // REMOVE THE PARTICULAR OPTION FROM THE LIST
     const { options } = this.state;
     const tempArr = options;
     const newArr = [];
@@ -170,6 +173,7 @@ class PollPost extends Component {
   addNewOption = () => {
     const { options } = this.state;
     const optionLength = options.length;
+    // MAXIMUM 20 OPTIONS ONLY
     if (optionLength < 20) {
       this.setState(prevState => ({
         options: [
@@ -194,24 +198,25 @@ class PollPost extends Component {
     const { question, options, postTypeId } = this.state;
     const { onPostPoll, user, resetPostType } = this.props;
     const { isStudent, id } = user.user;
-    // console.log('poll values', question, options);
     const newArr = [];
     options.map(item => {
       if (item.text || item.url) {
         newArr.push(item);
       }
+      return true;
     });
-
-    const imgArr = newArr.map(item => {
+    // FOR OPTIONS WITH IMAGES
+    newArr.map(item => {
       const formData = new FormData();
       if (item.img) {
         formData.append('file', item.img);
         formData.append('name', item.name);
         this.props.onUploadImage(formData);
       }
-      // return item.img;
+      return true;
     });
-    this.props.onPostPoll({
+    // POST THE POLL
+    onPostPoll({
       question,
       options: newArr,
       isStudent,
@@ -222,12 +227,13 @@ class PollPost extends Component {
   };
 
   render() {
+    const { username } = this.state;
     return (
       <div>
         <PostWrapper style={{ minHeight: 0 }}>
           <QuestionWrapper>
             <input
-              placeholder="What do you want to ask?"
+              placeholder={`What do you want to ask, ${username}?`}
               onChange={this.handleQuestionChange}
             />
           </QuestionWrapper>
@@ -238,6 +244,7 @@ class PollPost extends Component {
           </div>
         </PostWrapper>
         <PollOptionsWrapper>
+          {/* -----------------SHOW OPTION FIELDS BY DEFAULT 3 FIELDS-----------------*/}
           {this.showAllOptions()}
           <AddButton onClick={this.addNewOption}>+Add option</AddButton>
         </PollOptionsWrapper>
@@ -246,6 +253,10 @@ class PollPost extends Component {
   }
 }
 
+PollPost.propTypes = {
+  username: PropTypes.string,
+  postTypeId: PropTypes.number
+};
 const mapStateToProps = state => ({
   user: state.user
 });

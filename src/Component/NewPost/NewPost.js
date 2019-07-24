@@ -27,7 +27,6 @@ const NewPostWrapper = styled.div`
 `;
 const NewPostContainer = styled.div`
   display: grid;
-  // grid-template-columns: 95% 5%;
 `;
 const Icon = styled.span`
   margin: auto;
@@ -106,10 +105,7 @@ class NewPost extends Component {
   constructor() {
     super();
     this.state = {
-      postText: '',
       type: 'text',
-      imageObject: null,
-      alertMessage: null,
       selectedGif: null
     };
   }
@@ -123,21 +119,12 @@ class NewPost extends Component {
     this.setState({ type: text });
   };
 
-  onSaveImage = imageObject => {
-    this.setState({ imageObject, hasPost: true });
-  };
-
-  onChangeHandler = event => {
-    this.setState({ postText: event.target.files[0] });
-  };
-
   postArea = () => {
     const { type, selectedGif } = this.state;
     return (
       <NewPostType
         type={type}
         selectedGif={selectedGif}
-        onSaveImage={this.onSaveImage}
         resetPostType={this.resetPostType}
       />
     );
@@ -184,7 +171,8 @@ class NewPost extends Component {
 
 NewPostOption.propTypes = {
   option: PropTypes.object,
-  handleButtonClick: PropTypes.func
+  handleButtonClick: PropTypes.func,
+  selected: PropTypes.string
 };
 NewPost.propTypes = {
   post: PropTypes.object

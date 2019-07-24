@@ -107,3 +107,15 @@ export function* onRespondToPoll(action) {
     console.log(err);
   }
 }
+
+export function* onSubmitTagPost(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${URL}/addNewTagPost`,
+      action.data
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}

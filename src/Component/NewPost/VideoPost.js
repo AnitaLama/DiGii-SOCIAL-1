@@ -68,6 +68,14 @@ class VideoPost extends Component {
               <p>{status}</p>
 
               <div>
+                <video
+                  src="blob:http://localhost:3000/0ff39847-97b4-43b8-91c1-9a69fce63c40"
+                  controls
+                  style={{
+                    height: '200px',
+                    width: '200px'
+                  }}
+                />
                 <button
                   onClick={() => {
                     startRecording();

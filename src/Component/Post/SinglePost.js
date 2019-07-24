@@ -61,6 +61,7 @@ const ReactionsContainer = styled.div`
     }
   }
 `;
+const ReactionType = styled.span``;
 const ActualPost = styled.div`
   padding: 10px 0;
   .captions {
@@ -91,41 +92,56 @@ const PollWrapper = styled.div`
 `;
 const Reactions = ({ handleReactionSelection }) => (
   <ReactionsContainer>
-    <span
+    <ReactionType
       className="like"
       name="like"
       onClick={() => {
         handleReactionSelection('like');
       }}
     >
-      <img src={Images.digii5.LikeIcon} />
+      <img src={Images.digii5.LikeIcon} alt="DiGii-like-icon" />
       Like
-    </span>
-    <span
+    </ReactionType>
+    <ReactionType
       className="comment"
       name="comment"
       onClick={() => {
         handleReactionSelection('comment');
       }}
     >
-      <img src={Images.digii5.CommentIcon} />
+      <img src={Images.digii5.CommentIcon} alt="DiGii-comment-icon" />
       Comment
-    </span>
-    <span
+    </ReactionType>
+    <ReactionType
       className="share"
       name="share"
       onClick={() => {
         handleReactionSelection('share');
       }}
     >
-      <img src={Images.digii5.ShareIcon} />
+      <img src={Images.digii5.ShareIcon} alt="DiGii-share-icon" />
       Share
-    </span>
+    </ReactionType>
   </ReactionsContainer>
 );
 
 const Gif = styled.img`
   width: 100%;
+`;
+const BannerWrapper = styled.div`
+  // background: ${props => `url(${props.image})`};
+  width: 100%;
+  position:relative;
+  div{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    ${flexCentering()};
+    color: ${snow};
+    ${fontSize(20)}
+  }
 `;
 
 class SinglePost extends Component {
@@ -144,7 +160,6 @@ class SinglePost extends Component {
     const { popt_po_id, popt_id } = option;
     const { user, onRespondToPoll } = this.props;
     const { isStudent, id } = user.user;
-    console.log(option);
     const data = {
       pr_po_id: popt_po_id,
       pr_popt_id: popt_id,
@@ -177,7 +192,7 @@ class SinglePost extends Component {
         );
       case 'poll':
         const { poll } = data;
-        const { po_question, poll_options, poll_responses } = poll;
+        const { po_question, poll_options } = poll;
         let { isStudent, id } = user.user;
         isStudent = isStudent ? 1 : 0;
         return (
@@ -205,7 +220,10 @@ class SinglePost extends Component {
                       style={{ color: selectedAnswer ? 'grey' : 'white' }}
                     />
                     {option.popt_image_path && (
-                      <img src={`${url}/${option.popt_image_path}`} />
+                      <img
+                        src={`${url}/${option.popt_image_path}`}
+                        alt={`${po_question}-option${i}`}
+                      />
                     )}
                     {option.popt_text}
                   </div>
@@ -219,13 +237,32 @@ voted
             })}
           </div>
         );
+      case 'banner':
+        return (
+          <BannerWrapper>
+            <Gif src={p_body} />
+            <div>
+              {' '}
+              <span>
+                {' '}
+                {p_text}
+              </span>
+            </div>
+          </BannerWrapper>
+        );
+      case 'tag':
+        const { notifications } = data;
+
+        // const { n_is_student, student, user } = notifications;
+        // console.log(notifications);
+        // <div>{n_is_student ? student.st_username : user.u_name}</div>
+        return <div>{p_text}</div>;
       default:
         return <div>{p_body}</div>;
     }
   };
 
   handleReactionSelection = action => {
-    console.log(action);
     if (action === 'comment') {
       this.setState({ showCommentBox: !this.state.showCommentBox });
     }

@@ -9,6 +9,7 @@ import { PostActivityTypes } from '../Redux/PostActivityRedux';
 import { CommentTypes } from '../Redux/CommentRedux';
 import { BannerTypes } from '../Redux/BannerRedux';
 import { GroupTypes } from '../Redux/GroupRedux';
+import { UserTypes } from '../Redux/UserRedux';
 import {
   onLoginRequest,
   onStudentLoginRequest,
@@ -22,7 +23,8 @@ import {
   onPostImage,
   onPostPoll,
   onUploadImage,
-  onRespondToPoll
+  onRespondToPoll,
+  onSubmitTagPost
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import onGetPostActivitiesOfAUser from './PostActivitySaga';
@@ -30,6 +32,7 @@ import onSubmitComment from './CommentSaga';
 import onGetStrikesCountOfAUser from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
+import onGetUserInfo from './UserSaga';
 
 export default function* root() {
   yield all([
@@ -46,6 +49,7 @@ export default function* root() {
     takeLatest(PostTypes.ON_POST_IMAGE, onPostImage),
     takeLatest(PostTypes.ON_POST_POLL, onPostPoll),
     takeLatest(PostTypes.ON_UPLOAD_IMAGE, onUploadImage),
+    takeLatest(PostTypes.ON_SUBMIT_TAG_POST, onSubmitTagPost),
     takeLatest(PostTypes.ON_RESPOND_TO_POLL, onRespondToPoll),
     takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),
     takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment),
@@ -58,6 +62,7 @@ export default function* root() {
       onGetStrikesCountOfAUser
     ),
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
-    takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup)
+    takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
+    takeLatest(UserTypes.ON_GET_USER_INFO, onGetUserInfo)
   ]);
 }
