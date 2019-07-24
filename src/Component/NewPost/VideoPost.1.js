@@ -38,22 +38,29 @@ class VideoPost extends Component {
   };
 
   render() {
+    const VideoDisplay = () => (
+      // eslint-disable-next-line jsx-a11y/media-has-caption
+      <renderLoadingView
+        src={videoSrc}
+        controls
+        style={{
+          height: "200px",
+          width: "200px"
+        }}
+      />
+    );
     const { videoSrc } = this.state;
     console.log("videoSrc", videoSrc);
     if (videoSrc) {
       return (
         <div>
-          <video
-            src={videoSrc}
-            controls
-            style={{
-              height: "200px",
-              width: "200px"
-            }}
-          />
+          {VideoDisplay()}
+
           <div>
             <button onClick={this.submitPost}>Post</button>
           </div>
+
+          <h2> Here new vedio document is created </h2>
         </div>
       );
     }
