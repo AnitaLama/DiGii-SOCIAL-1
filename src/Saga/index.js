@@ -24,7 +24,8 @@ import {
   onPostPoll,
   onUploadImage,
   onRespondToPoll,
-  onSubmitTagPost
+  onSubmitTagPost,
+  onVideoPost
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import onGetPostActivitiesOfAUser from './PostActivitySaga';
@@ -42,6 +43,7 @@ export default function* root() {
     takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
 
     takeLatest(PostTypes.ON_LIST_POSTS, onListPosts),
+    takeLatest(PostTypes.ON_VIDEO_POST, onVideoPost),
 
     takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts),
     takeLatest(PostTypes.ON_FIND_GIF, onFindGif),
