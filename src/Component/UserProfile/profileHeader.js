@@ -1,28 +1,63 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import UserAction from '../../Redux/UserRedux';
+import ProfileActions from '../../Redux/ProfileRedux';
 
 class UserProfileComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       profile: props.username,
-      isProfileOfAUser: props.isProfileOfAUser
+      isProfileOfAStudent: props.isProfileOfAUser
     };
   }
 
   componentWillMount() {
-    console.log(this.state.profile, this.state.isProfileOfAUser);
+    const { profile, isProfileOfAStudent } = this.state;
+    this.props.onGetUserInfo({
+      isStudent: isProfileOfAStudent,
+      username: profile
+    });
   }
 
   render() {
-    return <div>user</div>;
+    const { profiles } = this.props;
+    const { profile } = profiles;
+    if (profile && profile.user_profile) {
+      const { user_profile, u_email } = profile;
+      const { up_firstname, up_lastname } = user_profile;
+      return (
+        <div>
+          <div>
+            {up_firstname}
+            {' '}
+            {up_lastname}
+          </div>
+          <div>{u_email}</div>
+        </div>
+      );
+    }
+    if (profile) {
+      const { st_firstname, st_lastname, st_username } = profile;
+      return (
+        <div>
+          <div>
+            {st_firstname}
+            {' '}
+            {st_lastname}
+          </div>
+          <div>{st_username}</div>
+        </div>
+      );
+    }
+    return <div>LOADING...</div>;
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  profiles: state.profile
+});
 const mapDispatchToProps = dispatch => ({
-  onGetUserInfo: value => dispatch(UserAction.onGetUserInfo(value))
+  onGetUserInfo: value => dispatch(ProfileActions.onGetUserInfo(value))
 });
 export default connect(
   mapStateToProps,
