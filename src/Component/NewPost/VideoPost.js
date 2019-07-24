@@ -26,22 +26,35 @@ class VideoPost extends Component {
     console.log("VideoURL", videoUrl);
 
     this.props.onVideoPost(data);
+
+    
   };
 
+
   render() {
+ 
+    
     const VideoDisplay = () => (
       <video
         src={this.state.videoSrc}
         controls
-        // style={{
-        //   height: "200px",
-        //   width: "200px"
-        // }}
+        style={{
+          height: "200px",
+          width: "200px"
+        }}
       />
+      
     );
 
     if (this.state.videoSrc) {
-      return <div>{VideoDisplay()}</div>;
+      return (
+        <div>
+          {VideoDisplay()}
+          <div>
+            <button onClick={this.submitPost}>Post</button>
+          </div>
+        </div>
+      );
     }
 
     const handleRecordingComplete = (
