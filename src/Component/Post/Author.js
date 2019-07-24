@@ -11,6 +11,7 @@ import {
   Colors
 } from '../../Theme';
 import { Avatar } from '../StyledComponents';
+import history from '../../history';
 
 // const { grey } = Colors.colors;
 
@@ -59,7 +60,14 @@ const TaggedList = styled.span`
     }
   }
 `;
+const TaggedUser = styled.span`
+  cursor: pointer;
+`;
 class Author extends Component {
+  onUserNameClick = (type, name) => {
+    history.push(`/userprofile/${type}/${name}`);
+  };
+
   getExtraInfo = () => {
     const { data } = this.props;
     const { post_type, p_text, notifications } = data;
@@ -80,12 +88,29 @@ class Author extends Component {
             const { n_is_student, student, user } = item;
             if (n_is_student) {
               return (
-                <span key={`${item}-${student}-${i}`}>
+                <TaggedUser
+                  key={`${item}-${student}-${i}`}
+                  onClick={() => {
+                    this.onUserNameClick(
+                      item.n_is_student,
+                      student.st_username
+                    );
+                  }}
+                >
                   {student.st_username}
-                </span>
+                </TaggedUser>
               );
             }
-            return <span key={`${item}-${user}-${i}`}>{user.u_name}</span>;
+            return (
+              <TaggedUser
+                key={`${item}-${user}-${i}`}
+                onClick={() => {
+                  this.onUserNameClick(item.n_is_student, user.u_name);
+                }}
+              >
+                {user.u_name}
+              </TaggedUser>
+            );
           })}
         </TaggedList>
       );

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProfileActions from '../../Redux/ProfileRedux';
+import { Avatar } from './index';
+import { Button } from '../StyledComponents';
 
 class UserProfileComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       profile: props.username,
-      isProfileOfAStudent: props.isProfileOfAUser
+      isProfileOfAStudent: props.isProfileOfAUser,
+      showAvatarOptions: false
     };
   }
 
@@ -19,8 +22,13 @@ class UserProfileComponent extends Component {
     });
   }
 
+  showAvatarOptions = () => {
+    this.setState({ showAvatarOptions: !this.state.showAvatarOptions });
+  };
+
   render() {
     const { profiles } = this.props;
+    const { showAvatarOptions } = this.state;
     const { profile } = profiles;
     if (profile && profile.user_profile) {
       const { user_profile, u_email } = profile;
@@ -33,6 +41,8 @@ class UserProfileComponent extends Component {
             {up_lastname}
           </div>
           <div>{u_email}</div>
+          <Button onClick={this.showAvatarOptions}>Create your avatar</Button>
+          {showAvatarOptions && <Avatar />}
         </div>
       );
     }
@@ -46,6 +56,9 @@ class UserProfileComponent extends Component {
             {st_lastname}
           </div>
           <div>{st_username}</div>
+
+          <Button onClick={this.showAvatarOptions}>Create your avatar</Button>
+          {showAvatarOptions && <Avatar />}
         </div>
       );
     }

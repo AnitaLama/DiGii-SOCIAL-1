@@ -121,6 +121,11 @@ class Header extends Component {
             height={50}
             leftMargin={10}
             rightMargin={20}
+            onClick={() => {
+              history.push(
+                `/userprofile/${user.isStudent ? 1 : 0}/${user.username}`
+              );
+            }}
           />
           <Settings>
             <FiSettings
