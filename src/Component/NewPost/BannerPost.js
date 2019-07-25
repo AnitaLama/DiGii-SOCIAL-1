@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { PostWrapper } from './index';
+import { PostWrapperContainer } from './index';
 import BannerActions from '../../Redux/BannerRedux';
 import PostActions from '../../Redux/PostRedux';
 import { ImageModal } from '../StyledComponents';
@@ -70,7 +70,7 @@ class BannerPost extends Component {
     const { showModal, banner, postTypeId } = this.state;
     const { user } = this.props;
     return (
-      <PostWrapper>
+      <PostWrapperContainer>
         <div>{this.getBanners()}</div>
         {showModal && (
           <ImageModal
@@ -81,7 +81,7 @@ class BannerPost extends Component {
             onSubmitPost={this.onSubmitPost}
           />
         )}
-      </PostWrapper>
+      </PostWrapperContainer>
     );
   }
 }

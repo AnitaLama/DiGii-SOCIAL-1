@@ -51,3 +51,17 @@ export const PostWrapper = styled.div`
     color: red;
   }
 `;
+
+export const PostWrapperContainer = styled.div`
+  padding: 10px 15px;
+
+  button {
+    &.small {
+      ${fontSize(22)};
+      top: 10px;
+      right: 10px;
+      width: 86.76px;
+    }
+  }
+  min-height: 150px;
+`;

@@ -5,7 +5,11 @@ import { Button, FormTextArea, Modal } from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
 import {
-  FeelingsList, FilterKeyWords, warnings, PostWrapper
+  FeelingsList,
+  FilterKeyWords,
+  warnings,
+  PostWrapper,
+  PostWrapperContainer
 } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
@@ -134,7 +138,7 @@ class FeelingsPost extends Component {
     } = this.state;
     if (!feeling) {
       return (
-        <PostWrapper>
+        <PostWrapperContainer>
           <FeelingsDisplayWrapper>
             {/* -----DISPLAY ALL THE FEELINGS IN A GRID ---------*/}
             {FeelingsList.map((item, i) => (
@@ -150,7 +154,7 @@ class FeelingsPost extends Component {
               </span>
             ))}
           </FeelingsDisplayWrapper>
-        </PostWrapper>
+        </PostWrapperContainer>
       );
     }
     return (

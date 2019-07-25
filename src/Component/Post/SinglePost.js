@@ -140,7 +140,8 @@ const BannerWrapper = styled.div`
     top:0;
     left:0;
     right:0;
-    bottom:0;
+    bottom:0;padding: 20px;
+    text-align:center;
     ${flexCentering()};
     color: ${snow};
     ${fontSize(20)}
@@ -255,7 +256,22 @@ voted
             <Gif src={p_body} />
             <div>
               {' '}
-              <span>
+              <span
+                style={{
+                  fontSize:
+                    p_text.length < 30
+                      ? '45px'
+                      : p_text.length < 80
+                        ? '30px'
+                        : '25px',
+                  lineHeight:
+                    p_text.length < 30
+                      ? '40px'
+                      : p_text.length < 80
+                        ? '30px'
+                        : '25px'
+                }}
+              >
                 {' '}
                 {p_text}
               </span>
