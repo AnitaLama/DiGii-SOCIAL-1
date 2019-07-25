@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
-import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
-import { FaTimesCircle } from 'react-icons/fa';
-import {
-  Images, flex, fontSize, fontWeight, Colors
-} from '../../Theme';
-import { Avatar } from '../StyledComponents';
+import React, { Component } from "react";
+import styled from "@emotion/styled";
+import PropTypes from "prop-types";
+import { FaTimesCircle } from "react-icons/fa";
+import { Images, flex, fontSize, fontWeight, Colors } from "../../Theme";
+import { Avatar } from "../StyledComponents";
 
 const { grey, pink } = Colors.colors;
 const CommentWrapper = styled.div`
@@ -15,11 +13,11 @@ const CommentWrapper = styled.div`
 `;
 
 const CommentDiv = styled.div`
-  ${flex('column')};
+  ${flex("column")};
   position: relative;
   width: 100%;
   span:first-of-type {
-    ${fontWeight('bold')};
+    ${fontWeight("bold")};
   }
   span:not(:first-of-type) {
     ${fontSize(12)};
@@ -53,18 +51,19 @@ class Comment extends Component {
 
   hideComment = () => {
     this.setState({ isCommentHidden: true });
+    
   };
 
   render() {
     const { isCommentHidden } = this.state;
     const { data } = this.props;
 
-    let firstname = '';
-    let lastname = '';
+    let firstname = "";
+    let lastname = "";
     if (data.pc_is_student) {
       const { student } = data;
-      firstname = student.st_firstname || '';
-      lastname = student.st_lastname || '';
+      firstname = student.st_firstname || "";
+      lastname = student.st_lastname || "";
     } else {
       const { user } = data;
       const { user_profile } = user;
@@ -78,10 +77,9 @@ class Comment extends Component {
         <Avatar src={Images.stockImage} height={24} rightMargin={6} />
         <CommentDiv>
           <span>
-            {firstname}
-            {' '}
-            {lastname}
+            {firstname} {lastname}
           </span>
+          {/* Hide/Edit/Delete comment  */}
           <Close onClick={this.hideComment}>
             <FaTimesCircle />
           </Close>

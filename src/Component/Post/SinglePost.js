@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import styled from '@emotion/styled';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FaCircle } from 'react-icons/fa';
+import React, { Component } from "react";
+import styled from "@emotion/styled";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { FaCircle } from "react-icons/fa";
 import {
   Colors,
   fontSize,
@@ -11,13 +11,13 @@ import {
   Images,
   fontFilson,
   flexCentering
-} from '../../Theme';
-import Author from './Author';
-import Comment from './Comment';
-import CommentBox from './CommentBox';
-import PostActions from '../../Redux/PostRedux';
+} from "../../Theme";
+import Author from "./Author";
+import Comment from "./Comment";
+import CommentBox from "./CommentBox";
+import PostActions from "../../Redux/PostRedux";
 
-const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
+const url = "https://digii-posts.s3-ap-southeast-2.amazonaws.com";
 
 const { snow } = Colors.colors;
 const PostWrapper = styled.div`
@@ -26,10 +26,11 @@ const PostWrapper = styled.div`
   padding: 24px;
   border-radius: 40px;
   ${boxShadow()};
-  ${grid(2, '1fr')};
+  ${grid(2, "1fr")};
 `;
 const ActualPostWrapper = styled.div`
   padding-right: 20px;
+ 
 `;
 
 const CommentContainer = styled.div`
@@ -96,7 +97,7 @@ const Reactions = ({ handleReactionSelection }) => (
       className="like"
       name="like"
       onClick={() => {
-        handleReactionSelection('like');
+        handleReactionSelection("like");
       }}
     >
       <img src={Images.digii5.LikeIcon} alt="DiGii-like-icon" />
@@ -106,7 +107,7 @@ const Reactions = ({ handleReactionSelection }) => (
       className="comment"
       name="comment"
       onClick={() => {
-        handleReactionSelection('comment');
+        handleReactionSelection("comment");
       }}
     >
       <img src={Images.digii5.CommentIcon} alt="DiGii-comment-icon" />
@@ -116,7 +117,7 @@ const Reactions = ({ handleReactionSelection }) => (
       className="share"
       name="share"
       onClick={() => {
-        handleReactionSelection('share');
+        handleReactionSelection("share");
       }}
     >
       <img src={Images.digii5.ShareIcon} alt="DiGii-share-icon" />
@@ -177,16 +178,16 @@ class SinglePost extends Component {
     const { user } = this.props;
     const type = post_type && post_type.pt_title;
     switch (type) {
-      case 'text':
+      case "text":
         return <div>{p_body}</div>;
-      case 'gif':
+      case "gif":
         return (
           <div>
             <div className="captions">{p_text}</div>
             <Gif src={`${p_body}`} />
           </div>
         );
-      case 'photo/video':
+      case "photo/video":
         const { p_is_image } = data;
         if (p_is_image) {
           return (
@@ -202,7 +203,7 @@ class SinglePost extends Component {
             <Video src={`${p_body}`} controls />
           </div>
         );
-      case 'poll':
+      case "poll":
         const { poll } = data;
         const { po_question, poll_options } = poll;
         let { isStudent, id } = user.user;
@@ -213,10 +214,12 @@ class SinglePost extends Component {
             {poll_options.map((option, i) => {
               const { poll_responses } = option;
               const hasUserVoted = poll_responses.find(
-                item => item.pr_is_student === isStudent
-                  && item.pr_commentator_id === id
+                item =>
+                  item.pr_is_student === isStudent &&
+                  item.pr_commentator_id === id
               );
-              const selectedAnswer = hasUserVoted && hasUserVoted.pr_popt_id === option.popt_id;
+              const selectedAnswer =
+                hasUserVoted && hasUserVoted.pr_popt_id === option.popt_id;
 
               return (
                 <PollWrapper
@@ -229,7 +232,7 @@ class SinglePost extends Component {
                 >
                   <div>
                     <FaCircle
-                      style={{ color: selectedAnswer ? 'grey' : 'white' }}
+                      style={{ color: selectedAnswer ? "grey" : "white" }}
                     />
                     {option.popt_image_path && (
                       <img
@@ -239,30 +242,23 @@ class SinglePost extends Component {
                     )}
                     {option.popt_text}
                   </div>
-                  <span>
-                    {poll_responses.length}
-                    {' '}
-voted
-                  </span>
+                  <span>{poll_responses.length} voted</span>
                 </PollWrapper>
               );
             })}
           </div>
         );
-      case 'banner':
+      case "banner":
         return (
           <BannerWrapper>
             <Gif src={p_body} />
             <div>
-              {' '}
-              <span>
-                {' '}
-                {p_text}
-              </span>
+              {" "}
+              <span> {p_text}</span>
             </div>
           </BannerWrapper>
         );
-      case 'tag':
+      case "tag":
         const { notifications } = data;
 
         // const { n_is_student, student, user } = notifications;
@@ -275,7 +271,7 @@ voted
   };
 
   handleReactionSelection = action => {
-    if (action === 'comment') {
+    if (action === "comment") {
       this.setState({ showCommentBox: !this.state.showCommentBox });
     }
   };
@@ -283,9 +279,10 @@ voted
   render() {
     const { data } = this.props;
     let { post_comments } = data;
-    post_comments = post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
+    post_comments =
+      post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
     return (
-      <PostWrapper>
+      <PostWrapper style={{ position: "relative"}}>
         <ActualPostWrapper>
           <Author data={data} />
           <ActualPost>{this.getContent(data)}</ActualPost>
@@ -293,8 +290,8 @@ voted
         </ActualPostWrapper>
 
         <CommentContainer>
-          {post_comments
-            && post_comments.map((comment, i) => (
+          {post_comments &&
+            post_comments.map((comment, i) => (
               <Comment key={comment + i} data={comment} />
             ))}
           {this.state.showCommentBox && <CommentBox data={data} />}

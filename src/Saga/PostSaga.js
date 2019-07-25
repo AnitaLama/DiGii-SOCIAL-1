@@ -1,7 +1,7 @@
-import { call, put } from 'redux-saga/effects';
-import axios from 'axios';
-import { DEV_URL } from '../config';
-import PostActions from '../Redux/PostRedux';
+import { call, put } from "redux-saga/effects";
+import axios from "axios";
+import { DEV_URL } from "../config";
+import PostActions from "../Redux/PostRedux";
 
 const URL = `${DEV_URL}/post`;
 
@@ -61,7 +61,7 @@ export function* onFindGif(action) {
     if (data) {
       yield put(PostActions.onFindGifSuccess(data.data));
     } else {
-      yield put(PostActions.onFindGifFailure('Couldn\'t find gif'));
+      yield put(PostActions.onFindGifFailure("Couldn't find gif"));
     }
   } catch (err) {
     console.log(err);
@@ -71,7 +71,7 @@ export function* onFindGif(action) {
 export function* onPostImage(action) {
   try {
     const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
-    console.log('saga data', data);
+    console.log("saga data", data);
   } catch (err) {
     console.log(err);
   }
@@ -80,7 +80,7 @@ export function* onPostImage(action) {
 export function* onUploadImage(action) {
   try {
     const data = yield call(axios.post, `${URL}/uploadImage`, action.data);
-    console.log('saga data', data);
+    console.log("saga data", data);
   } catch (err) {
     console.log(err);
   }
@@ -89,7 +89,7 @@ export function* onUploadImage(action) {
 export function* onPostPoll(action) {
   try {
     const data = yield call(axios.post, `${URL}/addNewPoll`, action.data);
-    console.log('saga data', data);
+    console.log("saga data", data);
   } catch (err) {
     console.log(err);
   }
@@ -99,7 +99,7 @@ export function* onVideoPost(action) {
   try {
     console.log(action);
     const data = yield call(axios.post, `${URL}/uploadVideo`, action.data);
-    console.log('saga data', data);
+    console.log("saga data", data);
   } catch (err) {
     console.log(err);
   }
@@ -120,12 +120,23 @@ export function* onRespondToPoll(action) {
 
 export function* onSubmitTagPost(action) {
   try {
-    console.log('saga input', action.data);
+    console.log("saga input", action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/addNewTagPost`,
       action.data
     );
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onPostDelete(action) {
+  try {
+    
+    console.log("On Post delete", action.data);
+    const { data } = yield call(axios.post, `${URL}/onPostDelete`, action.data);
+    console.log(data);
   } catch (err) {
     console.log(err);
   }

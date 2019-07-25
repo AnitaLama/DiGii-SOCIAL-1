@@ -1,7 +1,7 @@
-import { call, put } from 'redux-saga/effects';
-import axios from 'axios';
-import { DEV_URL } from '../config';
-import BannerActions from '../Redux/BannerRedux';
+import { call, put } from "redux-saga/effects";
+import axios from "axios";
+import { DEV_URL } from "../config";
+import BannerActions from "../Redux/BannerRedux";
 
 export default function* onGetAllBanners() {
   try {
