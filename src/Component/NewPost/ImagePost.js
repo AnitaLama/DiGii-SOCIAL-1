@@ -158,43 +158,9 @@ class ImagePost extends Component {
   };
 
   handleCaption = e => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
 
-    const { strike } = this.props;
-    // LIMIT LENGTH OF POST TO 500
-    if (value.trim().length > 500) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Please keep the length within 500 characters'
-      });
-      this.setState({ postText: value });
-    } else {
-      const blacklistedWord = FilterKeyWords(value);
-
-      if (blacklistedWord) {
-        if (strike.strikes >= 10) {
-          this.setState({ blockUser: true });
-          // onBlockUser({ isStudent, id });
-        } else {
-          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-          index -= 1;
-          this.setState({
-            isModalVisible: true,
-            alertMessage: `${warnings[index]}`
-          });
-        }
-        this.setState({ isBad: true, strikeType: blacklistedWord });
-      } else {
-        this.setState({
-          isModalVisible: false,
-          alertMessage: null
-        });
-      }
-      this.setState({ postText: value });
-    }
+    this.setState({ postText: value });
   };
 
   render() {
@@ -311,23 +277,13 @@ class ImagePost extends Component {
 
 ImagePost.propTypes = {
   strike: PropTypes.object,
-  user: PropTypes.object,
-  post: PropTypes.object,
-  onPostImage: PropTypes.func,
-  onGetStrikesCountOfAUser: PropTypes.func,
-  disableFirstTimePosting: PropTypes.func
+  user: PropTypes.object
 };
 const mapStateToProps = state => ({
-  postActivity: state.postActivity,
-  user: state.user,
-  post: state.post,
-  strike: state.strike
+  user: state.user
 });
 const mapDispatchToProps = dispatch => ({
-  onPostImage: value => dispatch(PostActions.onPostImage(value)),
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
-  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
+  onPostImage: value => dispatch(PostActions.onPostImage(value))
 });
 export default connect(
   mapStateToProps,

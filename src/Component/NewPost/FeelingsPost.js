@@ -56,7 +56,8 @@ class FeelingsPost extends Component {
       feeling: null,
       postText: '',
       isModalVisible: false,
-      alertMessage: null
+      alertMessage: null,
+      blockUser: false
     };
   }
 
@@ -86,7 +87,6 @@ class FeelingsPost extends Component {
       const blacklistedWord = FilterKeyWords(value);
       if (blacklistedWord) {
         if (strike.strikes >= 10) {
-          console.log('block the student');
           this.setState({ blockUser: true });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
@@ -112,8 +112,12 @@ class FeelingsPost extends Component {
   };
 
   submitTextPost = () => {
-    const { feeling, postText, postTypeId } = this.state;
-    const { user, resetPostType, onPostSubmit } = this.props;
+    const {
+      feeling, postText, postTypeId, blockUser
+    } = this.state;
+    const {
+      user, resetPostType, onPostSubmit, onBlockUser
+    } = this.props;
     const { isStudent, id } = user.user;
 
     const data = {
@@ -124,6 +128,9 @@ class FeelingsPost extends Component {
       p_text: feeling.name
     };
     onPostSubmit(data);
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    }
     // this.setState({ selectedGif: null });
     resetPostType();
   };

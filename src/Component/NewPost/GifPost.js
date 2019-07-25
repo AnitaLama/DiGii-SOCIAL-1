@@ -147,7 +147,7 @@ class GifContainer extends Component {
 }
 
 GifContainer.propTypes = {
-  postTypeId: PropTypes.string,
+  postTypeId: PropTypes.number,
   user: PropTypes.object,
   onFindGif: PropTypes.func,
   onPostSubmit: PropTypes.func,
