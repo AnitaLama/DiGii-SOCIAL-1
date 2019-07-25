@@ -6,7 +6,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { grid } from '../../Theme';
 import { Button, FormTextArea, Modal as AlertModal } from '../StyledComponents';
-import { FilterKeyWords, warnings, PostWrapper } from './index';
+import {
+  FilterKeyWords,
+  warnings,
+  PostWrapper,
+  PostWrapperContainer
+} from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
@@ -205,6 +210,59 @@ class ImagePost extends Component {
       imageObject,
       isWebcamModalVisible
     } = this.state;
+    if (!selectedImage && !imageObject) {
+      return (
+        <PostWrapperContainer>
+          <PhotoOptionContent>
+            <input type="file" multiple="" onChange={this.selectImage} />
+            <div style={{ textAlign: 'center' }}>
+              <Button className="rounded short" onClick={this.switchOnWebcam}>
+                Take a picture
+              </Button>
+            </div>
+          </PhotoOptionContent>
+          <Modal
+            title="Take a new picture"
+            visible={isWebcamModalVisible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button
+                className="rounded"
+                type="submit"
+                onClick={this.capture}
+                key="cpature"
+              >
+                Capture
+              </Button>
+            ]}
+          >
+            {isWebcamModalVisible && (
+              <div>
+                {!imageObject && (
+                  <Webcam
+                    audio={false}
+                    height={350}
+                    ref={r => (this.webcam = r)}
+                    screenshotFormat="image/jpeg"
+                    width={350}
+                    videoConstraints={videoConstraints}
+                  />
+                )}
+                {!!imageObject && (
+                  <div>
+                    <img
+                      src={`${imageObject.imageData} `}
+                      alt={`${imageObject.imageData} `}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </Modal>
+        </PostWrapperContainer>
+      );
+    }
     return (
       <PostWrapper>
         <PhotoOptionContainer>
@@ -237,54 +295,6 @@ class ImagePost extends Component {
               </div>
             </PhotoOptionContent>
           )}
-          <Modal
-            title="Take a new picture"
-            visible={isWebcamModalVisible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-            footer={
-              !imageObject
-                ? [
-                  <button type="submit" onClick={this.capture}>
-                      Capture
-                  </button>,
-                  <button type="submit" onClick={this.onClickRetake}>
-                      Retake
-                  </button>
-                ]
-                : [
-                  <button type="submit" onClick={this.handleOk}>
-                      Save
-                  </button>,
-                  <button type="submit" onClick={this.onClickRetake}>
-                      Retake
-                  </button>
-                ]
-            }
-          >
-            {isWebcamModalVisible && (
-              <div>
-                {!imageObject && (
-                  <Webcam
-                    audio={false}
-                    height={350}
-                    ref={r => (this.webcam = r)}
-                    screenshotFormat="image/jpeg"
-                    width={350}
-                    videoConstraints={videoConstraints}
-                  />
-                )}
-                {!!imageObject && (
-                  <div>
-                    <img
-                      src={`${imageObject.imageData} `}
-                      alt={`${imageObject.imageData} `}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-          </Modal>
         </PhotoOptionContainer>
         <div>
           <Button className="rounded small" onClick={this.postImage}>
