@@ -56,7 +56,6 @@ class UserProfileComponent extends Component {
             {st_lastname}
           </div>
           <div>{st_username}</div>
-
           <Button onClick={this.showAvatarOptions}>Create your avatar</Button>
           {showAvatarOptions && <Avatar />}
         </div>

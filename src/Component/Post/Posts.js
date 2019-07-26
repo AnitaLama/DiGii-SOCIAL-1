@@ -37,6 +37,9 @@ class Posts extends Component {
         this.setState({ posts: data.result });
       }
     });
+    this.socket.on('strikes', data => {
+      console.log('strikes posts', data);
+    });
   }
 
   componentWillReceiveProps(nextProp) {

@@ -21,12 +21,10 @@ class UserAvatar extends Component {
   }
 
   onChange = e => {
-    console.log('Here is the value selected', e.target.value);
     this.setState({ [e.target.id]: e.target.value });
   };
 
   render() {
-    console.log(this.state);
     const {
       avatarStyle,
       topType,

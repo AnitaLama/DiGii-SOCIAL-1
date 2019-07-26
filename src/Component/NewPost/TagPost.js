@@ -8,6 +8,7 @@ import PostActions from '../../Redux/PostRedux';
 import { Colors, boxShadow } from '../../Theme';
 import StrikeActions from '../../Redux/StrikeRedux';
 import { FilterKeyWords, warnings, PostWrapper } from './index';
+import LoginActions from '../../Redux/LoginRedux';
 
 const strikeCount = 3;
 
@@ -84,7 +85,8 @@ class TagPost extends Component {
       taggedUsers: [],
       users: [],
       isModalVisible: false,
-      alertMessage: null
+      alertMessage: null,
+      blockUser: false
     };
   }
 
@@ -116,6 +118,28 @@ class TagPost extends Component {
     });
   };
 
+  checkIfFirstTime = () => {
+    const { user, disableFirstTimePosting, post } = this.props;
+    const { posts } = post;
+    // console.log(posts);
+    const isFirstTimePosting = posts.find(
+      item => item.p_actor_id === user.user.id
+    );
+    if (
+      user.user.isStudent
+      && !isFirstTimePosting
+      && user.user.isFirstTimePosting
+    ) {
+      disableFirstTimePosting();
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Congratulations!!! it\'s your first time posting.'
+      });
+
+      // alert('Congratulations!!! it\'s your first time posting.');
+    }
+  };
+
   handleTextChange = e => {
     const { onGetStrikesCountOfAUser, user } = this.props;
     const { isStudent, id } = user.user;
@@ -137,6 +161,10 @@ class TagPost extends Component {
           console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
+          this.setState({
+            isModalVisible: true,
+            alertMessage: 'You\'ll be blocked from digii'
+          });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
           index -= 1;
@@ -167,8 +195,10 @@ class TagPost extends Component {
   };
 
   finishedTagging = () => {
-    const { taggedUsers, text, postTypeId } = this.state;
-    const { user, onSubmitTagPost } = this.props;
+    const {
+      taggedUsers, text, postTypeId, blockUser
+    } = this.state;
+    const { user, onSubmitTagPost, onBlockUser } = this.props;
     const { isStudent, id } = user.user;
     const data = {
       p_pt_id: postTypeId,
@@ -178,6 +208,9 @@ class TagPost extends Component {
       taggedUsers
     };
     onSubmitTagPost(data);
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    }
   };
 
   selectUser = user => {
@@ -235,6 +268,7 @@ class TagPost extends Component {
             onChange={this.handleTextChange}
             onKeyDown={this.handleKeyDown}
             ref={r => (this.textarea = r)}
+            onFocus={this.checkIfFirstTime}
           />
           <div>
             <Button className="rounded small" onClick={this.finishedTagging}>
@@ -304,13 +338,17 @@ x
 const mapStateToProps = state => ({
   user: state.user,
   group: state.group,
-  strike: state.strike
+  strike: state.strike,
+  postActivity: state.postActivity,
+  post: state.post
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetAllUsersOfAGroup: value => dispatch(GroupActions.onGetAllUsersOfAGroup(value)),
   onSubmitTagPost: value => dispatch(PostActions.onSubmitTagPost(value)),
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 
 export default connect(

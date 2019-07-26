@@ -4,6 +4,7 @@ import Webcam from 'react-webcam';
 import { Modal } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import socketClient from 'socket.io-client';
 import { grid } from '../../Theme';
 import { Button, FormTextArea, Modal as AlertModal } from '../StyledComponents';
 import {
@@ -15,6 +16,8 @@ import {
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
+
+import { SOCKET_URL } from '../../config';
 
 const strikeCount = 3;
 
@@ -48,6 +51,11 @@ class ImagePost extends Component {
       isBad: false,
       strikeType: null
     };
+    this.socket = socketClient(SOCKET_URL);
+  }
+
+  componentWillUnmount() {
+    this.socket = null;
   }
 
   switchOnWebcam = () => {
@@ -91,6 +99,9 @@ class ImagePost extends Component {
   handleChange = e => {
     e.persist();
     this.setState({ [e.target.name]: e.target.value });
+    this.socket.on('strikes', data => {
+      console.log('strikes', data);
+    });
   };
 
   postImage = () => {
@@ -158,9 +169,19 @@ class ImagePost extends Component {
   };
 
   handleCaption = e => {
+    const { user } = this.props;
+    const { isStudent, id } = user.user;
     const { value } = e.target;
-
-    this.setState({ postText: value });
+    if (value.trim().length > 500) {
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Please keep the length within 500 characters'
+      });
+      // alert('Please keep the length within 500 characters');
+      this.setState({ postText: value });
+    } else {
+      this.setState({ postText: value });
+    }
   };
 
   render() {

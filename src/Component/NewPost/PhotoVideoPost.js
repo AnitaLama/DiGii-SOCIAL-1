@@ -21,7 +21,6 @@ class PhotoVideoPost extends Component {
   }
 
   handleButtonClick = type => {
-    console.log('type', type);
     this.setState({ type });
   };
 

@@ -12,8 +12,8 @@ class TextPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false,
       isBad: false,
+      isModalVisible: false,
       alertmessage: null,
       postText: '',
       hasPost: false,
@@ -54,9 +54,9 @@ class TextPost extends Component {
       this.setState({ postText: value, hasPost: value.trim().length > 0 });
     } else {
       const blacklistedWord = FilterKeyWords(value);
-
+      console.log(strike.strikes);
       if (blacklistedWord) {
-        if (strike.strikes >= 10) {
+        if (strike.strikes >= 9) {
           console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
@@ -177,8 +177,8 @@ TextPost.propTypes = {
   disableFirstTimePosting: PropTypes.func
 };
 const mapStateToProps = state => ({
-  postActivity: state.postActivity,
   user: state.user,
+  postActivity: state.postActivity,
   post: state.post,
   strike: state.strike
 });
