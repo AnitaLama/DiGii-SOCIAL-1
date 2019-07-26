@@ -49,9 +49,16 @@ class ImagePost extends Component {
       fileName: '',
       postText: '',
       isBad: false,
-      strikeType: null
+      strikeType: null,
+      alertMessage: null
     };
     this.socket = socketClient(SOCKET_URL);
+  }
+
+  componentWillMount() {
+    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
   }
 
   componentWillUnmount() {
@@ -169,18 +176,71 @@ class ImagePost extends Component {
   };
 
   handleCaption = e => {
-    const { user } = this.props;
+    const { onGetStrikesCountOfAUser, user } = this.props;
     const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
+    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
+      console.log('show users');
+    }
+    const { strike } = this.props;
     if (value.trim().length > 500) {
       this.setState({
         isModalVisible: true,
         alertMessage: 'Please keep the length within 500 characters'
       });
       // alert('Please keep the length within 500 characters');
-      this.setState({ postText: value });
+      this.setState({ postText: value, hasPost: value.trim().length > 0 });
     } else {
-      this.setState({ postText: value });
+      const blacklistedWord = FilterKeyWords(value);
+      console.log(strike.strikes);
+      if (blacklistedWord) {
+        if (strike.strikes >= 9) {
+          console.log('block the student');
+          this.setState({ blockUser: true });
+          // onBlockUser({ isStudent, id });
+          this.setState({
+            blockUser: true,
+            isModalVisible: true,
+            alertMessage: 'You\'ll be blocked'
+          });
+        } else {
+          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
+          index -= 1;
+          this.setState({
+            isModalVisible: true,
+            alertMessage: `${warnings[index]}`
+          });
+        }
+        this.setState({ isBad: true, strikeType: blacklistedWord });
+      } else {
+        this.setState({
+          isModalVisible: false,
+          alertMessage: null
+        });
+      }
+      this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    }
+  };
+
+  onFocus = () => {
+    console.log('onfocus');
+    const { user, disableFirstTimePosting, post } = this.props;
+    const { posts } = post;
+    // console.log(posts);
+    const isFirstTimePosting = posts.find(
+      item => item.p_actor_id === user.user.id
+    );
+    if (
+      user.user.isStudent
+      && !isFirstTimePosting
+      && user.user.isFirstTimePosting
+    ) {
+      disableFirstTimePosting();
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Congratulations!!! it\'s your first time posting.'
+      });
     }
   };
 
@@ -259,6 +319,7 @@ class ImagePost extends Component {
               <FormTextArea
                 placeholder="Write something..."
                 onChange={this.handleCaption}
+                onFocus={this.onFocus}
               />
             </ImageWrapper>
           )}
@@ -268,6 +329,7 @@ class ImagePost extends Component {
               <FormTextArea
                 placeholder="Write something..."
                 onChange={this.handleCaption}
+                onFocus={this.onFocus}
               />
             </ImageWrapper>
           )}
@@ -301,10 +363,14 @@ ImagePost.propTypes = {
   user: PropTypes.object
 };
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  strike: state.strike,
+  post: state.post
 });
 const mapDispatchToProps = dispatch => ({
-  onPostImage: value => dispatch(PostActions.onPostImage(value))
+  onPostImage: value => dispatch(PostActions.onPostImage(value)),
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting())
 });
 export default connect(
   mapStateToProps,
