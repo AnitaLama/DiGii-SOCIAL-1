@@ -13,7 +13,6 @@ import {
   Button
 } from '../StyledComponents';
 import { Colors, Images } from '../../Theme';
-import StrikeActions from '../../Redux/StrikeRedux';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -54,12 +53,12 @@ class BannerImageModal extends Component {
       alertmessage: null
     };
   }
-
-  componentWillMount() {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    onGetStrikesCountOfAUser({ isStudent, id });
-  }
+  //
+  // componentWillMount() {
+  //   const { onGetStrikesCountOfAUser, user } = this.props;
+  //   const { isStudent, id } = user.user;
+  //   onGetStrikesCountOfAUser({ isStudent, id });
+  // }
 
   handleTextChange = e => {
     const { value } = e.target;
@@ -138,13 +137,15 @@ class BannerImageModal extends Component {
 BannerImageModal.propTypes = {
   // hideModal: PropTypes.func
 };
-const mapStateToProps = state => ({
-  user: state.user
-});
-const mapDispatchToProps = dispatch => ({
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BannerImageModal);
+// const mapStateToProps = state => ({
+//   user: state.user
+// });
+// const mapDispatchToProps = dispatch => ({
+//   onGetStrikesCountOfAUser : value=> dispatch(StrikeActions.onGetStrikesCountOfAUser())
+// });
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(BannerImageModal);
+
+export default BannerImageModal;
