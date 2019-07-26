@@ -12,6 +12,7 @@ import FeelingsPost from './FeelingsPost';
 import PhotoVideoPost from './PhotoVideoPost';
 import VideoPost from './VideoPost';
 import BannerPost from './BannerPost';
+import BannerImageModal from './BannerImageEditor';
 import FeelingsList from './FeelingsList';
 import TagPost from './TagPost';
 import PollPost from './PollPost';
@@ -29,6 +30,7 @@ export {
   PhotoVideoPost,
   VideoPost,
   BannerPost,
+  BannerImageModal,
   FeelingsList,
   TagPost,
   PollPost

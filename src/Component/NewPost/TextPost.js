@@ -183,7 +183,6 @@ TextPost.propTypes = {
 };
 const mapStateToProps = state => ({
   user: state.user,
-  postActivity: state.postActivity,
   post: state.post,
   strike: state.strike
 });

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { PostWrapperContainer } from './index';
+import { PostWrapperContainer, BannerImageModal } from './index';
 import BannerActions from '../../Redux/BannerRedux';
 import PostActions from '../../Redux/PostRedux';
-import { ImageModal } from '../StyledComponents';
+// import { BannerImageModal } from '../StyledComponents';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -73,7 +73,7 @@ class BannerPost extends Component {
       <PostWrapperContainer>
         <div>{this.getBanners()}</div>
         {showModal && (
-          <ImageModal
+          <BannerImageModal
             data={banner}
             hideModal={this.hideModal}
             user={user.user}
