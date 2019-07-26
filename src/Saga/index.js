@@ -26,7 +26,8 @@ import {
   onRespondToPoll,
   onSubmitTagPost,
   onVideoPost,
-  onPostDelete
+  onPostDelete,
+  onCommentDelete
 } from "./PostSaga";
 import onListPostTypes from "./PostTypeSaga";
 import onGetPostActivitiesOfAUser from "./PostActivitySaga";
@@ -67,6 +68,7 @@ export default function* root() {
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
     takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),
-    takeLatest(PostTypes.ON_POST_DELETE, onPostDelete)
+    takeLatest(PostTypes.ON_POST_DELETE, onPostDelete),
+    takeLatest(PostTypes.ON_COMMENT_DELETE, onCommentDelete)
   ]);
 }

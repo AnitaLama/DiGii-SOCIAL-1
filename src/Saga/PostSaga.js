@@ -69,6 +69,7 @@ export function* onFindGif(action) {
 }
 
 export function* onPostImage(action) {
+  console.log("onPostImage action", action);
   try {
     const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
     console.log("saga data", data);
@@ -133,9 +134,22 @@ export function* onSubmitTagPost(action) {
 
 export function* onPostDelete(action) {
   try {
-    
     console.log("On Post delete", action.data);
     const { data } = yield call(axios.post, `${URL}/onPostDelete`, action.data);
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onCommentDelete(action) {
+  try {
+    console.log("On comment delete", action);
+    const { data } = yield call(
+      axios.post,
+      `${URL}/onCommentDelete`,
+      action.data
+    );
     console.log(data);
   } catch (err) {
     console.log(err);

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { FaTimesCircle } from "react-icons/fa";
 import { Images, flex, fontSize, fontWeight, Colors } from "../../Theme";
 import { Avatar } from "../StyledComponents";
+import { connect } from "react-redux";
+import PostAction from "../../Redux/PostRedux";
 
 const { grey, pink } = Colors.colors;
 const CommentWrapper = styled.div`
@@ -49,14 +51,16 @@ class Comment extends Component {
     };
   }
 
-  hideComment = () => {
+  hideComment = value => {
     this.setState({ isCommentHidden: true });
-    
+    this.props.onDelete(value);
   };
 
   render() {
     const { isCommentHidden } = this.state;
-    const { data } = this.props;
+    const { data, comment, user } = this.props;
+    const { pc_id } = data;
+    const { isStudent, id } = user.user;
 
     let firstname = "";
     let lastname = "";
@@ -80,7 +84,7 @@ class Comment extends Component {
             {firstname} {lastname}
           </span>
           {/* Hide/Edit/Delete comment  */}
-          <Close onClick={this.hideComment}>
+          <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>
             <FaTimesCircle />
           </Close>
           {/* <span className="date">
@@ -98,4 +102,17 @@ class Comment extends Component {
 Comment.propTypes = {
   data: PropTypes.object
 };
-export default Comment;
+
+const mapStateToProps = state => ({
+  comment: state.comment,
+  user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  onDelete: value => dispatch(PostAction.onCommentDelete(value))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comment);
