@@ -10,9 +10,16 @@ import {
   Points,
   FormInput,
   ButtonWrapper,
-  Button
+  Button,
+  Modal
 } from '../StyledComponents';
 import { Colors, Images } from '../../Theme';
+import { FilterKeyWords, warnings, PostWrapper } from './index';
+import PostActions from '../../Redux/PostRedux';
+import LoginActions from '../../Redux/LoginRedux';
+import StrikeActions from '../../Redux/StrikeRedux';
+
+const strikeCount = 3;
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -53,23 +60,67 @@ class BannerImageModal extends Component {
       alertmessage: null
     };
   }
+
+  componentWillMount() {
+    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
+  }
+
+  hideAlertModal = () => {
+    this.setState({ isModalVisible: false });
+  };
+
   //
-  // componentWillMount() {
-  //   const { onGetStrikesCountOfAUser, user } = this.props;
-  //   const { isStudent, id } = user.user;
-  //   onGetStrikesCountOfAUser({ isStudent, id });
-  // }
-
   handleTextChange = e => {
+    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
-
-    this.setState({ text: value });
+    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
+    }
+    const { strike } = this.props;
+    if (value.trim().length > 500) {
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Please keep the length within 500 characters'
+      });
+      // alert('Please keep the length within 500 characters');
+      this.setState({ text: value, hasPost: value.trim().length > 0 });
+    } else {
+      const blacklistedWord = FilterKeyWords(value);
+      if (blacklistedWord) {
+        if (strike.strikes >= 9) {
+          this.setState({ blockUser: true });
+          // onBlockUser({ isStudent, id });
+          this.setState({
+            blockUser: true,
+            isModalVisible: true,
+            alertMessage: 'You\'ll be blocked'
+          });
+        } else {
+          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
+          index -= 1;
+          this.setState({
+            isModalVisible: true,
+            alertMessage: `${warnings[index]}`
+          });
+        }
+        this.setState({ isBad: true, strikeType: blacklistedWord });
+      } else {
+        this.setState({
+          isModalVisible: false,
+          alertMessage: null
+        });
+      }
+      this.setState({ text: value, hasPost: value.trim().length > 0 });
+    }
   };
 
   saveBanner = () => {
-    const { text } = this.state;
+    const { blockUser, text } = this.state;
     const {
-      data, user, postTypeId, onSubmitPost
+      data, user, postTypeId, onSubmitPost, onBlockUser
     } = this.props;
     const { isStudent, id } = user;
     // const data = {};
@@ -81,11 +132,14 @@ class BannerImageModal extends Component {
       p_text: text
     };
     onSubmitPost(saveData);
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    }
   };
 
   render() {
-    const { text } = this.state;
-    const { data } = this.props;
+    const { text, isModalVisible, alertMessage } = this.state;
+    const { hideModal, data } = this.props;
     return (
       <ModalContainer>
         <ModalBox
@@ -93,9 +147,9 @@ class BannerImageModal extends Component {
             marginTop: '50px'
           }}
         >
-          {/* <div className="close">
+          <div className="close">
             <CloseButton onClick={hideModal}>x</CloseButton>
-          </div> */}
+          </div>
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
@@ -129,6 +183,9 @@ class BannerImageModal extends Component {
             </Button>
           </ButtonWrapper>
         </ModalBox>
+        {isModalVisible && (
+          <Modal message={alertMessage} hideModal={this.hideAlertModal} />
+        )}
       </ModalContainer>
     );
   }
@@ -137,15 +194,19 @@ class BannerImageModal extends Component {
 BannerImageModal.propTypes = {
   // hideModal: PropTypes.func
 };
-// const mapStateToProps = state => ({
-//   user: state.user
-// });
-// const mapDispatchToProps = dispatch => ({
-//   onGetStrikesCountOfAUser : value=> dispatch(StrikeActions.onGetStrikesCountOfAUser())
-// });
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(BannerImageModal);
+const mapStateToProps = state => ({
+  user: state.user,
+  post: state.post,
+  strike: state.strike
+});
+const mapDispatchToProps = dispatch => ({
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser()),
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BannerImageModal);
 
-export default BannerImageModal;
+// export default BannerImageModal;

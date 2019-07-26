@@ -14,7 +14,7 @@ class TextPost extends Component {
     this.state = {
       isBad: false,
       isModalVisible: false,
-      alertmessage: null,
+      alertMessage: null,
       postText: '',
       hasPost: false,
       username: props.username,

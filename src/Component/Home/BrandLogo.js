@@ -13,6 +13,7 @@ const BrandLogo = () => (
       src={Images.digii5.logo}
       alt="logo-of-digii-social"
       height={161.22}
+      style={{ height: '161.22px' }}
     />
   </LogoWrapper>
 );

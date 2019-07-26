@@ -119,7 +119,7 @@ const Reactions = ({ handleReactionSelection }) => (
         handleReactionSelection('share');
       }}
     >
-      <img src={Images.digii5.ShareIcon} alt="DiGii-share-icon" />
+      <img src={Images.digii5.DiGiiShareIcon} alt="DiGii-share-icon" />
       Share
     </ReactionType>
   </ReactionsContainer>

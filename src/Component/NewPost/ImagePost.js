@@ -115,16 +115,17 @@ class ImagePost extends Component {
     const {
       imageObject,
       fromWebcam,
-
       file,
       postTypeId,
       postText,
       strikeType,
-      isBad
+      isBad,
+      blockUser
     } = this.state;
-    const { user, resetPostType } = this.props;
+    const {
+      user, resetPostType, onPostImage, onBlockUser
+    } = this.props;
     const { isStudent, id } = user.user;
-    const { onPostImage } = this.props;
     // APPEND THE NECESSARY INFO WITH FORMDATA
     if (!fromWebcam) {
       const formData = new FormData();
@@ -158,6 +159,9 @@ class ImagePost extends Component {
       alertMessage: null,
       strikeType: null
     });
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    }
     resetPostType();
   };
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Button, FormTextArea, Modal } from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
@@ -14,7 +15,6 @@ import {
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import PropTypes from 'prop-types';
 
 const strikeCount = 3;
 
@@ -198,18 +198,17 @@ class FeelingsPost extends Component {
 FeelingsPost.propTypes = {
   username: PropTypes.string,
   postTypeId: PropTypes.number,
-  postActivity: PropTypes.object,
+  // postActivity: PropTypes.object,
   user: PropTypes.object,
-  post: PropTypes.object,
+  // post: PropTypes.object,
   strike: PropTypes.object,
   onPostSubmit: PropTypes.func,
   onGetStrikesCountOfAUser: PropTypes.func,
-  disableFirstTimePosting: PropTypes.func,
+  // disableFirstTimePosting: PropTypes.func,
   onBlockUser: PropTypes.func,
   resetPostType: PropTypes.func
 };
 const mapStateToProps = state => ({
-  postActivity: state.postActivity,
   user: state.user,
   post: state.post,
   strike: state.strike
@@ -217,7 +216,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  // disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 export default connect(

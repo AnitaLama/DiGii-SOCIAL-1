@@ -158,7 +158,6 @@ class TagPost extends Component {
 
       if (blacklistedWord) {
         if (strike.strikes >= 10) {
-          console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
           this.setState({
@@ -198,7 +197,9 @@ class TagPost extends Component {
     const {
       taggedUsers, text, postTypeId, blockUser
     } = this.state;
-    const { user, onSubmitTagPost, onBlockUser } = this.props;
+    const {
+      user, onSubmitTagPost, onBlockUser, resetPostType
+    } = this.props;
     const { isStudent, id } = user.user;
     const data = {
       p_pt_id: postTypeId,
@@ -211,6 +212,7 @@ class TagPost extends Component {
     if (blockUser) {
       onBlockUser({ isStudent, id });
     }
+    resetPostType();
   };
 
   selectUser = user => {
@@ -237,7 +239,6 @@ class TagPost extends Component {
   };
 
   remove = user => {
-    console.log('remove', user);
     const { users, taggedUsers } = this.state;
     const { group } = this.props;
     const removedUser = group.users.find(
