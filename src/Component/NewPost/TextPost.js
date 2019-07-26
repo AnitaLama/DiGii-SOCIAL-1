@@ -60,6 +60,11 @@ class TextPost extends Component {
           console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
+          this.setState({
+            blockUser: true,
+            isModalVisible: true,
+            alertMessage: 'You\'ll be blocked'
+          });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
           index -= 1;
