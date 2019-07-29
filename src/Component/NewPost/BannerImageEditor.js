@@ -29,7 +29,11 @@ const CloseButton = styled.span``;
 const Message = styled.p``;
 const Image = styled.img`
   // height: auto;
-  width: 100%;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
+  height: 330px;
+  width: 750px;
 `;
 const ImageWrapper = styled.div``;
 const ImageBackground = styled.div`
@@ -47,9 +51,16 @@ const ImageOverlay = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  font-size: 18px;
   color: ${snow};
 `;
+const BannerImageModalWrapper = styled.div`
+  width: 780px;
+  margin: auto;
+  @media (max-width: 800px) {
+    width: 90%;
+  }
+`;
+
 class BannerImageModal extends Component {
   constructor() {
     super();
@@ -142,47 +153,62 @@ class BannerImageModal extends Component {
     const { hideModal, data } = this.props;
     return (
       <ModalContainer>
-        <ModalBox
-          style={{
-            marginTop: '50px'
-          }}
-        >
-          <div className="close">
-            <CloseButton onClick={hideModal}>x</CloseButton>
-          </div>
-          <Header>
-            <div>
-              <Icon src={Images.digii5.icon} />
-              Digii
+        <BannerImageModalWrapper>
+          <ModalBox
+            style={{
+              marginTop: '50px',
+              width: '100%'
+            }}
+          >
+            <div className="close">
+              <CloseButton onClick={hideModal}>x</CloseButton>
             </div>
-            <Points>
-              {/* <span>-5</span>
+            <Header>
+              <div>
+                <Icon src={Images.digii5.icon} />
+                Digii
+              </div>
+              <Points>
+                {/* <span>-5</span>
               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
         */}
-              {' '}
-            </Points>
-          </Header>
+                {' '}
+              </Points>
+            </Header>
 
-          <ImageWrapper>
-            <FormInput
-              onChange={this.handleTextChange}
-              placeholder="What do you want to say?"
-            />
-            <ImageBackground>
-              <Image src={`${url}/${data.Key}`} />
-              <ImageOverlay>{text}</ImageOverlay>
-            </ImageBackground>
-          </ImageWrapper>
+            <ImageWrapper>
+              <FormInput
+                onChange={this.handleTextChange}
+                placeholder="What do you want to say?"
+              />
+              <ImageBackground>
+                <Image src={`${url}/${data.Key}`} />
+                <ImageOverlay
+                  style={{
+                    fontSize:
+                      text.length < 30
+                        ? '55px'
+                        : text.length < 80
+                          ? '40px'
+                          : '35px'
+                  }}
+                >
+                  {text}
+                </ImageOverlay>
+              </ImageBackground>
+            </ImageWrapper>
 
-          <ButtonWrapper>
-            {/*  <Button className="rounded short" onClick={this.saveBanner}>
+            <ButtonWrapper>
+              {/*  <Button className="rounded short" onClick={this.saveBanner}>
               SAVE
             </Button> */}
-            <Button className="rounded short" onClick={this.saveBanner}>
-              POST
-            </Button>
-          </ButtonWrapper>
-        </ModalBox>
+              <Button className="rounded short" onClick={this.saveBanner}>
+                POST
+              </Button>
+            </ButtonWrapper>
+          </ModalBox>
+        </BannerImageModalWrapper>
+
         {isModalVisible && (
           <Modal message={alertMessage} hideModal={this.hideAlertModal} />
         )}

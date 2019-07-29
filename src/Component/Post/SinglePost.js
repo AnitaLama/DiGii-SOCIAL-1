@@ -128,6 +128,12 @@ const Reactions = ({ handleReactionSelection }) => (
 const Gif = styled.img`
   width: 100%;
 `;
+const Banner = styled.img`
+  width: 100%;
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+`;
 const Video = styled.video`
   width: 100%;
 `;
@@ -253,7 +259,7 @@ voted
       case 'banner':
         return (
           <BannerWrapper>
-            <Gif src={p_body} />
+            <Banner src={p_body} />
             <div>
               {' '}
               <span

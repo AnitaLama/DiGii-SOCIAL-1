@@ -75,6 +75,7 @@ const onFormLoginSuccess = (state, action) => {
 const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const groups = [];
+  console.log(action.data);
   const {
     st_username,
     st_firstname,

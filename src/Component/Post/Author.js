@@ -124,11 +124,12 @@ class Author extends Component {
     let firstname = '';
     let lastname = '';
     // post typet,po ypepost console.log('data author', data);
+    console.log(data);
     if (data.p_isStudent) {
       const { student } = data;
 
-      firstname = student.st_firstname;
-      lastname = student.st_lastname;
+      firstname = student ? student.st_firstname : '';
+      lastname = student ? student.st_lastname : '';
     } else {
       const { user } = data;
       const { user_profile } = user;

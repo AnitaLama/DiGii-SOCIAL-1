@@ -26,6 +26,9 @@ const CommentBoxWrapper = styled.div`
     border: 0;
     outline: 0;
   }
+  input {
+    padding: 10px;
+  }
 `;
 const Image = styled.img`
   height: 20px;
@@ -137,6 +140,11 @@ class CommentBox extends Component {
     if (commentText.trim().length > 0 && commentText.trim().length < 500) {
       onSubmitComment(comment);
       this.setState({ commentText: '' });
+    } else if (commentText.trim().length === 0) {
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'The comment should not be empty.'
+      });
     } else {
       this.setState({
         isModalVisible: true,
