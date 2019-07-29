@@ -133,7 +133,7 @@ class BannerImageModal extends Component {
     const {
       data, user, postTypeId, onSubmitPost, onBlockUser
     } = this.props;
-    const { isStudent, id } = user;
+    const { isStudent, id } = user.user;
     // const data = {};
     const saveData = {
       p_pt_id: postTypeId,
