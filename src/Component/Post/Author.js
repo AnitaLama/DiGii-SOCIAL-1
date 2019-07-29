@@ -19,7 +19,7 @@ import { FaBeer, FaFolder } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdCreate, MdDeleteSweep } from "react-icons/md";
-
+import EditPost from "../NewPost/Editpost";
 // const { grey } = Colors.colors;
 
 const AuthorWrapper = styled.div`
@@ -74,14 +74,19 @@ const TaggedList = styled.span`
     }
   }
 `;
+
 class Author extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      open: false
+      open: false,
+      modal: false
     };
   }
+  modalPopUp = () => {
+    this.setState({ modal: !this.state.modal });
+  };
 
   getExtraInfo = () => {
     const { data } = this.props;
@@ -119,7 +124,7 @@ class Author extends Component {
   onPostChange = () => {
     this.setState({ open: !this.state.open });
   };
-
+  // Edit and Delete Post
   onPostChangepopup = value => {
     return (
       <div>
@@ -127,9 +132,7 @@ class Author extends Component {
           value={{ color: "blue", className: "global-class-name" }}
         >
           <button
-            onClick={() => {
-              this.props.onDelete(value);
-            }}
+            onClick={this.modalPopUp}
             style={{
               backgroundColor: "transparent",
               border: 0,
@@ -216,9 +219,7 @@ class Author extends Component {
               <IoMdArrowDropdown />
             </button>
           </IconContext.Provider>
-          {this.state.open
-            ? this.onPostChangepopup({ p_id, isStudent, id })
-            : null}
+
         </div>
       </AuthorWrapper>
     );
