@@ -84,8 +84,8 @@ const onStudentFormLoginSuccess = (state, action) => {
     student_group
   } = action.data;
   const { school_group } = student_group;
-  const { scg_gr_id } = school_group;
-  groups.push(scg_gr_id);
+  const { scg_id } = school_group;
+  groups.push(scg_id);
   return {
     ...state,
     user: {

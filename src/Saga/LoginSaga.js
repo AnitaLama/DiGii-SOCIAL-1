@@ -34,6 +34,7 @@ export function* onStudentLoginRequest(action) {
       `${DEV_URL}/student/verifyStudent`,
       action.data
     );
+
     if (data.success) {
       yield put(LoginActions.onStudentFormLoginSuccess(data.result));
       yield localStorage.setItem('user', JSON.stringify(data.result));

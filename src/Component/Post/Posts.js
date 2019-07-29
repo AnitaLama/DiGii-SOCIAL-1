@@ -33,12 +33,10 @@ class Posts extends Component {
     // console.log('socket data user', user, this.socket);
 
     this.socket.on('posts', data => {
+      // console.log('data socket', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
-    });
-    this.socket.on('strikes', data => {
-      console.log('strikes posts', data);
     });
   }
 
@@ -66,11 +64,28 @@ class Posts extends Component {
       <div key={posts}>
         {post.error && <ErrorAlertMessage error={post.error} />}
         {posts.length > 0
-          && posts.map((item, i) => (item.user || item.student ? (
-            <SinglePost key={item + i} data={item} />
-          ) : (
-            <div key={item + i} />
-          )))}
+          && posts.map((item, i) => {
+            // {
+            //   console.log(
+            //     item.p_id,
+            //     (item.p_isStudent && item.student)
+            //       || (!item.p_isStudent && item.user)
+            //   );
+            // }
+            if (
+              (item.p_isStudent && item.student)
+              || (!item.p_isStudent && item.user)
+            ) {
+              return <SinglePost key={item + i} data={item} />;
+            }
+            return <div key={item + i} />;
+            // return (!item.isStudent && item.user)
+            //   || (item.isStudent && item.student) ? (
+            //     <SinglePost key={item + i} data={item} />
+            //   ) : (
+            //     <div key={item + i} />
+            //   );
+          })}
       </div>
     );
   }

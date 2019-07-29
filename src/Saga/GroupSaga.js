@@ -5,7 +5,11 @@ import GroupActions from '../Redux/GroupRedux';
 
 export default function* onGetAllUsersOfAGroup(action) {
   try {
-    const { data } = yield call(axios.get, `${DEV_URL}/group/listAllUsers`);
+    const { data } = yield call(
+      axios.post,
+      `${DEV_URL}/group/listAllUsers`,
+      action.data
+    );
     console.log('saga data', data);
     if (data.success) {
       yield put(GroupActions.onGetAllUsersOfAGroupSuccess(data.result));

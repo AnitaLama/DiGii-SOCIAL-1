@@ -123,8 +123,8 @@ class Author extends Component {
     const type = post_type.pt_title;
     let firstname = '';
     let lastname = '';
+    // console.log(data);
     // post typet,po ypepost console.log('data author', data);
-    console.log(data);
     if (data.p_isStudent) {
       const { student } = data;
 

@@ -98,9 +98,8 @@ class TagPost extends Component {
 
   componentDidMount() {
     const { user, onGetAllUsersOfAGroup, group } = this.props;
-    const { groupId } = user;
+    const { groupId } = user.user;
     const { users } = group;
-
     onGetAllUsersOfAGroup(groupId);
     this.setState({ users });
   }
