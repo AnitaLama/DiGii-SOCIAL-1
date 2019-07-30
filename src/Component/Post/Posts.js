@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import socketClient from 'socket.io-client';
-import PostAction from '../../Redux/PostRedux';
-import SinglePost from './SinglePost';
-import { SOCKET_URL } from '../../config';
-import { ErrorAlertMessage } from '../StyledComponents';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import socketClient from "socket.io-client";
+import PostAction from "../../Redux/PostRedux";
+import SinglePost from "./SinglePost";
+import { SOCKET_URL } from "../../config";
+import { ErrorAlertMessage } from "../StyledComponents";
 
 // const socket = io.connect('http://localhost:4000');
 class Posts extends Component {
@@ -32,10 +32,13 @@ class Posts extends Component {
     const { groupId } = user.user;
     // console.log('socket data user', user, this.socket);
 
-    this.socket.on('posts', data => {
+    this.socket.on("posts", data => {
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
+    });
+    this.socket.on("strikes", data => {
+      console.log("strikes posts", data);
     });
   }
 
@@ -43,8 +46,8 @@ class Posts extends Component {
     const { post } = this.props;
     const { posts } = post;
     if (
-      posts !== nextProp.post.posts
-      && this.state.posts !== nextProp.post.posts
+      posts !== nextProp.post.posts &&
+      this.state.posts !== nextProp.post.posts
     ) {
       this.setState({ posts: nextProp.post.posts });
     }
@@ -62,12 +65,14 @@ class Posts extends Component {
     return (
       <div key={posts}>
         {post.error && <ErrorAlertMessage error={post.error} />}
-        {posts.length > 0
-          && posts.map((item, i) => (item.user || item.student ? (
-            <SinglePost key={item + i} data={item} />
-          ) : (
-            <div key={item + i} />
-          )))}
+        {posts.length > 0 &&
+          posts.map((item, i) =>
+            item.user || item.student ? (
+              <SinglePost key={item + i} data={item} />
+            ) : (
+              <div key={item + i} />
+            )
+          )}
       </div>
     );
   }

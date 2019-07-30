@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Button, FormTextArea, Modal } from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
 import {
-  FeelingsList, FilterKeyWords, warnings, PostWrapper
+  FeelingsList,
+  FilterKeyWords,
+  warnings,
+  PostWrapper,
+  PostWrapperContainer
 } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import PropTypes from 'prop-types';
 
 const strikeCount = 3;
 
@@ -52,7 +56,8 @@ class FeelingsPost extends Component {
       feeling: null,
       postText: '',
       isModalVisible: false,
-      alertMessage: null
+      alertMessage: null,
+      blockUser: false
     };
   }
 
@@ -82,7 +87,6 @@ class FeelingsPost extends Component {
       const blacklistedWord = FilterKeyWords(value);
       if (blacklistedWord) {
         if (strike.strikes >= 10) {
-          console.log('block the student');
           this.setState({ blockUser: true });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
@@ -108,8 +112,12 @@ class FeelingsPost extends Component {
   };
 
   submitTextPost = () => {
-    const { feeling, postText, postTypeId } = this.state;
-    const { user, resetPostType, onPostSubmit } = this.props;
+    const {
+      feeling, postText, postTypeId, blockUser
+    } = this.state;
+    const {
+      user, resetPostType, onPostSubmit, onBlockUser
+    } = this.props;
     const { isStudent, id } = user.user;
 
     const data = {
@@ -120,6 +128,9 @@ class FeelingsPost extends Component {
       p_text: feeling.name
     };
     onPostSubmit(data);
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    }
     // this.setState({ selectedGif: null });
     resetPostType();
   };
@@ -134,7 +145,7 @@ class FeelingsPost extends Component {
     } = this.state;
     if (!feeling) {
       return (
-        <PostWrapper>
+        <PostWrapperContainer>
           <FeelingsDisplayWrapper>
             {/* -----DISPLAY ALL THE FEELINGS IN A GRID ---------*/}
             {FeelingsList.map((item, i) => (
@@ -150,7 +161,7 @@ class FeelingsPost extends Component {
               </span>
             ))}
           </FeelingsDisplayWrapper>
-        </PostWrapper>
+        </PostWrapperContainer>
       );
     }
     return (
@@ -187,18 +198,17 @@ class FeelingsPost extends Component {
 FeelingsPost.propTypes = {
   username: PropTypes.string,
   postTypeId: PropTypes.number,
-  postActivity: PropTypes.object,
+  // postActivity: PropTypes.object,
   user: PropTypes.object,
-  post: PropTypes.object,
+  // post: PropTypes.object,
   strike: PropTypes.object,
   onPostSubmit: PropTypes.func,
   onGetStrikesCountOfAUser: PropTypes.func,
-  disableFirstTimePosting: PropTypes.func,
+  // disableFirstTimePosting: PropTypes.func,
   onBlockUser: PropTypes.func,
   resetPostType: PropTypes.func
 };
 const mapStateToProps = state => ({
-  postActivity: state.postActivity,
   user: state.user,
   post: state.post,
   strike: state.strike
@@ -206,7 +216,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  // disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 export default connect(

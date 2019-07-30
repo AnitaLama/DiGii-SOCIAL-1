@@ -58,29 +58,29 @@ const Points = styled.div`
     margin-right: 6px;
   }
 `;
-const Image = styled.img`
-  // height: auto;
-  width: 100%;
-`;
-const ImageWrapper = styled.div``;
-const ImageBackground = styled.div`
-  position: relative;
-  width: 100%;
-`;
-const ImageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  font-size: 18px;
-  color: ${snow};
-`;
+// const Image = styled.img`
+//   // height: auto;
+//   width: 100%;
+// `;
+// const ImageWrapper = styled.div``;
+// const ImageBackground = styled.div`
+//   position: relative;
+//   width: 100%;
+// `;
+// const ImageOverlay = styled.div`
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   z-index: 5;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 10px;
+//   font-size: 18px;
+//   color: ${snow};
+// `;
 class Modal extends Component {
   constructor() {
     super();
@@ -134,91 +134,93 @@ Modal.propTypes = {
   hideModal: PropTypes.func
 };
 
-class ImageModal extends Component {
-  constructor() {
-    super();
-    this.state = {
-      text: '',
-      imageURL: null
-    };
-  }
+// class ImageModal extends Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       text: '',
+//       imageURL: null
+//     };
+//   }
+//
+//   handleTextChange = e => {
+//     const { value } = e.target;
+//
+//     this.setState({ text: value });
+//   };
+//
+//   saveBanner = () => {
+//     const { text } = this.state;
+//     const {
+//       data, user, postTypeId, onSubmitPost
+//     } = this.props;
+//     const { isStudent, id } = user;
+//     // const data = {};
+//     const saveData = {
+//       p_pt_id: postTypeId,
+//       p_isStudent: isStudent,
+//       p_actor_id: id,
+//       p_body: `${url}/${data.Key}`,
+//       p_text: text
+//     };
+//     onSubmitPost(saveData);
+//   };
+//
+//   render() {
+//     const { text } = this.state;
+//     const { data } = this.props;
+//     return (
+//       <ModalContainer>
+//         <ModalBox
+//           style={{
+//             marginTop: '50px'
+//           }}
+//         >
+//           {/* <div className="close">
+//             <CloseButton onClick={hideModal}>x</CloseButton>
+//           </div> */}
+//           <Header>
+//             <div>
+//               <Icon src={Images.digii5.icon} />
+//               Digii
+//             </div>
+//             <Points>
+//               {/* <span>-5</span>
+//               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
+//         */}
+//               {' '}
+//             </Points>
+//           </Header>
+//
+//           <ImageWrapper>
+//             <FormInput
+//               onChange={this.handleTextChange}
+//               placeholder="What do you want to say?"
+//             />
+//             <ImageBackground>
+//               <Image src={`${url}/${data.Key}`} />
+//               <ImageOverlay>{text}</ImageOverlay>
+//             </ImageBackground>
+//           </ImageWrapper>
+//
+//           <ButtonWrapper>
+//             {/*  <Button className="rounded short" onClick={this.saveBanner}>
+//               SAVE
+//             </Button> */}
+//             <Button className="rounded short" onClick={this.saveBanner}>
+//               POST
+//             </Button>
+//           </ButtonWrapper>
+//         </ModalBox>
+//       </ModalContainer>
+//     );
+//   }
+// }
+//
+// ImageModal.propTypes = {
+//   hideModal: PropTypes.func
+// };
 
-  handleTextChange = e => {
-    const { value } = e.target;
-
-    this.setState({ text: value });
-  };
-
-  saveBanner = () => {
-    const { text } = this.state;
-    const {
-      data, user, postTypeId, onSubmitPost
-    } = this.props;
-    const { isStudent, id } = user;
-    // const data = {};
-    const saveData = {
-      p_pt_id: postTypeId,
-      p_isStudent: isStudent,
-      p_actor_id: id,
-      p_body: `${url}/${data.Key}`,
-      p_text: text
-    };
-    onSubmitPost(saveData);
-  };
-
-  render() {
-    const { text } = this.state;
-    const { data } = this.props;
-    return (
-      <ModalContainer>
-        <ModalBox
-          style={{
-            marginTop: '50px'
-          }}
-        >
-          {/* <div className="close">
-            <CloseButton onClick={hideModal}>x</CloseButton>
-          </div> */}
-          <Header>
-            <div>
-              <Icon src={Images.digii5.icon} />
-              Digii
-            </div>
-            <Points>
-              {/* <span>-5</span>
-              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-        */}
-              {' '}
-            </Points>
-          </Header>
-
-          <ImageWrapper>
-            <FormInput
-              onChange={this.handleTextChange}
-              placeholder="What do you want to say?"
-            />
-            <ImageBackground>
-              <Image src={`${url}/${data.Key}`} />
-              <ImageOverlay>{text}</ImageOverlay>
-            </ImageBackground>
-          </ImageWrapper>
-
-          <ButtonWrapper>
-            {/*  <Button className="rounded short" onClick={this.saveBanner}>
-              SAVE
-            </Button> */}
-            <Button className="rounded short" onClick={this.saveBanner}>
-              POST
-            </Button>
-          </ButtonWrapper>
-        </ModalBox>
-      </ModalContainer>
-    );
-  }
-}
-
-ImageModal.propTypes = {
-  hideModal: PropTypes.func
+export {
+  Modal, ModalContainer, ModalBox, Header, Icon, Points, ButtonWrapper
 };
-
-export { Modal, ImageModal };

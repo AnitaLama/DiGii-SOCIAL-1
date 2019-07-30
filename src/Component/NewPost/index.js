@@ -12,6 +12,7 @@ import FeelingsPost from './FeelingsPost';
 import PhotoVideoPost from './PhotoVideoPost';
 import VideoPost from './VideoPost';
 import BannerPost from './BannerPost';
+import BannerImageModal from './BannerImageEditor';
 import FeelingsList from './FeelingsList';
 import TagPost from './TagPost';
 import PollPost from './PollPost';
@@ -29,6 +30,7 @@ export {
   PhotoVideoPost,
   VideoPost,
   BannerPost,
+  BannerImageModal,
   FeelingsList,
   TagPost,
   PollPost
@@ -50,4 +52,18 @@ export const PostWrapper = styled.div`
   .redFont {
     color: red;
   }
+`;
+
+export const PostWrapperContainer = styled.div`
+  padding: 10px 15px;
+
+  button {
+    &.small {
+      ${fontSize(22)};
+      top: 10px;
+      right: 10px;
+      width: 86.76px;
+    }
+  }
+  min-height: 150px;
 `;

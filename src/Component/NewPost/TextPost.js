@@ -12,9 +12,9 @@ class TextPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false,
       isBad: false,
-      alertmessage: null,
+      isModalVisible: false,
+      alertMessage: null,
       postText: '',
       hasPost: false,
       username: props.username,
@@ -54,12 +54,17 @@ class TextPost extends Component {
       this.setState({ postText: value, hasPost: value.trim().length > 0 });
     } else {
       const blacklistedWord = FilterKeyWords(value);
-
+      console.log(strike.strikes);
       if (blacklistedWord) {
-        if (strike.strikes >= 10) {
+        if (strike.strikes >= 9) {
           console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
+          this.setState({
+            blockUser: true,
+            isModalVisible: true,
+            alertMessage: 'You\'ll be blocked'
+          });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
           index -= 1;
@@ -177,7 +182,6 @@ TextPost.propTypes = {
   disableFirstTimePosting: PropTypes.func
 };
 const mapStateToProps = state => ({
-  postActivity: state.postActivity,
   user: state.user,
   post: state.post,
   strike: state.strike

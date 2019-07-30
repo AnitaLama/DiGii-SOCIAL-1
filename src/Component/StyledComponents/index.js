@@ -1,9 +1,28 @@
 import { ErrorMessage, ErrorAlertMessage } from './ErrorMessage';
 import Avatar from './Avatar';
-import { Modal, ImageModal } from './Modal';
+import {
+  Modal,
+  ModalContainer,
+  ModalBox,
+  Header,
+  Icon,
+  Points,
+  FormInput,
+  ButtonWrapper,
+  Button
+} from './Modal';
 
 export {
-  ErrorMessage, ErrorAlertMessage, Avatar, Modal, ImageModal
+  ErrorMessage,
+  ErrorAlertMessage,
+  Avatar,
+  Modal,
+  ModalContainer,
+  ModalBox,
+  Header,
+  Icon,
+  Points,
+  ButtonWrapper
 };
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';

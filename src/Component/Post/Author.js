@@ -11,9 +11,10 @@ import {
   Colors
 } from "../../Theme";
 import { Avatar } from "../StyledComponents";
+import history from "../../history";
 import { connect } from "react-redux";
 import PostAction from "../../Redux/PostRedux";
-import { __values } from "tslib";
+
 
 import { FaBeer, FaFolder } from "react-icons/fa";
 import { IconContext } from "react-icons";
@@ -74,18 +75,12 @@ const TaggedList = styled.span`
     }
   }
 `;
-
+const TaggedUser = styled.span`
+  cursor: pointer;
+`;
 class Author extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      open: false,
-      modal: false
-    };
-  }
-  modalPopUp = () => {
-    this.setState({ modal: !this.state.modal });
+  onUserNameClick = (type, name) => {
+    history.push(`/userprofile/${type}/${name}`);
   };
 
   getExtraInfo = () => {
@@ -109,12 +104,29 @@ class Author extends Component {
             const { n_is_student, student, user } = item;
             if (n_is_student) {
               return (
-                <span key={`${item}-${student}-${i}`}>
+                <TaggedUser
+                  key={`${item}-${student}-${i}`}
+                  onClick={() => {
+                    this.onUserNameClick(
+                      item.n_is_student,
+                      student.st_username
+                    );
+                  }}
+                >
                   {student.st_username}
-                </span>
+                </TaggedUser>
               );
             }
-            return <span key={`${item}-${user}-${i}`}>{user.u_name}</span>;
+            return (
+              <TaggedUser
+                key={`${item}-${user}-${i}`}
+                onClick={() => {
+                  this.onUserNameClick(item.n_is_student, user.u_name);
+                }}
+              >
+                {user.u_name}
+              </TaggedUser>
+            );
           })}
         </TaggedList>
       );
@@ -176,11 +188,12 @@ class Author extends Component {
     let firstname = "";
     let lastname = "";
     // post typet,po ypepost console.log('data author', data);
+    console.log(data);
     if (data.p_isStudent) {
       const { student } = data;
 
-      firstname = student.st_firstname;
-      lastname = student.st_lastname;
+      firstname = student ? student.st_firstname : "";
+      lastname = student ? student.st_lastname : "";
     } else {
       const { user } = data;
       const { user_profile } = user;
@@ -219,7 +232,6 @@ class Author extends Component {
               <IoMdArrowDropdown />
             </button>
           </IconContext.Provider>
-
         </div>
       </AuthorWrapper>
     );

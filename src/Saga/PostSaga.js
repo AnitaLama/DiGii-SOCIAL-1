@@ -155,3 +155,18 @@ export function* onCommentDelete(action) {
     console.log(err);
   }
 }
+
+export function* onMasterDelete(action) {
+  console.log("On master delete called postsaga.js", action);
+  try {
+    console.log("On comment delete", action);
+    const { data } = yield call(
+      axios.post,
+      `${URL}/onMasterDelete`,
+      action.data
+    );
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}

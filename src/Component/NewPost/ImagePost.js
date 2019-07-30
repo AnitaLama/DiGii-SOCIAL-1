@@ -4,12 +4,20 @@ import Webcam from 'react-webcam';
 import { Modal } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import socketClient from 'socket.io-client';
 import { grid } from '../../Theme';
 import { Button, FormTextArea, Modal as AlertModal } from '../StyledComponents';
-import { FilterKeyWords, warnings, PostWrapper } from './index';
+import {
+  FilterKeyWords,
+  warnings,
+  PostWrapper,
+  PostWrapperContainer
+} from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
+
+import { SOCKET_URL } from '../../config';
 
 const strikeCount = 3;
 
@@ -41,8 +49,20 @@ class ImagePost extends Component {
       fileName: '',
       postText: '',
       isBad: false,
-      strikeType: null
+      strikeType: null,
+      alertMessage: null
     };
+    this.socket = socketClient(SOCKET_URL);
+  }
+
+  componentWillMount() {
+    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
+  }
+
+  componentWillUnmount() {
+    this.socket = null;
   }
 
   switchOnWebcam = () => {
@@ -86,22 +106,26 @@ class ImagePost extends Component {
   handleChange = e => {
     e.persist();
     this.setState({ [e.target.name]: e.target.value });
+    this.socket.on('strikes', data => {
+      console.log('strikes', data);
+    });
   };
 
   postImage = () => {
     const {
       imageObject,
       fromWebcam,
-
       file,
       postTypeId,
       postText,
       strikeType,
-      isBad
+      isBad,
+      blockUser
     } = this.state;
-    const { user, resetPostType } = this.props;
+    const {
+      user, resetPostType, onPostImage, onBlockUser
+    } = this.props;
     const { isStudent, id } = user.user;
-    const { onPostImage } = this.props;
     // APPEND THE NECESSARY INFO WITH FORMDATA
     if (!fromWebcam) {
       const formData = new FormData();
@@ -135,6 +159,9 @@ class ImagePost extends Component {
       alertMessage: null,
       strikeType: null
     });
+    if (blockUser) {
+      onBlockUser({ isStudent, id });
+    }
     resetPostType();
   };
 
@@ -157,22 +184,30 @@ class ImagePost extends Component {
     const { isStudent, id } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
     const { value } = e.target;
-
+    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
+      console.log('show users');
+    }
     const { strike } = this.props;
-    // LIMIT LENGTH OF POST TO 500
     if (value.trim().length > 500) {
       this.setState({
         isModalVisible: true,
         alertMessage: 'Please keep the length within 500 characters'
       });
-      this.setState({ postText: value });
+      // alert('Please keep the length within 500 characters');
+      this.setState({ postText: value, hasPost: value.trim().length > 0 });
     } else {
       const blacklistedWord = FilterKeyWords(value);
-
+      console.log(strike.strikes);
       if (blacklistedWord) {
-        if (strike.strikes >= 10) {
+        if (strike.strikes >= 9) {
+          console.log('block the student');
           this.setState({ blockUser: true });
           // onBlockUser({ isStudent, id });
+          this.setState({
+            blockUser: true,
+            isModalVisible: true,
+            alertMessage: 'You\'ll be blocked'
+          });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
           index -= 1;
@@ -188,7 +223,28 @@ class ImagePost extends Component {
           alertMessage: null
         });
       }
-      this.setState({ postText: value });
+      this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    }
+  };
+
+  onFocus = () => {
+    console.log('onfocus');
+    const { user, disableFirstTimePosting, post } = this.props;
+    const { posts } = post;
+    // console.log(posts);
+    const isFirstTimePosting = posts.find(
+      item => item.p_actor_id === user.user.id
+    );
+    if (
+      user.user.isStudent
+      && !isFirstTimePosting
+      && user.user.isFirstTimePosting
+    ) {
+      disableFirstTimePosting();
+      this.setState({
+        isModalVisible: true,
+        alertMessage: 'Congratulations!!! it\'s your first time posting.'
+      });
     }
   };
 
@@ -205,62 +261,32 @@ class ImagePost extends Component {
       imageObject,
       isWebcamModalVisible
     } = this.state;
-    return (
-      <PostWrapper>
-        <PhotoOptionContainer>
-          {!!selectedImage && (
-            <ImageWrapper>
-              <img src={selectedImage} alt="selectedImage" />
-              <FormTextArea
-                placeholder="Write something..."
-                onChange={this.handleCaption}
-              />
-            </ImageWrapper>
-          )}
-          {!!imageObject && (
-            <ImageWrapper>
-              <img src={`${imageObject.imageData} `} alt="imageData" />
-              <FormTextArea
-                placeholder="Write something..."
-                onChange={this.handleCaption}
-              />
-            </ImageWrapper>
-          )}
-
-          {!imageObject && !selectedImage && (
-            <PhotoOptionContent>
-              <input type="file" multiple="" onChange={this.selectImage} />
-              <div style={{ textAlign: 'center' }}>
-                <Button className="rounded short" onClick={this.switchOnWebcam}>
-                  Take a picture
-                </Button>
-              </div>
-            </PhotoOptionContent>
-          )}
+    if (!selectedImage && !imageObject) {
+      return (
+        <PostWrapperContainer>
+          <PhotoOptionContent>
+            <input type="file" multiple="" onChange={this.selectImage} />
+            <div style={{ textAlign: 'center' }}>
+              <Button className="rounded short" onClick={this.switchOnWebcam}>
+                Take a picture
+              </Button>
+            </div>
+          </PhotoOptionContent>
           <Modal
             title="Take a new picture"
             visible={isWebcamModalVisible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            footer={
-              !imageObject
-                ? [
-                  <button type="submit" onClick={this.capture}>
-                      Capture
-                  </button>,
-                  <button type="submit" onClick={this.onClickRetake}>
-                      Retake
-                  </button>
-                ]
-                : [
-                  <button type="submit" onClick={this.handleOk}>
-                      Save
-                  </button>,
-                  <button type="submit" onClick={this.onClickRetake}>
-                      Retake
-                  </button>
-                ]
-            }
+            footer={[
+              <Button
+                className="rounded"
+                type="submit"
+                onClick={this.capture}
+                key="cpature"
+              >
+                Capture
+              </Button>
+            ]}
           >
             {isWebcamModalVisible && (
               <div>
@@ -285,6 +311,43 @@ class ImagePost extends Component {
               </div>
             )}
           </Modal>
+        </PostWrapperContainer>
+      );
+    }
+    return (
+      <PostWrapper>
+        <PhotoOptionContainer>
+          {!!selectedImage && (
+            <ImageWrapper>
+              <img src={selectedImage} alt="selectedImage" />
+              <FormTextArea
+                placeholder="Write something..."
+                onChange={this.handleCaption}
+                onFocus={this.onFocus}
+              />
+            </ImageWrapper>
+          )}
+          {!!imageObject && (
+            <ImageWrapper>
+              <img src={`${imageObject.imageData} `} alt="imageData" />
+              <FormTextArea
+                placeholder="Write something..."
+                onChange={this.handleCaption}
+                onFocus={this.onFocus}
+              />
+            </ImageWrapper>
+          )}
+
+          {!imageObject && !selectedImage && (
+            <PhotoOptionContent>
+              <input type="file" multiple="" onChange={this.selectImage} />
+              <div style={{ textAlign: 'center' }}>
+                <Button className="rounded short" onClick={this.switchOnWebcam}>
+                  Take a picture
+                </Button>
+              </div>
+            </PhotoOptionContent>
+          )}
         </PhotoOptionContainer>
         <div>
           <Button className="rounded small" onClick={this.postImage}>
@@ -301,23 +364,17 @@ class ImagePost extends Component {
 
 ImagePost.propTypes = {
   strike: PropTypes.object,
-  user: PropTypes.object,
-  post: PropTypes.object,
-  onPostImage: PropTypes.func,
-  onGetStrikesCountOfAUser: PropTypes.func,
-  disableFirstTimePosting: PropTypes.func
+  user: PropTypes.object
 };
 const mapStateToProps = state => ({
-  postActivity: state.postActivity,
   user: state.user,
-  post: state.post,
-  strike: state.strike
+  strike: state.strike,
+  post: state.post
 });
 const mapDispatchToProps = dispatch => ({
   onPostImage: value => dispatch(PostActions.onPostImage(value)),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
-  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting())
 });
 export default connect(
   mapStateToProps,

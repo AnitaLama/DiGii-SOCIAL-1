@@ -28,6 +28,7 @@ const { Types, Creators } = createActions({
   onVideoPost: ["data"],
   onPostDelete: ["data"],
   onCommentDelete: ["data"],
+  onMasterDelete: ["data"]
 
 });
 

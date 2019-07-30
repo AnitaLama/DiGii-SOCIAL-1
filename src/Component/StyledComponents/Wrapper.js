@@ -8,7 +8,7 @@ const ContainerWrapper = styled.div`
 const ContentWrapper = styled.div`
   margin: auto;
   width: 1080px;
-  @media (max-width: 960px) {
+  @media (max-width: 1080px) {
     width: 100%;
     padding: 0 20px;
   }

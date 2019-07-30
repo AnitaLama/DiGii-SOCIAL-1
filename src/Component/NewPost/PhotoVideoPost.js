@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { Button } from '../StyledComponents';
-import { ImagePost, VideoPost, PostWrapper } from './index';
+import { ImagePost, VideoPost, PostWrapperContainer } from './index';
 
 const PhotoVideoPostWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 45% 45%;
-  grid-column-gap: 5%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 120px;
   div {
-    margin: auto;
+    width: 90%;
   }
 `;
 class PhotoVideoPost extends Component {
@@ -32,7 +33,7 @@ class PhotoVideoPost extends Component {
       return <VideoPost {...this.props} />;
     }
     return (
-      <PostWrapper>
+      <PostWrapperContainer>
         <PhotoVideoPostWrapper>
           <div>
             <Button
@@ -55,7 +56,7 @@ class PhotoVideoPost extends Component {
             </Button>
           </div>
         </PhotoVideoPostWrapper>
-      </PostWrapper>
+      </PostWrapperContainer>
     );
   }
 }

@@ -120,7 +120,7 @@ const Reactions = ({ handleReactionSelection }) => (
         handleReactionSelection("share");
       }}
     >
-      <img src={Images.digii5.ShareIcon} alt="DiGii-share-icon" />
+      <img src={Images.digii5.DiGiiShareIcon} alt="DiGii-share-icon" />
       Share
     </ReactionType>
   </ReactionsContainer>
@@ -128,6 +128,12 @@ const Reactions = ({ handleReactionSelection }) => (
 
 const Gif = styled.img`
   width: 100%;
+`;
+const Banner = styled.img`
+  width: 100%;
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 `;
 const Video = styled.video`
   width: 100%;
@@ -141,7 +147,8 @@ const BannerWrapper = styled.div`
     top:0;
     left:0;
     right:0;
-    bottom:0;
+    bottom:0;padding: 20px;
+    text-align:center;
     ${flexCentering()};
     color: ${snow};
     ${fontSize(20)}
@@ -251,10 +258,28 @@ class SinglePost extends Component {
       case "banner":
         return (
           <BannerWrapper>
-            <Gif src={p_body} />
+            <Banner src={p_body} />
             <div>
-              {" "}
-              <span> {p_text}</span>
+              {' '}
+              <span
+                style={{
+                  fontSize:
+                    p_text.length < 30
+                      ? '45px'
+                      : p_text.length < 80
+                        ? '30px'
+                        : '25px',
+                  lineHeight:
+                    p_text.length < 30
+                      ? '40px'
+                      : p_text.length < 80
+                        ? '30px'
+                        : '25px'
+                }}
+              >
+                {' '}
+                {p_text}
+              </span>
             </div>
           </BannerWrapper>
         );

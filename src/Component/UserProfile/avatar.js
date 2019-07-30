@@ -1,32 +1,30 @@
-import React, { Component } from "react";
-import Avatar, { Piece } from "avataaars";
+import React, { Component } from 'react';
+import Avatar from 'avataaars';
 
 class UserAvatar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      avatarStyle: "Circle",
-      topType: "LongHairMiaWallace",
-      accessoriesType: "Prescription02",
-      hairColor: "BrownDark",
-      facialHairType: "Blank",
-      facialHairColor: "Black",
-      clotheType: "Hoodie",
-      clotheColor: "PastelBlue",
-      eyeType: "Happy",
-      eyebrowType: "Default",
-      mouthType: "Smile",
-      skinColor: "Light"
+      avatarStyle: 'Circle',
+      topType: 'LongHairMiaWallace',
+      accessoriesType: 'Prescription02',
+      hairColor: 'BrownDark',
+      facialHairType: 'Blank',
+      facialHairColor: 'Black',
+      clotheType: 'Hoodie',
+      clotheColor: 'PastelBlue',
+      eyeType: 'Happy',
+      eyebrowType: 'Default',
+      mouthType: 'Smile',
+      skinColor: 'Light'
     };
   }
 
   onChange = e => {
-    console.log("Here is the value selected", e.target.value);
     this.setState({ [e.target.id]: e.target.value });
   };
 
   render() {
-    console.log(this.state);
     const {
       avatarStyle,
       topType,
@@ -45,7 +43,7 @@ class UserAvatar extends Component {
       <div>
         Your avatar:
         <Avatar
-          style={{ width: "100px", height: "100px" }}
+          style={{ width: '100px', height: '100px' }}
           avatarStyle={avatarStyle}
           topType={topType}
           accessoriesType={accessoriesType}
@@ -61,7 +59,7 @@ class UserAvatar extends Component {
         />
         <form className="form-horizontal">
           <div className="row form-group">
-            <label for="avatar-style" className="col-sm-3 control-label">
+            <label htmlFor="avatar-style" className="col-sm-3 control-label">
               Avatar Style
             </label>
             <div className="col-sm-9">
@@ -72,9 +70,11 @@ class UserAvatar extends Component {
                   id="avatarStyle"
                   name="avatar-style"
                   value="Circle"
-                />{" "}
+                />
+                {' '}
                 Circle
-              </label>{" "}
+              </label>
+              {' '}
               <label>
                 <input
                   onChange={e => this.onChange(e)}
@@ -82,13 +82,14 @@ class UserAvatar extends Component {
                   id="avatarStyle"
                   name="avatar-style"
                   value="Transparent"
-                />{" "}
+                />
+                {' '}
                 Transparent
               </label>
             </div>
           </div>
           <div className="row form-group">
-            <label for="topType" className="col-sm-3 control-label">
+            <label htmlFor="topType" className="col-sm-3 control-label">
               Top
             </label>
             <div className="col-sm-9">
@@ -142,7 +143,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="accessoriesType" className="col-sm-3 control-label">
+            <label htmlFor="accessoriesType" className="col-sm-3 control-label">
               ↳ 👓 Accessories
             </label>
             <div className="col-sm-9">
@@ -162,7 +163,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="hairColor" className="col-sm-3 control-label">
+            <label htmlFor="hairColor" className="col-sm-3 control-label">
               ↳ 💈 Hair Color
             </label>
             <div className="col-sm-9">
@@ -185,7 +186,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="facialHairType" className="col-sm-3 control-label">
+            <label htmlFor="facialHairType" className="col-sm-3 control-label">
               Facial Hair
             </label>
             <div className="col-sm-9">
@@ -204,7 +205,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="facialHairColor" className="col-sm-3 control-label">
+            <label htmlFor="facialHairColor" className="col-sm-3 control-label">
               ↳ ✂️ Facial Hair Color
             </label>
             <div className="col-sm-9">
@@ -225,7 +226,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="clotheType" className="col-sm-3 control-label">
+            <label htmlFor="clotheType" className="col-sm-3 control-label">
               👔 Clothes
             </label>
             <div className="col-sm-9">
@@ -247,7 +248,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="clotheColor" className="col-sm-3 control-label">
+            <label htmlFor="clotheColor" className="col-sm-3 control-label">
               ↳ Color Fabric
             </label>
             <div className="col-sm-9">
@@ -275,7 +276,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="eyeType" className="col-sm-3 control-label">
+            <label htmlFor="eyeType" className="col-sm-3 control-label">
               👁 Eyes
             </label>
             <div className="col-sm-9">
@@ -300,7 +301,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="eyebrowType" className="col-sm-3 control-label">
+            <label htmlFor="eyebrowType" className="col-sm-3 control-label">
               ✏️ Eyebrow
             </label>
             <div className="col-sm-9">
@@ -327,7 +328,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="mouthType" className="col-sm-3 control-label">
+            <label htmlFor="mouthType" className="col-sm-3 control-label">
               👄 Mouth
             </label>
             <div className="col-sm-9">
@@ -352,7 +353,7 @@ class UserAvatar extends Component {
             </div>
           </div>
           <div className="row form-group">
-            <label for="skinColor" className="col-sm-3 control-label">
+            <label htmlFor="skinColor" className="col-sm-3 control-label">
               🎨 Skin
             </label>
             <div className="col-sm-9">

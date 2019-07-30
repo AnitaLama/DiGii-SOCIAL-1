@@ -27,7 +27,8 @@ import {
   onSubmitTagPost,
   onVideoPost,
   onPostDelete,
-  onCommentDelete
+  onCommentDelete,
+  onMasterDelete
 } from "./PostSaga";
 import onListPostTypes from "./PostTypeSaga";
 import onGetPostActivitiesOfAUser from "./PostActivitySaga";
@@ -41,6 +42,7 @@ export default function* root() {
   yield all([
     takeLatest(TestTypes.ON_TEST_REQUEST, testFunction),
     takeLatest(LoginTypes.ON_FORM_LOGIN_REQUEST, onLoginRequest),
+
     takeLatest(LoginTypes.ON_BLOCK_USER, onBlockUser),
     takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
 
@@ -55,6 +57,7 @@ export default function* root() {
     takeLatest(PostTypes.ON_VIDEO_POST, onVideoPost),
     takeLatest(PostTypes.ON_SUBMIT_TAG_POST, onSubmitTagPost),
     takeLatest(PostTypes.ON_RESPOND_TO_POLL, onRespondToPoll),
+    takeLatest(PostTypes.ON_MASTER_DELETE, onMasterDelete),
     takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),
     takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment),
     takeLatest(

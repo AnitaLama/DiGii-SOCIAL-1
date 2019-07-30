@@ -30,7 +30,7 @@ const CommentDiv = styled.div`
   span:last-of-type {
     color: ${grey};
   }
-  span {
+  span.name {
     text-transform: capitalize;
   }
 `;
@@ -80,8 +80,10 @@ class Comment extends Component {
       <CommentWrapper>
         <Avatar src={Images.stockImage} height={24} rightMargin={6} />
         <CommentDiv>
-          <span>
-            {firstname} {lastname}
+          <span className="name">
+            {firstname}
+            {' '}
+            {lastname}
           </span>
           {/* Hide/Edit/Delete comment  */}
           <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>
