@@ -16,6 +16,7 @@ import BannerImageModal from './BannerImageEditor';
 import FeelingsList from './FeelingsList';
 import TagPost from './TagPost';
 import PollPost from './PollPost';
+import Moderator from './Moderator';
 
 export {
   NewPost,
@@ -33,7 +34,8 @@ export {
   BannerImageModal,
   FeelingsList,
   TagPost,
-  PollPost
+  PollPost,
+  Moderator
 };
 
 export const PostWrapper = styled.div`

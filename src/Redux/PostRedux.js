@@ -47,6 +47,7 @@ const onListPosts = (state, action) => ({ ...state, loading: true });
 const onListPostsSuccess = (state, action) => ({
   ...state,
   loading: false,
+  posting: false,
   posts: action.data,
   error: null
 });
@@ -54,46 +55,51 @@ const onListPostsFailure = (state, action) => ({
   ...state,
   loading: false,
   error: action.data,
+  posting: false,
 
   gif: []
 });
 
-const onPostSubmit = (state, action) => {
-  console.log('reducer>>>');
-  return {
-    ...state,
-    loading: true
-  };
-};
+const onPostSubmit = (state, action) => ({
+  ...state,
+  loading: true,
+  posting: true
+});
 const onPostSubmitSuccess = state => ({
   ...state,
+  posting: false,
   loading: false
 });
 const onPostSubmitFailure = state => ({
   ...state,
+  posting: false,
   loading: false
 });
-const onSaveImage = state => ({ ...state, loading: true });
+const onSaveImage = state => ({ ...state, loading: true, posting: true });
 // console.log(action);
 const onSaveImageSuccess = state => ({
   ...state,
-  loading: false
+  loading: false,
+  posting: false
 });
 const onSaveImageFailure = state => ({
   ...state,
-  loading: false
+  loading: false,
+  posting: false
 });
 const onFindPosts = (state, action) => ({
   ...state,
   loading: true,
   gif: [],
-  error: null
+  error: null,
+  posting: false
 });
 
 const onFindPostsFailure = (state, action) => ({
   ...state,
   loading: false,
-  error: action.data
+  error: action.data,
+  posting: false
 });
 
 const onFindPostsSuccess = (state, action) => {
@@ -110,7 +116,8 @@ const onFindPostsSuccess = (state, action) => {
     ...state,
     posts: action.data,
     gif: [],
-    loading: false
+    loading: false,
+    posting: false
   };
 };
 
@@ -120,7 +127,8 @@ const onFindGifSuccess = (state, action) => {
     ...state,
     gif: action.data,
     error: null,
-    loading: false
+    loading: false,
+    posting: false
   };
 };
 
@@ -130,10 +138,16 @@ const onFindGifFailure = (state, action) => {
     ...state,
     gif: action.data,
     error: null,
-    loading: false
+    loading: false,
+    posting: false
   };
 };
-const clearGifList = state => ({ ...state, gif: [], loading: false });
+const clearGifList = state => ({
+  ...state,
+  gif: [],
+  loading: false,
+  posting: false
+});
 
 /* ------------- Hookup Reducers To Types ------------- */
 

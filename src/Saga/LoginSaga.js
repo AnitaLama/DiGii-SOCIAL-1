@@ -51,11 +51,13 @@ export function* onStudentLoginRequest(action) {
 
 export function* onBlockUser(action) {
   try {
+    console.log('block user saga');
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/deactivateUser`,
       action.data
     );
+    console.log(data);
     if (data.success) {
       alert('You\'ve been striked out.');
       yield localStorage.removeItem('user');

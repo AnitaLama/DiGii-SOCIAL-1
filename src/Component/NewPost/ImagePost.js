@@ -7,16 +7,12 @@ import PropTypes from 'prop-types';
 import socketClient from 'socket.io-client';
 import { grid } from '../../Theme';
 import { Button, FormTextArea, Modal as AlertModal } from '../StyledComponents';
-import {
-  FilterKeyWords,
-  warnings,
-  PostWrapper,
-  PostWrapperContainer
-} from './index';
+import { PostWrapper, PostWrapperContainer } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
+import Moderator from './Moderator';
 
+import StrikeActions from '../../Redux/StrikeRedux';
 import { SOCKET_URL } from '../../config';
 
 const strikeCount = 3;
@@ -86,7 +82,7 @@ class ImagePost extends Component {
     const { username } = user.user;
     const imageSrc = this.webcam.getScreenshot();
     let currentDate = new Date();
-    currentDate = Date.getTime();
+    currentDate = currentDate.getTime();
     // NAME THE IMAGE CAPTURED
     const imageObject = {
       image_name: `${username}-${currentDate}`,
@@ -94,7 +90,8 @@ class ImagePost extends Component {
     };
     this.setState(prevState => ({
       imageData: imageSrc,
-      imageObject
+      imageObject,
+      fromWebcam: true
     }));
   };
 
@@ -113,20 +110,57 @@ class ImagePost extends Component {
 
   postImage = () => {
     const {
-      imageObject,
-      fromWebcam,
-      file,
-      postTypeId,
+      strike,
+      user,
+      onBlockUser,
       postText,
-      strikeType,
-      isBad,
-      blockUser
-    } = this.state;
-    const {
-      user, resetPostType, onPostImage, onBlockUser
+      onPostSubmit,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser,
+      submitPost,
+      onPostImage
     } = this.props;
+    const {
+      postTypeId, imageObject, fromWebcam, file
+    } = this.state;
     const { isStudent, id } = user.user;
-    // APPEND THE NECESSARY INFO WITH FORMDATA
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      showWarning(strikes, isStudent);
+      isBad = 1;
+    }
+    // const {
+    //   imageObject,
+    //   fromWebcam,
+    //   file,
+    //   postTypeId,
+    //   postText,
+    //   strikeType,
+    //   isBad,
+    //   blockUser
+    // } = this.state;
+    // const {
+    //   user,
+    //   resetPostType,
+    //   onPostImage,
+    //   onBlockUser,
+    //   onGetStrikesCountOfAUser,
+    //   strike,
+    //   submitPost
+    // } = this.props;
+    // const { isStudent, id } = user.user;
+    // const { strikes } = strike;
+    // const result = submitPost();
+    // onGetStrikesCountOfAUser({ isStudent, id });
+    // // APPEND THE NECESSARY INFO WITH FORMDATA
     if (!fromWebcam) {
       const formData = new FormData();
       formData.append('file', file[0]);
@@ -135,7 +169,10 @@ class ImagePost extends Component {
       formData.append('p_isStudent', isStudent);
       formData.append('p_actor_id', id);
       formData.append('p_text', postText);
-      formData.append('str_type', strikeType);
+      formData.append('str_type', result);
+      formData.append('p_is_image', 1);
+      formData.append('p_is_bad', isBad);
+
       onPostImage(formData);
     } else {
       // IMAGE CAPTURED VIA WEBCAM
@@ -148,21 +185,14 @@ class ImagePost extends Component {
         p_pt_id: postTypeId,
         p_text: postText,
         isBad,
-        str_type: strikeType
+        str_type: result,
+        p_is_image: 1,
+        p_is_bad: isBad
       };
       onPostImage(data);
     }
-    this.setState({
-      imageObject: null,
-      selectedImage: null,
-      isBad: false,
-      alertMessage: null,
-      strikeType: null
-    });
-    if (blockUser) {
-      onBlockUser({ isStudent, id });
-    }
-    resetPostType();
+
+    // resetPostType();
   };
 
   selectImage = e => {
@@ -176,76 +206,88 @@ class ImagePost extends Component {
   };
 
   hideModal = () => {
-    this.setState({ isModalVisible: false, alertMessage: null });
+    // this.setState({ isModalVisible: false, alertMessage: null });
   };
 
   handleCaption = e => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    onGetStrikesCountOfAUser({ isStudent, id });
-    const { value } = e.target;
-    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-      console.log('show users');
-    }
-    const { strike } = this.props;
-    if (value.trim().length > 500) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Please keep the length within 500 characters'
-      });
-      // alert('Please keep the length within 500 characters');
-      this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    } else {
-      const blacklistedWord = FilterKeyWords(value);
-      console.log(strike.strikes);
-      if (blacklistedWord) {
-        if (strike.strikes >= 9) {
-          console.log('block the student');
-          this.setState({ blockUser: true });
-          // onBlockUser({ isStudent, id });
-          this.setState({
-            blockUser: true,
-            isModalVisible: true,
-            alertMessage: 'You\'ll be blocked'
-          });
-        } else {
-          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-          index -= 1;
-          this.setState({
-            isModalVisible: true,
-            alertMessage: `${warnings[index]}`
-          });
-        }
-        this.setState({ isBad: true, strikeType: blacklistedWord });
-      } else {
-        this.setState({
-          isModalVisible: false,
-          alertMessage: null
-        });
-      }
-      this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    }
+    const { handlePostText } = this.props;
+    handlePostText(e);
+    // const { onGetStrikesCountOfAUser, user } = this.props;
+    // const { isStudent, id } = user.user;
+    // onGetStrikesCountOfAUser({ isStudent, id });
+    // const { value } = e.target;
+    // if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
+    //   console.log('show users');
+    // }
+    // const { strike } = this.props;
+    // if (value.trim().length > 500) {
+    //   this.setState({
+    //     isModalVisible: true,
+    //     alertMessage: 'Please keep the length within 500 characters'
+    //   });
+    //   // alert('Please keep the length within 500 characters');
+    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    // } else {
+    //   const blacklistedWord = FilterKeyWords(value);
+    //   console.log(strike.strikes);
+    //   if (blacklistedWord) {
+    //     if (strike.strikes >= 9) {
+    //       console.log('block the student');
+    //       this.setState({ blockUser: true });
+    //       // onBlockUser({ isStudent, id });
+    //       this.setState({
+    //         blockUser: true,
+    //         isModalVisible: true,
+    //         alertMessage: 'You\'ll be blocked'
+    //       });
+    //     } else {
+    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
+    //       index -= 1;
+    //       this.setState({
+    //         isModalVisible: true,
+    //         alertMessage: `${warnings[index]}`
+    //       });
+    //     }
+    //     this.setState({ isBad: true, strikeType: blacklistedWord });
+    //   } else {
+    //     this.setState({
+    //       isModalVisible: false,
+    //       alertMessage: null
+    //     });
+    //   }
+    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    // }
   };
 
   onFocus = () => {
-    console.log('onfocus');
-    const { user, disableFirstTimePosting, post } = this.props;
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
     const { posts } = post;
-    // console.log(posts);
-    const isFirstTimePosting = posts.find(
-      item => item.p_actor_id === user.user.id
-    );
-    if (
-      user.user.isStudent
-      && !isFirstTimePosting
-      && user.user.isFirstTimePosting
-    ) {
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
+
+    if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Congratulations!!! it\'s your first time posting.'
-      });
     }
+    // console.log('onfocus');
+    // const { user, disableFirstTimePosting, post } = this.props;
+    // const { posts } = post;
+    // // console.log(posts);
+    // const isFirstTimePosting = posts.find(
+    //   item => item.p_actor_id === user.user.id
+    // );
+    // if (
+    //   user.user.isStudent
+    //   && !isFirstTimePosting
+    //   && user.user.isFirstTimePosting
+    // ) {
+    //   disableFirstTimePosting();
+    //   this.setState({
+    //     isModalVisible: true,
+    //     alertMessage: 'Congratulations!!! it\'s your first time posting.'
+    //   });
+    // }
   };
 
   render() {
@@ -261,6 +303,7 @@ class ImagePost extends Component {
       imageObject,
       isWebcamModalVisible
     } = this.state;
+    const { postText } = this.props;
     if (!selectedImage && !imageObject) {
       return (
         <PostWrapperContainer>
@@ -317,26 +360,18 @@ class ImagePost extends Component {
     return (
       <PostWrapper>
         <PhotoOptionContainer>
-          {!!selectedImage && (
-            <ImageWrapper>
-              <img src={selectedImage} alt="selectedImage" />
-              <FormTextArea
-                placeholder="Write something..."
-                onChange={this.handleCaption}
-                onFocus={this.onFocus}
-              />
-            </ImageWrapper>
-          )}
-          {!!imageObject && (
-            <ImageWrapper>
+          <ImageWrapper>
+            {!!selectedImage && <img src={selectedImage} alt="selectedImage" />}
+            {!!imageObject && (
               <img src={`${imageObject.imageData} `} alt="imageData" />
-              <FormTextArea
-                placeholder="Write something..."
-                onChange={this.handleCaption}
-                onFocus={this.onFocus}
-              />
-            </ImageWrapper>
-          )}
+            )}
+            <FormTextArea
+              placeholder="Write something..."
+              onChange={this.handleCaption}
+              onFocus={this.onFocus}
+              value={postText}
+            />
+          </ImageWrapper>
 
           {!imageObject && !selectedImage && (
             <PhotoOptionContent>
@@ -374,9 +409,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onPostImage: value => dispatch(PostActions.onPostImage(value)),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting())
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ImagePost);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ImagePost)
+);

@@ -1,12 +1,15 @@
-import React, { Component } from "react";
-import VideoRecorder from "react-video-recorder";
-import styled from "@emotion/styled";
+import React, { Component } from 'react';
+import VideoRecorder from 'react-video-recorder';
+import styled from '@emotion/styled';
 
-import { connect } from "react-redux";
-import { flexCentering } from "../../Theme";
-import PostActions from "../../Redux/PostRedux";
-import { FormTextArea, Button } from "../StyledComponents";
-import { PostWrapper } from "./index";
+import { connect } from 'react-redux';
+import { flexCentering } from '../../Theme';
+import PostActions from '../../Redux/PostRedux';
+import { FormTextArea, Button } from '../StyledComponents';
+import { PostWrapper } from './index';
+import LoginActions from '../../Redux/LoginRedux';
+import StrikeActions from '../../Redux/StrikeRedux';
+import Moderator from './Moderator';
 
 const VideoPostWrapper = styled.div`
   ${flexCentering()};
@@ -22,8 +25,8 @@ class VideoPost extends Component {
       videoSrc: null,
       postTypeId: props.postTypeId,
       username: props.username,
-      description: "",
-      videoSrc: "",
+      description: '',
+      videoSrc: '',
       video: null
     };
   }
@@ -44,33 +47,74 @@ class VideoPost extends Component {
       src={this.state.videoSrc}
       controls
       style={{
-        height: "200px",
-        width: "200px"
+        height: '200px',
+        width: '200px'
       }}
     />
   );
 
   submitPost = () => {
+    const {
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      onPostSubmit,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser,
+      submitPost,
+      onPostImage,
+      onVideoPost
+    } = this.props;
+    const {
+      postTypeId, username, video, videoSrc
+    } = this.state;
+    const { isStudent, id } = user.user;
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      showWarning(strikes, isStudent);
+      isBad = 1;
+    }
+
     const formData = new FormData();
     const currentDate = new Date();
-    const { postTypeId, username } = this.state;
-    const { user, resetPostType } = this.props;
-    const { isStudent, id } = user.user;
-    const { video, videoSrc, description } = this.state;
-    formData.append("file", video);
-    formData.append("name", username + currentDate.getTime());
-    formData.append("id", id);
-    formData.append("isStudent", isStudent);
-    formData.append("description", description);
-    formData.append("postTypeId", postTypeId);
-    this.props.onVideoPost(formData);
-    setTimeout(() => {
-      resetPostType();
-    }, 3000);
+
+    formData.append('file', video);
+    formData.append('name', username + currentDate.getTime());
+    formData.append('id', id);
+    formData.append('isStudent', isStudent);
+    formData.append('description', postText);
+    formData.append('postTypeId', postTypeId);
+    formData.append('isBad', isBad);
+    onVideoPost(formData);
+    // resetPostType();
   };
 
   handleDescriptionChange = e => {
-    this.setState({ description: e.target.value });
+    const { handlePostText } = this.props;
+    handlePostText(e);
+    // this.setState({ description: e.target.value });
+  };
+
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
+    const { posts } = post;
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
+
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
+    }
   };
 
   render() {
@@ -82,6 +126,7 @@ class VideoPost extends Component {
             <FormTextArea
               placeholder="Write something..."
               onChange={this.handleDescriptionChange}
+              onFocus={this.onFocus}
             />
           </VideoDisplayWrapper>
           <div>
@@ -108,13 +153,20 @@ class VideoPost extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  strike: state.strike,
+  post: state.post
 });
 const mapDispatchToProps = dispatch => ({
-  onVideoPost: value => dispatch(PostActions.onVideoPost(value))
+  onVideoPost: value => dispatch(PostActions.onVideoPost(value)),
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VideoPost);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(VideoPost)
+);

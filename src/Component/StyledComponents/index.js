@@ -1,5 +1,6 @@
 import { ErrorMessage, ErrorAlertMessage } from './ErrorMessage';
 import Avatar from './Avatar';
+import Loader from './Loader';
 import {
   Modal,
   ModalContainer,
@@ -22,7 +23,8 @@ export {
   Header,
   Icon,
   Points,
-  ButtonWrapper
+  ButtonWrapper,
+  Loader
 };
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';
