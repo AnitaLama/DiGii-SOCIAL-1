@@ -1,16 +1,16 @@
-import { createReducer, createActions } from 'reduxsauce';
-import Immutable from 'seamless-immutable';
+import { createReducer, createActions } from "reduxsauce";
+import Immutable from "seamless-immutable";
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  onFormLoginRequest: ['data'],
-  onFormLoginSuccess: ['data'],
+  onFormLoginRequest: ["data"],
+  onFormLoginSuccess: ["data"],
   onLogOut: [],
-  onStudentFormLoginRequest: ['data'],
-  onStudentFormLoginSuccess: ['data'],
+  onStudentFormLoginRequest: ["data"],
+  onStudentFormLoginSuccess: ["data"],
   onDisableFirstTimePosting: [],
-  onBlockUser: ['data']
+  onBlockUser: ["data"]
 });
 
 export const LoginTypes = Types;
@@ -21,13 +21,13 @@ export default Creators;
 export const INITIAL_STATE = Immutable({
   loading: false,
   user: {
-    username: '',
-    email: '',
-    firstname: '',
-    lastname: '',
-    password: '',
+    username: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    password: "",
     isStudent: false,
-    id: '',
+    id: "",
     isFirstTimePosting: true,
     groupId: null
   },
@@ -38,11 +38,9 @@ export const INITIAL_STATE = Immutable({
 
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
-  const {
-    u_id, u_name, u_activated, user_profile, user_groups
-  } = action.data;
-  const firstname = user_profile.up_firstname || '';
-  const lastname = user_profile.up_lastname || '';
+  const { u_id, u_name, u_activated, user_profile, user_groups } = action.data;
+  const firstname = user_profile.up_firstname || "";
+  const lastname = user_profile.up_lastname || "";
   // const { user_groups } = user_profile;
   // const { ug_scg_id } = user_groups[0];
   const groups = [];

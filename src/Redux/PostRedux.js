@@ -25,7 +25,10 @@ const { Types, Creators } = createActions({
   onUploadImage: ['data'],
   onRespondToPoll: ['data'],
   onSubmitTagPost: ['data'],
-  onVideoPost: ['data']
+  onVideoPost: ['data'],
+  onPostDelete: ['data'],
+  onCommentDelete: ['data'],
+  onMasterDelete: ['data']
 });
 
 export const PostTypes = Types;

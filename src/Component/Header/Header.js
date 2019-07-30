@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { FiSettings } from 'react-icons/fi';
 import { connect } from 'react-redux';
-import {
-  Images, flexCentering, Colors, fontSize
-} from '../../Theme';
-import {
-  Logo, WhiteButton, Button, Avatar
-} from '../StyledComponents';
+import { Images, flexCentering, Colors, fontSize } from '../../Theme';
+import { Logo, WhiteButton, Button, Avatar } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
+import PostActions from '../../Redux/PostRedux';
 
 const { pen, secondary, snow } = Colors.colors;
 const HeaderWrapper = styled.div`
@@ -99,10 +96,17 @@ class Header extends Component {
     onLogOut();
   };
 
+  delete = props => {
+    console.log('deleted props', props);
+    this.props.onMasterDelete(props);
+  };
+
   render() {
     const { isListVisible } = this.state;
     const { users } = this.props;
     const { user } = users;
+    console.log(user);
+    const { id, isStudent, groupId } = user;
     return (
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
@@ -135,6 +139,9 @@ class Header extends Component {
             {isListVisible && (
               <SettingsSubList>
                 <li onClick={this.logOut}>LOGOUT</li>
+                <li onClick={()=> this.delete({ isStudent, groupId, id })}>
+                  Master Delete
+                </li>
               </SettingsSubList>
             )}
           </Settings>
@@ -151,7 +158,8 @@ const mapStateToProps = state => ({
   users: state.user
 });
 const mapDispatchToProps = dispatch => ({
-  onLogOut: () => dispatch(LoginActions.onLogOut())
+  onLogOut: () => dispatch(LoginActions.onLogOut()),
+  onMasterDelete: value => dispatch(PostActions.onMasterDelete(value))
 });
 export default connect(
   mapStateToProps,
