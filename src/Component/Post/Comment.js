@@ -1,11 +1,14 @@
-import React, { Component } from "react";
-import styled from "@emotion/styled";
-import PropTypes from "prop-types";
-import { FaTimesCircle } from "react-icons/fa";
-import { Images, flex, fontSize, fontWeight, Colors } from "../../Theme";
-import { Avatar } from "../StyledComponents";
-import { connect } from "react-redux";
-import PostAction from "../../Redux/PostRedux";
+import React, { Component } from 'react';
+import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+import { FaTimesCircle } from 'react-icons/fa';
+import { connect } from 'react-redux';
+import {
+  Images, flex, fontSize, fontWeight, Colors
+} from '../../Theme';
+import { Avatar } from '../StyledComponents';
+import PostAction from '../../Redux/PostRedux';
+import UserAvatar from '../Header/Avatar';
 
 const { grey, pink } = Colors.colors;
 const CommentWrapper = styled.div`
@@ -15,11 +18,11 @@ const CommentWrapper = styled.div`
 `;
 
 const CommentDiv = styled.div`
-  ${flex("column")};
+  ${flex('column')};
   position: relative;
   width: 100%;
   span:first-of-type {
-    ${fontWeight("bold")};
+    ${fontWeight('bold')};
   }
   span:not(:first-of-type) {
     ${fontSize(12)};
@@ -62,23 +65,44 @@ class Comment extends Component {
     const { pc_id } = data;
     const { isStudent, id } = user.user;
 
-    let firstname = "";
-    let lastname = "";
+    let firstname = '';
+    let lastname = '';
+    let userAvatar = null;
     if (data.pc_is_student) {
       const { student } = data;
-      firstname = student.st_firstname || "";
-      lastname = student.st_lastname || "";
+      const { avatar } = student;
+      firstname = student.st_firstname || '';
+      lastname = student.st_lastname || '';
+      userAvatar = avatar;
     } else {
       const { user } = data;
-      const { user_profile } = user;
+      const { user_profile, avatar } = user;
       const { up_firstname, up_lastname } = user_profile;
       firstname = up_firstname;
       lastname = up_lastname;
+      userAvatar = avatar;
     }
-
+    // {userAvatar ? (
+    //   <UserAvatar
+    //     avatar={userAvatar}
+    //     height={24}
+    //     style={{ marginRight: '6px' }}
+    //   />
+    // ) : (
+    //   <Avatar
+    //     src={Images.stockImage}
+    //     height={24}
+    //     style={{ marginRight: '6px' }}
+    //   />
+    // )}
     return !isCommentHidden ? (
       <CommentWrapper>
-        <Avatar src={Images.stockImage} height={24} rightMargin={6} />
+        <Avatar
+          src={Images.stockImage}
+          height={24}
+          style={{ marginRight: '6px' }}
+        />
+
         <CommentDiv>
           <span className="name">
             {firstname}

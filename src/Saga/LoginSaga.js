@@ -1,9 +1,9 @@
-import { call, put } from "redux-saga/effects";
-import axios from "axios";
-import LoginActions from "../Redux/LoginRedux";
-import ErrorActions from "../Redux/ErrorRedux";
-import history from "../history";
-import { DEV_URL } from "../config";
+import { call, put } from 'redux-saga/effects';
+import axios from 'axios';
+import LoginActions from '../Redux/LoginRedux';
+import ErrorActions from '../Redux/ErrorRedux';
+import history from '../history';
+import { DEV_URL } from '../config';
 
 export function* onLoginRequest(action) {
   try {
@@ -12,11 +12,10 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
-    console.log("login saga", data);
     if (data.success) {
       yield put(LoginActions.onFormLoginSuccess(data.result));
-      yield localStorage.setItem("user", JSON.stringify(data.result));
-      history.push("/messageboard");
+      yield localStorage.setItem('user', JSON.stringify(data.result));
+      history.push('/messageboard');
     } else {
       yield put(ErrorActions.onFormLoginFailure(data.error));
     }
@@ -37,8 +36,8 @@ export function* onStudentLoginRequest(action) {
 
     if (data.success) {
       yield put(LoginActions.onStudentFormLoginSuccess(data.result));
-      yield localStorage.setItem("user", JSON.stringify(data.result));
-      history.push("/messageboard");
+      yield localStorage.setItem('user', JSON.stringify(data.result));
+      history.push('/messageboard');
     } else {
       yield put(ErrorActions.onStudentFormLoginFailure(data.error));
     }
@@ -59,9 +58,9 @@ export function* onBlockUser(action) {
     );
     console.log(data);
     if (data.success) {
-      alert("You've been striked out.");
-      yield localStorage.removeItem("user");
-      history.push("/student/login");
+      alert('You\'ve been striked out.');
+      yield localStorage.removeItem('user');
+      history.push('/student/login');
     }
   } catch (err) {
     console.log(err);

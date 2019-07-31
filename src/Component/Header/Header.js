@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { FiSettings } from 'react-icons/fi';
 import { connect } from 'react-redux';
-import { Images, flexCentering, Colors, fontSize } from '../../Theme';
-import { Logo, WhiteButton, Button, Avatar } from '../StyledComponents';
+import {
+  Images, flexCentering, Colors, fontSize
+} from '../../Theme';
+import {
+  Logo, WhiteButton, Button, Avatar
+} from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
 import PostActions from '../../Redux/PostRedux';
+import UserAvatar from './Avatar';
 
 const { pen, secondary, snow } = Colors.colors;
 const HeaderWrapper = styled.div`
@@ -97,7 +102,6 @@ class Header extends Component {
   };
 
   delete = props => {
-    console.log('deleted props', props);
     this.props.onMasterDelete(props);
   };
 
@@ -105,7 +109,6 @@ class Header extends Component {
     const { isListVisible } = this.state;
     const { users } = this.props;
     const { user } = users;
-    console.log(user);
     const { id, isStudent, groupId } = user;
     return (
       <HeaderWrapper>
@@ -120,17 +123,8 @@ class Header extends Component {
             <DiGiiIcon src={Images.digii5.DiGiit} />
           </Button>
           <Name>{user.firstname}</Name>
-          <Avatar
-            src={Images.stockImage}
-            height={50}
-            leftMargin={10}
-            rightMargin={20}
-            onClick={() => {
-              history.push(
-                `/userprofile/${user.isStudent ? 1 : 0}/${user.username}`
-              );
-            }}
-          />
+          <Avatar avatar={user.avatar} height={53} />
+          {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
           <Settings>
             <FiSettings
               style={{ height: '50px' }}
@@ -139,7 +133,7 @@ class Header extends Component {
             {isListVisible && (
               <SettingsSubList>
                 <li onClick={this.logOut}>LOGOUT</li>
-                <li onClick={()=> this.delete({ isStudent, groupId, id })}>
+                <li onClick={() => this.delete({ isStudent, groupId, id })}>
                   Master Delete
                 </li>
               </SettingsSubList>

@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { FeelingsList } from '../NewPost/index';
+import { connect } from 'react-redux';
+import { __values } from 'tslib';
+import { FaBeer, FaFolder } from 'react-icons/fa';
+import { IconContext } from 'react-icons';
+import { IoMdArrowDropdown } from 'react-icons/io';
+import { MdCreate, MdDeleteSweep } from 'react-icons/md';
+import PostAction from '../../Redux/PostRedux';
+import { Avatar } from '../StyledComponents';
 import {
   flex,
   Images,
@@ -10,15 +17,10 @@ import {
   fontFilson,
   Colors
 } from '../../Theme';
-import { Avatar } from '../StyledComponents';
-import { connect } from 'react-redux';
-import PostAction from '../../Redux/PostRedux';
-import { __values } from 'tslib';
-import { FaBeer, FaFolder } from 'react-icons/fa';
-import { IconContext } from 'react-icons';
-import { IoMdArrowDropdown } from 'react-icons/io';
-import { MdCreate, MdDeleteSweep } from 'react-icons/md';
+import { FeelingsList } from '../NewPost/index';
 // const { grey } = Colors.colors;
+import UserAvatar from '../Header/Avatar';
+
 const AuthorWrapper = styled.div`
   ${flex()};
   .dropdown {
@@ -75,12 +77,12 @@ class Author extends Component {
       open: false
     };
   }
+
   getExtraInfo = () => {
     const { data } = this.props;
     const { post_type, p_text, notifications } = data;
     const type = post_type.pt_title;
-    const emoji =
-      type === 'feeling' && FeelingsList.find(item => item.name === p_text);
+    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     if (type === 'feeling') {
       return (
         <span className="emoji">
@@ -106,50 +108,53 @@ class Author extends Component {
       );
     }
   };
+
   onPostChange = () => {
     this.setState({ open: !this.state.open });
   };
-  onPostChangepopup = value => {
-    return (
-      <div>
-        <IconContext.Provider
-          value={{ color: 'blue', className: 'global-class-name' }}
+
+  onPostChangepopup = value => (
+    <div>
+      <IconContext.Provider
+        value={{ color: 'blue', className: 'global-class-name' }}
+      >
+        <button
+          onClick={() => {
+            this.props.onDelete(value);
+          }}
+          style={{
+            backgroundColor: 'transparent',
+            border: 0,
+            outline: 0
+          }}
         >
-          <button
-            onClick={() => {
-              this.props.onDelete(value);
-            }}
-            style={{
-              backgroundColor: 'transparent',
-              border: 0,
-              outline: 0
-            }}
-          >
-            {' '}
-            <MdCreate />{' '}
-          </button>
-        </IconContext.Provider>
-        <br />
-        <IconContext.Provider
-          value={{ color: 'red', className: 'global-class-name' }}
+          {' '}
+          <MdCreate />
+          {' '}
+        </button>
+      </IconContext.Provider>
+      <br />
+      <IconContext.Provider
+        value={{ color: 'red', className: 'global-class-name' }}
+      >
+        <button
+          onClick={() => {
+            this.props.onDelete(value);
+          }}
+          style={{
+            backgroundColor: 'transparent',
+            border: 0,
+            outline: 0
+          }}
         >
-          <button
-            onClick={() => {
-              this.props.onDelete(value);
-            }}
-            style={{
-              backgroundColor: 'transparent',
-              border: 0,
-              outline: 0
-            }}
-          >
-            {' '}
-            <MdDeleteSweep />{' '}
-          </button>
-        </IconContext.Provider>
-      </div>
-    );
-  };
+          {' '}
+          <MdDeleteSweep />
+          {' '}
+        </button>
+      </IconContext.Provider>
+    </div>
+  );
+
   render() {
     const { data } = this.props;
     const { user } = this.props;
@@ -158,26 +163,39 @@ class Author extends Component {
     const type = post_type.pt_title;
     let firstname = '';
     let lastname = '';
+    let userAvatar = null;
     // console.log(data);
     // post typet,po ypepost console.log('data author', data);
     if (data.p_isStudent) {
       const { student } = data;
+      const { avatar } = student;
       firstname = student.st_firstname;
       lastname = student.st_lastname;
+      userAvatar = avatar;
     } else {
       const { user } = data;
-      const { user_profile } = user;
+      const { user_profile, avatar } = user;
       const { up_firstname, up_lastname } = user_profile;
       firstname = up_firstname;
       lastname = up_lastname;
+      userAvatar = avatar;
     }
+    console.log(userAvatar);
+    // {userAvatar
+    //   ? <UserAvatar avatar={userAvatar} height={53} />
+    //   : <Avatar src={Images.stockImage} height={53} />}
     return (
       <AuthorWrapper>
         <Avatar src={Images.stockImage} height={53} />
         <AuthorInfo>
           <Name>
-            {firstname} {lastname} {this.getExtraInfo()}
-          </Name>{' '}
+            {firstname}
+            {' '}
+            {lastname}
+            {' '}
+            {this.getExtraInfo()}
+          </Name>
+          {' '}
           {/* <Post>{this.getContent()}</Post>
             <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>

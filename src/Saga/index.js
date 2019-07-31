@@ -1,20 +1,20 @@
-import { takeLatest, all } from "redux-saga/effects";
-import { TestTypes } from "../Redux/TestRedux";
-import testFunction from "./TestSaga";
-import { LoginTypes } from "../Redux/LoginRedux";
-import { PostTypes } from "../Redux/PostRedux";
-import { StrikeTypes } from "../Redux/StrikeRedux";
-import { PostTypeTypes } from "../Redux/PostTypeRedux";
-import { PostActivityTypes } from "../Redux/PostActivityRedux";
-import { CommentTypes } from "../Redux/CommentRedux";
-import { BannerTypes } from "../Redux/BannerRedux";
-import { GroupTypes } from "../Redux/GroupRedux";
-import { ProfileTypes } from "../Redux/ProfileRedux";
+import { takeLatest, all } from 'redux-saga/effects';
+import { TestTypes } from '../Redux/TestRedux';
+import testFunction from './TestSaga';
+import { LoginTypes } from '../Redux/LoginRedux';
+import { PostTypes } from '../Redux/PostRedux';
+import { StrikeTypes } from '../Redux/StrikeRedux';
+import { PostTypeTypes } from '../Redux/PostTypeRedux';
+import { PostActivityTypes } from '../Redux/PostActivityRedux';
+import { CommentTypes } from '../Redux/CommentRedux';
+import { BannerTypes } from '../Redux/BannerRedux';
+import { GroupTypes } from '../Redux/GroupRedux';
+import { ProfileTypes } from '../Redux/ProfileRedux';
 import {
   onLoginRequest,
   onStudentLoginRequest,
   onBlockUser
-} from "./LoginSaga";
+} from './LoginSaga';
 import {
   onListPosts,
   onFindPosts,
@@ -29,14 +29,14 @@ import {
   onPostDelete,
   onCommentDelete,
   onMasterDelete
-} from "./PostSaga";
-import onListPostTypes from "./PostTypeSaga";
-import onGetPostActivitiesOfAUser from "./PostActivitySaga";
-import onSubmitComment from "./CommentSaga";
-import onGetStrikesCountOfAUser from "./StrikeSaga";
-import onGetAllBanners from "./BannerSaga";
-import onGetAllUsersOfAGroup from "./GroupSaga";
-import onGetUserInfo from "./ProfileSaga";
+} from './PostSaga';
+import onListPostTypes from './PostTypeSaga';
+import onGetPostActivitiesOfAUser from './PostActivitySaga';
+import onSubmitComment from './CommentSaga';
+import onGetStrikesCountOfAUser from './StrikeSaga';
+import onGetAllBanners from './BannerSaga';
+import onGetAllUsersOfAGroup from './GroupSaga';
+import { onGetUserInfo, onGetAvatarOfTheUser } from './ProfileSaga';
 
 export default function* root() {
   yield all([
@@ -71,6 +71,7 @@ export default function* root() {
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
     takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),
+    takeLatest(ProfileTypes.ON_GET_AVATAR_OF_THE_USER, onGetAvatarOfTheUser),
     takeLatest(PostTypes.ON_POST_DELETE, onPostDelete),
     takeLatest(PostTypes.ON_COMMENT_DELETE, onCommentDelete)
   ]);

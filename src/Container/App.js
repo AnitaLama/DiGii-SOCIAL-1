@@ -9,17 +9,17 @@ import UserProfile from './UserProfile';
 import './styles.css';
 
 class ActualRoute extends React.Component {
-  componentWillMount() {
-    NProgress.start();
-  }
-
-  componentWillUnmount() {
-    NProgress.start();
-  }
-
-  componentDidMount() {
-    NProgress.done();
-  }
+  // componentWillMount() {
+  //   NProgress.start();
+  // }
+  //
+  // componentWillUnmount() {
+  //   NProgress.start();
+  // }
+  //
+  // componentDidMount() {
+  //   NProgress.done();
+  // }
 
   render() {
     return <Route {...this.props} strict />;

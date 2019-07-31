@@ -1,16 +1,16 @@
-import { createReducer, createActions } from "reduxsauce";
-import Immutable from "seamless-immutable";
+import { createReducer, createActions } from 'reduxsauce';
+import Immutable from 'seamless-immutable';
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  onFormLoginRequest: ["data"],
-  onFormLoginSuccess: ["data"],
+  onFormLoginRequest: ['data'],
+  onFormLoginSuccess: ['data'],
   onLogOut: [],
-  onStudentFormLoginRequest: ["data"],
-  onStudentFormLoginSuccess: ["data"],
+  onStudentFormLoginRequest: ['data'],
+  onStudentFormLoginSuccess: ['data'],
   onDisableFirstTimePosting: [],
-  onBlockUser: ["data"]
+  onBlockUser: ['data']
 });
 
 export const LoginTypes = Types;
@@ -21,15 +21,17 @@ export default Creators;
 export const INITIAL_STATE = Immutable({
   loading: false,
   user: {
-    username: "",
-    email: "",
-    firstname: "",
-    lastname: "",
-    password: "",
+    username: '',
+    email: '',
+    firstname: '',
+    lastname: '',
+    password: '',
     isStudent: false,
-    id: "",
+    id: '',
     isFirstTimePosting: true,
-    groupId: null
+    groupId: null,
+    avatarId: null,
+    avatar: null
   },
   error: null
 });
@@ -38,9 +40,17 @@ export const INITIAL_STATE = Immutable({
 
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
-  const { u_id, u_name, u_activated, user_profile, user_groups } = action.data;
-  const firstname = user_profile.up_firstname || "";
-  const lastname = user_profile.up_lastname || "";
+  const {
+    u_id,
+    u_name,
+    u_a_id,
+    u_activated,
+    user_profile,
+    user_groups,
+    avatar
+  } = action.data;
+  const firstname = user_profile.up_firstname || '';
+  const lastname = user_profile.up_lastname || '';
   // const { user_groups } = user_profile;
   // const { ug_scg_id } = user_groups[0];
   const groups = [];
@@ -60,7 +70,9 @@ const onFormLoginSuccess = (state, action) => {
       id: u_id,
       isStudent: false,
       isActivated: u_activated,
-      groupId: groups
+      groupId: groups,
+      avatarId: u_a_id,
+      avatar
     }
   };
 };
@@ -73,13 +85,14 @@ const onFormLoginSuccess = (state, action) => {
 const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const groups = [];
-  console.log(action.data);
   const {
     st_username,
     st_firstname,
     st_lastname,
     st_id,
-    student_group
+    student_group,
+    st_a_id,
+    avatar
   } = action.data;
   const { school_group } = student_group;
   const { scg_id } = school_group;
@@ -94,7 +107,9 @@ const onStudentFormLoginSuccess = (state, action) => {
       password: null,
       id: st_id,
       isStudent: true,
-      groupId: groups
+      groupId: groups,
+      avatarId: st_a_id,
+      avatar
     },
     error: null
   };

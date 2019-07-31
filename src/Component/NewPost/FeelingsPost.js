@@ -5,18 +5,11 @@ import PropTypes from 'prop-types';
 import { Button, FormTextArea, Modal } from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
-import {
-  FeelingsList,
-  FilterKeyWords,
-  warnings,
-  PostWrapper,
-  PostWrapperContainer
-} from './index';
+import { FeelingsList, PostWrapper, PostWrapperContainer } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-
-const strikeCount = 3;
+import Moderator from './Moderator';
 
 const Input = styled.div`
   position: relative;
@@ -53,11 +46,7 @@ class FeelingsPost extends Component {
     this.state = {
       postTypeId: props.postTypeId,
       username: props.username,
-      feeling: null,
-      postText: '',
-      isModalVisible: false,
-      alertMessage: null,
-      blockUser: false
+      feeling: null
     };
   }
 
@@ -69,42 +58,45 @@ class FeelingsPost extends Component {
   };
 
   handleTextChange = e => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    // GET STRIKE COUNT FOR THE USER
-    onGetStrikesCountOfAUser({ isStudent, id });
-    const { value } = e.target;
-    const { strike } = this.props;
-    // LIMIT THE LENGTH TO 500
-    if (value.trim().length > 500) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Please keep the length within 500 characters'
-      });
-      this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    } else {
-      // CHECK FOR ANY BLACKLISTED WORD AND ITS TYPE
-      const blacklistedWord = FilterKeyWords(value);
-      if (blacklistedWord) {
-        if (strike.strikes >= 10) {
-          this.setState({ blockUser: true });
-        } else {
-          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-          index -= 1;
-          this.setState({
-            isModalVisible: true,
-            alertMessage: `${warnings[index]}`
-          });
-        }
-        this.setState({ isBad: true, strikeType: blacklistedWord });
-      } else {
-        this.setState({
-          isModalVisible: false,
-          alertMessage: null
-        });
-      }
-      this.setState({ postText: value });
-    }
+    const { handlePostText } = this.props;
+    handlePostText(e);
+
+    // const { onGetStrikesCountOfAUser, user } = this.props;
+    // const { isStudent, id } = user.user;
+    // // GET STRIKE COUNT FOR THE USER
+    // onGetStrikesCountOfAUser({ isStudent, id });
+    // const { value } = e.target;
+    // const { strike } = this.props;
+    // // LIMIT THE LENGTH TO 500
+    // if (value.trim().length > 500) {
+    //   this.setState({
+    //     isModalVisible: true,
+    //     alertMessage: 'Please keep the length within 500 characters'
+    //   });
+    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    // } else {
+    //   // CHECK FOR ANY BLACKLISTED WORD AND ITS TYPE
+    //   const blacklistedWord = FilterKeyWords(value);
+    //   if (blacklistedWord) {
+    //     if (strike.strikes >= 10) {
+    //       this.setState({ blockUser: true });
+    //     } else {
+    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
+    //       index -= 1;
+    //       this.setState({
+    //         isModalVisible: true,
+    //         alertMessage: `${warnings[index]}`
+    //       });
+    //     }
+    //     this.setState({ isBad: true, strikeType: blacklistedWord });
+    //   } else {
+    //     this.setState({
+    //       isModalVisible: false,
+    //       alertMessage: null
+    //     });
+    //   }
+    //   this.setState({ postText: value });
+    // }
   };
 
   handleEmotionSelection = value => {
@@ -113,36 +105,71 @@ class FeelingsPost extends Component {
 
   submitTextPost = () => {
     const {
-      feeling, postText, postTypeId, blockUser
-    } = this.state;
-    const {
-      user, resetPostType, onPostSubmit, onBlockUser
+      submitPost,
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      onPostSubmit,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser
     } = this.props;
+    const { postTypeId, feeling } = this.state;
     const { isStudent, id } = user.user;
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
 
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      showWarning(strikes, isStudent);
+      isBad = 1;
+    }
     const data = {
       p_pt_id: postTypeId,
       p_body: postText,
       p_isStudent: isStudent,
       p_actor_id: id,
+      p_is_bad: isBad,
       p_text: feeling.name
     };
     onPostSubmit(data);
-    if (blockUser) {
-      onBlockUser({ isStudent, id });
+
+    // const {
+    //   feeling, postText, postTypeId, blockUser
+    // } = this.state;
+    // const {
+    //   user, resetPostType, onPostSubmit, onBlockUser
+    // } = this.props;
+    // const { isStudent, id } = user.user;
+    //
+    // if (blockUser) {
+    //   onBlockUser({ isStudent, id });
+    // }
+    // // this.setState({ selectedGif: null });
+    // resetPostType();
+  };
+
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
+    const { posts } = post;
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
+
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
     }
-    // this.setState({ selectedGif: null });
-    resetPostType();
   };
 
   render() {
-    const {
-      username,
-      postText,
-      feeling,
-      isModalVisible,
-      alertMessage
-    } = this.state;
+    const { username, postText, feeling } = this.state;
     if (!feeling) {
       return (
         <PostWrapperContainer>
@@ -179,6 +206,7 @@ class FeelingsPost extends Component {
             placeholder={` How are you feeling, ${username}?`}
             onChange={this.handleTextChange}
             value={postText}
+            onFocus={this.onFocus}
           />
         </Input>
 
@@ -187,9 +215,6 @@ class FeelingsPost extends Component {
             Post
           </Button>
         </div>
-        {isModalVisible && (
-          <Modal message={alertMessage} hideModal={this.hideModal} />
-        )}
       </PostWrapper>
     );
   }
@@ -198,7 +223,7 @@ class FeelingsPost extends Component {
 FeelingsPost.propTypes = {
   username: PropTypes.string,
   postTypeId: PropTypes.number,
-  // postActivity: PropTypes.object,
+  post: PropTypes.object,
   user: PropTypes.object,
   // post: PropTypes.object,
   strike: PropTypes.object,
@@ -206,7 +231,12 @@ FeelingsPost.propTypes = {
   onGetStrikesCountOfAUser: PropTypes.func,
   // disableFirstTimePosting: PropTypes.func,
   onBlockUser: PropTypes.func,
-  resetPostType: PropTypes.func
+  postText: PropTypes.string,
+  showWarning: PropTypes.func,
+  resetPostType: PropTypes.func,
+  handlePostText: PropTypes.func,
+  onFocus: PropTypes.func,
+  disableFirstTimePosting: PropTypes.func
 };
 const mapStateToProps = state => ({
   user: state.user,
@@ -219,7 +249,9 @@ const mapDispatchToProps = dispatch => ({
   // disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FeelingsPost);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(FeelingsPost)
+);

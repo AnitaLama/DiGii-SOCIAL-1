@@ -15,6 +15,7 @@ import {
 } from '../../Theme';
 
 import { NewPostType, Container } from './index';
+import UserAvatar from '../Header/Avatar';
 
 const { snow, pencil, grey } = Colors.colors;
 
@@ -136,14 +137,20 @@ class NewPost extends Component {
 
   render() {
     const { type } = this.state;
-    const { post } = this.props;
+    const { post, user } = this.props;
     const { gif } = post;
+    const { avatar } = user;
+    // {avatar ? (
+    //   <UserAvatar avatar={avatar} height={53} radius={30} />
+    // ) : (
+    //   <Avatar src={Images.stockImage} height={53} radius={30} />
+    // )}
     return (
       <div>
         <NewPostWrapper>
+          <Avatar src={Images.stockImage} height={53} radius={30} />
           <NewPostContainer>
             <Input>
-              <Avatar src={Images.stockImage} height={53} radius={30} />
               {this.postArea()}
               {/* <TiDelete /> */}
             </Input>
@@ -175,11 +182,12 @@ NewPostOption.propTypes = {
   selected: PropTypes.string
 };
 NewPost.propTypes = {
-  post: PropTypes.object
+  post: PropTypes.object,
+  user: PropTypes.object
 };
 const mapStateToProps = state => ({
   postType: state.postType,
-  user: state.user,
+  user: state.user.user,
   post: state.post,
   postActivity: state.postActivity
 });

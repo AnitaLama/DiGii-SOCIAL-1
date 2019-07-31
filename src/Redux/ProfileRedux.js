@@ -5,7 +5,8 @@ import Immutable from 'seamless-immutable';
 
 const { Types, Creators } = createActions({
   onGetUserInfo: ['data'],
-  onGetUserInfoSuccess: ['data']
+  onGetUserInfoSuccess: ['data'],
+  onGetAvatarOfTheUser: ['data']
 });
 
 export const ProfileTypes = Types;

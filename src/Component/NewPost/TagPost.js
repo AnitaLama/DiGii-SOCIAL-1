@@ -9,6 +9,7 @@ import { Colors, boxShadow } from '../../Theme';
 import StrikeActions from '../../Redux/StrikeRedux';
 import { FilterKeyWords, warnings, PostWrapper } from './index';
 import LoginActions from '../../Redux/LoginRedux';
+import Moderator from './Moderator';
 
 const strikeCount = 3;
 
@@ -117,69 +118,82 @@ class TagPost extends Component {
     });
   };
 
-  checkIfFirstTime = () => {
-    const { user, disableFirstTimePosting, post } = this.props;
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
     const { posts } = post;
-    // console.log(posts);
-    const isFirstTimePosting = posts.find(
-      item => item.p_actor_id === user.user.id
-    );
-    if (
-      user.user.isStudent
-      && !isFirstTimePosting
-      && user.user.isFirstTimePosting
-    ) {
-      disableFirstTimePosting();
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Congratulations!!! it\'s your first time posting.'
-      });
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
 
-      // alert('Congratulations!!! it\'s your first time posting.');
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
     }
   };
+  // const { user, disableFirstTimePosting, post } = this.props;
+  // const { posts } = post;
+  // // console.log(posts);
+  // const isFirstTimePosting = posts.find(
+  //   item => item.p_actor_id === user.user.id
+  // );
+  // if (
+  //   user.user.isStudent
+  //   && !isFirstTimePosting
+  //   && user.user.isFirstTimePosting
+  // ) {
+  //   disableFirstTimePosting();
+  //   this.setState({
+  //     isModalVisible: true,
+  //     alertMessage: 'Congratulations!!! it\'s your first time posting.'
+  //   });
+  //
+  //   // alert('Congratulations!!! it\'s your first time posting.');
+  // }
 
   handleTextChange = e => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    onGetStrikesCountOfAUser({ isStudent, id });
-    const { value } = e.target;
-    const { strike } = this.props;
-    if (value.trim().length > 500) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Please keep the length within 500 characters'
-      });
-      // alert('Please keep the length within 500 characters');
-      this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    } else {
-      const blacklistedWord = FilterKeyWords(value);
+    const { handlePostText } = this.props;
+    handlePostText(e);
 
-      if (blacklistedWord) {
-        if (strike.strikes >= 10) {
-          this.setState({ blockUser: true });
-          // onBlockUser({ isStudent, id });
-          this.setState({
-            isModalVisible: true,
-            alertMessage: 'You\'ll be blocked from digii'
-          });
-        } else {
-          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-          index -= 1;
-          this.setState({
-            isModalVisible: true,
-            alertMessage: `${warnings[index]}`
-          });
-        }
-        this.setState({ isBad: true, strikeType: blacklistedWord });
-      } else {
-        this.setState({
-          isModalVisible: false,
-          alertMessage: null
-        });
-      }
-      this.setState({ text: value });
-    }
+    // const { onGetStrikesCountOfAUser, user } = this.props;
+    // const { isStudent, id } = user.user;
+    // onGetStrikesCountOfAUser({ isStudent, id });
+    // const { value } = e.target;
+    // const { strike } = this.props;
+    // if (value.trim().length > 500) {
+    //   this.setState({
+    //     isModalVisible: true,
+    //     alertMessage: 'Please keep the length within 500 characters'
+    //   });
+    //   // alert('Please keep the length within 500 characters');
+    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
+    // } else {
+    //   const blacklistedWord = FilterKeyWords(value);
+    //
+    //   if (blacklistedWord) {
+    //     if (strike.strikes >= 10) {
+    //       this.setState({ blockUser: true });
+    //       // onBlockUser({ isStudent, id });
+    //       this.setState({
+    //         isModalVisible: true,
+    //         alertMessage: 'You\'ll be blocked from digii'
+    //       });
+    //     } else {
+    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
+    //       index -= 1;
+    //       this.setState({
+    //         isModalVisible: true,
+    //         alertMessage: `${warnings[index]}`
+    //       });
+    //     }
+    //     this.setState({ isBad: true, strikeType: blacklistedWord });
+    //   } else {
+    //     this.setState({
+    //       isModalVisible: false,
+    //       alertMessage: null
+    //     });
+    //   }
+    //   this.setState({ text: value });
+    // }
   };
 
   onFocus = () => {
@@ -194,24 +208,51 @@ class TagPost extends Component {
 
   finishedTagging = () => {
     const {
-      taggedUsers, text, postTypeId, blockUser
-    } = this.state;
-    const {
-      user, onSubmitTagPost, onBlockUser, resetPostType
+      submitPost,
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      onSubmitTagPost,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser
     } = this.props;
+    const { postTypeId, taggedUsers } = this.state;
     const { isStudent, id } = user.user;
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
+
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      showWarning(strikes, isStudent);
+      isBad = 1;
+    }
+    // const {
+    //   taggedUsers, text, postTypeId, blockUser
+    // } = this.state;
+    // const {
+    //   user, onSubmitTagPost, onBlockUser, resetPostType
+    // } = this.props;
+    // const { isStudent, id } = user.user;
     const data = {
       p_pt_id: postTypeId,
       p_isStudent: isStudent,
       p_actor_id: id,
-      p_text: text,
-      taggedUsers
+      p_text: postText,
+      taggedUsers,
+      p_is_bad: isBad
     };
     onSubmitTagPost(data);
-    if (blockUser) {
-      onBlockUser({ isStudent, id });
-    }
-    resetPostType();
+    // if (blockUser) {
+    //   onBlockUser({ isStudent, id });
+    // }
+    // resetPostType();
   };
 
   selectUser = user => {
@@ -268,7 +309,7 @@ class TagPost extends Component {
             onChange={this.handleTextChange}
             onKeyDown={this.handleKeyDown}
             ref={r => (this.textarea = r)}
-            onFocus={this.checkIfFirstTime}
+            onFocus={this.onFocus}
           />
           <div>
             <Button className="rounded small" onClick={this.finishedTagging}>
@@ -327,9 +368,6 @@ x
             </UserList>
           )}
         </UserListWrapper>
-        {isModalVisible && (
-          <Modal message={alertMessage} hideModal={this.hideModal} />
-        )}
       </PostWrapperContainer>
     );
   }
@@ -351,7 +389,9 @@ const mapDispatchToProps = dispatch => ({
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TagPost);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(TagPost)
+);
