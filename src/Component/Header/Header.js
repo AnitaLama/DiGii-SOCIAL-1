@@ -12,7 +12,6 @@ import {
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
 import PostActions from '../../Redux/PostRedux';
-import UserAvatar from './Avatar';
 
 const { pen, secondary, snow } = Colors.colors;
 const HeaderWrapper = styled.div`

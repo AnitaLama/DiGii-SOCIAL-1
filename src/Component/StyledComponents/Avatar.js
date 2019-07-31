@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Avatar from 'avataaars';
+import { Images } from '../../Theme';
 
-const Images = styled.img`
+const ImageAvatar = styled.img`
   height: ${props => `${props.height}px` || '56px'};
   border-radius: ${props => `${`${props.height}` / 2}px` || '28px'};
   margin-right: ${props => `${props.rightMargin}px` || '0'};
@@ -48,7 +49,7 @@ class UserAvatar extends Component {
       );
     }
     const { src } = this.props;
-    return <Images src={src} {...this.props} />;
+    return <ImageAvatar src={Images.stockImage} {...this.props} />;
   }
 }
 export default UserAvatar;

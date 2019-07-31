@@ -8,7 +8,6 @@ import {
 } from '../../Theme';
 import { Avatar } from '../StyledComponents';
 import PostAction from '../../Redux/PostRedux';
-import UserAvatar from '../Header/Avatar';
 
 const { grey, pink } = Colors.colors;
 const CommentWrapper = styled.div`
@@ -98,7 +97,7 @@ class Comment extends Component {
     return !isCommentHidden ? (
       <CommentWrapper>
         <Avatar
-          src={Images.stockImage}
+          avatar={userAvatar}
           height={24}
           style={{ marginRight: '6px' }}
         />

@@ -15,7 +15,6 @@ import {
 } from '../../Theme';
 
 import { NewPostType, Container } from './index';
-import UserAvatar from '../Header/Avatar';
 
 const { snow, pencil, grey } = Colors.colors;
 
@@ -148,7 +147,7 @@ class NewPost extends Component {
     return (
       <div>
         <NewPostWrapper>
-          <Avatar src={Images.stockImage} height={53} radius={30} />
+          <Avatar avatar={avatar} height={53} radius={30} />
           <NewPostContainer>
             <Input>
               {this.postArea()}

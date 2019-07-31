@@ -19,7 +19,6 @@ import {
 } from '../../Theme';
 import { FeelingsList } from '../NewPost/index';
 // const { grey } = Colors.colors;
-import UserAvatar from '../Header/Avatar';
 
 const AuthorWrapper = styled.div`
   ${flex()};
