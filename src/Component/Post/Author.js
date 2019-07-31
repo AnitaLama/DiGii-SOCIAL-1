@@ -186,7 +186,7 @@ class Author extends Component {
     //   : <Avatar src={Images.stockImage} height={53} />}
     return (
       <AuthorWrapper>
-        <Avatar src={Images.stockImage} height={53} />
+        <Avatar avatar={userAvatar} height={53} />
         <AuthorInfo>
           <Name>
             {firstname}
