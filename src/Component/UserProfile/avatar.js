@@ -1,27 +1,519 @@
 import React, { Component } from 'react';
-import Avatar from 'avataaars';
+import Avatar, { Piece } from 'avataaars';
+import styled from '@emotion/styled';
+import Slider from 'react-slick';
+import { Colors, flexCentering } from '../../Theme';
+import { Button } from '../StyledComponents';
 
-class UserAvatar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      avatarStyle: 'Circle',
-      topType: 'LongHairMiaWallace',
-      accessoriesType: 'Prescription02',
-      hairColor: 'BrownDark',
-      facialHairType: 'Blank',
-      facialHairColor: 'Black',
-      clotheType: 'Hoodie',
-      clotheColor: 'PastelBlue',
-      eyeType: 'Happy',
-      eyebrowType: 'Default',
-      mouthType: 'Smile',
-      skinColor: 'Light'
-    };
+const AvatarWrapper = styled.div`
+  text-align: center;
+`;
+
+const AvatarCustomizationWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 100px auto;
+  button {
+    width: 100%;
   }
+  div {
+    margin: auto;
+  }
+`;
+const AvatarSelectionWrapper = styled.div``;
+const AvatarStyleParameterWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 100px auto;
+  grid-column-gap: 40px;
+  div {
+    display: flex;
+    width: 800px;
+  }
+  .slider {
+    margin: auto;
+  }
+  .ButtonsList {
+    @media (min-width: 1080px) {
+      display: flex;
+      flex-direction: column;
+      width: 100px;
+      button {
+        width: 100% !important;
+      }
+    }
+    flex-wrap: wrap;
+    justify-content: space-around;
+    button {
+      width: 150px;
+      margin: 10px;
+    }
+  }
+  .slick-slide {
+    padding-left: 50px;
+  }
+  .slick-arrow.slick-prev,
+  .slick-arrow.slick-next {
+    &::before {
+      color: ${Colors.colors.blue};
+    }
+  }
+  @media (max-width: 1080px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    div {
+      width: 700px;
+      margin: 10px 0;
+    }
+  }
+`;
+const GraphicsDiv = styled.div`
+  margin: 40px 0;
+  border-radius: 20px;
+  padding: 10px 0;
+  border: 1px solid ${Colors.colors.blue};
+  svg {
+    g {
+      g {
+        transform: translate(0, 40px) scale(1.5);
+      }
+    }
+  }
+`;
+const ColorPallette = styled.div`
+  ${flexCentering('column')};
+  margin: auto !important;
+  div {
+    height: 10px !important;
+    width: 10px !important;
+    border-radius: 100%;
+    background: ${props => `${props.color}`};
+  }
+`;
+const ColorPalletteWrapper = styled.div`
+  margin: 20px 0 !important;
+  padding: 20px 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, auto);
+  grid-row-gap: 10px;
+  div {
+    width: 80px;
+    cursor: pointer;
+  }
+  border: 1px solid ${Colors.colors.blue};
+  border-radius: 20px;
+`;
+const eyes = [
+  'Close',
+  'Cry',
+  'Default',
+  'Dizzy',
+  'EyeRoll',
+  'Happy',
+  'Hearts',
+  'Side',
+  'Squint',
+  'Surprised',
+  'Wink',
+  'WinkWacky'
+];
 
-  onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+const eyebrows = [
+  'Angry',
+  'AngryNatural',
+  'Default',
+  'DefaultNatural',
+  'FlatNatural',
+  'RaisedExcited',
+  'RaisedExcitedNatural',
+  'SadConcerned',
+  'SadConcernedNatural',
+  'UnibrowNatural'
+];
+
+const mouths = [
+  'Concerned',
+  'Default',
+  'Disbelief',
+  'Eating',
+  'Grimace',
+  'Sad',
+  'ScreamOpen',
+  'Serious',
+  'Smile',
+  'Tongue',
+  'Twinkle',
+  'Vomit'
+];
+
+const accessories = [
+  'Blank',
+  'Kurt',
+  'Prescription01',
+  'Prescription02',
+  'Round',
+  'Sunglasses',
+  'Wayfarers'
+];
+
+const tops = [
+  'NoHair',
+  'Eyepatch',
+  'Hat',
+  'Hijab',
+  'Turban',
+  'WinterHat1',
+  'WinterHat2',
+  'WinterHat3',
+  'WinterHat4',
+  'LongHairBigHair',
+  'LongHairBob',
+  'LongHairBun',
+  'LongHairCurly',
+  'LongHairCurvy',
+  'LongHairDreads',
+  'LongHairFrida',
+  'LongHairFro',
+  'LongHairFroBand',
+  'LongHairNotTooLong',
+  'LongHairShavedSides',
+  'LongHairMiaWallace',
+  'LongHairStraight',
+  'LongHairStraight2',
+  'LongHairStraightStrand',
+  'ShortHairDreads01',
+  'ShortHairDreads02'
+];
+const hairColors = [
+  { name: 'Auburn', value: '#A55729' },
+  { name: 'Black', value: '#000000' },
+  { name: 'Blonde', value: '#B58143' },
+  { name: 'BlondeGolden', value: '#EDB98A' },
+  { name: 'Brown', value: '#724133' },
+  { name: 'BrownDark', value: '#4A312C' },
+  { name: 'PastelPink', value: '#F29697' },
+  { name: 'Platinum', value: '#5E4834' },
+  { name: 'Red', value: '#CA4420' },
+  { name: 'SilverGray', value: '#E8E1E1' }
+];
+const facialHairs = [
+  'Blank',
+  'BeardMedium',
+  'BeardLight',
+  'BeardMajestic',
+  'MoustacheFancy',
+  'MoustacheMagnum'
+];
+
+const clothes = [
+  'BlazerShirt',
+  'BlazerSweater',
+  'CollarSweater',
+  'GraphicShirt',
+  'Hoodie',
+  'Overall',
+  'ShirtCrewNeck',
+  'ShirtScoopNeck',
+  'ShirtVNeck'
+];
+
+const clotheColors = [
+  { name: 'Black', value: '#262E33' },
+  { name: 'Blue01', value: '#65C9FF' },
+  { name: 'Blue02', value: '#5199E4' },
+  { name: 'Blue03', value: '#25557C' },
+  { name: 'Gray01', value: '#E6E6E6' },
+  { name: 'Gray02', value: '#929598' },
+  { name: 'Heather', value: '#3C4F5C' },
+  { name: 'PastelBlue', value: '#B1E2FF' },
+  { name: 'PastelGreen', value: '#A7FFC4' },
+  { name: 'PastelOrange', value: '#FFDEB5' },
+  { name: 'PastelRed', value: '#FFAFB9' },
+  { name: 'PastelYellow', value: '#FFFFB1' },
+  { name: 'Pink', value: '#FF488E' },
+  { name: 'Red', value: '#FF5C5C' },
+  { name: 'White', value: '#FFFFFF' }
+];
+const facialHairColors = [
+  { name: 'Auburn', value: '#A55729' },
+  { name: 'Black', value: '#000000' },
+  { name: 'Blonde', value: '#B58143' },
+  { name: 'BlondeGolden', value: '#EDB98A' },
+  { name: 'Brown', value: '#724133' },
+  { name: 'BrownDark', value: '#4A312C' },
+  { name: 'PastelPink', value: '#F29697' },
+  { name: 'Platinum', value: '#5E4834' },
+  { name: 'Red', value: '#CA4420' }
+];
+const graphics = [
+  'Bat',
+  'Cumbia',
+  'Deer',
+  'Diamond',
+  'Hola',
+  'Pizza',
+  'Resist',
+  'Selena',
+  'Bear',
+  'SkullOutline',
+  'Skull'
+];
+const PieceWrapper = styled.div`
+  width: 100px;
+`;
+const settings = {
+  dots: false,
+  arrows: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 1
+};
+class UserAvatar extends Component {
+  state = {
+    avatarStyle: 'Circle',
+    topType: 'LongHairMiaWallace',
+    accessoriesType: 'Prescription02',
+    hairColor: 'BrownDark',
+    facialHairType: 'Blank',
+    facialHairColor: 'Black',
+    clotheType: 'Hoodie',
+    clotheColor: 'PastelBlue',
+    eyeType: 'Happy',
+    eyebrowType: 'Default',
+    mouthType: 'Smile',
+    skinColor: 'Light',
+    graphicType: 'Bat',
+    pieceName: 'top',
+    pieceArray: tops
+  };
+
+  getAvatarOptions = () => {
+    const { pieceName, pieceArray } = this.state;
+    console.log(pieceName, pieceArray);
+    switch (pieceName) {
+      case 'mouth':
+        return (
+          <Slider {...settings} className="slider">
+            {pieceArray.map(item => (
+              <div>
+                <PieceWrapper
+                  onClick={() => {
+                    this.setState({ mouthType: item });
+                  }}
+                >
+                  {' '}
+                  <Piece
+                    pieceType={pieceName}
+                    pieceSize="100"
+                    mouthType={item}
+                  />
+                </PieceWrapper>
+                {item}
+              </div>
+            ))}
+          </Slider>
+        );
+      case 'eyes':
+        return (
+          <Slider {...settings} className="slider">
+            {pieceArray.map(item => (
+              <div>
+                <PieceWrapper
+                  onClick={() => {
+                    this.setState({ eyeType: item });
+                  }}
+                >
+                  {' '}
+                  <Piece pieceType={pieceName} pieceSize="100" eyeType={item} />
+                </PieceWrapper>
+                {item}
+              </div>
+            ))}
+          </Slider>
+        );
+      case 'clothe':
+        return (
+          <div style={{ display: 'grid' }}>
+            <Slider {...settings} className="slider">
+              {pieceArray.map(item => (
+                <div style={{ display: 'flex' }}>
+                  <PieceWrapper
+                    onClick={() => {
+                      this.setState({ clotheType: item });
+                    }}
+                  >
+                    {' '}
+                    <Piece
+                      pieceType={pieceName}
+                      pieceSize="100"
+                      clotheType={item}
+                    />
+                  </PieceWrapper>
+                  {item}
+                </div>
+              ))}
+            </Slider>
+            {this.state.clotheType === 'GraphicShirt' && (
+              <GraphicsDiv>
+                <Slider {...settings} className="slider">
+                  {graphics.map(item => (
+                    <PieceWrapper
+                      onClick={() => {
+                        this.setState({ graphicType: item });
+                      }}
+                    >
+                      <Piece
+                        pieceType="graphics"
+                        pieceSize="100"
+                        graphicType={item}
+                        style={{
+                          background: `${Colors.colors.blue}`
+                        }}
+                      />
+                    </PieceWrapper>
+                  ))}
+                </Slider>
+              </GraphicsDiv>
+            )}
+
+            <ColorPalletteWrapper>
+              {clotheColors.map(item => (
+                <ColorPallette
+                  onClick={() => {
+                    console.log(item.name);
+                    this.setState({ clotheColor: item.name });
+                  }}
+                  color={item.value}
+                >
+                  <div />
+                  {item.name}
+                </ColorPallette>
+              ))}
+            </ColorPalletteWrapper>
+          </div>
+        );
+      case 'top':
+        return (
+          <div style={{ display: 'grid' }}>
+            <Slider {...settings} className="slider">
+              {pieceArray.map(item => (
+                <div style={{ display: 'flex' }}>
+                  <PieceWrapper
+                    onClick={() => {
+                      this.setState({ topType: item });
+                    }}
+                  >
+                    {' '}
+                    <Piece
+                      pieceType={pieceName}
+                      pieceSize="100"
+                      topType={item}
+                    />
+                  </PieceWrapper>
+                  {item}
+                </div>
+              ))}
+            </Slider>
+            <ColorPalletteWrapper>
+              {hairColors.map(item => (
+                <ColorPallette
+                  onClick={() => {
+                    console.log(item.name);
+                    this.setState({ hairColor: item.name });
+                  }}
+                  color={item.value}
+                >
+                  <div />
+                  {item.name}
+                </ColorPallette>
+              ))}
+            </ColorPalletteWrapper>
+          </div>
+        );
+      case 'eyebrows':
+        return (
+          <Slider {...settings} className="slider">
+            {pieceArray.map(item => (
+              <div>
+                <PieceWrapper
+                  onClick={() => {
+                    this.setState({ eyebrowType: item });
+                  }}
+                >
+                  {' '}
+                  <Piece
+                    pieceType={pieceName}
+                    pieceSize="100"
+                    eyebrowType={item}
+                  />
+                </PieceWrapper>
+                {item}
+              </div>
+            ))}
+          </Slider>
+        );
+      case 'accessories':
+        return (
+          <Slider {...settings} className="slider">
+            {pieceArray.map(item => (
+              <div>
+                <PieceWrapper
+                  onClick={() => {
+                    this.setState({ accessoriesType: item });
+                  }}
+                >
+                  {' '}
+                  <Piece
+                    pieceType={pieceName}
+                    pieceSize="100"
+                    accessoriesType={item}
+                  />
+                </PieceWrapper>
+                {item}
+              </div>
+            ))}
+          </Slider>
+        );
+      case 'facialHair':
+        return (
+          <div style={{ display: 'grid' }}>
+            <Slider {...settings} className="slider">
+              {pieceArray.map(item => (
+                <div style={{ display: 'flex' }}>
+                  <PieceWrapper
+                    onClick={() => {
+                      this.setState({ facialHairType: item });
+                    }}
+                  >
+                    {' '}
+                    <Piece
+                      pieceType={pieceName}
+                      pieceSize="100"
+                      facialHairType={item}
+                    />
+                  </PieceWrapper>
+                  {item}
+                </div>
+              ))}
+            </Slider>
+            <ColorPalletteWrapper>
+              {facialHairColors.map(item => (
+                <ColorPallette
+                  onClick={() => {
+                    console.log(item.name);
+                    this.setState({ facialHairColor: item.name });
+                  }}
+                  color={item.value}
+                >
+                  <div />
+                  {item.name}
+                </ColorPallette>
+              ))}
+            </ColorPalletteWrapper>
+          </div>
+        );
+    }
   };
 
   render() {
@@ -37,342 +529,116 @@ class UserAvatar extends Component {
       eyebrowType,
       mouthType,
       skinColor,
-      facialHairColor
+      facialHairColor,
+      graphicType
     } = this.state;
     return (
       <div>
-        Your avatar:
-        <Avatar
-          style={{ width: '100px', height: '100px' }}
-          avatarStyle={avatarStyle}
-          topType={topType}
-          accessoriesType={accessoriesType}
-          hairColor={hairColor}
-          facialHairType={facialHairType}
-          clotheType={clotheType}
-          clotheColor={clotheColor}
-          eyeType={eyeType}
-          eyebrowType={eyebrowType}
-          mouthType={mouthType}
-          skinColor={skinColor}
-          facialHairColor={facialHairColor}
-        />
-        <form className="form-horizontal">
-          <div className="row form-group">
-            <label htmlFor="avatar-style" className="col-sm-3 control-label">
-              Avatar Style
-            </label>
-            <div className="col-sm-9">
-              <label>
-                <input
-                  onChange={e => this.onChange(e)}
-                  type="radio"
-                  id="avatarStyle"
-                  name="avatar-style"
-                  value="Circle"
-                />
-                {' '}
-                Circle
-              </label>
-              {' '}
-              <label>
-                <input
-                  onChange={e => this.onChange(e)}
-                  type="radio"
-                  id="avatarStyle"
-                  name="avatar-style"
-                  value="Transparent"
-                />
-                {' '}
-                Transparent
-              </label>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="topType" className="col-sm-3 control-label">
-              Top
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="topType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+        <AvatarWrapper>
+          {' '}
+          <Avatar
+            style={{ width: '300px', height: '300px' }}
+            avatarStyle={avatarStyle}
+            topType={topType}
+            accessoriesType={accessoriesType}
+            hairColor={hairColor}
+            facialHairType={facialHairType}
+            clotheType={clotheType}
+            clotheColor={clotheColor}
+            eyeType={eyeType}
+            eyebrowType={eyebrowType}
+            mouthType={mouthType}
+            skinColor={skinColor}
+            facialHairColor={facialHairColor}
+            graphicType={graphicType}
+          />
+        </AvatarWrapper>
+
+        <AvatarSelectionWrapper>
+          <AvatarStyleParameterWrapper>
+            <div className="ButtonsList">
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'top',
+                    pieceArray: tops
+                  });
+                }}
               >
-                <option value="NoHair">NoHair</option>
-                <option value="Eyepatch">Eyepatch</option>
-                <option value="Hat">Hat</option>
-                <option value="Hijab">Hijab</option>
-                <option value="Turban">Turban</option>
-                <option value="WinterHat1">WinterHat1</option>
-                <option value="WinterHat2">WinterHat2</option>
-                <option value="WinterHat3">WinterHat3</option>
-                <option value="WinterHat4">WinterHat4</option>
-                <option value="LongHairBigHair">LongHairBigHair</option>
-                <option value="LongHairBob">LongHairBob</option>
-                <option value="LongHairBun">LongHairBun</option>
-                <option value="LongHairCurly">LongHairCurly</option>
-                <option value="LongHairCurvy">LongHairCurvy</option>
-                <option value="LongHairDreads">LongHairDreads</option>
-                <option value="LongHairFrida">LongHairFrida</option>
-                <option value="LongHairFro">LongHairFro</option>
-                <option value="LongHairFroBand">LongHairFroBand</option>
-                <option value="LongHairNotTooLong">LongHairNotTooLong</option>
-                <option value="LongHairShavedSides">LongHairShavedSides</option>
-                <option value="LongHairMiaWallace">LongHairMiaWallace</option>
-                <option value="LongHairStraight">LongHairStraight</option>
-                <option value="LongHairStraight2">LongHairStraight2</option>
-                <option value="LongHairStraightStrand">
-                  LongHairStraightStrand
-                </option>
-                <option value="ShortHairDreads01">ShortHairDreads01</option>
-                <option value="ShortHairDreads02">ShortHairDreads02</option>
-                <option value="ShortHairFrizzle">ShortHairFrizzle</option>
-                <option value="ShortHairShaggyMullet">
-                  ShortHairShaggyMullet
-                </option>
-                <option value="ShortHairShortCurly">ShortHairShortCurly</option>
-                <option value="ShortHairShortFlat">ShortHairShortFlat</option>
-                <option value="ShortHairShortRound">ShortHairShortRound</option>
-                <option value="ShortHairShortWaved">ShortHairShortWaved</option>
-                <option value="ShortHairSides">ShortHairSides</option>
-                <option value="ShortHairTheCaesar">ShortHairTheCaesar</option>
-                <option value="ShortHairTheCaesarSidePart">
-                  ShortHairTheCaesarSidePart
-                </option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="accessoriesType" className="col-sm-3 control-label">
-              ↳ 👓 Accessories
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="accessoriesType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+                Hair
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'mouth',
+                    pieceArray: mouths
+                  });
+                }}
               >
-                <option value="Blank">Blank</option>
-                <option value="Kurt">Kurt</option>
-                <option value="Prescription01">Prescription01</option>
-                <option value="Prescription02">Prescription02</option>
-                <option value="Round">Round</option>
-                <option value="Sunglasses">Sunglasses</option>
-                <option value="Wayfarers">Wayfarers</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="hairColor" className="col-sm-3 control-label">
-              ↳ 💈 Hair Color
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="hairColor"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+                Mouth
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'eyes',
+                    pieceArray: eyes
+                  });
+                }}
               >
-                <option value="Auburn">Auburn</option>
-                <option value="Black">Black</option>
-                <option value="Blonde">Blonde</option>
-                <option value="BlondeGolden">BlondeGolden</option>
-                <option value="Brown">Brown</option>
-                <option value="BrownDark">BrownDark</option>
-                <option value="PastelPink">PastelPink</option>
-                <option value="Platinum">Platinum</option>
-                <option value="Red">Red</option>
-                <option value="SilverGray">SilverGray</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="facialHairType" className="col-sm-3 control-label">
-              Facial Hair
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="facialHairType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+                Eyes
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'eyebrows',
+                    pieceArray: eyebrows
+                  });
+                }}
               >
-                <option value="Blank">Blank</option>
-                <option value="BeardMedium">BeardMedium</option>
-                <option value="BeardLight">BeardLight</option>
-                <option value="BeardMagestic">BeardMagestic</option>
-                <option value="MoustacheFancy">MoustacheFancy</option>
-                <option value="MoustacheMagnum">MoustacheMagnum</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="facialHairColor" className="col-sm-3 control-label">
-              ↳ ✂️ Facial Hair Color
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="facialHairColor"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+                Eyebrows
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'clothe',
+                    pieceArray: clothes
+                  });
+                }}
               >
-                <option value="Auburn">Auburn</option>
-                <option value="Black">Black</option>
-                <option value="Blonde">Blonde</option>
-                <option value="BlondeGolden">BlondeGolden</option>
-                <option value="Brown">Brown</option>
-                <option value="BrownDark">BrownDark</option>
-                <option value="Platinum">Platinum</option>
-                <option value="Red">Red</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="clotheType" className="col-sm-3 control-label">
-              👔 Clothes
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="clotheType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+                Clothes
+              </Button>
+
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'facialHair',
+                    pieceArray: facialHairs
+                  });
+                }}
               >
-                <option value="BlazerShirt">BlazerShirt</option>
-                <option value="BlazerSweater">BlazerSweater</option>
-                <option value="CollarSweater">CollarSweater</option>
-                <option value="GraphicShirt">GraphicShirt</option>
-                <option value="Hoodie">Hoodie</option>
-                <option value="Overall">Overall</option>
-                <option value="ShirtCrewNeck">ShirtCrewNeck</option>
-                <option value="ShirtScoopNeck">ShirtScoopNeck</option>
-                <option value="ShirtVNeck">ShirtVNeck</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="clotheColor" className="col-sm-3 control-label">
-              ↳ Color Fabric
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="clotheColor"
-                className="form-control"
-                onChange={e => this.onChange(e)}
+                FacialHair
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'accessories',
+                    pieceArray: accessories
+                  });
+                }}
               >
-                <option value="Black">Black</option>
-                <option value="Blue01">Blue01</option>
-                <option value="Blue02">Blue02</option>
-                <option value="Blue03">Blue03</option>
-                <option value="Gray01">Gray01</option>
-                <option value="Gray02">Gray02</option>
-                <option value="Heather">Heather</option>
-                <option value="PastelBlue">PastelBlue</option>
-                <option value="PastelGreen">PastelGreen</option>
-                <option value="PastelOrange">PastelOrange</option>
-                <option value="PastelRed">PastelRed</option>
-                <option value="PastelYellow">PastelYellow</option>
-                <option value="Pink">Pink</option>
-                <option value="Red">Red</option>
-                <option value="White">White</option>
-              </select>
+                Accessories
+              </Button>
             </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="eyeType" className="col-sm-3 control-label">
-              👁 Eyes
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="eyeType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
-              >
-                <option value="Close">Close</option>
-                <option value="Cry">Cry</option>
-                <option value="Default">Default</option>
-                <option value="Dizzy">Dizzy</option>
-                <option value="EyeRoll">EyeRoll</option>
-                <option value="Happy">Happy</option>
-                <option value="Hearts">Hearts</option>
-                <option value="Side">Side</option>
-                <option value="Squint">Squint</option>
-                <option value="Surprised">Surprised</option>
-                <option value="Wink">Wink</option>
-                <option value="WinkWacky">WinkWacky</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="eyebrowType" className="col-sm-3 control-label">
-              ✏️ Eyebrow
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="eyebrowType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
-              >
-                <option value="Angry">Angry</option>
-                <option value="AngryNatural">AngryNatural</option>
-                <option value="Default">Default</option>
-                <option value="DefaultNatural">DefaultNatural</option>
-                <option value="FlatNatural">FlatNatural</option>
-                <option value="RaisedExcited">RaisedExcited</option>
-                <option value="RaisedExcitedNatural">
-                  RaisedExcitedNatural
-                </option>
-                <option value="SadConcerned">SadConcerned</option>
-                <option value="SadConcernedNatural">SadConcernedNatural</option>
-                <option value="UnibrowNatural">UnibrowNatural</option>
-                <option value="UpDown">UpDown</option>
-                <option value="UpDownNatural">UpDownNatural</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="mouthType" className="col-sm-3 control-label">
-              👄 Mouth
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="mouthType"
-                className="form-control"
-                onChange={e => this.onChange(e)}
-              >
-                <option value="Concerned">Concerned</option>
-                <option value="Default">Default</option>
-                <option value="Disbelief">Disbelief</option>
-                <option value="Eating">Eating</option>
-                <option value="Grimace">Grimace</option>
-                <option value="Sad">Sad</option>
-                <option value="ScreamOpen">ScreamOpen</option>
-                <option value="Serious">Serious</option>
-                <option value="Smile">Smile</option>
-                <option value="Tongue">Tongue</option>
-                <option value="Twinkle">Twinkle</option>
-                <option value="Vomit">Vomit</option>
-              </select>
-            </div>
-          </div>
-          <div className="row form-group">
-            <label htmlFor="skinColor" className="col-sm-3 control-label">
-              🎨 Skin
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="skinColor"
-                className="form-control"
-                onChange={e => this.onChange(e)}
-              >
-                <option value="Tanned">Tanned</option>
-                <option value="Yellow">Yellow</option>
-                <option value="Pale">Pale</option>
-                <option value="Light">Light</option>
-                <option value="Brown">Brown</option>
-                <option value="DarkBrown">DarkBrown</option>
-                <option value="Black">Black</option>
-              </select>
-            </div>
-          </div>
-        </form>
+            <div>{this.getAvatarOptions()}</div>
+          </AvatarStyleParameterWrapper>
+        </AvatarSelectionWrapper>
       </div>
     );
   }

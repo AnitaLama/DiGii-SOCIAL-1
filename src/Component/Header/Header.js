@@ -78,6 +78,7 @@ const Settings = styled.div`
 const DiGiiIcon = styled.img`
   height: 20.91px;
 `;
+const AvatarWrapper = styled.div``;
 class Header extends Component {
   constructor() {
     super();
@@ -108,7 +109,9 @@ class Header extends Component {
     const { isListVisible } = this.state;
     const { users } = this.props;
     const { user } = users;
-    const { id, isStudent, groupId } = user;
+    const {
+      id, isStudent, groupId, username
+    } = user;
     return (
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
@@ -122,7 +125,17 @@ class Header extends Component {
             <DiGiiIcon src={Images.digii5.DiGiit} />
           </Button>
           <Name>{user.firstname}</Name>
-          <Avatar avatar={user.avatar} height={53} />
+          <AvatarWrapper
+            style={{
+              marginRight: '20px',
+              marginLeft: '10px'
+            }}
+            onClick={() => {
+              history.push(`/userprofile/${isStudent ? 1 : 0}/${username}`);
+            }}
+          >
+            <Avatar avatar={user.avatar} height={53} />
+          </AvatarWrapper>
           {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
           <Settings>
             <FiSettings

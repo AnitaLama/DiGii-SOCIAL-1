@@ -179,10 +179,7 @@ class Author extends Component {
       lastname = up_lastname;
       userAvatar = avatar;
     }
-    console.log(userAvatar);
-    // {userAvatar
-    //   ? <UserAvatar avatar={userAvatar} height={53} />
-    //   : <Avatar src={Images.stockImage} height={53} />}
+
     return (
       <AuthorWrapper>
         <Avatar avatar={userAvatar} height={53} />
