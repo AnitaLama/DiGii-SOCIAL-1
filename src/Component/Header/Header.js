@@ -110,7 +110,7 @@ class Header extends Component {
     const { users } = this.props;
     const { user } = users;
     const {
-      id, isStudent, groupId, username
+      id, isStudent, groupId, username, avatar
     } = user;
     return (
       <HeaderWrapper>

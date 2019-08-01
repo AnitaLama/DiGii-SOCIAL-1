@@ -36,7 +36,11 @@ import onSubmitComment from './CommentSaga';
 import onGetStrikesCountOfAUser from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
-import { onGetUserInfo, onGetAvatarOfTheUser } from './ProfileSaga';
+import {
+  onGetUserInfo,
+  onGetAvatarOfTheUser,
+  onSaveMyAvatar
+} from './ProfileSaga';
 
 export default function* root() {
   yield all([
@@ -45,6 +49,7 @@ export default function* root() {
 
     takeLatest(LoginTypes.ON_BLOCK_USER, onBlockUser),
     takeLatest(LoginTypes.ON_STUDENT_FORM_LOGIN_REQUEST, onStudentLoginRequest),
+    takeLatest(LoginTypes.ON_SAVE_MY_AVATAR, onSaveMyAvatar),
 
     takeLatest(PostTypes.ON_LIST_POSTS, onListPosts),
 

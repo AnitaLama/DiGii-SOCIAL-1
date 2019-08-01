@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import Avatar, { Piece } from 'avataaars';
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
+import { connect } from 'react-redux';
 import { Colors, flexCentering } from '../../Theme';
 import { Button } from '../StyledComponents';
+import LoginActions from '../../Redux/LoginRedux';
 
 const AvatarWrapper = styled.div`
   text-align: center;
@@ -84,8 +86,8 @@ const ColorPallette = styled.div`
   ${flexCentering('column')};
   margin: auto !important;
   div {
-    height: 10px !important;
-    width: 10px !important;
+    height: 20px !important;
+    width: 20px !important;
     border-radius: 100%;
     background: ${props => `${props.color}`};
   }
@@ -258,8 +260,24 @@ const graphics = [
   'SkullOutline',
   'Skull'
 ];
+const skinColors = [
+  { name: 'Tanned', value: '#A55729' },
+  { name: 'Yellow', value: '#000000' },
+  { name: 'Pale', value: '#B58143' },
+  { name: 'Light', value: '#EDB98A' },
+  { name: 'Brown', value: '#724133' },
+  { name: 'BrownDark', value: '#4A312C' },
+  { name: 'Black', value: '#F29697' }
+];
 const PieceWrapper = styled.div`
   width: 100px;
+  cursor: pointer;
+`;
+const PieceWrapperContainer = styled.div`
+  display: flex;
+  span {
+    margin-left: 25px;
+  }
 `;
 const settings = {
   dots: false,
@@ -288,15 +306,52 @@ class UserAvatar extends Component {
     pieceArray: tops
   };
 
+  componentWillMount() {
+    const { user } = this.props;
+    const { avatar } = user;
+    console.log('cwm ', avatar);
+    if (avatar) {
+      const {
+        a_accessories,
+        a_clothes,
+        a_eyebrow,
+        a_eyes,
+        a_facial_hair_color,
+        a_facialhair_moustache,
+        a_haircolor,
+        a_graphic_type,
+        a_clothes_color,
+        a_mouth,
+        a_skin,
+        a_style,
+        a_top
+      } = avatar;
+      this.setState({
+        avatarStyle: 'Circle',
+        topType: a_top,
+        accessoriesType: a_accessories,
+        hairColor: a_haircolor,
+        facialHairType: a_facialhair_moustache,
+        facialHairColor: a_facial_hair_color,
+        clotheType: a_clothes,
+        clotheColor: a_clothes_color,
+        eyeType: a_eyes,
+        eyebrowType: a_eyebrow,
+        mouthType: a_mouth,
+        skinColor: a_skin,
+        graphicType: a_graphic_type
+      });
+    }
+  }
+
   getAvatarOptions = () => {
     const { pieceName, pieceArray } = this.state;
-    console.log(pieceName, pieceArray);
     switch (pieceName) {
       case 'mouth':
         return (
           <Slider {...settings} className="slider">
-            {pieceArray.map(item => (
-              <div>
+            {pieceArray.map((item, i) => (
+              <div key={`${item}${i}`}>
                 <PieceWrapper
                   onClick={() => {
                     this.setState({ mouthType: item });
@@ -317,8 +372,8 @@ class UserAvatar extends Component {
       case 'eyes':
         return (
           <Slider {...settings} className="slider">
-            {pieceArray.map(item => (
-              <div>
+            {pieceArray.map((item, i) => (
+              <div key={`${item}${i}`}>
                 <PieceWrapper
                   onClick={() => {
                     this.setState({ eyeType: item });
@@ -336,8 +391,8 @@ class UserAvatar extends Component {
         return (
           <div style={{ display: 'grid' }}>
             <Slider {...settings} className="slider">
-              {pieceArray.map(item => (
-                <div style={{ display: 'flex' }}>
+              {pieceArray.map((item, i) => (
+                <PieceWrapperContainer key={`${item}${i}`}>
                   <PieceWrapper
                     onClick={() => {
                       this.setState({ clotheType: item });
@@ -351,14 +406,15 @@ class UserAvatar extends Component {
                     />
                   </PieceWrapper>
                   {item}
-                </div>
+                </PieceWrapperContainer>
               ))}
             </Slider>
             {this.state.clotheType === 'GraphicShirt' && (
               <GraphicsDiv>
                 <Slider {...settings} className="slider">
-                  {graphics.map(item => (
+                  {graphics.map((item, i) => (
                     <PieceWrapper
+                      key={`${item}${i}`}
                       onClick={() => {
                         this.setState({ graphicType: item });
                       }}
@@ -378,16 +434,19 @@ class UserAvatar extends Component {
             )}
 
             <ColorPalletteWrapper>
-              {clotheColors.map(item => (
+              {clotheColors.map((item, i) => (
                 <ColorPallette
+                  key={`${i}${item}`}
                   onClick={() => {
-                    console.log(item.name);
                     this.setState({ clotheColor: item.name });
                   }}
                   color={item.value}
                 >
                   <div />
-                  {item.name}
+                  <span>
+                    {' '}
+                    {item.name}
+                  </span>
                 </ColorPallette>
               ))}
             </ColorPalletteWrapper>
@@ -397,8 +456,8 @@ class UserAvatar extends Component {
         return (
           <div style={{ display: 'grid' }}>
             <Slider {...settings} className="slider">
-              {pieceArray.map(item => (
-                <div style={{ display: 'flex' }}>
+              {pieceArray.map((item, i) => (
+                <PieceWrapperContainer key={`${item}${i}`}>
                   <PieceWrapper
                     onClick={() => {
                       this.setState({ topType: item });
@@ -412,20 +471,23 @@ class UserAvatar extends Component {
                     />
                   </PieceWrapper>
                   {item}
-                </div>
+                </PieceWrapperContainer>
               ))}
             </Slider>
             <ColorPalletteWrapper>
-              {hairColors.map(item => (
+              {hairColors.map((item, i) => (
                 <ColorPallette
+                  key={`${item}${i}`}
                   onClick={() => {
-                    console.log(item.name);
                     this.setState({ hairColor: item.name });
                   }}
                   color={item.value}
                 >
                   <div />
-                  {item.name}
+                  <span>
+                    {' '}
+                    {item.name}
+                  </span>
                 </ColorPallette>
               ))}
             </ColorPalletteWrapper>
@@ -434,8 +496,8 @@ class UserAvatar extends Component {
       case 'eyebrows':
         return (
           <Slider {...settings} className="slider">
-            {pieceArray.map(item => (
-              <div>
+            {pieceArray.map((item, i) => (
+              <div key={`${item}${i}`}>
                 <PieceWrapper
                   onClick={() => {
                     this.setState({ eyebrowType: item });
@@ -456,8 +518,8 @@ class UserAvatar extends Component {
       case 'accessories':
         return (
           <Slider {...settings} className="slider">
-            {pieceArray.map(item => (
-              <div>
+            {pieceArray.map((item, i) => (
+              <div key={`${item}${i}`}>
                 <PieceWrapper
                   onClick={() => {
                     this.setState({ accessoriesType: item });
@@ -479,8 +541,8 @@ class UserAvatar extends Component {
         return (
           <div style={{ display: 'grid' }}>
             <Slider {...settings} className="slider">
-              {pieceArray.map(item => (
-                <div style={{ display: 'flex' }}>
+              {pieceArray.map((item, i) => (
+                <PieceWrapperContainer key={`${item}${i}`}>
                   <PieceWrapper
                     onClick={() => {
                       this.setState({ facialHairType: item });
@@ -494,26 +556,94 @@ class UserAvatar extends Component {
                     />
                   </PieceWrapper>
                   {item}
-                </div>
+                </PieceWrapperContainer>
               ))}
             </Slider>
             <ColorPalletteWrapper>
-              {facialHairColors.map(item => (
+              {facialHairColors.map((item, i) => (
                 <ColorPallette
+                  key={`${item}${i}`}
                   onClick={() => {
-                    console.log(item.name);
                     this.setState({ facialHairColor: item.name });
                   }}
                   color={item.value}
                 >
                   <div />
-                  {item.name}
+                  <span>
+                    {' '}
+                    {item.name}
+                  </span>
                 </ColorPallette>
               ))}
             </ColorPalletteWrapper>
           </div>
         );
+      case 'skin':
+        return (
+          <div style={{ display: 'grid' }}>
+            <Slider {...settings} className="slider">
+              {pieceArray.map((item, i) => (
+                <PieceWrapperContainer key={`${item}${i}`}>
+                  <PieceWrapper
+                    onClick={() => {
+                      this.setState({ skinColor: item.name });
+                    }}
+                  >
+                    <Piece
+                      pieceType="skin"
+                      pieceSize="100"
+                      skinColor={item.name}
+                    />
+                  </PieceWrapper>
+                  <span>
+                    {' '}
+                    {item.name}
+                  </span>
+                </PieceWrapperContainer>
+              ))}
+            </Slider>
+          </div>
+        );
     }
+  };
+
+  saveMyAvatar = () => {
+    const { user, onSaveMyAvatar } = this.props;
+    const { isStudent, id, avatar } = user;
+    const {
+      accessoriesType,
+      avatarStyle,
+      clotheColor,
+      clotheType,
+      eyeType,
+      eyebrowType,
+      facialHairColor,
+      facialHairType,
+      graphicType,
+      hairColor,
+      mouthType,
+      skinColor,
+      topType
+    } = this.state;
+    const data = {
+      a_id: avatar ? avatar.a_id : null,
+      a_style: 'Circle',
+      a_top: topType,
+      a_accessories: accessoriesType,
+      a_haircolor: hairColor,
+      a_facialhair_moustache: facialHairType,
+      a_facial_hair_color: facialHairColor,
+      a_clothes: clotheType,
+      a_eyes: eyeType,
+      a_eyebrow: eyebrowType,
+      a_mouth: mouthType,
+      a_skin: skinColor,
+      a_graphic_type: graphicType,
+      userId: id,
+      isStudent
+    };
+
+    onSaveMyAvatar(data);
   };
 
   render() {
@@ -635,13 +765,33 @@ class UserAvatar extends Component {
               >
                 Accessories
               </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'skin',
+                    pieceArray: skinColors
+                  });
+                }}
+              >
+                Skin Tone
+              </Button>
             </div>
             <div>{this.getAvatarOptions()}</div>
           </AvatarStyleParameterWrapper>
         </AvatarSelectionWrapper>
+        <Button onClick={this.saveMyAvatar}>Save My Avatar</Button>
       </div>
     );
   }
 }
-
-export default UserAvatar;
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+const mapDispatchToProps = dispatch => ({
+  onSaveMyAvatar: value => dispatch(LoginActions.onSaveMyAvatar(value))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserAvatar);

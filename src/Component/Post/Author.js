@@ -2,20 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
-import { __values } from 'tslib';
-import { FaBeer, FaFolder } from 'react-icons/fa';
 import { IconContext } from 'react-icons';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { MdCreate, MdDeleteSweep } from 'react-icons/md';
 import PostAction from '../../Redux/PostRedux';
 import { Avatar } from '../StyledComponents';
 import {
-  flex,
-  Images,
-  fontSize,
-  fontWeight,
-  fontFilson,
-  Colors
+  flex, fontSize, fontWeight, fontFilson, Colors
 } from '../../Theme';
 import { FeelingsList } from '../NewPost/index';
 // const { grey } = Colors.colors;

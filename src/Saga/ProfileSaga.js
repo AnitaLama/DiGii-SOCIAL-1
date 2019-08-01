@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import { DEV_URL } from '../config';
 import ProfileActions from '../Redux/ProfileRedux';
+import LoginActions from '../Redux/LoginRedux';
 
 export function* onGetUserInfo(action) {
   try {
@@ -31,5 +32,22 @@ export function* onGetAvatarOfTheUser(action) {
     console.log('saga output', data);
   } catch (err) {
     console.log(err.toString());
+  }
+}
+
+export function* onSaveMyAvatar(action) {
+  try {
+    console.log('saga');
+    const { data } = yield call(
+      axios.post,
+      `${DEV_URL}/userProfile/saveMyAvatar`,
+      action.data
+    );
+    console.log('saga output', data);
+    if (data.success) {
+      yield put(LoginActions.onSaveMyAvatarSuccess(data.result));
+    }
+  } catch (err) {
+    console.log(err);
   }
 }

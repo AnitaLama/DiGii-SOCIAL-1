@@ -10,7 +10,9 @@ const { Types, Creators } = createActions({
   onStudentFormLoginRequest: ['data'],
   onStudentFormLoginSuccess: ['data'],
   onDisableFirstTimePosting: [],
-  onBlockUser: ['data']
+  onBlockUser: ['data'],
+  onSaveMyAvatar: ['data'],
+  onSaveMyAvatarSuccess: ['data']
 });
 
 export const LoginTypes = Types;
@@ -141,6 +143,11 @@ const onDisableFirstTimePosting = state => ({
     error: null
   }
 });
+
+const onSaveMyAvatarSuccess = (state, action) => ({
+  ...state,
+  user: { ...state.user, avatar: action.data }
+});
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -150,5 +157,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_STUDENT_FORM_LOGIN_REQUEST]: onStudentFormLogin,
   [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
   [Types.ON_LOG_OUT]: onLogOut,
-  [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting
+  [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting,
+  [Types.ON_SAVE_MY_AVATAR_SUCCESS]: onSaveMyAvatarSuccess
 });

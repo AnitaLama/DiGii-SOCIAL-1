@@ -18,15 +18,20 @@ import { NewPostType, Container } from './index';
 
 const { snow, pencil, grey } = Colors.colors;
 
+const NewPostWrapperContainer = styled.div``;
 const NewPostWrapper = styled.div`
   background: ${snow};
   margin: 10px 0;
   padding: 20px;
   border-radius: 40px;
   ${boxShadow()};
+  .inputArea {
+    display: flex;
+  }
 `;
 const NewPostContainer = styled.div`
   display: grid;
+  width: 100%;
 `;
 const Icon = styled.span`
   margin: auto;
@@ -145,15 +150,17 @@ class NewPost extends Component {
     //   <Avatar src={Images.stockImage} height={53} radius={30} />
     // )}
     return (
-      <div>
+      <NewPostWrapperContainer>
         <NewPostWrapper>
-          <Avatar avatar={avatar} height={53} radius={30} />
-          <NewPostContainer>
-            <Input>
-              {this.postArea()}
-              {/* <TiDelete /> */}
-            </Input>
-          </NewPostContainer>
+          <div className="inputArea">
+            <Avatar avatar={avatar} height={53} radius={30} />
+            <NewPostContainer>
+              <Input>
+                {this.postArea()}
+                {/* <TiDelete /> */}
+              </Input>
+            </NewPostContainer>
+          </div>
           <NewPostOptionContainer>
             {options.map(option => (
               <NewPostOption
@@ -170,7 +177,7 @@ class NewPost extends Component {
             <Container selectGif={this.selectGif} />
           </NewPostWrapper>
         )}
-      </div>
+      </NewPostWrapperContainer>
     );
   }
 }
