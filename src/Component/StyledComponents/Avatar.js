@@ -19,6 +19,7 @@ class UserAvatar extends Component {
       const {
         a_accessories,
         a_clothes,
+        a_clothes_color,
         a_eyebrow,
         a_eyes,
         a_facial_hair_color,
@@ -26,7 +27,8 @@ class UserAvatar extends Component {
         a_mouth,
         a_skin,
         a_style,
-        a_top
+        a_top,
+        a_graphic_type
       } = avatar;
       return (
         <div>
@@ -38,12 +40,13 @@ class UserAvatar extends Component {
             hairColor={a_haircolor}
             facialHairType={a_facial_hair_color}
             clotheType={a_clothes}
-            clotheColor="red"
+            clotheColor={a_clothes_color}
             eyeType={a_eyes}
             eyebrowType={a_eyebrow}
             mouthType={a_mouth}
             skinColor={a_skin}
             facialHairColor={a_facial_hair_color}
+            graphicType={a_graphic_type}
           />
         </div>
       );

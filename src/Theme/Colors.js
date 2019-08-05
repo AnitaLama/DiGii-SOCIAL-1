@@ -17,6 +17,7 @@ const Colors = {
     grey: '#9D9D9D',
     lightGrey: '#E6E6E6',
     pink: '#F54962',
+    tint: '#F54B64',
     ink: '#373745',
     pen: '#676674',
     pencil: '#E2E1E1',

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { FaTimesCircle } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import {
-  Images, flex, fontSize, fontWeight, Colors
+  flex, fontSize, fontWeight, Colors
 } from '../../Theme';
 import { Avatar } from '../StyledComponents';
 import PostAction from '../../Redux/PostRedux';
@@ -42,7 +42,7 @@ const Close = styled.div`
   color: ${pink};
   cursor: pointer;
   svg {
-    ${fontSize(24)};
+    ${fontSize(9)};
   }
 `;
 class Comment extends Component {
@@ -110,7 +110,7 @@ class Comment extends Component {
           </span>
           {/* Hide/Edit/Delete comment  */}
           <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>
-            <FaTimesCircle />
+            <FaTimes />
           </Close>
           {/* <span className="date">
             {new Date(createdAt).toLocaleDateString()}

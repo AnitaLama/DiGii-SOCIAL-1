@@ -4,13 +4,11 @@ import styled from '@emotion/styled';
 import { FaCaretRight } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import { Images } from '../../Theme';
-import { FormInput, Modal } from '../StyledComponents';
+import { FormInput, Avatar } from '../StyledComponents';
 import CommentActions from '../../Redux/CommentRedux';
-import { FilterKeyWords, warnings } from '../NewPost/index';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-
-const strikeCount = 3;
+import Moderator from '../NewPost/Moderator';
 
 const CommentBoxWrapper = styled.div`
   display: grid;
@@ -35,39 +33,45 @@ const Image = styled.img`
   border-radius: 20px;
 `;
 class CommentBox extends Component {
-  constructor() {
-    super();
-    this.state = {
-      commentText: '',
-      isModalVisible: false,
-      isBad: false,
-      alertmessage: null
-    };
+  componentWillMount() {
+    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
   }
 
-  showHasPost = () => {
-    const { user, disableFirstTimePosting, post } = this.props;
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
     const { posts } = post;
-    // console.log(posts);
-    const isFirstTimePosting = posts.find(
-      item => item.p_actor_id === user.user.id
-    );
-    if (
-      user.user.isStudent
-      && !isFirstTimePosting
-      && user.user.isFirstTimePosting
-    ) {
-      disableFirstTimePosting();
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Congratulations!!! it\'s your first time posting.'
-      });
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
 
-      // alert('Congratulations!!! it\'s your first time posting.');
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
     }
-    this.setState({
-      hasPost: true
-    });
+    // const { user, disableFirstTimePosting, post } = this.props;
+    // const { posts } = post;
+    // // console.log(posts);
+    // const isFirstTimePosting = posts.find(
+    //   item => item.p_actor_id === user.user.id
+    // );
+    // if (
+    //   user.user.isStudent
+    //   && !isFirstTimePosting
+    //   && user.user.isFirstTimePosting
+    // ) {
+    //   disableFirstTimePosting();
+    //   this.setState({
+    //     isModalVisible: true,
+    //     alertMessage: 'Congratulations!!! it\'s your first time posting.'
+    //   });
+    //
+    //   // alert('Congratulations!!! it\'s your first time posting.');
+    // }
+    // this.setState({
+    //   hasPost: true
+    // });
   };
 
   handleKeyDown = event => {
@@ -83,98 +87,78 @@ class CommentBox extends Component {
     });
   };
 
-  handleComment = event => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    onGetStrikesCountOfAUser({ isStudent, id });
-    const { value } = event.target;
-    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-      console.log('show users');
-    }
-    const { strike } = this.props;
-    if (value.trim().length > 500) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Please keep the length within 500 characters'
-      });
-      // alert('Please keep the length within 500 characters');
-      this.setState({ commentText: value, hasPost: value.trim().length > 0 });
-    } else {
-      const blacklistedWord = FilterKeyWords(value);
-      if (blacklistedWord) {
-        if (strike.strikes >= 10) {
-          console.log('block the student');
-          this.setState({ blockUser: true });
-          // onBlockUser({ isStudent, id });
-        } else {
-          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-          index -= 1;
-          this.setState({
-            isModalVisible: true,
-            alertMessage: `${warnings[index]}`
-          });
-        }
-        this.setState({ isBad: true, strikeType: blacklistedWord });
-      } else {
-        this.setState({
-          isModalVisible: false,
-          alertMessage: null
-        });
-      }
-      this.setState({ commentText: event.target.value });
-    }
+  handleComment = e => {
+    const { handlePostText } = this.props;
+    handlePostText(e);
   };
 
   handleCommentReply = () => {
-    const { commentText, isBad } = this.state;
-    const { onSubmitComment, user, data } = this.props;
+    const {
+      submitPost,
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      onPostSubmit,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser,
+      data,
+      onSubmitComment,
+      resetPostText
+    } = this.props;
     const { p_id } = data;
+    const { isStudent, id } = user.user;
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
+
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      showWarning(strikes, isStudent);
+      isBad = 1;
+    }
+
     const comment = {
       pc_p_id: p_id,
       pc_is_student: user.user.isStudent,
       pc_commentator_id: user.user.id,
       pc_title: 'Comment',
-      pc_body: commentText,
-      isBad
+      pc_body: postText,
+      isBad,
+      pc_is_bad: isBad,
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id
     };
-    if (commentText.trim().length > 0 && commentText.trim().length < 500) {
-      onSubmitComment(comment);
-      this.setState({ commentText: '' });
-    } else if (commentText.trim().length === 0) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'The comment should not be empty.'
-      });
-    } else {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'The comment should not exceed 500 characters.'
-      });
-    }
+    console.log(comment);
+    onSubmitComment(comment);
+    resetPostText();
   };
 
   render() {
-    const { commentText, isModalVisible, alertMessage } = this.state;
+    const { postText, user } = this.props;
+    const { avatar } = user.user;
     return (
-      <div>
-        <CommentBoxWrapper>
-          <Image src={Images.stockImage} />
-          <FormInput
-            placeholder="Write a comment"
-            onChange={this.handleComment}
-            onKeyDown={this.handleKeyDown}
-            onFocus={this.showHasPost}
-            style={{ height: '24px', marginLeft: '6px', marginBottom: 0 }}
-            value={commentText}
-          />
-          <button onClick={this.handleCommentReply}>
-            <FaCaretRight />
-          </button>
-        </CommentBoxWrapper>
-        {isModalVisible && (
-          <Modal message={alertMessage} hideModal={this.hideModal} />
-        )}
-      </div>
+      <CommentBoxWrapper>
+        <Avatar avatar={avatar} height={20} />
+
+        <FormInput
+          placeholder="Write a comment"
+          onChange={this.handleComment}
+          onKeyDown={this.handleKeyDown}
+          onFocus={this.onFocus}
+          style={{ height: '24px', marginLeft: '6px', marginBottom: 0 }}
+          value={postText}
+        />
+        <button onClick={this.handleCommentReply}>
+          <FaCaretRight />
+        </button>
+      </CommentBoxWrapper>
     );
   }
 }
@@ -200,7 +184,9 @@ const mapDispatchToProps = dispatch => ({
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CommentBox);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CommentBox)
+);

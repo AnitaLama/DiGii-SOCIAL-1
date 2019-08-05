@@ -169,9 +169,11 @@ class ImagePost extends Component {
       formData.append('p_isStudent', isStudent);
       formData.append('p_actor_id', id);
       formData.append('p_text', postText);
-      formData.append('str_type', result);
       formData.append('p_is_image', 1);
       formData.append('p_is_bad', isBad);
+      formData.append('str_type', result);
+      formData.append('str_is_student', isBad);
+      formData.append('str_actor_id', isBad);
 
       onPostImage(formData);
     } else {
@@ -185,9 +187,11 @@ class ImagePost extends Component {
         p_pt_id: postTypeId,
         p_text: postText,
         isBad,
-        str_type: result,
         p_is_image: 1,
-        p_is_bad: isBad
+        p_is_bad: isBad,
+        str_type: result,
+        str_is_student: user.user.isStudent,
+        str_actor_id: user.user.id
       };
       onPostImage(data);
     }
@@ -212,51 +216,6 @@ class ImagePost extends Component {
   handleCaption = e => {
     const { handlePostText } = this.props;
     handlePostText(e);
-    // const { onGetStrikesCountOfAUser, user } = this.props;
-    // const { isStudent, id } = user.user;
-    // onGetStrikesCountOfAUser({ isStudent, id });
-    // const { value } = e.target;
-    // if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-    //   console.log('show users');
-    // }
-    // const { strike } = this.props;
-    // if (value.trim().length > 500) {
-    //   this.setState({
-    //     isModalVisible: true,
-    //     alertMessage: 'Please keep the length within 500 characters'
-    //   });
-    //   // alert('Please keep the length within 500 characters');
-    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    // } else {
-    //   const blacklistedWord = FilterKeyWords(value);
-    //   console.log(strike.strikes);
-    //   if (blacklistedWord) {
-    //     if (strike.strikes >= 9) {
-    //       console.log('block the student');
-    //       this.setState({ blockUser: true });
-    //       // onBlockUser({ isStudent, id });
-    //       this.setState({
-    //         blockUser: true,
-    //         isModalVisible: true,
-    //         alertMessage: 'You\'ll be blocked'
-    //       });
-    //     } else {
-    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-    //       index -= 1;
-    //       this.setState({
-    //         isModalVisible: true,
-    //         alertMessage: `${warnings[index]}`
-    //       });
-    //     }
-    //     this.setState({ isBad: true, strikeType: blacklistedWord });
-    //   } else {
-    //     this.setState({
-    //       isModalVisible: false,
-    //       alertMessage: null
-    //     });
-    //   }
-    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    // }
   };
 
   onFocus = () => {
@@ -270,24 +229,6 @@ class ImagePost extends Component {
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
     }
-    // console.log('onfocus');
-    // const { user, disableFirstTimePosting, post } = this.props;
-    // const { posts } = post;
-    // // console.log(posts);
-    // const isFirstTimePosting = posts.find(
-    //   item => item.p_actor_id === user.user.id
-    // );
-    // if (
-    //   user.user.isStudent
-    //   && !isFirstTimePosting
-    //   && user.user.isFirstTimePosting
-    // ) {
-    //   disableFirstTimePosting();
-    //   this.setState({
-    //     isModalVisible: true,
-    //     alertMessage: 'Congratulations!!! it\'s your first time posting.'
-    //   });
-    // }
   };
 
   render() {

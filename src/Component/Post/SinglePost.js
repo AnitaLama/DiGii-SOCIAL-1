@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import styled from "@emotion/styled";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { FaCircle } from "react-icons/fa";
+import React, { Component } from 'react';
+import styled from '@emotion/styled';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { FaCircle } from 'react-icons/fa';
 import {
   Colors,
   fontSize,
@@ -11,13 +11,14 @@ import {
   Images,
   fontFilson,
   flexCentering
-} from "../../Theme";
-import Author from "./Author";
-import Comment from "./Comment";
-import CommentBox from "./CommentBox";
-import PostActions from "../../Redux/PostRedux";
+} from '../../Theme';
+import Author from './Author';
+import Comment from './Comment';
+import CommentBox from './CommentBox';
+import PostActions from '../../Redux/PostRedux';
+import { Avatar } from '../StyledComponents';
 
-const url = "https://digii-posts.s3-ap-southeast-2.amazonaws.com";
+const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
 const { snow } = Colors.colors;
 const PostWrapper = styled.div`
@@ -26,11 +27,10 @@ const PostWrapper = styled.div`
   padding: 24px;
   border-radius: 40px;
   ${boxShadow()};
-  ${grid(2, "1fr")};
+  ${grid(2, '1fr')};
 `;
 const ActualPostWrapper = styled.div`
   padding-right: 20px;
- 
 `;
 
 const CommentContainer = styled.div`
@@ -67,6 +67,7 @@ const ActualPost = styled.div`
   padding: 10px 0;
   .captions {
     padding-bottom: 10px;
+    word-break: break-word;
   }
   div {
     color: ${Colors.colors.light};
@@ -77,12 +78,22 @@ const ActualPost = styled.div`
 const PollWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  span {
+    display: flex;
+    svg {
+      border: 0;
+      margin-right: 4px;
+    }
+    color: ${Colors.colors.pencil};
+    ${fontSize(12)};
+  }
   svg {
     color: white;
-    border: 2px solid black;
+    border: 1px solid #707070;
     border-radius: 10px;
     margin-right: 10px;
     cursor: pointer;
+    font-size: 8px;
   }
   img {
     height: 22px;
@@ -97,7 +108,7 @@ const Reactions = ({ handleReactionSelection }) => (
       className="like"
       name="like"
       onClick={() => {
-        handleReactionSelection("like");
+        handleReactionSelection('like');
       }}
     >
       <img src={Images.digii5.LikeIcon} alt="DiGii-like-icon" />
@@ -107,7 +118,7 @@ const Reactions = ({ handleReactionSelection }) => (
       className="comment"
       name="comment"
       onClick={() => {
-        handleReactionSelection("comment");
+        handleReactionSelection('comment');
       }}
     >
       <img src={Images.digii5.CommentIcon} alt="DiGii-comment-icon" />
@@ -117,7 +128,7 @@ const Reactions = ({ handleReactionSelection }) => (
       className="share"
       name="share"
       onClick={() => {
-        handleReactionSelection("share");
+        handleReactionSelection('share');
       }}
     >
       <img src={Images.digii5.DiGiiShareIcon} alt="DiGii-share-icon" />
@@ -167,7 +178,7 @@ class SinglePost extends Component {
     console.log(reaction);
   };
 
-  selectPollAnswer = option => {
+  selectPollAnswer = (option, selected) => {
     const { popt_po_id, popt_id } = option;
     const { user, onRespondToPoll } = this.props;
     const { isStudent, id } = user.user;
@@ -175,26 +186,41 @@ class SinglePost extends Component {
       pr_po_id: popt_po_id,
       pr_popt_id: popt_id,
       pr_is_student: isStudent ? 1 : 0,
-      pr_commentator_id: id
+      pr_commentator_id: id,
+      pr_id: selected ? selected.pr_id : null
     };
     onRespondToPoll(data);
   };
+  //
+  // changePollAnswer = (option, selected) => {
+  //   console.log('change', option, selected);
+  //   const { popt_po_id, popt_id } = option;
+  //   const { user, onRespondToPoll } = this.props;
+  //   const { isStudent, id } = user.user;
+  //   const data = {
+  //     pr_po_id: popt_po_id,
+  //     pr_pop_id: popt_id,
+  //     pr_is_student: isStudent ? 1 : 0,
+  //     pr_commentator_id: id
+  //   };
+  //   // onRespondToPoll(data);
+  // };
 
   getContent = data => {
     const { p_body, post_type, p_text } = data;
     const { user } = this.props;
     const type = post_type && post_type.pt_title;
     switch (type) {
-      case "text":
+      case 'text':
         return <div>{p_body}</div>;
-      case "gif":
+      case 'gif':
         return (
           <div>
             <div className="captions">{p_text}</div>
             <Gif src={`${p_body}`} />
           </div>
         );
-      case "photo/video":
+      case 'photo/video':
         const { p_is_image } = data;
         if (p_is_image) {
           return (
@@ -210,9 +236,10 @@ class SinglePost extends Component {
             <Video src={`${p_body}`} controls />
           </div>
         );
-      case "poll":
+      case 'poll':
         const { poll } = data;
         const { po_question, poll_options } = poll;
+
         let { isStudent, id } = user.user;
         isStudent = isStudent ? 1 : 0;
         return (
@@ -221,25 +248,21 @@ class SinglePost extends Component {
             {poll_options.map((option, i) => {
               const { poll_responses } = option;
               const hasUserVoted = poll_responses.find(
-                item =>
-                  item.pr_is_student === isStudent &&
-                  item.pr_commentator_id === id
+                item => item.pr_is_student === isStudent
+                  && item.pr_commentator_id === id
               );
-              const selectedAnswer =
-                hasUserVoted && hasUserVoted.pr_popt_id === option.popt_id;
+              const selectedAnswer = hasUserVoted && hasUserVoted.pr_popt_id === option.popt_id;
 
               return (
                 <PollWrapper
                   onClick={() => {
-                    if (!hasUserVoted) {
-                      this.selectPollAnswer(option);
-                    }
+                    this.selectPollAnswer(option, hasUserVoted);
                   }}
                   key={`${option}${i}`}
                 >
                   <div>
                     <FaCircle
-                      style={{ color: selectedAnswer ? "grey" : "white" }}
+                      style={{ color: selectedAnswer ? '#707070' : 'white' }}
                     />
                     {option.popt_image_path && (
                       <img
@@ -249,13 +272,29 @@ class SinglePost extends Component {
                     )}
                     {option.popt_text}
                   </div>
-                  <span>{poll_responses.length} voted</span>
+                  <span>
+                    {poll_responses.slice(0, 3).map(item => {
+                      let avatar;
+
+                      avatar = item.pr_is_student
+                        ? item.student.avatar
+                        : item.user.avatar;
+                      return (
+                        <Avatar
+                          key={avatar.a_id}
+                          avatar={avatar}
+                          height={17.75}
+                        />
+                      );
+                    })}
+                    {poll_responses.length > 3 && poll_responses.length - 3}
+                  </span>
                 </PollWrapper>
               );
             })}
           </div>
         );
-      case "banner":
+      case 'banner':
         return (
           <BannerWrapper>
             <Banner src={p_body} />
@@ -283,7 +322,7 @@ class SinglePost extends Component {
             </div>
           </BannerWrapper>
         );
-      case "tag":
+      case 'tag':
         const { notifications } = data;
 
         // const { n_is_student, student, user } = notifications;
@@ -296,7 +335,7 @@ class SinglePost extends Component {
   };
 
   handleReactionSelection = action => {
-    if (action === "comment") {
+    if (action === 'comment') {
       this.setState({ showCommentBox: !this.state.showCommentBox });
     }
   };
@@ -304,10 +343,9 @@ class SinglePost extends Component {
   render() {
     const { data } = this.props;
     let { post_comments } = data;
-    post_comments =
-      post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
+    post_comments = post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
     return (
-      <PostWrapper style={{ position: "relative"}}>
+      <PostWrapper style={{ position: 'relative' }}>
         <ActualPostWrapper>
           <Author data={data} />
           <ActualPost>{this.getContent(data)}</ActualPost>
@@ -315,11 +353,13 @@ class SinglePost extends Component {
         </ActualPostWrapper>
 
         <CommentContainer>
-          {post_comments &&
-            post_comments.map((comment, i) => (
+          {post_comments
+            && post_comments.map((comment, i) => (!comment.pc_is_bad ? (
               <Comment key={comment + i} data={comment} />
-            ))}
-          {this.state.showCommentBox && <CommentBox data={data} />}
+            ) : null))}
+          {this.state.showCommentBox && (
+            <CommentBox data={data} className="commentBox" />
+          )}
         </CommentContainer>
       </PostWrapper>
     );

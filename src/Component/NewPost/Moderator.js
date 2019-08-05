@@ -17,14 +17,21 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
   }
 
+    resetPostText = () => {
+      this.setState({ postText: '' });
+    };
+
+    resetPostText = () => {
+      this.setState({ postText: '' });
+    };
+
     handlePostText = e => {
-      console.log('handlechange');
       const { value } = e.target;
       const actualValue = value.trim();
-      if (actualValue.length > 500) {
+      if (actualValue.length > 250) {
         this.setState({
           isModalVisible: true,
-          alertMessage: 'Please limit the number of characters to 500'
+          alertMessage: 'Please limit the number of characters to 250'
         });
       }
       this.setState({ postText: value });
@@ -82,6 +89,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             handlePostText={this.handlePostText}
             showWarning={this.showWarning}
             onFocus={this.onFocus}
+            resetPostText={this.resetPostText}
           />
           {isModalVisible && (
             <Modal message={alertMessage} hideModal={this.hideModal} />

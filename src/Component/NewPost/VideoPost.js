@@ -94,6 +94,10 @@ class VideoPost extends Component {
     formData.append('description', postText);
     formData.append('postTypeId', postTypeId);
     formData.append('isBad', isBad);
+    formData.append('p_is_bad', isBad);
+    formData.append('str_type', result);
+    formData.append('str_is_student', isBad);
+    formData.append('str_actor_id', isBad);
     onVideoPost(formData);
     // resetPostType();
   };

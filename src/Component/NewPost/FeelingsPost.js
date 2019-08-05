@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, FormTextArea, Modal } from '../StyledComponents';
+import {
+  Button, FormTextArea, Modal, Loader
+} from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
 import { FeelingsList, PostWrapper, PostWrapperContainer } from './index';
@@ -60,43 +62,6 @@ class FeelingsPost extends Component {
   handleTextChange = e => {
     const { handlePostText } = this.props;
     handlePostText(e);
-
-    // const { onGetStrikesCountOfAUser, user } = this.props;
-    // const { isStudent, id } = user.user;
-    // // GET STRIKE COUNT FOR THE USER
-    // onGetStrikesCountOfAUser({ isStudent, id });
-    // const { value } = e.target;
-    // const { strike } = this.props;
-    // // LIMIT THE LENGTH TO 500
-    // if (value.trim().length > 500) {
-    //   this.setState({
-    //     isModalVisible: true,
-    //     alertMessage: 'Please keep the length within 500 characters'
-    //   });
-    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    // } else {
-    //   // CHECK FOR ANY BLACKLISTED WORD AND ITS TYPE
-    //   const blacklistedWord = FilterKeyWords(value);
-    //   if (blacklistedWord) {
-    //     if (strike.strikes >= 10) {
-    //       this.setState({ blockUser: true });
-    //     } else {
-    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-    //       index -= 1;
-    //       this.setState({
-    //         isModalVisible: true,
-    //         alertMessage: `${warnings[index]}`
-    //       });
-    //     }
-    //     this.setState({ isBad: true, strikeType: blacklistedWord });
-    //   } else {
-    //     this.setState({
-    //       isModalVisible: false,
-    //       alertMessage: null
-    //     });
-    //   }
-    //   this.setState({ postText: value });
-    // }
   };
 
   handleEmotionSelection = value => {
@@ -136,23 +101,15 @@ class FeelingsPost extends Component {
       p_isStudent: isStudent,
       p_actor_id: id,
       p_is_bad: isBad,
-      p_text: feeling.name
+      p_text: feeling.name,
+      isBad,
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id
     };
     onPostSubmit(data);
 
-    // const {
-    //   feeling, postText, postTypeId, blockUser
-    // } = this.state;
-    // const {
-    //   user, resetPostType, onPostSubmit, onBlockUser
-    // } = this.props;
-    // const { isStudent, id } = user.user;
-    //
-    // if (blockUser) {
-    //   onBlockUser({ isStudent, id });
-    // }
-    // // this.setState({ selectedGif: null });
-    // resetPostType();
+    resetPostType();
   };
 
   onFocus = () => {
@@ -170,6 +127,7 @@ class FeelingsPost extends Component {
 
   render() {
     const { username, postText, feeling } = this.state;
+    const { post } = this.props;
     if (!feeling) {
       return (
         <PostWrapperContainer>
@@ -212,7 +170,7 @@ class FeelingsPost extends Component {
 
         <div>
           <Button className="small rounded" onClick={this.submitTextPost}>
-            Post
+            {!post.posting ? 'Post' : <Loader />}
           </Button>
         </div>
       </PostWrapper>

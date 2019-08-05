@@ -3,15 +3,13 @@ import { connect } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { FormTextArea, Button, Modal } from '../StyledComponents';
-import { FilterKeyWords, warnings, PostWrapper } from './index';
+import { FormTextArea, Button, Loader } from '../StyledComponents';
+import { FilterKeyWords, PostWrapper } from './index';
 import { Colors } from '../../Theme';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
 import Moderator from './Moderator';
-
-const strikeCount = 3;
 
 const { primary } = Colors.colors;
 const GifInputForm = styled.div`
@@ -42,11 +40,8 @@ class GifContainer extends Component {
     this.state = {
       postTypeId: props.postTypeId,
       searchText: '',
-      showPostButton: false,
       selectedGif: props.selectedGif,
-      caption: '',
       isModalVisible: false,
-      isBad: false,
       alertMessage: null
     };
   }
@@ -67,13 +62,6 @@ class GifContainer extends Component {
     }
   }
 
-  // hideModal = () => {
-  //   this.setState({
-  //     isModalVisible: false,
-  //     alertMessage: null
-  //   });
-  // };
-
   handleInputChange = e => {
     const { value } = e.target;
 
@@ -82,6 +70,19 @@ class GifContainer extends Component {
     console.log('filtered word', hasFilteredWords);
 
     this.setState({ showPostButton: !hasFilteredWords });
+  };
+
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
+    const { posts } = post;
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
+
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
+    }
   };
 
   showButton = () => {
@@ -157,13 +158,17 @@ class GifContainer extends Component {
       p_isStudent: isStudent,
       p_actor_id: id,
       p_text: postText,
-      p_is_bad: isBad
+      p_is_bad: isBad,
+      isBad,
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id
     };
     onPostSubmit(data);
     // if (blockUser) {
     //   onBlockUser({ isStudent, id });
     // }
-    // resetPostType();
+    resetPostType();
     // this.setState({ selectedGif: null });
   };
 
@@ -174,51 +179,6 @@ class GifContainer extends Component {
   handleCaptionText = e => {
     const { handlePostText } = this.props;
     handlePostText(e);
-
-    // const { onGetStrikesCountOfAUser, user } = this.props;
-    // const { isStudent, id } = user.user;
-    // onGetStrikesCountOfAUser({ isStudent, id });
-    // const { value } = e.target;
-    // if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-    //   console.log('show users');
-    // }
-    // const { strike } = this.props;
-    // if (value.trim().length > 500) {
-    //   this.setState({
-    //     isModalVisible: true,
-    //     alertMessage: 'Please keep the length within 500 characters'
-    //   });
-    //   // alert('Please keep the length within 500 characters');
-    //   this.setState({ caption: value, hasPost: value.trim().length > 0 });
-    // } else {
-    //   const blacklistedWord = FilterKeyWords(value);
-    //   console.log(strike.strikes);
-    //   if (blacklistedWord) {
-    //     if (strike.strikes >= 9) {
-    //       console.log('block the student');
-    //       // onBlockUser({ isStudent, id });
-    //       this.setState({
-    //         blockUser: true,
-    //         isModalVisible: true,
-    //         alertMessage: 'You\'ll be blocked'
-    //       });
-    //     } else {
-    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-    //       index -= 1;
-    //       this.setState({
-    //         isModalVisible: true,
-    //         alertMessage: `${warnings[index]}`
-    //       });
-    //     }
-    //     this.setState({ isBad: true, strikeType: blacklistedWord });
-    //   } else {
-    //     this.setState({
-    //       isModalVisible: false,
-    //       alertMessage: null
-    //     });
-    //   }
-    //   this.setState({ caption: value });
-    // }
   };
 
   onFocus = () => {
@@ -236,13 +196,13 @@ class GifContainer extends Component {
 
   render() {
     const { selectedGif, isModalVisible, alertMessage } = this.state;
-
+    const { post } = this.props;
     if (!selectedGif) {
       return (
         <PostWrapper>
           <Input>
             <input
-              onFocus={this.showButton}
+              onFocus={this.onFocus}
               onChange={this.handleInputChange}
               placeholder="Find a gif"
             />
@@ -268,12 +228,11 @@ class GifContainer extends Component {
           <FormTextArea
             placeholder="Write something..."
             onChange={this.handleCaptionText}
-            onFocus={this.onFocus}
           />
         </GifInputForm>
         <div>
           <Button className="rounded small" onClick={this.submitPost}>
-            Post
+            {!post.posting ? 'Post' : <Loader />}
           </Button>
         </div>
       </PostWrapper>

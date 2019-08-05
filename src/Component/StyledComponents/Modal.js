@@ -221,6 +221,61 @@ Modal.propTypes = {
 //   hideModal: PropTypes.func
 // };
 
+class DeleteModal extends Component {
+  constructor() {
+    super();
+    this.state = {
+      text: ''
+    };
+  }
+
+  render() {
+    const { post, hideDeleteModal } = this.props;
+    return (
+      <ModalContainer>
+        <ModalBox
+          style={{
+            marginTop: '200px'
+          }}
+        >
+          {/*  <div className="close">
+            <CloseButton onClick={hideModal}>x</CloseButton>
+          </div> */}
+          <Header>
+            <div>
+              <Icon src={Images.digii5.icon} />
+              Digii
+            </div>
+            <Points>
+              <span>-5</span>
+              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
+            </Points>
+          </Header>
+          <Message>{post}</Message>
+
+          <ButtonWrapper>
+            <Button className="rounded short" onClick={hideDeleteModal}>
+              OK
+            </Button>
+          </ButtonWrapper>
+        </ModalBox>
+      </ModalContainer>
+    );
+  }
+}
+
+DeleteModal.propTypes = {
+  message: PropTypes.string,
+  hideDeleteModal: PropTypes.func
+};
+
 export {
-  Modal, ModalContainer, ModalBox, Header, Icon, Points, ButtonWrapper
+  Modal,
+  ModalContainer,
+  ModalBox,
+  Header,
+  Icon,
+  Points,
+  ButtonWrapper,
+  DeleteModal
 };

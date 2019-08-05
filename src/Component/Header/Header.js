@@ -144,9 +144,9 @@ class Header extends Component {
             />
             {isListVisible && (
               <SettingsSubList>
-                <li onClick={this.logOut}>LOGOUT</li>
+                <li onClick={this.logOut}>Logout</li>
                 <li onClick={() => this.delete({ isStudent, groupId, id })}>
-                  Master Delete
+                  Reset Message Board
                 </li>
               </SettingsSubList>
             )}

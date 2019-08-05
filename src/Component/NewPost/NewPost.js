@@ -50,7 +50,7 @@ const NewPostOptionContent = styled.div`
   cursor: pointer;
   ${flexCentering('row')};
   span {
-    color: ${pencil};
+    color: '#5E5E5E';
     ${fontSize(12)};
     ${fontFilson()};
   }
@@ -116,7 +116,9 @@ class NewPost extends Component {
   }
 
   resetPostType = () => {
-    this.setState({ type: 'text' });
+    setTimeout(() => {
+      this.setState({ type: 'text' });
+    }, 1500);
   };
 
   handleButtonClick = option => {

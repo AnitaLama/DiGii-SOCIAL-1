@@ -10,23 +10,19 @@ import {
   Points,
   FormInput,
   ButtonWrapper,
-  Button,
-  Modal
+  Button
 } from '../StyledComponents';
 import { Colors, Images } from '../../Theme';
-import { FilterKeyWords, warnings, PostWrapper } from './index';
-import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-
-const strikeCount = 3;
+import Moderator from './Moderator';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
 const { snow } = Colors.colors;
 
 const CloseButton = styled.span``;
-const Message = styled.p``;
+// const Message = styled.p``;
 const Image = styled.img`
   // height: auto;
   @media (max-width: 800px) {
@@ -62,13 +58,13 @@ const BannerImageModalWrapper = styled.div`
 `;
 
 class BannerImageModal extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       text: '',
       imageURL: null,
-      isModalVisible: false,
-      alertmessage: null
+
+      postTypeId: props.postTypeId
     };
   }
 
@@ -78,79 +74,131 @@ class BannerImageModal extends Component {
     onGetStrikesCountOfAUser({ isStudent, id });
   }
 
-  hideAlertModal = () => {
-    this.setState({ isModalVisible: false });
+  //
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
+    const { posts } = post;
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
+
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
+    }
   };
 
-  //
   handleTextChange = e => {
-    const { onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user.user;
-    onGetStrikesCountOfAUser({ isStudent, id });
-    const { value } = e.target;
-    if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
-    }
-    const { strike } = this.props;
-    if (value.trim().length > 500) {
-      this.setState({
-        isModalVisible: true,
-        alertMessage: 'Please keep the length within 500 characters'
-      });
-      // alert('Please keep the length within 500 characters');
-      this.setState({ text: value, hasPost: value.trim().length > 0 });
-    } else {
-      const blacklistedWord = FilterKeyWords(value);
-      if (blacklistedWord) {
-        if (strike.strikes >= 9) {
-          this.setState({ blockUser: true });
-          // onBlockUser({ isStudent, id });
-          this.setState({
-            blockUser: true,
-            isModalVisible: true,
-            alertMessage: 'You\'ll be blocked'
-          });
-        } else {
-          let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-          index -= 1;
-          this.setState({
-            isModalVisible: true,
-            alertMessage: `${warnings[index]}`
-          });
-        }
-        this.setState({ isBad: true, strikeType: blacklistedWord });
-      } else {
-        this.setState({
-          isModalVisible: false,
-          alertMessage: null
-        });
-      }
-      this.setState({ text: value, hasPost: value.trim().length > 0 });
-    }
+    const { handlePostText } = this.props;
+    handlePostText(e);
+    // const { onGetStrikesCountOfAUser, user } = this.props;
+    // const { isStudent, id } = user.user;
+    // onGetStrikesCountOfAUser({ isStudent, id });
+    // const { value } = e.target;
+    // if (value[value.length - 1] === '@' && value[value.length - 1] === ' ') {
+    // }
+    // const { strike } = this.props;
+    // if (value.trim().length > 500) {
+    //   this.setState({
+    //     isModalVisible: true,
+    //     alertMessage: 'Please keep the length within 500 characters'
+    //   });
+    //   // alert('Please keep the length within 500 characters');
+    //   this.setState({ text: value, hasPost: value.trim().length > 0 });
+    // } else {
+    //   const blacklistedWord = FilterKeyWords(value);
+    //   if (blacklistedWord) {
+    //     if (strike.strikes >= 9) {
+    //       this.setState({ blockUser: true });
+    //       // onBlockUser({ isStudent, id });
+    //       this.setState({
+    //         blockUser: true,
+    //         isModalVisible: true,
+    //         alertMessage: 'You\'ll be blocked'
+    //       });
+    //     } else {
+    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
+    //       index -= 1;
+    //       this.setState({
+    //         isModalVisible: true,
+    //         alertMessage: `${warnings[index]}`
+    //       });
+    //     }
+    //     this.setState({ isBad: true, strikeType: blacklistedWord });
+    //   } else {
+    //     this.setState({
+    //       isModalVisible: false,
+    //       alertMessage: null
+    //     });
+    //   }
+    //   this.setState({ text: value, hasPost: value.trim().length > 0 });
+    // }
   };
 
   saveBanner = () => {
-    const { blockUser, text } = this.state;
     const {
-      data, user, postTypeId, onSubmitPost, onBlockUser
+      submitPost,
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      onPostSubmit,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser,
+      data,
+      onSubmitPost
     } = this.props;
+    const { postTypeId } = this.state;
     const { isStudent, id } = user.user;
-    // const data = {};
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
+
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      showWarning(strikes, isStudent);
+      isBad = 1;
+    }
     const saveData = {
       p_pt_id: postTypeId,
       p_isStudent: isStudent,
       p_actor_id: id,
       p_body: `${url}/${data.Key}`,
-      p_text: text
+      p_text: postText,
+      p_is_bad: isBad,
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id,
+      isBad
     };
+    console.log(saveData);
     onSubmitPost(saveData);
-    if (blockUser) {
-      onBlockUser({ isStudent, id });
-    }
+    // const { blockUser, text } = this.state;
+    // const {
+    //   data, user, postTypeId, onSubmitPost, onBlockUser
+    // } = this.props;
+    // const { isStudent, id } = user.user;
+    // // const data = {};
+    // const saveData = {
+    //   p_pt_id: postTypeId,
+    //   p_isStudent: isStudent,
+    //   p_actor_id: id,
+    //   p_body: `${url}/${data.Key}`,
+    //   p_text: text
+    // };
+    // onSubmitPost(saveData);
+    // if (blockUser) {
+    //   onBlockUser({ isStudent, id });
+    // }
   };
 
   render() {
-    const { text, isModalVisible, alertMessage } = this.state;
-    const { hideModal, data } = this.props;
+    const { hideModal, data, postText } = this.props;
     return (
       <ModalContainer>
         <BannerImageModalWrapper>
@@ -180,20 +228,21 @@ class BannerImageModal extends Component {
               <FormInput
                 onChange={this.handleTextChange}
                 placeholder="What do you want to say?"
+                onFocus={this.onFocus}
               />
               <ImageBackground>
                 <Image src={`${url}/${data.Key}`} />
                 <ImageOverlay
                   style={{
                     fontSize:
-                      text.length < 30
+                      postText.length < 30
                         ? '55px'
-                        : text.length < 80
+                        : postText.length < 80
                           ? '40px'
                           : '35px'
                   }}
                 >
-                  {text}
+                  {postText}
                 </ImageOverlay>
               </ImageBackground>
             </ImageWrapper>
@@ -208,10 +257,6 @@ class BannerImageModal extends Component {
             </ButtonWrapper>
           </ModalBox>
         </BannerImageModalWrapper>
-
-        {isModalVisible && (
-          <Modal message={alertMessage} hideModal={this.hideAlertModal} />
-        )}
       </ModalContainer>
     );
   }
@@ -230,9 +275,11 @@ const mapDispatchToProps = dispatch => ({
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BannerImageModal);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(BannerImageModal)
+);
 
 // export default BannerImageModal;

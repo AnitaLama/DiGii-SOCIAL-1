@@ -3,23 +3,19 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { IconContext } from 'react-icons';
-import { IoMdArrowDropdown } from 'react-icons/io';
-import { MdCreate, MdDeleteSweep } from 'react-icons/md';
+import { FaEllipsisH, FaTimes } from 'react-icons/fa';
+import { FaTimesCircle } from 'react-icons/fa';
 import PostAction from '../../Redux/PostRedux';
-import { Avatar } from '../StyledComponents';
+import { Avatar, DeleteModal } from '../StyledComponents';
 import {
   flex, fontSize, fontWeight, fontFilson, Colors
 } from '../../Theme';
 import { FeelingsList } from '../NewPost/index';
 // const { grey } = Colors.colors;
 
+const { snow, light, tint } = Colors.colors;
 const AuthorWrapper = styled.div`
   ${flex()};
-  .dropdown {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 `;
 const AuthorInfo = styled.div`
   margin: auto 0;
@@ -32,7 +28,7 @@ const Name = styled.div`
   span.emoji {
     font-family: 'Segoe UI Emoji';
     font-family: Lato;
-    color: ${Colors.colors.light};
+    color: ${light};
     ${fontSize(14)};
     text-transform: none;
   }
@@ -44,7 +40,7 @@ const Name = styled.div`
 const TaggedList = styled.span`
   span {
     font-family: Lato;
-    color: ${Colors.colors.light};
+    color: ${light};
     ${fontSize(14)};
     text-transform: none;
     &::after {
@@ -53,7 +49,7 @@ const TaggedList = styled.span`
   }
   span:first-of-type {
     &::before {
-      content: ' with - ';
+      content: ' with ';
     }
   }
   span:last-of-type {
@@ -62,13 +58,52 @@ const TaggedList = styled.span`
     }
   }
 `;
+
+const EditOptionsContainer = styled.div`
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 0px;
+  z-index: 1;
+  background: transparent;
+`;
+const EditOptionsWrapper = styled.div`
+  text-align: left;
+  background: ${snow};
+  margin: 12px;
+  div {
+    margin-right: 20px;
+    svg {
+      margin-right: 6px;
+      color: #61bbf7;
+    }
+    cursor: pointer;
+  }
+  div:first-of-type {
+    margin-right: 0px;
+    background: transparent;
+    text-align: right;
+    cursor: pointer;
+    svg {
+      color: ${tint};
+    }
+  }
+  padding: 4px 4px 4px 10px;
+  border-radius: 12px;
+  box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.25);
+`;
 class Author extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      showDeleteModal: false
     };
   }
+
+  closeDeleteModal = () => {
+    this.setState({ showDeleteModal: false });
+  };
 
   getExtraInfo = () => {
     const { data } = this.props;
@@ -77,9 +112,7 @@ class Author extends Component {
     const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     if (type === 'feeling') {
       return (
-        <span className="emoji">
-          {` - is feeling ${p_text} ${emoji.emoji}`}
-        </span>
+        <span className="emoji">{` is feeling ${p_text} ${emoji.emoji}`}</span>
       );
     }
     if (type === 'tag') {
@@ -106,46 +139,88 @@ class Author extends Component {
   };
 
   onPostChangepopup = value => (
-    <div>
-      <IconContext.Provider
-        value={{ color: 'blue', className: 'global-class-name' }}
+    <EditOptionsWrapper>
+      <div>
+        <FaTimes onClick={this.onPostChange} />
+      </div>
+      <div
+        onClick={() => {
+          // this.props.onDelete(value);
+        }}
       >
-        <button
-          onClick={() => {
-            this.props.onDelete(value);
-          }}
-          style={{
-            backgroundColor: 'transparent',
-            border: 0,
-            outline: 0
-          }}
-        >
-          {' '}
-          <MdCreate />
-          {' '}
-        </button>
-      </IconContext.Provider>
-      <br />
-      <IconContext.Provider
-        value={{ color: 'red', className: 'global-class-name' }}
+        <FaEllipsisH />
+        Edit
+      </div>
+      <div
+        onClick={() => {
+          alert('show modal');
+          this.setState({ showDeleteModal: true });
+          // this.props.onDelete(value);
+        }}
       >
-        <button
-          onClick={() => {
-            this.props.onDelete(value);
-          }}
-          style={{
-            backgroundColor: 'transparent',
-            border: 0,
-            outline: 0
-          }}
-        >
-          {' '}
-          <MdDeleteSweep />
-          {' '}
-        </button>
-      </IconContext.Provider>
-    </div>
+        <FaTimes />
+        Delete
+      </div>
+    </EditOptionsWrapper>
   );
+  // <div>
+  // <IconContext.Provider
+  // value={{ color: 'red', className: 'global-class-name' }}
+  // >
+  // <button
+  // onClick={() => {
+  //   this.props.onDelete(value);
+  // }}
+  // style={{
+  //   backgroundColor: 'transparent',
+  //   border: 0,
+  //   outline: 0
+  // }}
+  // >
+  // {' '}
+  // <FaTimes />
+  // {' '}
+  // </button>
+  // </IconContext.Provider>
+  // <IconContext.Provider
+  // value={{ color: 'blue', className: 'global-class-name' }}
+  // >
+  // <button
+  // onClick={() => {
+  //   this.props.onDelete(value);
+  // }}
+  // style={{
+  //   backgroundColor: 'transparent',
+  //   border: 0,
+  //   outline: 0
+  // }}
+  // >
+  // {' '}
+  // <FaEllipsisH />
+  // {' '}
+  // </button>
+  // Edit
+  // </IconContext.Provider>
+  // <br />
+  // <IconContext.Provider
+  // value={{ color: 'blue', className: 'global-class-name' }}
+  // >
+  // <button
+  // onClick={() => {
+  //   this.props.onDelete(value);
+  // }}
+  // style={{
+  //   backgroundColor: 'transparent',
+  //   border: 0,
+  //   outline: 0
+  // }}
+  // >
+  // {' '}
+  // <FaTimes />
+  // Delete
+  // </button>
+  // </IconContext.Provider>
+  // </div>
 
   render() {
     const { data } = this.props;
@@ -172,7 +247,7 @@ class Author extends Component {
       lastname = up_lastname;
       userAvatar = avatar;
     }
-
+    const { showDeleteModal } = this.state;
     return (
       <AuthorWrapper>
         <Avatar avatar={userAvatar} height={53} />
@@ -189,30 +264,34 @@ class Author extends Component {
             <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
         {/* Edit And Delete */}
-        <div className="dropdown">
-          <IconContext.Provider
-            value={{
-              color: 'blue',
-              className: 'global-class-name'
-            }}
-          >
-            <button
-              className="dropbtn"
-              onClick={this.onPostChange}
-              style={{
-                backgroundColor: 'transparent',
-                border: 0,
-                outline: 0,
-                padding: '12px'
+        <EditOptionsContainer>
+          {this.state.open ? (
+            this.onPostChangepopup({ p_id, isStudent, id })
+          ) : (
+            <IconContext.Provider
+              value={{
+                color: tint,
+                className: 'global-class-name'
               }}
             >
-              <IoMdArrowDropdown />
-            </button>
-          </IconContext.Provider>
-          {this.state.open
-            ? this.onPostChangepopup({ p_id, isStudent, id })
-            : null}
-        </div>
+              <button
+                className="dropbtn"
+                onClick={this.onPostChange}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 0,
+                  outline: 0,
+                  padding: '12px'
+                }}
+              >
+                <FaTimesCircle />
+              </button>
+            </IconContext.Provider>
+          )}
+        </EditOptionsContainer>
+        {showDeleteModal && (
+          <DeleteModal closeDeleteModal={this.closeDeleteModal} />
+        )}
       </AuthorWrapper>
     );
   }

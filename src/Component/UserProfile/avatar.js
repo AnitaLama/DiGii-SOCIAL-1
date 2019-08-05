@@ -269,6 +269,7 @@ const skinColors = [
   { name: 'BrownDark', value: '#4A312C' },
   { name: 'Black', value: '#F29697' }
 ];
+const backgroundTypes = ['Circle', 'Transparent'];
 const PieceWrapper = styled.div`
   width: 100px;
   cursor: pointer;
@@ -347,6 +348,20 @@ class UserAvatar extends Component {
   getAvatarOptions = () => {
     const { pieceName, pieceArray } = this.state;
     switch (pieceName) {
+      case 'background':
+        return (
+          <div>
+            {pieceArray.map(item => (
+              <PieceWrapper
+                onClick={() => {
+                  this.setState({ avatarStyle: item });
+                }}
+              >
+                {item}
+              </PieceWrapper>
+            ))}
+          </div>
+        );
       case 'mouth':
         return (
           <Slider {...settings} className="slider">
@@ -627,13 +642,14 @@ class UserAvatar extends Component {
     } = this.state;
     const data = {
       a_id: avatar ? avatar.a_id : null,
-      a_style: 'Circle',
+      a_style: avatarStyle,
       a_top: topType,
       a_accessories: accessoriesType,
       a_haircolor: hairColor,
       a_facialhair_moustache: facialHairType,
       a_facial_hair_color: facialHairColor,
       a_clothes: clotheType,
+      a_clothes_color: clotheColor,
       a_eyes: eyeType,
       a_eyebrow: eyebrowType,
       a_mouth: mouthType,
@@ -698,17 +714,7 @@ class UserAvatar extends Component {
               >
                 Hair
               </Button>
-              <Button
-                className="rounded"
-                onClick={() => {
-                  this.setState({
-                    pieceName: 'mouth',
-                    pieceArray: mouths
-                  });
-                }}
-              >
-                Mouth
-              </Button>
+
               <Button
                 className="rounded"
                 onClick={() => {
@@ -735,12 +741,12 @@ class UserAvatar extends Component {
                 className="rounded"
                 onClick={() => {
                   this.setState({
-                    pieceName: 'clothe',
-                    pieceArray: clothes
+                    pieceName: 'mouth',
+                    pieceArray: mouths
                   });
                 }}
               >
-                Clothes
+                Mouth
               </Button>
 
               <Button
@@ -753,6 +759,17 @@ class UserAvatar extends Component {
                 }}
               >
                 FacialHair
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'clothe',
+                    pieceArray: clothes
+                  });
+                }}
+              >
+                Clothes
               </Button>
               <Button
                 className="rounded"
@@ -775,6 +792,17 @@ class UserAvatar extends Component {
                 }}
               >
                 Skin Tone
+              </Button>
+              <Button
+                className="rounded"
+                onClick={() => {
+                  this.setState({
+                    pieceName: 'background',
+                    pieceArray: backgroundTypes
+                  });
+                }}
+              >
+                background
               </Button>
             </div>
             <div>{this.getAvatarOptions()}</div>

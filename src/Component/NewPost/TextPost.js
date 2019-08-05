@@ -50,7 +50,7 @@ class TextPost extends Component {
       postText,
       onPostSubmit,
       showWarning,
-      resetPostType,
+      resetPostText,
       onGetStrikesCountOfAUser
     } = this.props;
     const { postTypeId } = this.state;
@@ -58,7 +58,6 @@ class TextPost extends Component {
     const { strikes } = strike;
     const result = submitPost();
     onGetStrikesCountOfAUser({ isStudent, id });
-
     let isBad = 0;
     if (result) {
       if (strikes > 8 && isStudent) {
@@ -75,15 +74,18 @@ class TextPost extends Component {
       p_actor_id: id,
       p_is_bad: isBad,
       isBad,
-      str_type: result
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id
     };
     onPostSubmit(post);
-    resetPostType();
+    resetPostText();
   };
 
   render() {
     const { username } = this.state;
     const { postText, post } = this.props;
+
     return (
       <PostWrapper>
         <FormTextArea
@@ -118,7 +120,7 @@ TextPost.propTypes = {
   onBlockUser: PropTypes.func,
   postText: PropTypes.string,
   showWarning: PropTypes.func,
-  resetPostType: PropTypes.func,
+  resetPostText: PropTypes.func,
   handlePostText: PropTypes.func
 };
 const mapStateToProps = state => ({

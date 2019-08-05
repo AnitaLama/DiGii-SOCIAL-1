@@ -72,13 +72,16 @@ class Posts extends Component {
             //       || (!item.p_isStudent && item.user)
             //   );
             // }
+            if (item.p_is_deleted || item.p_is_bad) {
+              return <div key={item + i} />;
+            }
             if (
               (item.p_isStudent && item.student)
               || (!item.p_isStudent && item.user)
             ) {
               return <SinglePost key={item + i} data={item} />;
             }
-            return <div key={item + i} />;
+
             // return (!item.isStudent && item.user)
             //   || (item.isStudent && item.student) ? (
             //     <SinglePost key={item + i} data={item} />

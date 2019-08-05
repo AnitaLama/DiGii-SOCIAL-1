@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { Tag } from 'antd';
-import { FormTextArea, Button, Modal } from '../StyledComponents';
+import { FormTextArea, Button, Loader } from '../StyledComponents';
 import GroupActions from '../../Redux/GroupRedux';
 import PostActions from '../../Redux/PostRedux';
 import { Colors, boxShadow } from '../../Theme';
@@ -233,26 +233,22 @@ class TagPost extends Component {
       showWarning(strikes, isStudent);
       isBad = 1;
     }
-    // const {
-    //   taggedUsers, text, postTypeId, blockUser
-    // } = this.state;
-    // const {
-    //   user, onSubmitTagPost, onBlockUser, resetPostType
-    // } = this.props;
-    // const { isStudent, id } = user.user;
+
     const data = {
       p_pt_id: postTypeId,
       p_isStudent: isStudent,
       p_actor_id: id,
       p_text: postText,
       taggedUsers,
-      p_is_bad: isBad
+      p_is_bad: isBad,
+      isBad,
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id
     };
     onSubmitTagPost(data);
-    // if (blockUser) {
-    //   onBlockUser({ isStudent, id });
-    // }
-    // resetPostType();
+
+    resetPostType();
   };
 
   selectUser = user => {
@@ -292,15 +288,8 @@ class TagPost extends Component {
   };
 
   render() {
-    const {
-      showUsers,
-      taggedUsers,
-      users,
-      isModalVisible,
-      alertMessage
-    } = this.state;
-    const { text, hasTaggedFriends } = this.state;
-
+    const { showUsers, taggedUsers, users } = this.state;
+    const { post } = this.props;
     return (
       <PostWrapperContainer>
         <PostWrapper>
@@ -313,7 +302,7 @@ class TagPost extends Component {
           />
           <div>
             <Button className="rounded small" onClick={this.finishedTagging}>
-              OK
+              {!post.posting ? 'Post' : <Loader />}
             </Button>
           </div>
         </PostWrapper>
