@@ -151,6 +151,16 @@ class DeleteModal extends Component {
     // return <div>POST</div>;
   };
 
+  deletePost = () => {
+    const { post, user, onDeletePost } = this.props;
+    const { isStudent, id } = user;
+    onDeletePost({
+      p_id: post.p_id,
+      isStudent,
+      id
+    });
+  };
+
   render() {
     const { post, closeDeleteModal } = this.props;
     return (
@@ -171,7 +181,7 @@ class DeleteModal extends Component {
           <ButtonWrapper>
             <Button
               className="rounded short"
-              onClick={closeDeleteModal}
+              onClick={this.deletePost}
               primary={tint}
               secondary={peach}
             >

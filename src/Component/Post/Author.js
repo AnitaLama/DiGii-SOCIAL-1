@@ -170,6 +170,12 @@ class Author extends Component {
     </EditOptionsWrapper>
   );
 
+  onDeletePost = post => {
+    const { onDelete } = this.props;
+    onDelete(post);
+    this.setState({ showDeleteModal: false });
+  };
+
   render() {
     const { data } = this.props;
     const { user } = this.props;
@@ -248,6 +254,7 @@ class Author extends Component {
             closeDeleteModal={this.closeDeleteModal}
             post={selectedPost}
             user={user.user}
+            onDeletePost={this.onDeletePost}
           />
         )}
       </AuthorWrapper>
