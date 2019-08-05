@@ -24,6 +24,7 @@ const ModalBox = styled.div`
   min-height: 200px;
   margin: auto;
   background: ${snow};
+
   vertical-align: center;
   border-radius: 40px;
   padding: 20px;
@@ -50,6 +51,11 @@ const Message = styled.p``;
 const ButtonWrapper = styled.div`
   margin: auto;
   text-align: center;
+  button {
+    width: 30% !important;
+  }
+  display: flex;
+  justify-content: space-around;
 `;
 
 const Points = styled.div`
@@ -230,7 +236,7 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { post, hideDeleteModal } = this.props;
+    const { post, closeDeleteModal } = this.props;
     return (
       <ModalContainer>
         <ModalBox
@@ -246,16 +252,16 @@ class DeleteModal extends Component {
               <Icon src={Images.digii5.icon} />
               Digii
             </div>
-            <Points>
-              <span>-5</span>
-              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-            </Points>
           </Header>
           <Message>{post}</Message>
 
           <ButtonWrapper>
-            <Button className="rounded short" onClick={hideDeleteModal}>
-              OK
+            <Button className="rounded short" onClick={closeDeleteModal}>
+              Delete
+            </Button>
+            {' '}
+            <Button className="rounded short" onClick={closeDeleteModal}>
+              Cancel
             </Button>
           </ButtonWrapper>
         </ModalBox>

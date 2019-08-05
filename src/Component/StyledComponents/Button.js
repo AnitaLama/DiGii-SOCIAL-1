@@ -12,7 +12,9 @@ const {
 } = Colors.colors;
 
 const Button = styled.button`
-  background-image: linear-gradient(to right, ${primary}, ${secondary});
+  background-image: ${props => (props && props.primary && props.secondary
+    ? `linear-gradient(to right, ${props.primary}, ${props.secondary})`
+    : `linear-gradient(to right, ${primary}, ${secondary})`)};
   color: ${snow};
   width: 100%;
   padding: 10px;
