@@ -97,12 +97,17 @@ class Author extends Component {
     super(props);
     this.state = {
       open: false,
-      showDeleteModal: false
+      showDeleteModal: false,
+      selectedPost: {}
     };
   }
 
   closeDeleteModal = () => {
     this.setState({ showDeleteModal: false });
+  };
+
+  deletePost = post => {
+    this.setState({ showDeleteModal: true, selectedPost: post, open: false });
   };
 
   getExtraInfo = () => {
@@ -138,7 +143,7 @@ class Author extends Component {
     this.setState({ open: !this.state.open });
   };
 
-  onPostChangepopup = value => (
+  onPostChangepopup = data => (
     <EditOptionsWrapper>
       <div>
         <FaTimes onClick={this.onPostChange} />
@@ -153,9 +158,10 @@ class Author extends Component {
       </div>
       <div
         onClick={() => {
-          alert('show modal');
-          this.setState({ showDeleteModal: true });
+          // alert('show modal');
+          // this.setState({ showDeleteModal: true });
           // this.props.onDelete(value);
+          this.deletePost(data);
         }}
       >
         <FaTimes />
@@ -163,64 +169,6 @@ class Author extends Component {
       </div>
     </EditOptionsWrapper>
   );
-  // <div>
-  // <IconContext.Provider
-  // value={{ color: 'red', className: 'global-class-name' }}
-  // >
-  // <button
-  // onClick={() => {
-  //   this.props.onDelete(value);
-  // }}
-  // style={{
-  //   backgroundColor: 'transparent',
-  //   border: 0,
-  //   outline: 0
-  // }}
-  // >
-  // {' '}
-  // <FaTimes />
-  // {' '}
-  // </button>
-  // </IconContext.Provider>
-  // <IconContext.Provider
-  // value={{ color: 'blue', className: 'global-class-name' }}
-  // >
-  // <button
-  // onClick={() => {
-  //   this.props.onDelete(value);
-  // }}
-  // style={{
-  //   backgroundColor: 'transparent',
-  //   border: 0,
-  //   outline: 0
-  // }}
-  // >
-  // {' '}
-  // <FaEllipsisH />
-  // {' '}
-  // </button>
-  // Edit
-  // </IconContext.Provider>
-  // <br />
-  // <IconContext.Provider
-  // value={{ color: 'blue', className: 'global-class-name' }}
-  // >
-  // <button
-  // onClick={() => {
-  //   this.props.onDelete(value);
-  // }}
-  // style={{
-  //   backgroundColor: 'transparent',
-  //   border: 0,
-  //   outline: 0
-  // }}
-  // >
-  // {' '}
-  // <FaTimes />
-  // Delete
-  // </button>
-  // </IconContext.Provider>
-  // </div>
 
   render() {
     const { data } = this.props;
@@ -249,7 +197,7 @@ class Author extends Component {
       lastname = up_lastname;
       userAvatar = avatar;
     }
-    const { showDeleteModal } = this.state;
+    const { showDeleteModal, selectedPost } = this.state;
     const check = p_actor_id === id && p_isStudent == isStudent;
 
     return (
@@ -271,7 +219,7 @@ class Author extends Component {
         {check && (
           <EditOptionsContainer>
             {this.state.open ? (
-              this.onPostChangepopup({ p_id, isStudent, id })
+              this.onPostChangepopup(data)
             ) : (
               <IconContext.Provider
                 value={{
@@ -296,7 +244,11 @@ class Author extends Component {
           </EditOptionsContainer>
         )}
         {showDeleteModal && (
-          <DeleteModal closeDeleteModal={this.closeDeleteModal} />
+          <DeleteModal
+            closeDeleteModal={this.closeDeleteModal}
+            post={selectedPost}
+            user={user.user}
+          />
         )}
       </AuthorWrapper>
     );

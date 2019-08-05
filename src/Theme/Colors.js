@@ -25,7 +25,8 @@ const Colors = {
     snow: '#fff',
     background: '#f1f3f4',
     dark: '#5E5E5E',
-    light: '#777777'
+    light: '#777777',
+    peach: '#F78361'
   }
 };
 

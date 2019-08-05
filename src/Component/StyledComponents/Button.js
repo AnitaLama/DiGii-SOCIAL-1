@@ -12,7 +12,7 @@ const {
 } = Colors.colors;
 
 const Button = styled.button`
-  background-image: ${props => (props && props.primary && props.secondary
+  background-image: ${props => (props.primary && props.secondary
     ? `linear-gradient(to right, ${props.primary}, ${props.secondary})`
     : `linear-gradient(to right, ${primary}, ${secondary})`)};
   color: ${snow};
@@ -33,6 +33,9 @@ const Button = styled.button`
   }
   &:hover {
     background-image: linear-gradient(to right, ${secondary}, ${primary});
+    background-image: ${props => (props.secondary && props.primary
+    ? `linear-gradient(to right, ${props.secondary}, ${props.primary})`
+    : `linear-gradient(to right, ${primary}, ${secondary})`)};
     ${fontWeight('900')}
     background-position: 100% 0;
     color: ${snow};

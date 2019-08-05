@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Colors, Images } from '../../Theme';
-import { Button, FormInput } from './index';
+import { Button } from './index';
+import ShowData from '../Post/showPostData';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -95,11 +96,6 @@ class Modal extends Component {
     };
   }
 
-  handleTextChange = e => {
-    const { value } = e.target;
-    this.setState({ text: value });
-  };
-
   render() {
     const { message, hideModal } = this.props;
     return (
@@ -122,7 +118,8 @@ class Modal extends Component {
               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
             </Points>
           </Header>
-          <Message>{message}</Message>
+
+          <Message>hi</Message>
 
           <ButtonWrapper>
             <Button className="rounded short" onClick={hideModal}>
@@ -140,93 +137,6 @@ Modal.propTypes = {
   hideModal: PropTypes.func
 };
 
-// class ImageModal extends Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       text: '',
-//       imageURL: null
-//     };
-//   }
-//
-//   handleTextChange = e => {
-//     const { value } = e.target;
-//
-//     this.setState({ text: value });
-//   };
-//
-//   saveBanner = () => {
-//     const { text } = this.state;
-//     const {
-//       data, user, postTypeId, onSubmitPost
-//     } = this.props;
-//     const { isStudent, id } = user;
-//     // const data = {};
-//     const saveData = {
-//       p_pt_id: postTypeId,
-//       p_isStudent: isStudent,
-//       p_actor_id: id,
-//       p_body: `${url}/${data.Key}`,
-//       p_text: text
-//     };
-//     onSubmitPost(saveData);
-//   };
-//
-//   render() {
-//     const { text } = this.state;
-//     const { data } = this.props;
-//     return (
-//       <ModalContainer>
-//         <ModalBox
-//           style={{
-//             marginTop: '50px'
-//           }}
-//         >
-//           {/* <div className="close">
-//             <CloseButton onClick={hideModal}>x</CloseButton>
-//           </div> */}
-//           <Header>
-//             <div>
-//               <Icon src={Images.digii5.icon} />
-//               Digii
-//             </div>
-//             <Points>
-//               {/* <span>-5</span>
-//               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-//         */}
-//               {' '}
-//             </Points>
-//           </Header>
-//
-//           <ImageWrapper>
-//             <FormInput
-//               onChange={this.handleTextChange}
-//               placeholder="What do you want to say?"
-//             />
-//             <ImageBackground>
-//               <Image src={`${url}/${data.Key}`} />
-//               <ImageOverlay>{text}</ImageOverlay>
-//             </ImageBackground>
-//           </ImageWrapper>
-//
-//           <ButtonWrapper>
-//             {/*  <Button className="rounded short" onClick={this.saveBanner}>
-//               SAVE
-//             </Button> */}
-//             <Button className="rounded short" onClick={this.saveBanner}>
-//               POST
-//             </Button>
-//           </ButtonWrapper>
-//         </ModalBox>
-//       </ModalContainer>
-//     );
-//   }
-// }
-//
-// ImageModal.propTypes = {
-//   hideModal: PropTypes.func
-// };
-
 class DeleteModal extends Component {
   constructor() {
     super();
@@ -234,6 +144,12 @@ class DeleteModal extends Component {
       text: ''
     };
   }
+
+  getContent = () => {
+    const { post, user } = this.props;
+    return ShowData(post, user);
+    // return <div>POST</div>;
+  };
 
   render() {
     const { post, closeDeleteModal } = this.props;
@@ -244,16 +160,13 @@ class DeleteModal extends Component {
             marginTop: '200px'
           }}
         >
-          {/*  <div className="close">
-            <CloseButton onClick={hideModal}>x</CloseButton>
-          </div> */}
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
               Digii
             </div>
           </Header>
-          <Message>{post}</Message>
+          <div>{this.getContent()}</div>
 
           <ButtonWrapper>
             <Button

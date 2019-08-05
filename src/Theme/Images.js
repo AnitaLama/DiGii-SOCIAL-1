@@ -29,8 +29,8 @@ const digii5 = {
   DiGiit,
   icon,
   DiGiitIconColored,
-  LikeIcon,
   CommentIcon,
+  LikeIcon: CommentIcon,
   DiGiiShareIcon: CommentIcon
 };
 const Images = { digii5, stockImage };
