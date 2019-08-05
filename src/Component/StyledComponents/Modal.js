@@ -6,7 +6,7 @@ import { Button, FormInput } from './index';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
-const { snow } = Colors.colors;
+const { snow, tint, peach } = Colors.colors;
 const ModalContainer = styled.div`
   position: fixed;
   background: rgba(0, 0, 0, 0.32);
@@ -256,7 +256,12 @@ class DeleteModal extends Component {
           <Message>{post}</Message>
 
           <ButtonWrapper>
-            <Button className="rounded short" onClick={closeDeleteModal}>
+            <Button
+              className="rounded short"
+              onClick={closeDeleteModal}
+              primary={tint}
+              secondary={peach}
+            >
               Delete
             </Button>
             {' '}
