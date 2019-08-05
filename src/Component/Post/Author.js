@@ -226,7 +226,9 @@ class Author extends Component {
     const { data } = this.props;
     const { user } = this.props;
     const { isStudent, id } = user.user;
-    const { post_type, p_text, p_id } = data;
+    const {
+      post_type, p_text, p_id, p_actor_id, p_isStudent
+    } = data;
     const type = post_type.pt_title;
     let firstname = '';
     let lastname = '';
@@ -248,6 +250,8 @@ class Author extends Component {
       userAvatar = avatar;
     }
     const { showDeleteModal } = this.state;
+    const check = p_actor_id === id && p_isStudent == isStudent;
+
     return (
       <AuthorWrapper>
         <Avatar avatar={userAvatar} height={53} />
@@ -264,31 +268,33 @@ class Author extends Component {
             <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
         {/* Edit And Delete */}
-        <EditOptionsContainer>
-          {this.state.open ? (
-            this.onPostChangepopup({ p_id, isStudent, id })
-          ) : (
-            <IconContext.Provider
-              value={{
-                color: tint,
-                className: 'global-class-name'
-              }}
-            >
-              <button
-                className="dropbtn"
-                onClick={this.onPostChange}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: 0,
-                  outline: 0,
-                  padding: '12px'
+        {check && (
+          <EditOptionsContainer>
+            {this.state.open ? (
+              this.onPostChangepopup({ p_id, isStudent, id })
+            ) : (
+              <IconContext.Provider
+                value={{
+                  color: tint,
+                  className: 'global-class-name'
                 }}
               >
-                <FaTimesCircle />
-              </button>
-            </IconContext.Provider>
-          )}
-        </EditOptionsContainer>
+                <button
+                  className="dropbtn"
+                  onClick={this.onPostChange}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: 0,
+                    outline: 0,
+                    padding: '12px'
+                  }}
+                >
+                  <FaTimesCircle />
+                </button>
+              </IconContext.Provider>
+            )}
+          </EditOptionsContainer>
+        )}
         {showDeleteModal && (
           <DeleteModal closeDeleteModal={this.closeDeleteModal} />
         )}
