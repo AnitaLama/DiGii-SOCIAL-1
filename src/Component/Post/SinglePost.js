@@ -21,7 +21,7 @@ import ShowData from './showPostData';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
-const { snow } = Colors.colors;
+const { snow, pencil, secondary } = Colors.colors;
 const PostWrapper = styled.div`
   background: ${snow};
   margin: 28px 0;
@@ -43,8 +43,25 @@ const CommentContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-end;
   padding-left: 20px;
+  .commentBox {
+    width: 95%;
+  }
   .commentSection {
     width: 100%;
+    padding-right: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 0.25em;
+    }
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px ${pencil};
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: ${secondary};
+      outline: 1px solid ${secondary};
+    }
   }
 `;
 const ReactionsContainer = styled.div`
@@ -375,7 +392,9 @@ class SinglePost extends Component {
                 <Comment key={comment + i} data={comment} />
               ) : null))}
           </div>
-          {showCommentBox && <CommentBox data={data} className="commentBox" />}
+          <div className="commentBox">
+            {showCommentBox && <CommentBox data={data} />}
+          </div>
         </CommentContainer>
       </PostWrapper>
     );
