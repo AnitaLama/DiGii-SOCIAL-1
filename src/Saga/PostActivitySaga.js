@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DEV_URL } from '../config';
 import PostActivityActions from '../Redux/PostActivityRedux';
 
-export default function* onGetPostActivitiesOfAUser(action) {
+export function* onGetPostActivitiesOfAUser(action) {
   try {
     const { data } = yield call(
       axios.post,
@@ -19,6 +19,39 @@ export default function* onGetPostActivitiesOfAUser(action) {
         PostActivityActions.onGetPostActivitiesOfAUserFailure(data.error)
       );
     }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onGetPostActivitiesReactionTypes(action) {
+  try {
+    const { data } = yield call(
+      axios.get,
+      `${DEV_URL}/postActivity/findActivityTypes`,
+      action.data
+    );
+    if (data.success) {
+      yield put(
+        PostActivityActions.onGetPostActivitiesReactionTypesSuccess(data.result)
+      );
+    } else {
+      yield put(
+        PostActivityActions.onGetPostActivitiesReactionTypesFail(data.error)
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onSelectReaction(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${DEV_URL}/post/addLikeCount`,
+      action.data
+    );
   } catch (err) {
     console.log(err);
   }

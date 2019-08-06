@@ -32,7 +32,11 @@ import {
   onEditPost
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
-import onGetPostActivitiesOfAUser from './PostActivitySaga';
+import {
+  onGetPostActivitiesOfAUser,
+  onGetPostActivitiesReactionTypes,
+  onSelectReaction
+} from './PostActivitySaga';
 import onSubmitComment from './CommentSaga';
 import onGetStrikesCountOfAUser from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
@@ -70,6 +74,12 @@ export default function* root() {
       PostActivityTypes.ON_GET_POST_ACTIVITIES_OF_A_USER,
       onGetPostActivitiesOfAUser
     ),
+    takeLatest(
+      PostActivityTypes.ON_GET_POST_ACTIVITIES_REACTION_TYPES,
+      onGetPostActivitiesReactionTypes
+    ),
+    takeLatest(PostActivityTypes.ON_SELECT_REACTION, onSelectReaction),
+
     takeLatest(
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser

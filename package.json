@@ -25,6 +25,7 @@
     "react-contenteditable": "^3.2.6",
     "react-cursor-position": "^3.0.3",
     "react-dom": "^16.8.6",
+    "react-facebook-emoji": "^1.0.11",
     "react-icons": "^3.7.0",
     "react-media-recorder": "^0.7.1",
     "react-redux": "^7.1.0",
