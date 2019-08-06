@@ -106,10 +106,13 @@ class Author extends Component {
       );
     }
   };
+
   onPostChange = () => {
     this.setState({ open: !this.state.open });
   };
+
   onPostChangepopup = value => {
+    console.log(value);
     return (
       <div>
         <IconContext.Provider
@@ -117,7 +120,7 @@ class Author extends Component {
         >
           <button
             onClick={() => {
-              this.props.onDelete(value);
+              value.modalpopup(value.p_id);
             }}
             style={{
               backgroundColor: 'transparent',
@@ -151,7 +154,7 @@ class Author extends Component {
     );
   };
   render() {
-    const { data } = this.props;
+    const { data, modalpopup, newbutton } = this.props;
     const { user } = this.props;
     const { isStudent, id } = user.user;
     const { post_type, p_text, p_id } = data;
@@ -188,22 +191,25 @@ class Author extends Component {
               className: 'global-class-name'
             }}
           >
-            <button
-              className="dropbtn"
-              onClick={this.onPostChange}
-              style={{
-                backgroundColor: 'transparent',
-                border: 0,
-                outline: 0,
-                padding: '12px'
-              }}
-            >
-              <IoMdArrowDropdown />
-            </button>
+            {/* Button disappear on modal popup */}
+
+            {newbutton != 'popupmodalbutton' ? (
+              <button
+                className="dropbtn"
+                onClick={this.onPostChange}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 0,
+                  outline: 0,
+                  padding: '12px'
+                }}
+              >
+                <IoMdArrowDropdown />
+              </button>
+            ) : null}
           </IconContext.Provider>
-          {this.state.open
-            ? this.onPostChangepopup({ p_id, isStudent, id })
-            : null}
+          {this.state.open &&
+            this.onPostChangepopup({ p_id, isStudent, id, modalpopup })}
         </div>
       </AuthorWrapper>
     );

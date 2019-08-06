@@ -63,7 +63,7 @@ class TextPost extends Component {
           this.setState({
             blockUser: true,
             isModalVisible: true,
-            alertMessage: 'You\'ll be blocked'
+            alertMessage: "You'll be blocked"
           });
         } else {
           let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
@@ -92,14 +92,14 @@ class TextPost extends Component {
       item => item.p_actor_id === user.user.id
     );
     if (
-      user.user.isStudent
-      && !isFirstTimePosting
-      && user.user.isFirstTimePosting
+      user.user.isStudent &&
+      !isFirstTimePosting &&
+      user.user.isFirstTimePosting
     ) {
       disableFirstTimePosting();
       this.setState({
         isModalVisible: true,
-        alertMessage: 'Congratulations!!! it\'s your first time posting.'
+        alertMessage: "Congratulations!!! it's your first time posting."
       });
 
       // alert('Congratulations!!! it\'s your first time posting.');
@@ -117,16 +117,12 @@ class TextPost extends Component {
   };
 
   submitTextPost = async () => {
-    const {
-      postText, isBad, postTypeId, strikeType, blockUser
-    } = this.state;
-    const {
-      user, onPostSubmit, resetPostType, onBlockUser
-    } = this.props;
+    const { postText, isBad, postTypeId, strikeType, blockUser } = this.state;
+    const { user, onPostSubmit, resetPostType, onBlockUser } = this.props;
     const { isStudent, id } = user.user;
     const post = {
       p_pt_id: postTypeId,
-      p_body: postText,
+      p_text: postText,
       p_isStudent: isStudent,
       p_actor_id: id,
       isBad,
@@ -188,8 +184,10 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onGetStrikesCountOfAUser: value =>
+    dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () =>
+    dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 export default connect(

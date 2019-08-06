@@ -1,35 +1,34 @@
-import { createReducer, createActions } from "reduxsauce";
-import Immutable from "seamless-immutable";
+import { createReducer, createActions } from 'reduxsauce';
+import Immutable from 'seamless-immutable';
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
   onListPosts: [],
-  onFindPosts: ["data"],
-  onFindPostsSuccess: ["data"],
-  onFindPostsFailure: ["data"],
-  onListPostsSuccess: ["data"],
-  onListPostsFailure: ["data"],
-  onPostSubmit: ["data"],
-  onPostSubmitSuccess: ["data"],
-  onPostSubmitFailure: ["data"],
-  onSaveImage: ["data"],
-  onSaveImageSuccess: ["data"],
-  onSaveImageFailure: ["data"],
-  onFindGif: ["data"],
-  onFindGifSuccess: ["data"],
-  onFindGifFailure: ["data"],
+  onFindPosts: ['data'],
+  onFindPostsSuccess: ['data'],
+  onFindPostsFailure: ['data'],
+  onListPostsSuccess: ['data'],
+  onListPostsFailure: ['data'],
+  onPostSubmit: ['data'],
+  onPostSubmitSuccess: ['data'],
+  onPostSubmitFailure: ['data'],
+  onSaveImage: ['data'],
+  onSaveImageSuccess: ['data'],
+  onSaveImageFailure: ['data'],
+  onFindGif: ['data'],
+  onFindGifSuccess: ['data'],
+  onFindGifFailure: ['data'],
   clearGifList: [],
-  onPostImage: ["data"],
-  onPostPoll: ["data"],
-  onUploadImage: ["data"],
-  onRespondToPoll: ["data"],
-  onSubmitTagPost: ["data"],
-  onVideoPost: ["data"],
-  onPostDelete: ["data"],
-  onCommentDelete: ["data"],
-  onMasterDelete: ["data"]
-
+  onPostImage: ['data'],
+  onPostPoll: ['data'],
+  onUploadImage: ['data'],
+  onRespondToPoll: ['data'],
+  onSubmitTagPost: ['data'],
+  onVideoPost: ['data'],
+  onPostDelete: ['data'],
+  onCommentDelete: ['data'],
+  onMasterDelete: ['data']
 });
 
 export const PostTypes = Types;
@@ -63,7 +62,7 @@ const onListPostsFailure = (state, action) => ({
 });
 
 const onPostSubmit = (state, action) => {
-  console.log("reducer>>>");
+  console.log('reducer>>>');
   return {
     ...state,
     loading: true

@@ -97,6 +97,7 @@ class Header extends Component {
   };
 
   delete = props => {
+    console.log('On master delete', props);
     console.log('deleted props', props);
     this.props.onMasterDelete(props);
   };
@@ -139,7 +140,7 @@ class Header extends Component {
             {isListVisible && (
               <SettingsSubList>
                 <li onClick={this.logOut}>LOGOUT</li>
-                <li onClick={()=> this.delete({ isStudent, groupId, id })}>
+                <li onClick={() => this.delete({ isStudent, groupId, id })}>
                   Master Delete
                 </li>
               </SettingsSubList>

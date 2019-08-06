@@ -7,14 +7,17 @@ import {
   fontFilson
 } from '../../Theme';
 
-const {
-  primary, secondary, snow, pen
-} = Colors.colors;
+const { primary, secondary, snow, pen } = Colors.colors;
 
 const Button = styled.button`
-  background-image: linear-gradient(to right, ${primary}, ${secondary});
+  height: ${props => `${props.height}px` || '56px'};
+  background-image: ${props =>
+    `linear-gradient(to right, ${props.firstColor}, ${props.secondColor})` ||
+    `linear-gradient(to right, ${primary}, ${secondary})`};
+
   color: ${snow};
-  width: 100%;
+  width: ${props => `${props.height}` || '100%'};
+
   padding: 10px;
   border: 0;
   outline: 0;
@@ -30,7 +33,9 @@ const Button = styled.button`
     ${boxShadow()}
   }
   &:hover {
-    background-image: linear-gradient(to right, ${secondary}, ${primary});
+    background-image: ${props =>
+      `linear-gradient(to right, ${props.firstColor}, ${props.secondColor})` ||
+      `linear-gradient(to right, ${primary}, ${secondary})`};
     ${fontWeight('900')}
     background-position: 100% 0;
     color: ${snow};

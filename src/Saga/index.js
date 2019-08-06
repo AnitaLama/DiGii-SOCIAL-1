@@ -1,20 +1,20 @@
-import { takeLatest, all } from "redux-saga/effects";
-import { TestTypes } from "../Redux/TestRedux";
-import testFunction from "./TestSaga";
-import { LoginTypes } from "../Redux/LoginRedux";
-import { PostTypes } from "../Redux/PostRedux";
-import { StrikeTypes } from "../Redux/StrikeRedux";
-import { PostTypeTypes } from "../Redux/PostTypeRedux";
-import { PostActivityTypes } from "../Redux/PostActivityRedux";
-import { CommentTypes } from "../Redux/CommentRedux";
-import { BannerTypes } from "../Redux/BannerRedux";
-import { GroupTypes } from "../Redux/GroupRedux";
-import { ProfileTypes } from "../Redux/ProfileRedux";
+import { takeLatest, all } from 'redux-saga/effects';
+import { TestTypes } from '../Redux/TestRedux';
+import testFunction from './TestSaga';
+import { LoginTypes } from '../Redux/LoginRedux';
+import { PostTypes } from '../Redux/PostRedux';
+import { StrikeTypes } from '../Redux/StrikeRedux';
+import { PostTypeTypes } from '../Redux/PostTypeRedux';
+import { PostActivityTypes } from '../Redux/PostActivityRedux';
+import { CommentTypes } from '../Redux/CommentRedux';
+import { BannerTypes } from '../Redux/BannerRedux';
+import { GroupTypes } from '../Redux/GroupRedux';
+import { ProfileTypes } from '../Redux/ProfileRedux';
 import {
   onLoginRequest,
   onStudentLoginRequest,
   onBlockUser
-} from "./LoginSaga";
+} from './LoginSaga';
 import {
   onListPosts,
   onFindPosts,
@@ -29,14 +29,18 @@ import {
   onPostDelete,
   onCommentDelete,
   onMasterDelete
-} from "./PostSaga";
-import onListPostTypes from "./PostTypeSaga";
-import onGetPostActivitiesOfAUser from "./PostActivitySaga";
-import onSubmitComment from "./CommentSaga";
-import onGetStrikesCountOfAUser from "./StrikeSaga";
-import onGetAllBanners from "./BannerSaga";
-import onGetAllUsersOfAGroup from "./GroupSaga";
-import onGetUserInfo from "./ProfileSaga";
+} from './PostSaga';
+import onListPostTypes from './PostTypeSaga';
+import {
+  onGetPostActivitiesOfAUser,
+  onGetPostActivitiesReactionTypes,
+  onSelectReaction
+} from './PostActivitySaga';
+import onSubmitComment from './CommentSaga';
+import onGetStrikesCountOfAUser from './StrikeSaga';
+import onGetAllBanners from './BannerSaga';
+import onGetAllUsersOfAGroup from './GroupSaga';
+import onGetUserInfo from './ProfileSaga';
 
 export default function* root() {
   yield all([
@@ -64,6 +68,12 @@ export default function* root() {
       PostActivityTypes.ON_GET_POST_ACTIVITIES_OF_A_USER,
       onGetPostActivitiesOfAUser
     ),
+    takeLatest(
+      PostActivityTypes.ON_GET_POST_ACTIVITIES_REACTION_TYPES,
+      onGetPostActivitiesReactionTypes
+    ),
+    takeLatest(PostActivityTypes.ON_SELECT_REACTION, onSelectReaction),
+
     takeLatest(
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser
