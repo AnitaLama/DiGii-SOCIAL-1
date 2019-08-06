@@ -32,6 +32,9 @@ const PostWrapper = styled.div`
 `;
 const ActualPostWrapper = styled.div`
   padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const CommentContainer = styled.div`
@@ -40,6 +43,9 @@ const CommentContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-end;
   padding-left: 20px;
+  .commentSection {
+    width: 100%;
+  }
 `;
 const ReactionsContainer = styled.div`
   display: flex;
@@ -344,24 +350,32 @@ class SinglePost extends Component {
 
   render() {
     const { data } = this.props;
+    const { showCommentBox } = this.state;
     let { post_comments } = data;
     post_comments = post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
     return (
       <PostWrapper style={{ position: 'relative' }}>
         <ActualPostWrapper>
-          <Author data={data} />
-          <ActualPost>{this.getContent(data)}</ActualPost>
+          <div>
+            <Author data={data} />
+            <ActualPost>{this.getContent(data)}</ActualPost>
+          </div>
           <Reactions handleReactionSelection={this.handleReactionSelection} />
         </ActualPostWrapper>
 
         <CommentContainer>
-          {post_comments
-            && post_comments.map((comment, i) => (!comment.pc_is_bad ? (
-              <Comment key={comment + i} data={comment} />
-            ) : null))}
-          {this.state.showCommentBox && (
-            <CommentBox data={data} className="commentBox" />
-          )}
+          <div
+            className="commentSection"
+            style={{
+              maxHeight: showCommentBox ? '226px' : '250px'
+            }}
+          >
+            {post_comments
+              && post_comments.map((comment, i) => (!comment.pc_is_bad ? (
+                <Comment key={comment + i} data={comment} />
+              ) : null))}
+          </div>
+          {showCommentBox && <CommentBox data={data} className="commentBox" />}
         </CommentContainer>
       </PostWrapper>
     );
