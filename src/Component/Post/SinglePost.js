@@ -28,8 +28,16 @@ const { snow } = Colors.colors;
 const ReactionContainer = styled.div`
   display: flex;
 `;
+
+const reactionnumberstyle = styled.div`
+  font-size: 13px;
+  font-family: sans-serif;
+  font-weight: bold;
+`;
+
 const DisplayReaction = styled.div`
   display: flex;
+
   div:first-of-type {
     display: flex;
   }
@@ -177,7 +185,8 @@ class SinglePost extends Component {
       showCommentBox: false,
       showreactions: false,
       totalReactionCounts: null,
-      totalReactionCountsArray: []
+      totalReactionCountsArray: [],
+      toggleHover: false
     };
   }
 
@@ -312,6 +321,10 @@ class SinglePost extends Component {
     }
   };
 
+  toggleHover = () => {
+    this.setState({ toggleHover: !this.state.toggleHover });
+  };
+
   handleReactionClicked = value => {
     const { onSelectReaction, data, user } = this.props;
     const { p_id, p_isStudent } = data;
@@ -348,7 +361,6 @@ class SinglePost extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-    console.log(this.props.data, nextProps.data);
     const { data, likeReactions } = nextProps;
     const { post_activities } = data;
     let reactioncount = [];
@@ -376,26 +388,36 @@ class SinglePost extends Component {
 
     let uniquereactions = [...new Set(reactionId)];
 
-    return reactionId.map(
-      item => {
-        const reaction = likeReactions.find(
-          reactionItem => reactionItem.at_id === item
-        );
+    return uniquereactions.map(item => {
+      const reaction = likeReactions.find(
+        reactionItem => reactionItem.at_id === item
+      );
 
-        if (reaction) {
-          return (
-            <DisplayReaction>
-              <FacebookEmoji type={reaction.at_name} size="xs" />{' '}
-            </DisplayReaction>
-          );
-        }
-      },
-      () => console.log('>>>>>>>>>>>>>>>')
-    );
+      if (reaction) {
+        return (
+          <DisplayReaction
+            onMouseEnter={this.toggleHover}
+            onMouseLeave={this.toggleHover}
+          >
+            <FacebookEmoji type={reaction.at_name} size="xxs" />{' '}
+            {this.state.toggleHover &&
+              post_activities.map(value => {
+                return (
+                  value.pa_at_id === reaction.at_id &&
+                  (value.pa_is_student ? (
+                    <li>{value.student.st_username}</li>
+                  ) : (
+                    <li>{value.user.u_name}</li>
+                  ))
+                );
+              })}
+          </DisplayReaction>
+        );
+      }
+    });
   };
 
   render() {
-    // console.log(this.state);
     const { data, modalpopup, user } = this.props;
     const { notifications } = this.props;
 
@@ -411,11 +433,12 @@ class SinglePost extends Component {
 
           <DisplayReaction>
             <div>{this.showCurrentReactions()}</div>
-            <div>
+
+            <reactionnumberstyle>
               {this.state.totalReactionCounts != 0
                 ? this.state.totalReactionCounts
                 : null}{' '}
-            </div>
+            </reactionnumberstyle>
           </DisplayReaction>
 
           <Reactions

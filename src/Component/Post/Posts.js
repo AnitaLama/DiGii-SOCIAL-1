@@ -115,7 +115,6 @@ class Posts extends Component {
     const { post } = this.props;
     let { posts } = this.state;
 
-    console.log('post>>>>', posts);
     posts = posts.length > 1 ? posts.sort((a, b) => b.p_id - a.p_id) : posts;
     return (
       <div key={posts}>
