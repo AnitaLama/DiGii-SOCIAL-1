@@ -69,7 +69,7 @@ class TextPost extends Component {
     }
     const post = {
       p_pt_id: postTypeId,
-      p_body: postText,
+      p_text: postText,
       p_isStudent: isStudent,
       p_actor_id: id,
       p_is_bad: isBad,

@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { IconContext } from 'react-icons';
-import { FaEllipsisH, FaTimes } from 'react-icons/fa';
-import { FaTimesCircle } from 'react-icons/fa';
+import { FaEllipsisH, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import PostAction from '../../Redux/PostRedux';
-import { Avatar, DeleteModal } from '../StyledComponents';
+import { Avatar, DeleteModal, EditModal } from '../StyledComponents';
 import {
   flex, fontSize, fontWeight, fontFilson, Colors
 } from '../../Theme';
@@ -98,17 +97,10 @@ class Author extends Component {
     this.state = {
       open: false,
       showDeleteModal: false,
-      selectedPost: {}
+      selectedPost: {},
+      showEditModal: false
     };
   }
-
-  closeDeleteModal = () => {
-    this.setState({ showDeleteModal: false });
-  };
-
-  deletePost = post => {
-    this.setState({ showDeleteModal: true, selectedPost: post, open: false });
-  };
 
   getExtraInfo = () => {
     const { data } = this.props;
@@ -117,7 +109,11 @@ class Author extends Component {
     const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     if (type === 'feeling') {
       return (
-        <span className="emoji">{` is feeling ${p_text} ${emoji.emoji}`}</span>
+        emoji && (
+          <span className="emoji">
+            {` is feeling ${p_text} ${emoji.emoji}`}
+          </span>
+        )
       );
     }
     if (type === 'tag') {
@@ -143,6 +139,26 @@ class Author extends Component {
     this.setState({ open: !this.state.open });
   };
 
+  closeDeleteModal = () => {
+    this.setState({ showDeleteModal: false });
+  };
+
+  deletePost = post => {
+    this.setState({ showDeleteModal: true, selectedPost: post, open: false });
+  };
+
+  closeEditModal = () => {
+    this.setState({ showEditModal: false });
+  };
+
+  editPost = post => {
+    this.setState({
+      showEditModal: true,
+      selectedPost: post,
+      open: false
+    });
+  };
+
   onPostChangepopup = data => (
     <EditOptionsWrapper>
       <div>
@@ -150,6 +166,7 @@ class Author extends Component {
       </div>
       <div
         onClick={() => {
+          this.editPost(data);
           // this.props.onDelete(value);
         }}
       >
@@ -158,9 +175,6 @@ class Author extends Component {
       </div>
       <div
         onClick={() => {
-          // alert('show modal');
-          // this.setState({ showDeleteModal: true });
-          // this.props.onDelete(value);
           this.deletePost(data);
         }}
       >
@@ -174,6 +188,13 @@ class Author extends Component {
     const { onDelete } = this.props;
     onDelete(post);
     this.setState({ showDeleteModal: false });
+  };
+
+  onEditPost = post => {
+    const { onEditPost, user } = this.props;
+    const { isStudent, id } = user.user;
+    onEditPost({ ...post, isStudent, id });
+    this.setState({ showEditModal: false });
   };
 
   render() {
@@ -203,7 +224,7 @@ class Author extends Component {
       lastname = up_lastname;
       userAvatar = avatar;
     }
-    const { showDeleteModal, selectedPost } = this.state;
+    const { showDeleteModal, selectedPost, showEditModal } = this.state;
     const check = p_actor_id === id && p_isStudent == isStudent;
 
     return (
@@ -257,6 +278,14 @@ class Author extends Component {
             onDeletePost={this.onDeletePost}
           />
         )}
+        {showEditModal && (
+          <EditModal
+            closeEditModal={this.closeEditModal}
+            post={selectedPost}
+            user={user.user}
+            onEditPost={this.onEditPost}
+          />
+        )}
       </AuthorWrapper>
     );
   }
@@ -268,7 +297,8 @@ const mapStateToProps = state => ({
   user: state.user
 });
 const mapDispatchToProps = dispatch => ({
-  onDelete: value => dispatch(PostAction.onPostDelete(value))
+  onDelete: value => dispatch(PostAction.onPostDelete(value)),
+  onEditPost: value => dispatch(PostAction.onEditPost(value))
 });
 export default connect(
   mapStateToProps,

@@ -28,7 +28,8 @@ import {
   onVideoPost,
   onPostDelete,
   onCommentDelete,
-  onMasterDelete
+  onMasterDelete,
+  onEditPost
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import onGetPostActivitiesOfAUser from './PostActivitySaga';
@@ -78,6 +79,7 @@ export default function* root() {
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),
     takeLatest(ProfileTypes.ON_GET_AVATAR_OF_THE_USER, onGetAvatarOfTheUser),
     takeLatest(PostTypes.ON_POST_DELETE, onPostDelete),
-    takeLatest(PostTypes.ON_COMMENT_DELETE, onCommentDelete)
+    takeLatest(PostTypes.ON_COMMENT_DELETE, onCommentDelete),
+    takeLatest(PostTypes.ON_EDIT_POST, onEditPost)
   ]);
 }

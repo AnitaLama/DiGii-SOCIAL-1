@@ -211,7 +211,7 @@ class SinglePost extends Component {
     const { p_body, post_type, p_text } = data;
     const { user } = this.props;
     const type = post_type && post_type.pt_title;
-    return ShowData(data, user.user);
+    return <ShowData post={data} user={user.user} />;
     // switch (type) {
     //   case 'text':
     //     return <div>{p_body}</div>;

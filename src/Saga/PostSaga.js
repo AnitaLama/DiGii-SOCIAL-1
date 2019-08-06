@@ -150,14 +150,12 @@ export function* onCommentDelete(action) {
       `${URL}/onCommentDelete`,
       action.data
     );
-    console.log(data);
   } catch (err) {
     console.log(err);
   }
 }
 
 export function* onMasterDelete(action) {
-  console.log('On master delete called postsaga.js', action);
   try {
     console.log('On comment delete', action);
     const { data } = yield call(
@@ -165,7 +163,19 @@ export function* onMasterDelete(action) {
       `${URL}/onMasterDelete`,
       action.data
     );
-    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onEditPost(action) {
+  try {
+    console.log('saga data', action.data);
+    const { data } = yield call(
+      axios.post,
+      `${URL}/updateThePost`,
+      action.data
+    );
   } catch (err) {
     console.log(err);
   }

@@ -11,7 +11,8 @@ import {
   FormInput,
   ButtonWrapper,
   Button,
-  DeleteModal
+  DeleteModal,
+  EditModal
 } from './Modal';
 
 export {
@@ -26,7 +27,8 @@ export {
   Points,
   ButtonWrapper,
   Loader,
-  DeleteModal
+  DeleteModal,
+  EditModal
 };
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';

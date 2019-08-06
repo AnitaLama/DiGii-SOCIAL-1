@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Colors, Images } from '../../Theme';
-import { Button } from './index';
+import { Button, Avatar } from './index';
 import ShowData from '../Post/showPostData';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
@@ -46,6 +46,10 @@ const Icon = styled.img`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  div:first-of-type {
+    display: flex;
+    align-items: center;
+  }
 `;
 const CloseButton = styled.span``;
 const Message = styled.p``;
@@ -97,7 +101,7 @@ class Modal extends Component {
   }
 
   render() {
-    const { message, hideModal } = this.props;
+    const { message, hideModal, user } = this.props;
     return (
       <ModalContainer>
         <ModalBox
@@ -119,7 +123,7 @@ class Modal extends Component {
             </Points>
           </Header>
 
-          <Message>hi</Message>
+          <Message>{message}</Message>
 
           <ButtonWrapper>
             <Button className="rounded short" onClick={hideModal}>
@@ -147,6 +151,8 @@ class DeleteModal extends Component {
 
   getContent = () => {
     const { post, user } = this.props;
+    return <ShowData post={post} user={user} />;
+
     return ShowData(post, user);
     // return <div>POST</div>;
   };
@@ -162,7 +168,8 @@ class DeleteModal extends Component {
   };
 
   render() {
-    const { post, closeDeleteModal } = this.props;
+    const { post, closeDeleteModal, user } = this.props;
+    const { avatar } = user;
     return (
       <ModalContainer>
         <ModalBox
@@ -172,7 +179,7 @@ class DeleteModal extends Component {
         >
           <Header>
             <div>
-              <Icon src={Images.digii5.icon} />
+              <Avatar avatar={avatar} height={60} />
               Digii
             </div>
           </Header>
@@ -203,6 +210,80 @@ DeleteModal.propTypes = {
   hideDeleteModal: PropTypes.func
 };
 
+class EditModal extends Component {
+  state = {
+    text: ''
+  };
+
+  getContent = () => {
+    const { post, user } = this.props;
+    return (
+      <ShowData
+        post={{ ...post, edit: true }}
+        user={user}
+        handlePostChange={this.handlePostChange}
+      />
+    );
+    // return <div>POST</div>;
+  };
+
+  onEditPost = () => {
+    const { text } = this.state;
+    const { post, user, onEditPost } = this.props;
+    const data = {
+      p_text: text,
+      p_id: post.p_id
+    };
+    onEditPost(data);
+  };
+
+  handlePostChange = value => {
+    this.setState({ text: value });
+  };
+
+  render() {
+    const { post, closeEditModal, user } = this.props;
+    const { avatar } = user;
+    return (
+      <ModalContainer>
+        <ModalBox
+          style={{
+            marginTop: '200px'
+          }}
+        >
+          <Header>
+            <div>
+              <Avatar avatar={avatar} height={60} />
+              Digii
+            </div>
+          </Header>
+          <div>{this.getContent()}</div>
+
+          <ButtonWrapper>
+            <Button
+              className="rounded short"
+              primary={tint}
+              secondary={peach}
+              onClick={this.onEditPost}
+            >
+              Edit
+            </Button>
+            {' '}
+            <Button className="rounded short" onClick={closeEditModal}>
+              Cancel
+            </Button>
+          </ButtonWrapper>
+        </ModalBox>
+      </ModalContainer>
+    );
+  }
+}
+
+EditModal.propTypes = {
+  message: PropTypes.string,
+  hideDeleteModal: PropTypes.func
+};
+
 export {
   Modal,
   ModalContainer,
@@ -211,5 +292,6 @@ export {
   Icon,
   Points,
   ButtonWrapper,
-  DeleteModal
+  DeleteModal,
+  EditModal
 };

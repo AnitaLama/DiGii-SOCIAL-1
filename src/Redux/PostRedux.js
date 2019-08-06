@@ -28,7 +28,8 @@ const { Types, Creators } = createActions({
   onVideoPost: ['data'],
   onPostDelete: ['data'],
   onCommentDelete: ['data'],
-  onMasterDelete: ['data']
+  onMasterDelete: ['data'],
+  onEditPost: ['data']
 });
 
 export const PostTypes = Types;
