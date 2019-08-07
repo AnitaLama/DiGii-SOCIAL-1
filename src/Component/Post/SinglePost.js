@@ -25,7 +25,7 @@ const ReactionContainer = styled.div`
   display: flex;
 `;
 
-const reactionnumberstyle = styled.div`
+const ReactionNumberStyle = styled.div`
   font-size: 13px;
   font-family: sans-serif;
   font-weight: bold;
@@ -157,6 +157,30 @@ class SinglePost extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.onHandleLikeReaction();
+
+    // Display total count of reactions
+
+    const { data, likeReactions } = this.props;
+    const { post_activities } = data;
+    const reactioncount = [];
+    post_activities
+      && post_activities.map(item => reactioncount.push(item.pa_at_id));
+    this.setState({ totalReactionCounts: reactioncount.length });
+  }
+
+  componentWillReceiveProps(nextProps, nextState) {
+    const { data } = nextProps;
+    const { post_activities } = data;
+    const reactioncount = [];
+
+    post_activities.map(
+      item => item.pa_at_id !== 0 && reactioncount.push(item.pa_at_id)
+    );
+    this.setState({ totalReactionCounts: reactioncount.length });
+  }
+
   selectPollAnswer = (option, selected) => {
     const { popt_po_id, popt_id } = option;
     const { user, onRespondToPoll } = this.props;
@@ -207,30 +231,6 @@ class SinglePost extends Component {
     this.props.onSelectReaction(values);
     this.multipleLikes();
   };
-
-  componentWillMount() {
-    this.props.onHandleLikeReaction();
-
-    // Display total count of reactions
-
-    const { data, likeReactions } = this.props;
-    const { post_activities } = data;
-    const reactioncount = [];
-    post_activities
-      && post_activities.map(item => reactioncount.push(item.pa_at_id));
-    this.setState({ totalReactionCounts: reactioncount.length });
-  }
-
-  componentWillReceiveProps(nextProps, nextState) {
-    const { data } = nextProps;
-    const { post_activities } = data;
-    const reactioncount = [];
-
-    post_activities.map(
-      item => item.pa_at_id !== 0 && reactioncount.push(item.pa_at_id)
-    );
-    this.setState({ totalReactionCounts: reactioncount.length });
-  }
 
   multipleLikes = () => {
     this.setState({ showreactions: !this.state.showreactions });
@@ -291,12 +291,12 @@ class SinglePost extends Component {
           <DisplayReaction>
             <div>{this.showCurrentReactions()}</div>
 
-            <reactionnumberstyle>
+            <ReactionNumberStyle>
               {this.state.totalReactionCounts !== 0
                 ? this.state.totalReactionCounts
                 : null}
               {' '}
-            </reactionnumberstyle>
+            </ReactionNumberStyle>
           </DisplayReaction>
 
           <Reactions

@@ -8,9 +8,7 @@ import {
   Header,
   Icon,
   Points,
-  FormInput,
   ButtonWrapper,
-  Button,
   DeleteModal,
   EditModal
 } from './Modal';

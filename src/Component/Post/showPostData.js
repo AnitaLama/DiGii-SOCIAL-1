@@ -2,22 +2,12 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { FaCircle } from 'react-icons/fa';
 import { FormTextArea, Avatar } from '../StyledComponents';
-import {
-  Colors, fontSize, grid, boxShadow, flexCentering
-} from '../../Theme';
+import { Colors, fontSize, flexCentering } from '../../Theme';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
 const { snow } = Colors.colors;
 
-const PostWrapper = styled.div`
-  background: ${snow};
-  margin: 28px 0;
-  padding: 24px;
-  border-radius: 40px;
-  ${boxShadow()};
-  ${grid(2, '1fr')};
-`;
 const PollWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -232,8 +222,6 @@ class ShowData extends Component {
             </div>
           );
         case 'tag':
-          const { notifications } = post;
-
           // const { n_is_student, student, user } = notifications;
           // console.log(notifications);
           // <div>{n_is_student ? student.st_username : user.u_name}</div>
@@ -368,8 +356,6 @@ class ShowData extends Component {
           </BannerWrapper>
         );
       case 'tag':
-        const { notifications } = post;
-
         // const { n_is_student, student, user } = notifications;
         // console.log(notifications);
         // <div>{n_is_student ? student.st_username : user.u_name}</div>

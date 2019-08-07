@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  Button, FormTextArea, Modal, Loader
-} from '../StyledComponents';
+import { Button, FormTextArea, Loader } from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
 import { FeelingsList, PostWrapper, PostWrapperContainer } from './index';

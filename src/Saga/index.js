@@ -29,7 +29,8 @@ import {
   onPostDelete,
   onCommentDelete,
   onMasterDelete,
-  onEditPost
+  onEditPost,
+  onFindGifForComments
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import {
@@ -60,6 +61,7 @@ export default function* root() {
 
     takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts),
     takeLatest(PostTypes.ON_FIND_GIF, onFindGif),
+    takeLatest(PostTypes.ON_FIND_GIF_FOR_COMMENTS, onFindGifForComments),
     takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit),
     takeLatest(PostTypes.ON_POST_IMAGE, onPostImage),
     takeLatest(PostTypes.ON_POST_POLL, onPostPoll),

@@ -16,7 +16,7 @@ import {
 
 import { NewPostType, Container } from './index';
 
-const { snow, pencil, grey } = Colors.colors;
+const { snow, grey } = Colors.colors;
 
 const NewPostWrapperContainer = styled.div``;
 const NewPostWrapper = styled.div`

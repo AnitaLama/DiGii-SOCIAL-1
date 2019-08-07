@@ -68,6 +68,24 @@ export function* onFindGif(action) {
   }
 }
 
+export function* onFindGifForComments(action) {
+  try {
+    const { data } = yield call(
+      axios,
+      `http://api.giphy.com/v1/gifs/search?q=${
+        action.data
+      }&api_key=dc6zaTOxFJmzC`
+    );
+    if (data) {
+      yield put(PostActions.onFindGifForCommentsSuccess(data.data));
+    } else {
+      yield put(PostActions.onFindGifForCommentsFailure('Couldn\'t find gif'));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* onPostImage(action) {
   console.log('onPostImage action', action);
   try {
@@ -121,7 +139,6 @@ export function* onRespondToPoll(action) {
 
 export function* onSubmitTagPost(action) {
   try {
-    console.log('saga input', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/addNewTagPost`,
@@ -144,7 +161,6 @@ export function* onPostDelete(action) {
 
 export function* onCommentDelete(action) {
   try {
-    console.log('On comment delete', action);
     const { data } = yield call(
       axios.post,
       `${URL}/onCommentDelete`,
@@ -157,7 +173,6 @@ export function* onCommentDelete(action) {
 
 export function* onMasterDelete(action) {
   try {
-    console.log('On comment delete', action);
     const { data } = yield call(
       axios.post,
       `${URL}/onMasterDelete`,
@@ -170,7 +185,6 @@ export function* onMasterDelete(action) {
 
 export function* onEditPost(action) {
   try {
-    console.log('saga data', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/updateThePost`,

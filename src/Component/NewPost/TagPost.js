@@ -7,11 +7,9 @@ import GroupActions from '../../Redux/GroupRedux';
 import PostActions from '../../Redux/PostRedux';
 import { Colors, boxShadow } from '../../Theme';
 import StrikeActions from '../../Redux/StrikeRedux';
-import { FilterKeyWords, warnings, PostWrapper } from './index';
+import { PostWrapper } from './index';
 import LoginActions from '../../Redux/LoginRedux';
 import Moderator from './Moderator';
-
-const strikeCount = 3;
 
 const {
   primary, blue, grey, snow, secondary
@@ -130,70 +128,10 @@ class TagPost extends Component {
       disableFirstTimePosting();
     }
   };
-  // const { user, disableFirstTimePosting, post } = this.props;
-  // const { posts } = post;
-  // // console.log(posts);
-  // const isFirstTimePosting = posts.find(
-  //   item => item.p_actor_id === user.user.id
-  // );
-  // if (
-  //   user.user.isStudent
-  //   && !isFirstTimePosting
-  //   && user.user.isFirstTimePosting
-  // ) {
-  //   disableFirstTimePosting();
-  //   this.setState({
-  //     isModalVisible: true,
-  //     alertMessage: 'Congratulations!!! it\'s your first time posting.'
-  //   });
-  //
-  //   // alert('Congratulations!!! it\'s your first time posting.');
-  // }
 
   handleTextChange = e => {
     const { handlePostText } = this.props;
     handlePostText(e);
-
-    // const { onGetStrikesCountOfAUser, user } = this.props;
-    // const { isStudent, id } = user.user;
-    // onGetStrikesCountOfAUser({ isStudent, id });
-    // const { value } = e.target;
-    // const { strike } = this.props;
-    // if (value.trim().length > 500) {
-    //   this.setState({
-    //     isModalVisible: true,
-    //     alertMessage: 'Please keep the length within 500 characters'
-    //   });
-    //   // alert('Please keep the length within 500 characters');
-    //   this.setState({ postText: value, hasPost: value.trim().length > 0 });
-    // } else {
-    //   const blacklistedWord = FilterKeyWords(value);
-    //
-    //   if (blacklistedWord) {
-    //     if (strike.strikes >= 10) {
-    //       this.setState({ blockUser: true });
-    //       // onBlockUser({ isStudent, id });
-    //       this.setState({
-    //         isModalVisible: true,
-    //         alertMessage: 'You\'ll be blocked from digii'
-    //       });
-    //     } else {
-    //       let index = strike.strikes < 10 && (strike.strikes % strikeCount) + 1;
-    //       index -= 1;
-    //       this.setState({
-    //         isModalVisible: true,
-    //         alertMessage: `${warnings[index]}`
-    //       });
-    //     }
-    //     this.setState({ isBad: true, strikeType: blacklistedWord });
-    //   } else {
-    //     this.setState({
-    //       isModalVisible: false,
-    //       alertMessage: null
-    //     });
-    //   }
-    //   this.setState({ text: value });
-    // }
   };
 
   onFocus = () => {
@@ -252,7 +190,7 @@ class TagPost extends Component {
   };
 
   selectUser = user => {
-    const { taggedUsers, users } = this.state;
+    const { users } = this.state;
     const newArr = [];
     users.map(item => {
       if (
@@ -261,6 +199,7 @@ class TagPost extends Component {
       ) {
         newArr.push(item);
       }
+      return true;
     });
     const data = {
       userName: user.u_name || user.st_username,
@@ -275,7 +214,7 @@ class TagPost extends Component {
   };
 
   remove = user => {
-    const { users, taggedUsers } = this.state;
+    const { taggedUsers } = this.state;
     const { group } = this.props;
     const removedUser = group.users.find(
       item => item.u_name === user || item.st_username === user

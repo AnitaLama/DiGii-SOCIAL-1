@@ -102,7 +102,8 @@ class Header extends Component {
   };
 
   delete = props => {
-    this.props.onMasterDelete(props);
+    const { onMasterDelete } = this.props;
+    onMasterDelete(props);
   };
 
   render() {
@@ -134,7 +135,7 @@ class Header extends Component {
               history.push(`/userprofile/${isStudent ? 1 : 0}/${username}`);
             }}
           >
-            <Avatar avatar={user.avatar} height={53} />
+            <Avatar avatar={avatar} height={53} />
           </AvatarWrapper>
           {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
           <Settings>

@@ -5,8 +5,6 @@ import { Colors, Images } from '../../Theme';
 import { Button, Avatar } from './index';
 import ShowData from '../Post/showPostData';
 
-const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
-
 const { snow, tint, peach } = Colors.colors;
 const ModalContainer = styled.div`
   position: fixed;
@@ -51,7 +49,6 @@ const Header = styled.div`
     align-items: center;
   }
 `;
-const CloseButton = styled.span``;
 const Message = styled.p``;
 const ButtonWrapper = styled.div`
   margin: auto;
@@ -69,29 +66,7 @@ const Points = styled.div`
     margin-right: 6px;
   }
 `;
-// const Image = styled.img`
-//   // height: auto;
-//   width: 100%;
-// `;
-// const ImageWrapper = styled.div``;
-// const ImageBackground = styled.div`
-//   position: relative;
-//   width: 100%;
-// `;
-// const ImageOverlay = styled.div`
-//   position: absolute;
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   z-index: 5;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: 10px;
-//   font-size: 18px;
-//   color: ${snow};
-// `;
+
 class Modal extends Component {
   constructor() {
     super();
@@ -101,7 +76,7 @@ class Modal extends Component {
   }
 
   render() {
-    const { message, hideModal, user } = this.props;
+    const { message, hideModal } = this.props;
     return (
       <ModalContainer>
         <ModalBox
@@ -153,7 +128,6 @@ class DeleteModal extends Component {
     const { post, user } = this.props;
     return <ShowData post={post} user={user} />;
 
-    return ShowData(post, user);
     // return <div>POST</div>;
   };
 
@@ -168,7 +142,7 @@ class DeleteModal extends Component {
   };
 
   render() {
-    const { post, closeDeleteModal, user } = this.props;
+    const { closeDeleteModal, user } = this.props;
     const { avatar } = user;
     return (
       <ModalContainer>
@@ -216,7 +190,7 @@ class EditModal extends Component {
   };
 
   getContent = () => {
-    const { post, user } = this.props;
+    const { user, post } = this.props;
     return (
       <ShowData
         post={{ ...post, edit: true }}

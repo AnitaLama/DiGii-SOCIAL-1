@@ -15,8 +15,6 @@ import Moderator from './Moderator';
 import StrikeActions from '../../Redux/StrikeRedux';
 import { SOCKET_URL } from '../../config';
 
-const strikeCount = 3;
-
 const PhotoOptionContainer = styled.div`
   height: 100%;
 `;
@@ -114,7 +112,6 @@ class ImagePost extends Component {
       user,
       onBlockUser,
       postText,
-      onPostSubmit,
       showWarning,
       resetPostType,
       onGetStrikesCountOfAUser,
@@ -196,7 +193,7 @@ class ImagePost extends Component {
       onPostImage(data);
     }
 
-    // resetPostType();
+    resetPostType();
   };
 
   selectImage = e => {

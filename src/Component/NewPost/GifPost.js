@@ -195,7 +195,7 @@ class GifContainer extends Component {
   };
 
   render() {
-    const { selectedGif, isModalVisible, alertMessage } = this.state;
+    const { selectedGif } = this.state;
     const { post } = this.props;
     if (!selectedGif) {
       return (

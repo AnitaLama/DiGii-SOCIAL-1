@@ -22,7 +22,6 @@ class VideoPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoSrc: null,
       postTypeId: props.postTypeId,
       username: props.username,
       description: '',
@@ -32,11 +31,11 @@ class VideoPost extends Component {
   }
 
   handleRecordingComplete = (videoBlob, startedAt, thumbnailBlob, duration) => {
-    const { postTypeId, username } = this.state;
-    const { user } = this.props;
-    const { isStudent, id } = user.user;
+    // const { postTypeId, username } = this.state;
+    // const { user } = this.props;
+    // const { isStudent, id } = user.user;
     const urlCreator = window.URL || window.webkitURL;
-    const thumbUrl = thumbnailBlob && urlCreator.createObjectURL(thumbnailBlob);
+    // const thumbUrl = thumbnailBlob && urlCreator.createObjectURL(thumbnailBlob);
     const videoUrl = urlCreator.createObjectURL(videoBlob);
 
     this.setState({ videoSrc: videoUrl, video: videoBlob });
@@ -59,17 +58,13 @@ class VideoPost extends Component {
       user,
       onBlockUser,
       postText,
-      onPostSubmit,
       showWarning,
       resetPostType,
       onGetStrikesCountOfAUser,
       submitPost,
-      onPostImage,
       onVideoPost
     } = this.props;
-    const {
-      postTypeId, username, video, videoSrc
-    } = this.state;
+    const { postTypeId, username, video } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
@@ -99,7 +94,7 @@ class VideoPost extends Component {
     formData.append('str_is_student', isBad);
     formData.append('str_actor_id', isBad);
     onVideoPost(formData);
-    // resetPostType();
+    resetPostType();
   };
 
   handleDescriptionChange = e => {

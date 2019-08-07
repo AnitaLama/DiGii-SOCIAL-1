@@ -201,10 +201,7 @@ class Author extends Component {
     const { data } = this.props;
     const { user } = this.props;
     const { isStudent, id } = user.user;
-    const {
-      post_type, p_text, p_id, p_actor_id, p_isStudent
-    } = data;
-    const type = post_type.pt_title;
+    const { p_actor_id, p_isStudent } = data;
     let firstname = '';
     let lastname = '';
     let userAvatar = null;

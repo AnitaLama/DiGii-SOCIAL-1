@@ -4,7 +4,6 @@ import {
   ContentWrapper
 } from '../../Component/StyledComponents';
 import { UserProfileComponent } from '../../Component/UserProfile';
-import history from '../../history';
 
 class UserProfile extends Component {
   constructor() {

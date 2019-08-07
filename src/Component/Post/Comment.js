@@ -35,6 +35,9 @@ const CommentDiv = styled.div`
   span.name {
     text-transform: capitalize;
   }
+  img {
+    height: 50px;
+  }
 `;
 const Close = styled.div`
   position: absolute;
@@ -60,7 +63,7 @@ class Comment extends Component {
 
   render() {
     const { isCommentHidden } = this.state;
-    const { data, comment, user } = this.props;
+    const { data, user } = this.props;
     const { pc_id } = data;
     const { isStudent, id } = user.user;
 
@@ -115,7 +118,13 @@ class Comment extends Component {
           {/* <span className="date">
             {new Date(createdAt).toLocaleDateString()}
           </span> */}
-          <span>{data.pc_body}</span>
+          <span>
+            {data.pc_image_path ? (
+              <img src={data.pc_image_path} />
+            ) : (
+              data.pc_body
+            )}
+          </span>
         </CommentDiv>
       </CommentWrapper>
     ) : (

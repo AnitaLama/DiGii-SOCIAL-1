@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProfileActions from '../../Redux/ProfileRedux';
-import { Avatar } from './index';
-import { Button } from '../StyledComponents';
+import { Button, Avatar } from '../StyledComponents';
 
 class UserProfileComponent extends Component {
   constructor(props) {

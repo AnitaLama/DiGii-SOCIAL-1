@@ -29,7 +29,10 @@ const { Types, Creators } = createActions({
   onPostDelete: ['data'],
   onCommentDelete: ['data'],
   onMasterDelete: ['data'],
-  onEditPost: ['data']
+  onEditPost: ['data'],
+  onFindGifForComments: ['data'],
+  onFindGifForCommentsSuccess: ['data'],
+  onFindGifForCommentsFailure: ['data']
 });
 
 export const PostTypes = Types;
@@ -41,7 +44,8 @@ const INITIAL_STATE = Immutable({
   loading: false,
   posts: [],
   error: null,
-  gif: []
+  gif: [],
+  commentGif: []
 });
 
 /* ------------- Reducers ------------- */
@@ -91,7 +95,7 @@ const onSaveImageFailure = state => ({
   loading: false,
   posting: false
 });
-const onFindPosts = (state, action) => ({
+const onFindPosts = state => ({
   ...state,
   loading: true,
   gif: [],
@@ -146,6 +150,21 @@ const onFindGifFailure = (state, action) => {
     posting: false
   };
 };
+const onFindGifForCommentsSuccess = (state, action) => ({
+  ...state,
+  commentGif: action.data,
+  error: null,
+  loading: false,
+  posting: false
+});
+
+const onFindGifForCommentsFailure = (state, action) => ({
+  ...state,
+  commentGif: action.data,
+  error: null,
+  loading: false,
+  posting: false
+});
 const clearGifList = state => ({
   ...state,
   gif: [],
@@ -170,5 +189,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_SAVE_IMAGE_FAILURE]: onSaveImageFailure,
   [Types.ON_FIND_GIF_SUCCESS]: onFindGifSuccess,
   [Types.ON_FIND_GIF_FAILURE]: onFindGifFailure,
+  [Types.ON_FIND_GIF_FOR_COMMENTS_SUCCESS]: onFindGifForCommentsSuccess,
+  [Types.ON_FIND_GIF_FOR_COMMENTS_FAILURE]: onFindGifForCommentsFailure,
   [Types.CLEAR_GIF_LIST]: clearGifList
 });
