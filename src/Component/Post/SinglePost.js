@@ -165,8 +165,8 @@ class SinglePost extends Component {
     const { data, likeReactions } = this.props;
     const { post_activities } = data;
     const reactioncount = [];
-    post_activities
-      && post_activities.map(item => reactioncount.push(item.pa_at_id));
+    post_activities &&
+      post_activities.map(item => reactioncount.push(item.pa_at_id));
     this.setState({ totalReactionCounts: reactioncount.length });
   }
 
@@ -240,8 +240,8 @@ class SinglePost extends Component {
     const { data, likeReactions } = this.props;
     const { post_activities } = data;
     const reactionId = [];
-    post_activities
-      && post_activities.map(item => reactionId.push(item.pa_at_id));
+    post_activities &&
+      post_activities.map(item => reactionId.push(item.pa_at_id));
 
     // Taking only unique emo to display
 
@@ -258,12 +258,12 @@ class SinglePost extends Component {
             onMouseEnter={this.toggleHover}
             onMouseLeave={this.toggleHover}
           >
-            <FacebookEmoji type={reaction.at_name} size="xxs" />
-            {' '}
-            {this.state.toggleHover
-              && post_activities.map(
-                value => value.pa_at_id === reaction.at_id
-                  && (value.pa_is_student ? (
+            <FacebookEmoji type={reaction.at_name} size="xxs" />{' '}
+            {this.state.toggleHover &&
+              post_activities.map(
+                value =>
+                  value.pa_at_id === reaction.at_id &&
+                  (value.pa_is_student ? (
                     <li>{value.student.st_username}</li>
                   ) : (
                     <li>{value.user.u_name}</li>
@@ -280,7 +280,8 @@ class SinglePost extends Component {
     const { data, modalpopup } = this.props;
     const { showCommentBox } = this.state;
     let { post_comments } = data;
-    post_comments = post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
+    post_comments =
+      post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
     return (
       <PostWrapper style={{ position: 'relative' }}>
         <ActualPostWrapper>
@@ -294,8 +295,7 @@ class SinglePost extends Component {
             <ReactionNumberStyle>
               {this.state.totalReactionCounts !== 0
                 ? this.state.totalReactionCounts
-                : null}
-              {' '}
+                : null}{' '}
             </ReactionNumberStyle>
           </DisplayReaction>
 
@@ -326,16 +326,14 @@ class SinglePost extends Component {
                 }}
               >
                 <FacebookEmoji type="wow" size="xs" />
-              </div>
-              {' '}
+              </div>{' '}
               <div
                 onClick={() => {
                   this.handleReactionClicked('yay');
                 }}
               >
                 <FacebookEmoji type="yay" size="xs" />
-              </div>
-              {' '}
+              </div>{' '}
               <div
                 onClick={() => {
                   this.handleReactionClicked('angry');
@@ -368,10 +366,12 @@ class SinglePost extends Component {
               maxHeight: showCommentBox ? '226px' : '250px'
             }}
           >
-            {post_comments
-              && post_comments.map((comment, i) => (!comment.pc_is_bad ? (
-                <Comment key={comment + i} data={comment} />
-              ) : null))}
+            {post_comments &&
+              post_comments.map((comment, i) =>
+                !comment.pc_is_bad ? (
+                  <Comment key={comment + i} data={comment} />
+                ) : null
+              )}
           </div>
           <div className="commentBox">
             {showCommentBox && <CommentBox data={data} />}
@@ -390,8 +390,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRespondToPoll: value => dispatch(PostActions.onRespondToPoll(value)),
-  onHandleLikeReaction: value => dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value)),
-  onSelectReaction: value => dispatch(PostActivityAction.onSelectReaction(value))
+  onHandleLikeReaction: value =>
+    dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value)),
+  onSelectReaction: value =>
+    dispatch(PostActivityAction.onSelectReaction(value))
 });
 
 export default connect(

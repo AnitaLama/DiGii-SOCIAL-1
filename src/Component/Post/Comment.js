@@ -3,9 +3,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { connect } from 'react-redux';
-import {
-  flex, fontSize, fontWeight, Colors
-} from '../../Theme';
+import { flex, fontSize, fontWeight, Colors } from '../../Theme';
 import { Avatar } from '../StyledComponents';
 import PostAction from '../../Redux/PostRedux';
 
@@ -107,9 +105,7 @@ class Comment extends Component {
 
         <CommentDiv>
           <span className="name">
-            {firstname}
-            {' '}
-            {lastname}
+            {firstname} {lastname}
           </span>
           {/* Hide/Edit/Delete comment  */}
           <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>

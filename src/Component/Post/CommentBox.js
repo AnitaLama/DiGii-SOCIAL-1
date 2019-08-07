@@ -8,9 +8,7 @@ import CommentActions from '../../Redux/CommentRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
 import PostActions from '../../Redux/PostRedux';
-
 import Moderator from '../NewPost/Moderator';
-
 const CommentBoxWrapper = styled.div`
   display: grid;
   grid-template-columns: 20px auto;
@@ -31,49 +29,39 @@ const CommentBoxWrapper = styled.div`
     outline: 0;
   }
 `;
-
 class CommentBox extends Component {
   state = {
     showGifInput: false
   };
-
   componentWillMount() {
     const { onGetStrikesCountOfAUser, user } = this.props;
     const { isStudent, id } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
   }
-
   onFocus = () => {
-    const {
-      user, disableFirstTimePosting, post, onFocus
-    } = this.props;
+    const { user, disableFirstTimePosting, post, onFocus } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
     const checkFirstTimePosting = onFocus(posts, id);
-
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
     }
   };
-
   handleKeyDown = event => {
     if (event.key === 'Enter') {
       this.handleCommentReply();
     }
   };
-
   hideModal = () => {
     this.setState({
       isModalVisible: false,
       alertMessage: null
     });
   };
-
   handleComment = e => {
     const { handlePostText } = this.props;
     handlePostText(e);
   };
-
   handleCommentReply = () => {
     const {
       submitPost,
@@ -92,7 +80,6 @@ class CommentBox extends Component {
     const { strikes } = strike;
     const result = submitPost();
     onGetStrikesCountOfAUser({ isStudent, id });
-
     let isBad = 0;
     if (result) {
       if (strikes > 8 && isStudent) {
@@ -102,7 +89,6 @@ class CommentBox extends Component {
       showWarning(strikes, isStudent);
       isBad = 1;
     }
-
     const comment = {
       pc_p_id: p_id,
       pc_is_student: user.user.isStudent,
@@ -118,50 +104,48 @@ class CommentBox extends Component {
     onSubmitComment(comment);
     resetPostText();
   };
-
   handleSelectImage = () => {
     console.log('handle select image');
     const { fileInput } = this;
     this.fileInput.click();
   };
-
   selectImage = e => {
     const { files } = e.target;
     this.setState({ file: files });
   };
-
   handleGifButtonClick = () => {
     this.setState({ showGifInput: true });
+    console.log(this.gifInput);
+    this.gifInput.focus();
   };
-
   handleGifText = e => {
     const { value } = e.target;
     console.log('value gif', value);
     this.setState({ gifText: value });
   };
-
   findGif = () => {
     const { onFindGifForComments } = this.props;
     const { gifText } = this.state;
     onFindGifForComments(gifText);
   };
-
   getGif = () => {
     const { post } = this.props;
     const { commentGif } = post;
-    return commentGif.map(item => (
-      <img
-        src={item.images.downsized_medium.url}
-        style={{ height: '50px', width: '50px' }}
-        onClick={() => {
-          this.selectAGif(item.images.downsized_medium.url);
-        }}
-      />
-    ));
+    return (
+      commentGif &&
+      commentGif.map(item => (
+        <img
+          src={item.images.downsized_medium.url}
+          style={{ height: '60px', width: '60px' }}
+          onClick={() => {
+            this.selectAGif(item.images.downsized_medium.url);
+          }}
+        />
+      ))
+    );
   };
-
   selectAGif = gif => {
-    const { user, onSubmitComment, data } = this.props;
+    const { user, onSubmitComment, data, clearCommentGif } = this.props;
     console.log('selectgif', data);
     const { p_id } = data;
     const comment = {
@@ -178,8 +162,14 @@ class CommentBox extends Component {
     };
     console.log(comment);
     onSubmitComment(comment);
+    clearCommentGif();
+    this.setState({ showGifInput: false });
   };
-
+  onBlur = () => {
+    const { clearCommentGif } = this.props;
+    clearCommentGif();
+    this.setState({ showGifInput: false });
+  };
   render() {
     const { postText, user } = this.props;
     const { avatar } = user.user;
@@ -190,12 +180,12 @@ class CommentBox extends Component {
         }}
       >
         <Avatar avatar={avatar} height={20} />
-
         <FormInput
           placeholder="Write a comment"
           onChange={this.handleComment}
           onKeyDown={this.handleKeyDown}
           onFocus={this.onFocus}
+          onBlur={this.onBlur}
           style={{ height: '24px', marginLeft: '6px', marginBottom: 0 }}
           value={postText}
         />
@@ -210,7 +200,12 @@ class CommentBox extends Component {
           }}
         >
           <div>{this.getGif()}</div>
-          <input placeholder="Find Gif" onChange={this.handleGifText} />
+          <input
+            placeholder="Find Gif"
+            onChange={this.handleGifText}
+            onBlur={this.onBlur}
+            ref={r => (this.gifInput = r)}
+          />
           <button onClick={this.findGif}>Find</button>
         </div>
         <div className="buttonDiv">
@@ -231,7 +226,6 @@ class CommentBox extends Component {
     );
   }
 }
-
 CommentBox.propTypes = {
   strike: PropTypes.object,
   user: PropTypes.object,
@@ -245,13 +239,17 @@ const mapStateToProps = state => ({
   post: state.post,
   strike: state.strike
 });
-
 const mapDispatchToProps = dispatch => ({
-  onSubmitComment: value => dispatch(CommentActions.onSubmitCommentRequest(value)),
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onSubmitComment: value =>
+    dispatch(CommentActions.onSubmitCommentRequest(value)),
+  onGetStrikesCountOfAUser: value =>
+    dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () =>
+    dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value)),
-  onFindGifForComments: value => dispatch(PostActions.onFindGifForComments(value))
+  onFindGifForComments: value =>
+    dispatch(PostActions.onFindGifForComments(value)),
+  clearCommentGif: () => dispatch(PostActions.clearCommentGif())
 });
 export default Moderator(
   connect(
