@@ -18,7 +18,6 @@ import CommentBox from './CommentBox';
 import PostActions from '../../Redux/PostRedux';
 
 import PostActivityAction from '../../Redux/PostActivityRedux';
-
 import FacebookEmoji from 'react-facebook-emoji';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
@@ -186,7 +185,9 @@ class SinglePost extends Component {
       showreactions: false,
       totalReactionCounts: null,
       totalReactionCountsArray: [],
-      toggleHover: false
+      toggleHover: false,
+      currentHoverId: null,
+      getOnlyReactionOnHover: []
     };
   }
 
@@ -321,8 +322,33 @@ class SinglePost extends Component {
     }
   };
 
-  toggleHover = () => {
-    this.setState({ toggleHover: !this.state.toggleHover });
+  toggleHover = at_id => {
+    this.setState({ currentHoverId: at_id });
+
+    this.setState({ toggleHover: true });
+
+    {
+      this.getCurrentLikesReactions(at_id);
+    }
+  };
+
+  toggleHoverleave = () => {
+    this.setState({ toggleHover: false });
+  };
+
+  getCurrentLikesReactions = param => {
+    let getOnlyReactionOnHover1 = [];
+    const { data, likeReactions } = this.props;
+    const { post_activities } = data;
+
+    post_activities.map(item => {
+      if (item && item.activity_type && item.activity_type.at_id === param) {
+        getOnlyReactionOnHover1.push(item);
+        console.log('Test,getOnlyReactionOnHover1', getOnlyReactionOnHover1);
+      }
+    });
+    console.log('map is completed');
+    this.setState({ getOnlyReactionOnHover: getOnlyReactionOnHover1 });
   };
 
   handleReactionClicked = value => {
@@ -349,10 +375,9 @@ class SinglePost extends Component {
   componentWillMount() {
     this.props.onHandleLikeReaction();
 
-    //Display total count of reactions
-
     const { data, likeReactions } = this.props;
     const { post_activities } = data;
+
     let reactioncount = [];
     post_activities.map(item => {
       return reactioncount.push(item.pa_at_id);
@@ -394,14 +419,19 @@ class SinglePost extends Component {
       );
 
       if (reaction) {
+        const { at_id } = reaction;
+
         return (
           <DisplayReaction
-            onMouseEnter={this.toggleHover}
-            onMouseLeave={this.toggleHover}
+            onMouseEnter={() => {
+              this.toggleHover(at_id);
+            }}
+            onMouseLeave={this.toggleHoverleave}
           >
             <FacebookEmoji type={reaction.at_name} size="xxs" />{' '}
             {this.state.toggleHover &&
-              post_activities.map(value => {
+              this.state.getOnlyReactionOnHover.map(value => {
+                console.log('value', value);
                 return (
                   value.pa_at_id === reaction.at_id &&
                   (value.pa_is_student ? (
@@ -418,6 +448,7 @@ class SinglePost extends Component {
   };
 
   render() {
+    console.log(this.state);
     const { data, modalpopup, user } = this.props;
     const { notifications } = this.props;
 
