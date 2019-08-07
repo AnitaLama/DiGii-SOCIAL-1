@@ -132,6 +132,8 @@ class CommentBox extends Component {
 
   handleGifButtonClick = () => {
     this.setState({ showGifInput: true });
+    console.log(this.gifInput);
+    this.gifInput.focus();
   };
 
   handleGifText = e => {
@@ -152,7 +154,7 @@ class CommentBox extends Component {
     return commentGif.map(item => (
       <img
         src={item.images.downsized_medium.url}
-        style={{ height: '50px', width: '50px' }}
+        style={{ height: '60px', width: '60px' }}
         onClick={() => {
           this.selectAGif(item.images.downsized_medium.url);
         }}
@@ -161,7 +163,9 @@ class CommentBox extends Component {
   };
 
   selectAGif = gif => {
-    const { user, onSubmitComment, data } = this.props;
+    const {
+      user, onSubmitComment, data, clearCommentGif
+    } = this.props;
     console.log('selectgif', data);
     const { p_id } = data;
     const comment = {
@@ -178,6 +182,14 @@ class CommentBox extends Component {
     };
     console.log(comment);
     onSubmitComment(comment);
+    clearCommentGif();
+    this.setState({ showGifInput: false });
+  };
+
+  onBlur = () => {
+    const { clearCommentGif } = this.props;
+    clearCommentGif();
+    this.setState({ showGifInput: false });
   };
 
   render() {
@@ -196,6 +208,7 @@ class CommentBox extends Component {
           onChange={this.handleComment}
           onKeyDown={this.handleKeyDown}
           onFocus={this.onFocus}
+          onBlur={this.onBlur}
           style={{ height: '24px', marginLeft: '6px', marginBottom: 0 }}
           value={postText}
         />
@@ -210,7 +223,12 @@ class CommentBox extends Component {
           }}
         >
           <div>{this.getGif()}</div>
-          <input placeholder="Find Gif" onChange={this.handleGifText} />
+          <input
+            placeholder="Find Gif"
+            onChange={this.handleGifText}
+            onBlur={this.onBlur}
+            ref={r => (this.gifInput = r)}
+          />
           <button onClick={this.findGif}>Find</button>
         </div>
         <div className="buttonDiv">
@@ -251,7 +269,8 @@ const mapDispatchToProps = dispatch => ({
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value)),
-  onFindGifForComments: value => dispatch(PostActions.onFindGifForComments(value))
+  onFindGifForComments: value => dispatch(PostActions.onFindGifForComments(value)),
+  clearCommentGif: () => dispatch(PostActions.clearCommentGif())
 });
 export default Moderator(
   connect(
