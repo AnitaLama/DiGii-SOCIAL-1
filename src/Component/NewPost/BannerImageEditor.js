@@ -10,12 +10,13 @@ import {
   Points,
   FormInput,
   ButtonWrapper,
-  Button
+  Button,
+  Modal
 } from '../StyledComponents';
 import { Colors, Images } from '../../Theme';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import Moderator from './Moderator';
+import { Moderator } from '../Functions';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -63,8 +64,9 @@ class BannerImageModal extends Component {
     this.state = {
       text: '',
       imageURL: null,
-
-      postTypeId: props.postTypeId
+      postTypeId: props.postTypeId,
+      isModalVisible: false,
+      alertMessage: null
     };
   }
 
@@ -118,7 +120,14 @@ class BannerImageModal extends Component {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      showWarning(strikes, isStudent);
+      const check = showWarning(strikes, isStudent);
+      console.log(check);
+      // if (check) {
+      //   this.setState({
+      //     isModalVisible: check.isModalVisible,
+      //     alertMessage: check.alertMessage
+      //   });
+      // }
       isBad = 1;
     }
     const saveData = {
@@ -134,10 +143,14 @@ class BannerImageModal extends Component {
       isBad
     };
     onSubmitPost(saveData);
-    resetPostType();
+  };
+
+  hideModal = () => {
+    this.setState({ isModalVisible: false });
   };
 
   render() {
+    const { isModalVisible, alertMessage } = this.state;
     const { hideModal, data, postText } = this.props;
     return (
       <ModalContainer>
@@ -197,6 +210,9 @@ class BannerImageModal extends Component {
             </ButtonWrapper>
           </ModalBox>
         </BannerImageModalWrapper>
+        {isModalVisible && (
+          <Modal message={alertMessage} hideModal={this.hideModal} />
+        )}
       </ModalContainer>
     );
   }
@@ -211,7 +227,7 @@ const mapStateToProps = state => ({
   strike: state.strike
 });
 const mapDispatchToProps = dispatch => ({
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser()),
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });

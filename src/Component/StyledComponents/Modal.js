@@ -185,9 +185,12 @@ DeleteModal.propTypes = {
 };
 
 class EditModal extends Component {
-  state = {
-    text: ''
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: props.post && props.post.p_text
+    };
+  }
 
   getContent = () => {
     const { user, post } = this.props;

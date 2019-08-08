@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL } from '../config';
+import { DEV_URL, GIPHY_API } from '../config';
 import PostActions from '../Redux/PostRedux';
 
 const URL = `${DEV_URL}/post`;
@@ -56,7 +56,7 @@ export function* onFindGif(action) {
       axios,
       `http://api.giphy.com/v1/gifs/search?q=${
         action.data
-      }&api_key=dc6zaTOxFJmzC`
+      }&api_key=${GIPHY_API}`
     );
     if (data) {
       yield put(PostActions.onFindGifSuccess(data.data));
@@ -70,11 +70,10 @@ export function* onFindGif(action) {
 
 export function* onFindGifForComments(action) {
   try {
+    const { text, limit } = action.data;
     const { data } = yield call(
       axios,
-      `http://api.giphy.com/v1/gifs/search?q=${
-        action.data
-      }&api_key=dc6zaTOxFJmzC`
+      `http://api.giphy.com/v1/gifs/search?q=${text}&api_key=${GIPHY_API}&limit=${limit}`
     );
     if (data) {
       yield put(PostActions.onFindGifForCommentsSuccess(data.data));

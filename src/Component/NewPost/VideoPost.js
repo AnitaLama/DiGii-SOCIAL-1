@@ -9,7 +9,7 @@ import { FormTextArea, Button } from '../StyledComponents';
 import { PostWrapper } from './index';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import Moderator from './Moderator';
+import { Moderator } from '../Functions';
 
 const VideoPostWrapper = styled.div`
   ${flexCentering()};
@@ -31,13 +31,8 @@ class VideoPost extends Component {
   }
 
   handleRecordingComplete = (videoBlob, startedAt, thumbnailBlob, duration) => {
-    // const { postTypeId, username } = this.state;
-    // const { user } = this.props;
-    // const { isStudent, id } = user.user;
     const urlCreator = window.URL || window.webkitURL;
-    // const thumbUrl = thumbnailBlob && urlCreator.createObjectURL(thumbnailBlob);
     const videoUrl = urlCreator.createObjectURL(videoBlob);
-
     this.setState({ videoSrc: videoUrl, video: videoBlob });
   };
 

@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import { Button, FormTextArea, Loader } from '../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
 import { Colors } from '../../Theme';
-import { FeelingsList, PostWrapper, PostWrapperContainer } from './index';
+import { PostWrapper, PostWrapperContainer } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import Moderator from './Moderator';
+import { Moderator, FeelingsList } from '../Functions';
 
 const Input = styled.div`
   position: relative;
@@ -58,7 +58,9 @@ class FeelingsPost extends Component {
   };
 
   handleTextChange = e => {
-    const { handlePostText } = this.props;
+    const { handlePostText, onGetStrikesCountOfAUser, user } = this.props;
+    // const { isStudent, id } = user.user;
+    // onGetStrikesCountOfAUser({ isStudent, id });
     handlePostText(e);
   };
 
@@ -75,14 +77,12 @@ class FeelingsPost extends Component {
       postText,
       onPostSubmit,
       showWarning,
-      resetPostType,
-      onGetStrikesCountOfAUser
+      resetPostType
     } = this.props;
     const { postTypeId, feeling } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
-    onGetStrikesCountOfAUser({ isStudent, id });
 
     let isBad = 0;
     if (result) {

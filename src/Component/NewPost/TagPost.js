@@ -9,7 +9,7 @@ import { Colors, boxShadow } from '../../Theme';
 import StrikeActions from '../../Redux/StrikeRedux';
 import { PostWrapper } from './index';
 import LoginActions from '../../Redux/LoginRedux';
-import Moderator from './Moderator';
+import { Moderator } from '../Functions';
 
 const {
   primary, blue, grey, snow, secondary

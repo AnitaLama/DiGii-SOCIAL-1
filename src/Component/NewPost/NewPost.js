@@ -13,6 +13,7 @@ import {
   fontWeight,
   fontFilson
 } from '../../Theme';
+import StrikeActions from '../../Redux/StrikeRedux';
 
 import { NewPostType, Container } from './index';
 
@@ -116,8 +117,12 @@ class NewPost extends Component {
   }
 
   resetPostType = () => {
+    console.log('reset post type');
+    const { onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user;
     setTimeout(() => {
-      this.setState({ type: 'text' });
+      onGetStrikesCountOfAUser({ isStudent, id });
+      // this.setState({ type: 'text' });
     }, 1500);
   };
 
@@ -197,6 +202,13 @@ const mapStateToProps = state => ({
   postType: state.postType,
   user: state.user.user,
   post: state.post,
-  postActivity: state.postActivity
+  postActivity: state.postActivity,
+  strike: state.strike
 });
-export default connect(mapStateToProps)(NewPost);
+const mapDispatchToProps = dispatch => ({
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewPost);

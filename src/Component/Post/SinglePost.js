@@ -16,7 +16,8 @@ import Author from './Author';
 import Comment from './Comment';
 import CommentBox from './CommentBox';
 import PostActions from '../../Redux/PostRedux';
-import ShowData from './showPostData';
+import { ShowFeed } from '../Functions';
+
 import PostActivityAction from '../../Redux/PostActivityRedux';
 
 const { snow, pencil, secondary } = Colors.colors;
@@ -198,7 +199,7 @@ class SinglePost extends Component {
   getContent = data => {
     const { user } = this.props;
     // const type = post_type && post_type.pt_title;
-    return <ShowData post={data} user={user.user} />;
+    return <ShowFeed post={data} user={user.user} />;
   };
 
   handleReactionSelection = action => {

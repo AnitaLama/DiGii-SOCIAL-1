@@ -6,7 +6,7 @@ import { PostWrapper } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import Moderator from './Moderator';
+import { Moderator } from '../Functions';
 
 class TextPost extends Component {
   constructor(props) {
@@ -24,7 +24,9 @@ class TextPost extends Component {
   }
 
   handlePostText = e => {
-    const { handlePostText } = this.props;
+    const { handlePostText, user, onGetStrikesCountOfAUser } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
     handlePostText(e);
   };
 
@@ -50,14 +52,13 @@ class TextPost extends Component {
       postText,
       onPostSubmit,
       showWarning,
-      resetPostText,
-      onGetStrikesCountOfAUser
+      resetPostText
     } = this.props;
     const { postTypeId } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
-    onGetStrikesCountOfAUser({ isStudent, id });
+    // onGetStrikesCountOfAUser({ isStudent, id });
     let isBad = 0;
     if (result) {
       if (strikes > 8 && isStudent) {
