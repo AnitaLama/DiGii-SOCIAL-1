@@ -118,9 +118,7 @@ class ImagePost extends Component {
       submitPost,
       onPostImage
     } = this.props;
-    const {
-      postTypeId, imageObject, fromWebcam, file
-    } = this.state;
+    const { postTypeId, imageObject, fromWebcam, file } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
@@ -216,9 +214,7 @@ class ImagePost extends Component {
   };
 
   onFocus = () => {
-    const {
-      user, disableFirstTimePosting, post, onFocus
-    } = this.props;
+    const { user, disableFirstTimePosting, post, onFocus } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
     const checkFirstTimePosting = onFocus(posts, id);
@@ -346,8 +342,10 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onPostImage: value => dispatch(PostActions.onPostImage(value)),
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onGetStrikesCountOfAUser: value =>
+    dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () =>
+    dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
 export default Moderator(

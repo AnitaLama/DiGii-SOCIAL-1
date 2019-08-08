@@ -32,7 +32,8 @@ const { Types, Creators } = createActions({
   onEditPost: ['data'],
   onFindGifForComments: ['data'],
   onFindGifForCommentsSuccess: ['data'],
-  onFindGifForCommentsFailure: ['data']
+  onFindGifForCommentsFailure: ['data'],
+  clearCommentGif: []
 });
 
 export const PostTypes = Types;
@@ -172,6 +173,7 @@ const clearGifList = state => ({
   posting: false
 });
 
+const clearCommentGif = state => ({ ...state, commentGif: [] });
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -191,5 +193,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FIND_GIF_FAILURE]: onFindGifFailure,
   [Types.ON_FIND_GIF_FOR_COMMENTS_SUCCESS]: onFindGifForCommentsSuccess,
   [Types.ON_FIND_GIF_FOR_COMMENTS_FAILURE]: onFindGifForCommentsFailure,
-  [Types.CLEAR_GIF_LIST]: clearGifList
+  [Types.CLEAR_GIF_LIST]: clearGifList,
+  [Types.CLEAR_COMMENT_GIF]: clearCommentGif
 });

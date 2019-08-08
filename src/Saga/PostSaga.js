@@ -61,7 +61,7 @@ export function* onFindGif(action) {
     if (data) {
       yield put(PostActions.onFindGifSuccess(data.data));
     } else {
-      yield put(PostActions.onFindGifFailure('Couldn\'t find gif'));
+      yield put(PostActions.onFindGifFailure("Couldn't find gif"));
     }
   } catch (err) {
     console.log(err);
@@ -79,7 +79,7 @@ export function* onFindGifForComments(action) {
     if (data) {
       yield put(PostActions.onFindGifForCommentsSuccess(data.data));
     } else {
-      yield put(PostActions.onFindGifForCommentsFailure('Couldn\'t find gif'));
+      yield put(PostActions.onFindGifForCommentsFailure("Couldn't find gif"));
     }
   } catch (err) {
     console.log(err);
@@ -87,10 +87,8 @@ export function* onFindGifForComments(action) {
 }
 
 export function* onPostImage(action) {
-  console.log('onPostImage action', action);
   try {
     const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
-    console.log('saga data', data);
   } catch (err) {
     console.log(err);
   }
