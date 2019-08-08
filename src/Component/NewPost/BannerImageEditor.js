@@ -78,16 +78,18 @@ class BannerImageModal extends Component {
 
   //
   onFocus = () => {
-    const {
-      user, disableFirstTimePosting, post, onFocus
-    } = this.props;
-    const { posts } = post;
-    const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
-
-    if (checkFirstTimePosting && isFirstTimePosting) {
-      disableFirstTimePosting();
-    }
+    const { onFocus } = this.props;
+    onFocus();
+    // const {
+    //   user, disableFirstTimePosting, post, onFocus
+    // } = this.props;
+    // const { posts } = post;
+    // const { id, isFirstTimePosting } = user.user;
+    // const checkFirstTimePosting = onFocus(posts, id);
+    //
+    // if (checkFirstTimePosting && isFirstTimePosting) {
+    //   disableFirstTimePosting();
+    // }
   };
 
   handleTextChange = e => {
@@ -96,53 +98,55 @@ class BannerImageModal extends Component {
   };
 
   saveBanner = () => {
-    const {
-      submitPost,
-      strike,
-      user,
-      onBlockUser,
-      postText,
-      showWarning,
-      resetPostType,
-      onGetStrikesCountOfAUser,
-      data,
-      onSubmitPost
-    } = this.props;
-    const { postTypeId } = this.state;
-    const { isStudent, id } = user.user;
-    const { strikes } = strike;
-    const result = submitPost();
-    onGetStrikesCountOfAUser({ isStudent, id });
-
-    let isBad = 0;
-    if (result) {
-      if (strikes > 8 && isStudent) {
-        // BLOCK THE USER
-        onBlockUser({ isStudent, id });
-      }
-      const check = showWarning(strikes, isStudent);
-      console.log(check);
-      // if (check) {
-      //   this.setState({
-      //     isModalVisible: check.isModalVisible,
-      //     alertMessage: check.alertMessage
-      //   });
-      // }
-      isBad = 1;
-    }
-    const saveData = {
-      p_pt_id: postTypeId,
-      p_isStudent: isStudent,
-      p_actor_id: id,
-      p_body: `${url}/${data.Key}`,
-      p_text: postText,
-      p_is_bad: isBad,
-      str_type: result,
-      str_is_student: user.user.isStudent,
-      str_actor_id: user.user.id,
-      isBad
-    };
-    onSubmitPost(saveData);
+    const { data } = this.props;
+    this.props.saveBanner(`${url}/${data.Key}`);
+    // const {
+    //   submitPost,
+    //   strike,
+    //   user,
+    //   onBlockUser,
+    //   postText,
+    //   showWarning,
+    //   resetPostType,
+    //   onGetStrikesCountOfAUser,
+    //   data,
+    //   onSubmitPost
+    // } = this.props;
+    // const { postTypeId } = this.state;
+    // const { isStudent, id } = user.user;
+    // const { strikes } = strike;
+    // const result = submitPost();
+    // onGetStrikesCountOfAUser({ isStudent, id });
+    //
+    // let isBad = 0;
+    // if (result) {
+    //   if (strikes > 8 && isStudent) {
+    //     // BLOCK THE USER
+    //     onBlockUser({ isStudent, id });
+    //   }
+    //   const check = showWarning(strikes, isStudent);
+    //   console.log(check);
+    //   // if (check) {
+    //   //   this.setState({
+    //   //     isModalVisible: check.isModalVisible,
+    //   //     alertMessage: check.alertMessage
+    //   //   });
+    //   // }
+    //   isBad = 1;
+    // }
+    // const saveData = {
+    //   p_pt_id: postTypeId,
+    //   p_isStudent: isStudent,
+    //   p_actor_id: id,
+    //   p_body: `${url}/${data.Key}`,
+    //   p_text: postText,
+    //   p_is_bad: isBad,
+    //   str_type: result,
+    //   str_is_student: user.user.isStudent,
+    //   str_actor_id: user.user.id,
+    //   isBad
+    // };
+    // onSubmitPost(saveData);
   };
 
   hideModal = () => {
@@ -231,11 +235,9 @@ const mapDispatchToProps = dispatch => ({
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
-export default Moderator(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(BannerImageModal)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BannerImageModal);
 
 // export default BannerImageModal;

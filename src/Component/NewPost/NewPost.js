@@ -117,12 +117,11 @@ class NewPost extends Component {
   }
 
   resetPostType = () => {
-    console.log('reset post type');
     const { onGetStrikesCountOfAUser, user } = this.props;
     const { isStudent, id } = user;
     setTimeout(() => {
       onGetStrikesCountOfAUser({ isStudent, id });
-      // this.setState({ type: 'text' });
+      this.setState({ type: 'text' });
     }, 1500);
   };
 

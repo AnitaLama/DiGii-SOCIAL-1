@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import { PostWrapperContainer, BannerImageModal } from './index';
 import BannerActions from '../../Redux/BannerRedux';
 import PostActions from '../../Redux/PostRedux';
-// import { BannerImageModal } from '../StyledComponents';
+import { Moderator } from '../Functions';
+import LoginActions from '../../Redux/LoginRedux';
+import StrikeActions from '../../Redux/StrikeRedux';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -25,7 +27,9 @@ class BannerPost extends Component {
   }
 
   componentWillMount() {
-    const { onGetAllBanners } = this.props;
+    const { onGetAllBanners, onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
     onGetAllBanners();
   }
 
@@ -61,9 +65,77 @@ class BannerPost extends Component {
 
   onSubmitPost = data => {
     const { onSubmitPost, resetPostType } = this.props;
-    this.hideModal();
     onSubmitPost(data);
+    this.hideModal();
     resetPostType();
+  };
+
+  handlePostText = e => {
+    const { handlePostText } = this.props;
+    handlePostText(e);
+  };
+
+  onFocus = () => {
+    const {
+      user, disableFirstTimePosting, post, onFocus
+    } = this.props;
+    const { posts } = post;
+    const { id, isFirstTimePosting } = user.user;
+    const checkFirstTimePosting = onFocus(posts, id);
+
+    if (checkFirstTimePosting && isFirstTimePosting) {
+      disableFirstTimePosting();
+    }
+  };
+
+  saveBanner = image => {
+    const {
+      submitPost,
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      showWarning,
+      resetPostType,
+      onGetStrikesCountOfAUser,
+      data
+      // onSubmitPost
+    } = this.props;
+    const { postTypeId } = this.state;
+    const { isStudent, id } = user.user;
+    const { strikes } = strike;
+    const result = submitPost();
+    onGetStrikesCountOfAUser({ isStudent, id });
+
+    let isBad = 0;
+    if (result) {
+      if (strikes > 8 && isStudent) {
+        // BLOCK THE USER
+        onBlockUser({ isStudent, id });
+      }
+      const check = showWarning(strikes, isStudent);
+      console.log(check);
+      // if (check) {
+      //   this.setState({
+      //     isModalVisible: check.isModalVisible,
+      //     alertMessage: check.alertMessage
+      //   });
+      // }
+      isBad = 1;
+    }
+    const saveData = {
+      p_pt_id: postTypeId,
+      p_isStudent: isStudent,
+      p_actor_id: id,
+      p_body: image,
+      p_text: postText,
+      p_is_bad: isBad,
+      str_type: result,
+      str_is_student: user.user.isStudent,
+      str_actor_id: user.user.id,
+      isBad
+    };
+    this.onSubmitPost(saveData);
   };
 
   render() {
@@ -79,6 +151,10 @@ class BannerPost extends Component {
             user={user.user}
             postTypeId={postTypeId}
             onSubmitPost={this.onSubmitPost}
+            handlePostText={this.handlePostText}
+            postText={this.props.postText}
+            saveBanner={this.saveBanner}
+            onFocus={this.onFocus}
           />
         )}
       </PostWrapperContainer>
@@ -96,13 +172,20 @@ BannerPost.propTypes = {
 };
 const mapStateToProps = state => ({
   user: state.user,
-  banners: state.banner
+  banners: state.banner,
+  post: state.post,
+  strike: state.strike
 });
 const mapDispatchToProps = dispatch => ({
   onGetAllBanners: () => dispatch(BannerActions.onGetAllBanners()),
-  onSubmitPost: value => dispatch(PostActions.onPostSubmit(value))
+  onSubmitPost: value => dispatch(PostActions.onPostSubmit(value)),
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
+  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BannerPost);
+export default Moderator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(BannerPost)
+);

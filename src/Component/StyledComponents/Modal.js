@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Colors, Images } from '../../Theme';
 import { Button, Avatar } from './index';
-import ShowData from '../Post/showPostData';
+import { ShowFeed } from '../Functions';
 
 const { snow, tint, peach } = Colors.colors;
 const ModalContainer = styled.div`
@@ -126,7 +126,7 @@ class DeleteModal extends Component {
 
   getContent = () => {
     const { post, user } = this.props;
-    return <ShowData post={post} user={user} />;
+    return <ShowFeed post={post} user={user} />;
 
     // return <div>POST</div>;
   };
@@ -195,7 +195,7 @@ class EditModal extends Component {
   getContent = () => {
     const { user, post } = this.props;
     return (
-      <ShowData
+      <ShowFeed
         post={{ ...post, edit: true }}
         user={user}
         handlePostChange={this.handlePostChange}

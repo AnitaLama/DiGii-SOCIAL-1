@@ -9,7 +9,7 @@ import { Avatar, DeleteModal, EditModal } from '../StyledComponents';
 import {
   flex, fontSize, fontWeight, fontFilson, Colors
 } from '../../Theme';
-import { FeelingsList } from '../NewPost/index';
+import { FeelingsList } from '../Functions';
 // const { grey } = Colors.colors;
 
 const { snow, light, tint } = Colors.colors;

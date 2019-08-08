@@ -38,7 +38,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     submitPost = () => {
-      console.log('submit');
       const { postText } = this.state;
       const blacklistedWord = FilterKeyWords(postText);
       return blacklistedWord;
@@ -46,7 +45,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     showWarning = (count, isStudent) => {
       if (count >= 9) {
-        console.log('inside  warning', count);
         this.setState({
           isModalVisible: true,
           alertMessage: 'You\'ll be blocked from  DiGii'
@@ -61,27 +59,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
         });
       }
     };
-
-    // showWarning = (count, isStudent) => {
-    //   if (count >= 9) {
-    //     console.log('inside  warning', count);
-    //     return {
-    //       isModalVisible: false,
-    //       alertMessage: 'You\'ll be blocked from  DiGii'
-    //     };
-    //     // this.setState({
-    //     //   isModalVisible: true,
-    //     //   alertMessage: 'You\'ll be blocked from  DiGii'
-    //     // });
-    //   }
-    //   let index = (count % strikeCount) + 1;
-    //   index -= 1;
-    //
-    //   return {
-    //     isModalVisible: true,
-    //     alertMessage: `${Warnings[index]}`
-    //   };
-    // };
 
     onFocus = (posts, userId) => {
       const isFirstTimePosting = posts.find(item => item.p_actor_id === userId);
@@ -100,7 +77,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     render() {
       const { isModalVisible, alertMessage } = this.state;
-      console.log('>>>>>>', isModalVisible, alertMessage);
       return (
         <div>
           <WrappedComponent

@@ -10,7 +10,7 @@ import { Button, FormTextArea, Modal as AlertModal } from '../StyledComponents';
 import { PostWrapper, PostWrapperContainer } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
-import Moderator from './Moderator';
+import { Moderator } from '../Functions';
 
 import StrikeActions from '../../Redux/StrikeRedux';
 import { SOCKET_URL } from '../../config';

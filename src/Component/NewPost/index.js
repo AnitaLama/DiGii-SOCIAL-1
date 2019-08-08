@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import NewPost from './NewPost';
 import ImagePost from './ImagePost';
 import NewPostType from './NewPostType';
-import FilterKeyWords from './filterKeywords';
-import warnings from './warnings';
 import GifContainer from './GifPost';
 import TextPost from './TextPost';
 import { fontSize } from '../../Theme';
@@ -13,17 +11,13 @@ import PhotoVideoPost from './PhotoVideoPost';
 import VideoPost from './VideoPost';
 import BannerPost from './BannerPost';
 import BannerImageModal from './BannerImageEditor';
-import FeelingsList from './FeelingsList';
 import TagPost from './TagPost';
 import PollPost from './PollPost';
-import Moderator from './Moderator';
 
 export {
   NewPost,
   ImagePost,
   NewPostType,
-  FilterKeyWords,
-  warnings,
   GifContainer,
   TextPost,
   Container,
@@ -32,10 +26,8 @@ export {
   VideoPost,
   BannerPost,
   BannerImageModal,
-  FeelingsList,
   TagPost,
-  PollPost,
-  Moderator
+  PollPost
 };
 
 export const PostWrapper = styled.div`

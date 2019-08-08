@@ -258,6 +258,7 @@ class SinglePost extends Component {
           <DisplayReaction
             onMouseEnter={this.toggleHover}
             onMouseLeave={this.toggleHover}
+            key={reaction.at_id}
           >
             <FacebookEmoji type={reaction.at_name} size="xxs" />
             {' '}

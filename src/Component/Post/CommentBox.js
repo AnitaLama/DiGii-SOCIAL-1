@@ -10,7 +10,7 @@ import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
 import PostActions from '../../Redux/PostRedux';
 
-import Moderator from '../NewPost/Moderator';
+import { Moderator } from '../Functions';
 
 const CommentBoxWrapper = styled.div`
   display: grid;
