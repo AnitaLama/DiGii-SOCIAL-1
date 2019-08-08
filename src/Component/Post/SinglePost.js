@@ -24,6 +24,16 @@ const { snow, pencil, secondary } = Colors.colors;
 
 const ReactionContainer = styled.div`
   display: flex;
+  position: absolute;
+  left: -8px;
+  bottom: 18px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 0 2px;
+  div {
+    padding: 2px;
+  }
 `;
 
 const ReactionNumberStyle = styled.div`
@@ -31,12 +41,32 @@ const ReactionNumberStyle = styled.div`
   font-family: sans-serif;
   font-weight: bold;
 `;
-
+const DisplayReactionWrapper = styled.div`
+  position: relative;
+`;
 const DisplayReaction = styled.div`
   display: flex;
   div:first-of-type {
     display: flex;
   }
+`;
+
+const ReactorsList = styled.div`
+  display: flex;
+  div:first-of-type {
+    display: flex;
+  }
+  position: relative;
+  .listOfReactors {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    background: rgba(52, 52, 52, 0.85);
+    color: white;
+    list-style-type: none;
+    padding: 10px;
+  }
+  border-radius: 10px;
 `;
 
 const PostWrapper = styled.div`
@@ -255,23 +285,26 @@ class SinglePost extends Component {
 
       if (reaction) {
         return (
-          <DisplayReaction
+          <ReactorsList
             onMouseEnter={this.toggleHover}
             onMouseLeave={this.toggleHover}
             key={reaction.at_id}
           >
             <FacebookEmoji type={reaction.at_name} size="xxs" />
             {' '}
-            {this.state.toggleHover
-              && post_activities.map(
-                value => value.pa_at_id === reaction.at_id
-                  && (value.pa_is_student ? (
-                    <li>{value.student.st_username}</li>
-                  ) : (
-                    <li>{value.user.u_name}</li>
-                  ))
-              )}
-          </DisplayReaction>
+            {this.state.toggleHover && (
+              <div className="listOfReactors">
+                {post_activities.map(
+                  value => value.pa_at_id === reaction.at_id
+                    && (value.pa_is_student ? (
+                      <li>{value.student.st_username}</li>
+                    ) : (
+                      <li>{value.user.u_name}</li>
+                    ))
+                )}
+              </div>
+            )}
+          </ReactorsList>
         );
       }
       return true;
@@ -290,77 +323,78 @@ class SinglePost extends Component {
             <Author data={data} modalpopup={modalpopup} />
             <ActualPost>{this.getContent(data)}</ActualPost>
           </div>
-          <DisplayReaction>
-            <div>{this.showCurrentReactions()}</div>
+          <DisplayReactionWrapper>
+            <DisplayReaction>
+              <div>{this.showCurrentReactions()}</div>
 
-            <ReactionNumberStyle>
-              {this.state.totalReactionCounts !== 0
-                ? this.state.totalReactionCounts
-                : null}
-              {' '}
-            </ReactionNumberStyle>
-          </DisplayReaction>
+              <ReactionNumberStyle>
+                {this.state.totalReactionCounts !== 0
+                  && this.state.totalReactionCounts}
+                {' '}
+              </ReactionNumberStyle>
+            </DisplayReaction>
 
-          <Reactions
-            handleReactionSelection={this.handleReactionSelection}
-            reactionpopup={this.multipleLikes}
-          />
+            <Reactions
+              handleReactionSelection={this.handleReactionSelection}
+              reactionpopup={this.multipleLikes}
+            />
 
-          {this.state.showreactions && (
-            <ReactionContainer>
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('like');
-                }}
-              >
-                <FacebookEmoji type="like" size="xs" />
-              </div>
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('love');
-                }}
-              >
-                <FacebookEmoji type="love" size="xs" />
-              </div>
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('wow');
-                }}
-              >
-                <FacebookEmoji type="wow" size="xs" />
-              </div>
-              {' '}
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('yay');
-                }}
-              >
-                <FacebookEmoji type="yay" size="xs" />
-              </div>
-              {' '}
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('angry');
-                }}
-              >
-                <FacebookEmoji type="angry" size="xs" />
-              </div>
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('haha');
-                }}
-              >
-                <FacebookEmoji type="haha" size="xs" />
-              </div>
-              <div
-                onClick={() => {
-                  this.handleReactionClicked('sad');
-                }}
-              >
-                <FacebookEmoji type="sad" size="xs" />
-              </div>
-            </ReactionContainer>
-          )}
+            {this.state.showreactions && (
+              <ReactionContainer>
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('like');
+                  }}
+                >
+                  <FacebookEmoji type="like" size="xs" />
+                </div>
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('love');
+                  }}
+                >
+                  <FacebookEmoji type="love" size="xs" />
+                </div>
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('wow');
+                  }}
+                >
+                  <FacebookEmoji type="wow" size="xs" />
+                </div>
+                {' '}
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('yay');
+                  }}
+                >
+                  <FacebookEmoji type="yay" size="xs" />
+                </div>
+                {' '}
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('angry');
+                  }}
+                >
+                  <FacebookEmoji type="angry" size="xs" />
+                </div>
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('haha');
+                  }}
+                >
+                  <FacebookEmoji type="haha" size="xs" />
+                </div>
+                <div
+                  onClick={() => {
+                    this.handleReactionClicked('sad');
+                  }}
+                >
+                  <FacebookEmoji type="sad" size="xs" />
+                </div>
+              </ReactionContainer>
+            )}
+          </DisplayReactionWrapper>
         </ActualPostWrapper>
 
         <CommentContainer>

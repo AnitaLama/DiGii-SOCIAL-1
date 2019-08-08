@@ -146,9 +146,27 @@ class CommentBox extends Component {
     this.fileInput.click();
   };
 
-  selectImage = e => {
+  selectImage = params => {
+    const { onPostImage } = this.props;
+
+    const { user } = this.props.user;
+
+    const { e, data } = params;
+    const { p_id } = data;
+    const { isStudent, id } = user;
+
     const { files } = e.target;
     this.setState({ file: files });
+
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('pc_p_id', p_id);
+    formData.append('pc_isStudent', isStudent);
+    formData.append('pc_commentator_id', id);
+    formData.append('pc_is_bad', 0);
+    formData.append('filename', Date.now() + files[0].name);
+
+    onPostImage(formData);
   };
 
   handleGifButtonClick = () => {
@@ -221,7 +239,7 @@ class CommentBox extends Component {
   aa;
 
   render() {
-    const { postText, user } = this.props;
+    const { postText, user, data } = this.props;
     const { avatar } = user.user;
     return (
       <CommentBoxWrapper
@@ -271,7 +289,7 @@ class CommentBox extends Component {
               this.fileInput = r;
             }}
             style={{ display: 'none' }}
-            onChange={this.selectImage}
+            onChange={e => this.selectImage({ e, data, user })}
           />
           <button onClick={this.handleSelectImage}>
             <FaImage />
@@ -308,7 +326,8 @@ const mapDispatchToProps = dispatch => ({
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value)),
   onFindGifForComments: value => dispatch(PostActions.onFindGifForComments(value)),
-  clearCommentGif: () => dispatch(PostActions.clearCommentGif())
+  clearCommentGif: () => dispatch(PostActions.clearCommentGif()),
+  onPostImage: value => dispatch(PostActions.onPostImage(value))
 });
 export default Moderator(
   connect(
