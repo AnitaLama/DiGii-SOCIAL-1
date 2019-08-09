@@ -8,6 +8,7 @@ import {
 } from '../../Theme';
 import { Avatar } from '../StyledComponents';
 import PostAction from '../../Redux/PostRedux';
+import { FeelingsList } from '../Functions';
 
 const { grey, pink } = Colors.colors;
 const CommentWrapper = styled.div`
@@ -38,6 +39,9 @@ const CommentDiv = styled.div`
   img {
     height: 50px;
   }
+  span.emoji {
+    font-family: Segoe UI Emoji;
+  }
 `;
 const Close = styled.div`
   position: absolute;
@@ -59,6 +63,12 @@ class Comment extends Component {
   hideComment = value => {
     this.setState({ isCommentHidden: true });
     this.props.onDelete(value);
+  };
+
+  getEmoji = data => {
+    const feeling = FeelingsList.find(item => item.name === data);
+    console.log(feeling);
+    return ` ${feeling.emoji}`;
   };
 
   render() {
@@ -84,19 +94,7 @@ class Comment extends Component {
       lastname = up_lastname;
       userAvatar = avatar;
     }
-    // {userAvatar ? (
-    //   <UserAvatar
-    //     avatar={userAvatar}
-    //     height={24}
-    //     style={{ marginRight: '6px' }}
-    //   />
-    // ) : (
-    //   <Avatar
-    //     src={Images.stockImage}
-    //     height={24}
-    //     style={{ marginRight: '6px' }}
-    //   />
-    // )}
+
     return !isCommentHidden ? (
       <CommentWrapper>
         <Avatar
@@ -118,12 +116,14 @@ class Comment extends Component {
           {/* <span className="date">
             {new Date(createdAt).toLocaleDateString()}
           </span> */}
+          {console.log(data)}
           <span>
-            {data.pc_image_path ? (
-              <img src={data.pc_image_path} />
-            ) : (
-              data.pc_body
-            )}
+            {data.pc_image_path && <img src={data.pc_image_path} />}
+            {data.pc_title.toLowerCase() !== 'feeling' && data.pc_body}
+          </span>
+          <span>
+            {data.pc_title.toLowerCase() === 'feeling'
+              && `is feeling ${data.pc_body} ${this.getEmoji(data.pc_body)}`}
           </span>
         </CommentDiv>
       </CommentWrapper>

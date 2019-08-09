@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import { FaCaretRight, FaImage } from 'react-icons/fa';
+import { FaCaretRight, FaImage, FaSmile } from 'react-icons/fa';
 import { MdGif } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { FormInput, Avatar, Button } from '../StyledComponents';
@@ -9,8 +9,10 @@ import CommentActions from '../../Redux/CommentRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
 import PostActions from '../../Redux/PostRedux';
+import { Colors } from '../../Theme';
+import { Moderator, FeelingsList } from '../Functions';
 
-import { Moderator } from '../Functions';
+const { snow } = Colors.colors;
 
 const CommentBoxWrapper = styled.div`
   display: grid;
@@ -22,7 +24,6 @@ const CommentBoxWrapper = styled.div`
     border: 0;
     outline: 0;
     width: auto;
-    vertical-align: bottom;
   }
   .findButton {
     height: 45px;
@@ -36,6 +37,13 @@ const CommentBoxWrapper = styled.div`
     top: 0;
     bottom: 0;
     vertical-align: ;
+    color: grey;
+    button {
+      height: 10px;
+      svg {
+        height: 14px;
+      }
+    }
   }
 `;
 const GifContainer = styled.div`
@@ -48,10 +56,23 @@ const GifContainer = styled.div`
     display: flex;
   }
 `;
+const FeelingsDiv = styled.div`
+  display: grid !important;
+  grid-template-columns: repeat(3, auto);
+  background: rgba(52, 52, 52, 0.7);
+  border: 1px solid black;
+  border-radius: 20px;
+  color: ${snow};
+  span {
+    margin: auto;
+    cursor: pointer;
+  }
+`;
 class CommentBox extends Component {
   state = {
     showGifInput: false,
-    gifText: ''
+    gifText: '',
+    showFeelings: false
   };
 
   componentWillMount() {
@@ -141,8 +162,6 @@ class CommentBox extends Component {
   };
 
   handleSelectImage = () => {
-    console.log('handle select image');
-    const { fileInput } = this;
     this.fileInput.click();
   };
 
@@ -236,7 +255,38 @@ class CommentBox extends Component {
     this.setState({ showGifInput: !!(gifText.length > 0) });
   };
 
-  aa;
+  handleFeelingsClick = () => {
+    this.setState({ showFeelings: true });
+  };
+
+  handleClickOnFeeling = feeling => {
+    const {
+      submitPost,
+      strike,
+      user,
+      onBlockUser,
+      postText,
+      showWarning,
+      onGetStrikesCountOfAUser,
+      data,
+      onSubmitComment,
+      resetPostText
+    } = this.props;
+    const { p_id } = data;
+    const { isStudent, id } = user.user;
+    const comment = {
+      pc_p_id: p_id,
+      pc_is_student: isStudent,
+      pc_commentator_id: id,
+      pc_title: 'feeling',
+      pc_body: feeling.name,
+      isBad: 0,
+      pc_is_bad: 0
+    };
+    // console.log(comment);
+    onSubmitComment(comment);
+    this.setState({ showFeelings: false });
+  };
 
   render() {
     const { postText, user, data } = this.props;
@@ -261,6 +311,25 @@ class CommentBox extends Component {
             this.commentInput = r;
           }}
         />
+        <GifContainer
+          style={{
+            bottom: '20px',
+            display: this.state.showFeelings ? 'block' : 'none'
+          }}
+        >
+          <FeelingsDiv>
+            {FeelingsList.map(feeling => (
+              <span
+                onClick={() => {
+                  this.handleClickOnFeeling(feeling);
+                }}
+              >
+                {feeling.name}
+                {feeling.emoji}
+              </span>
+            ))}
+          </FeelingsDiv>
+        </GifContainer>
         <GifContainer
           style={{
             display: this.state.showGifInput ? 'block' : 'none'
@@ -296,6 +365,9 @@ class CommentBox extends Component {
           </button>
           <button onClick={this.handleGifButtonClick}>
             <MdGif />
+          </button>
+          <button onClick={this.handleFeelingsClick}>
+            <FaSmile />
           </button>
           <button onClick={this.handleCommentReply}>
             <FaCaretRight />

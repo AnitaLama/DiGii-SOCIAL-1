@@ -184,7 +184,9 @@ class SinglePost extends Component {
       showreactions: false,
       totalReactionCounts: null,
       totalReactionCountsArray: [],
-      toggleHover: false
+      toggleHover: false,
+      currentHoverId: null,
+      getOnlyReactionOnHover: []
     };
   }
 
@@ -238,12 +240,30 @@ class SinglePost extends Component {
     }
   };
 
-  toggleHover = () => {
-    this.setState({ toggleHover: !this.state.toggleHover });
+  toggleHover = at_id => {
+    this.setState({ currentHoverId: at_id });
+
+    this.setState({ toggleHover: true });
+
+    this.getCurrentLikesReactions(at_id);
+  };
+
+  getCurrentLikesReactions = param => {
+    const getOnlyReactionOnHover1 = [];
+    const { data, likeReactions } = this.props;
+    const { post_activities } = data;
+
+    post_activities.map(item => {
+      if (item && item.activity_type && item.activity_type.at_id === param) {
+        getOnlyReactionOnHover1.push(item);
+        console.log('Test,getOnlyReactionOnHover1', getOnlyReactionOnHover1);
+      }
+    });
+    this.setState({ getOnlyReactionOnHover: getOnlyReactionOnHover1 });
   };
 
   handleReactionClicked = value => {
-    const { data, user } = this.props;
+    const { onSelectReaction, data, user } = this.props;
     const { p_id, p_isStudent } = data;
 
     const { id } = user.user;
@@ -267,6 +287,10 @@ class SinglePost extends Component {
     this.setState({ showreactions: !this.state.showreactions });
   };
 
+  toggleHoverleave = () => {
+    this.setState({ toggleHover: false });
+  };
+
   showCurrentReactions = () => {
     const { data, likeReactions } = this.props;
     const { post_activities } = data;
@@ -284,17 +308,20 @@ class SinglePost extends Component {
       );
 
       if (reaction) {
+        const { at_id } = reaction;
         return (
           <ReactorsList
-            onMouseEnter={this.toggleHover}
-            onMouseLeave={this.toggleHover}
+            onMouseEnter={() => {
+              this.toggleHover(at_id);
+            }}
+            onMouseLeave={this.toggleHoverleave}
             key={reaction.at_id}
           >
             <FacebookEmoji type={reaction.at_name} size="xxs" />
             {' '}
             {this.state.toggleHover && (
               <div className="listOfReactors">
-                {post_activities.map(
+                {this.state.getOnlyReactionOnHover.map(
                   value => value.pa_at_id === reaction.at_id
                     && (value.pa_is_student ? (
                       <li>{value.student.st_username}</li>
