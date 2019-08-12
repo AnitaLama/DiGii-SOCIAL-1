@@ -25,6 +25,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       this.setState({ postText: '' });
     };
 
+    updatePostText = newText => {
+      this.setState({ postText: `${newText} ` });
+    };
+
     handlePostText = e => {
       const { value } = e.target;
       const actualValue = value.trim();
@@ -87,6 +91,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             showWarning={this.showWarning}
             onFocus={this.onFocus}
             resetPostText={this.resetPostText}
+            updatePostText={this.updatePostText}
           />
           {isModalVisible && (
             <Modal message={alertMessage} hideModal={this.hideModal} />

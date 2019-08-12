@@ -8,11 +8,11 @@ const bouncedelay = keyframes`
 const Spinner = styled.div`
   width: 70px;
   text-align: center;
+
   div {
     width: 6px;
     height: 6px;
-    background-color: #fff;
-
+    background: ${props => `${props.color}` || '#fff'};
     border-radius: 100%;
     display: inline-block;
     animation: ${bouncedelay} 1.4s infinite ease-in-out both;
@@ -27,8 +27,8 @@ const BallTwo = styled.div`
   animation-delay: -0.16s !important;
 `;
 const BallThree = styled.div``;
-const Loader = () => (
-  <Spinner>
+const Loader = props => (
+  <Spinner {...props}>
     <BallOne />
     <BallTwo />
     <BallThree />

@@ -55,7 +55,7 @@ const UserList = styled.ul`
   background: ${snow};
   position: absolute;
   overflow-y: scroll;
-  height: 130px;
+  height: ${props => (props.height ? `${props.height}px` : '130px')};
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -205,9 +205,10 @@ class TagPost extends Component {
       str_is_student: user.user.isStudent,
       str_actor_id: user.user.id
     };
-    onSubmitTagPost(data);
-
-    resetPostType();
+    if (postText.length > 0) {
+      onSubmitTagPost(data);
+      resetPostType();
+    }
   };
 
   selectUser = user => {
@@ -284,6 +285,9 @@ class TagPost extends Component {
               onFocus={() => {
                 this.setState({ showUsers: true });
               }}
+              onBlur={() => {
+                // this.setState({ showUsers: false });
+              }}
             />
             <ChipsWrapper>
               {taggedUsers.map((user, i) => (
@@ -303,18 +307,27 @@ x
           {/* ---------LIST OF USERS IN THAT GROUP-----------------*/}
 
           {showUsers && (
-            <UserList>
-              {users.map((item, i) => (
-                <li
-                  key={`${item}${i}`}
-                  onClick={() => {
-                    this.selectUser(item);
-                  }}
-                >
-                  {item.u_name || item.st_username}
-                </li>
-              ))}
-            </UserList>
+            <div>
+              {users.length > 0 && (
+                <UserList>
+                  {users.map((item, i) => (
+                    <li
+                      key={`${item}${i}`}
+                      onClick={() => {
+                        this.selectUser(item);
+                      }}
+                    >
+                      {item.u_name || item.st_username}
+                    </li>
+                  ))}
+                </UserList>
+              )}
+              {users.length === 0 && (
+                <UserList height={30}>
+                  <Loader color={primary} />
+                </UserList>
+              )}
+            </div>
           )}
         </UserListWrapper>
       </PostWrapperContainer>

@@ -22,6 +22,7 @@ class UserAvatar extends Component {
         a_clothes_color,
         a_eyebrow,
         a_eyes,
+        a_facialhair_moustache,
         a_facial_hair_color,
         a_haircolor,
         a_mouth,
@@ -38,7 +39,8 @@ class UserAvatar extends Component {
             topType={a_top}
             accessoriesType={a_accessories}
             hairColor={a_haircolor}
-            facialHairType={a_facial_hair_color}
+            facialHairType={a_facialhair_moustache}
+            facialHairColor={a_facial_hair_color}
             clotheType={a_clothes}
             clotheColor={a_clothes_color}
             eyeType={a_eyes}

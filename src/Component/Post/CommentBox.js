@@ -9,11 +9,44 @@ import CommentActions from '../../Redux/CommentRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
 import PostActions from '../../Redux/PostRedux';
+import GroupActions from '../../Redux/GroupRedux';
 import { Colors } from '../../Theme';
 import { Moderator, FeelingsList } from '../Functions';
 
-const { snow } = Colors.colors;
+const {
+  snow, primary, secondary, pencil
+} = Colors.colors;
 
+const UserList = styled.ul`
+  list-style-type: none;
+  background: white;
+  min-width: 150px;
+  padding: 0;
+  margin: 0;
+  height: ${props => (props.height ? `${props.height}px` : '130px')};
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 0.25em;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px ${pencil};
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${secondary};
+    outline: 1px solid ${secondary};
+  }
+`;
+const UserListElement = styled.li`
+  padding: 4px 10px;
+  &:hover {
+    cursor: pointer;
+    background-image: linear-gradient(to right, ${primary}, ${secondary});
+    color: ${snow};
+  }
+`;
 const CommentBoxWrapper = styled.div`
   display: grid;
   grid-template-columns: 20px auto;
@@ -72,7 +105,9 @@ class CommentBox extends Component {
   state = {
     showGifInput: false,
     gifText: '',
-    showFeelings: false
+    showFeelings: false,
+    usersInGroup: [],
+    showUsers: false
   };
 
   componentWillMount() {
@@ -83,6 +118,19 @@ class CommentBox extends Component {
 
   componentDidMount() {
     this.commentInput.focus();
+    const { user, onGetAllUsersOfAGroup, group } = this.props;
+    const { groupId } = user.user;
+    const { users } = group;
+    onGetAllUsersOfAGroup(groupId);
+    this.setState({ usersInGroup: users });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { group } = nextProps;
+    const { users } = this.state;
+    if (users !== group.users) {
+      this.setState({ usersInGroup: group.users });
+    }
   }
 
   onFocus = () => {
@@ -98,11 +146,17 @@ class CommentBox extends Component {
     }
   };
 
-  handleKeyDown = event => {
-    if (event.key === '@') {
-      console.log('show user list');
+  handleKeyDown = e => {
+    // console.log(e.key);
+    // console.log(e.target.selectionStart);
+    // console.log(e.target.selectionEnd);
+    const start = e.target.selectionStart;
+    const { postText } = this.props;
+    console.log(start, postText, postText[start - 1]);
+    if (e.key === '@') {
+      this.setState({ showUsers: true });
     }
-    if (event.key === 'Enter') {
+    if (e.key === 'Enter') {
       this.handleCommentReply();
     }
   };
@@ -160,8 +214,10 @@ class CommentBox extends Component {
       str_is_student: user.user.isStudent,
       str_actor_id: user.user.id
     };
-    onSubmitComment(comment);
-    resetPostText();
+    if (postText.length > 0) {
+      onSubmitComment(comment);
+      resetPostText();
+    }
   };
 
   handleSelectImage = () => {
@@ -291,7 +347,17 @@ class CommentBox extends Component {
     this.setState({ showFeelings: false });
   };
 
+  userSelected = value => {
+    const { updatePostText, postText } = this.props;
+    updatePostText(postText + (value.u_name || value.st_username));
+    this.setState({ showUsers: false });
+    this.commentInput.focus();
+  };
+
   render() {
+    const {
+      usersInGroup, showUsers, showFeelings, text
+    } = this.state;
     const { postText, user, data } = this.props;
     const { avatar } = user.user;
     return (
@@ -316,8 +382,29 @@ class CommentBox extends Component {
         />
         <GifContainer
           style={{
+            bottom: '24px',
+            left: '30px',
+            display: showUsers ? 'block' : 'none',
+            zIndex: 2
+          }}
+        >
+          <UserList>
+            {usersInGroup.map(users => (
+              <UserListElement
+                onClick={() => {
+                  this.userSelected(users);
+                }}
+              >
+                {users.u_name || users.st_username}
+              </UserListElement>
+            ))}
+          </UserList>
+        </GifContainer>
+
+        <GifContainer
+          style={{
             bottom: '20px',
-            display: this.state.showFeelings ? 'block' : 'none'
+            display: showFeelings ? 'block' : 'none'
           }}
         >
           <FeelingsDiv>
@@ -393,7 +480,8 @@ const mapStateToProps = state => ({
   postActivity: state.postActivity,
   user: state.user,
   post: state.post,
-  strike: state.strike
+  strike: state.strike,
+  group: state.group
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -403,7 +491,8 @@ const mapDispatchToProps = dispatch => ({
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value)),
   onFindGifForComments: value => dispatch(PostActions.onFindGifForComments(value)),
   clearCommentGif: () => dispatch(PostActions.clearCommentGif()),
-  onPostImage: value => dispatch(PostActions.onPostImage(value))
+  onPostImage: value => dispatch(PostActions.onPostImage(value)),
+  onGetAllUsersOfAGroup: value => dispatch(GroupActions.onGetAllUsersOfAGroup(value))
 });
 export default Moderator(
   connect(
