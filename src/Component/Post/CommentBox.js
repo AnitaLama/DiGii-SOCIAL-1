@@ -99,6 +99,9 @@ class CommentBox extends Component {
   };
 
   handleKeyDown = event => {
+    if (event.key === '@') {
+      console.log('show user list');
+    }
     if (event.key === 'Enter') {
       this.handleCommentReply();
     }
@@ -323,6 +326,7 @@ class CommentBox extends Component {
                 onClick={() => {
                   this.handleClickOnFeeling(feeling);
                 }}
+                key={feeling.name}
               >
                 {feeling.name}
                 {feeling.emoji}

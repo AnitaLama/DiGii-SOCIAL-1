@@ -105,7 +105,7 @@ class Author extends Component {
   getExtraInfo = () => {
     const { data } = this.props;
     const { post_type, p_text, notifications } = data;
-    const type = post_type.pt_title;
+    const type = (post_type && post_type.pt_title) || '';
     const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
     if (type === 'feeling') {
       return (

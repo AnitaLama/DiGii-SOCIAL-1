@@ -12,7 +12,7 @@ import LoginActions from '../../Redux/LoginRedux';
 import { Moderator } from '../Functions';
 
 const {
-  primary, blue, grey, snow, secondary
+  primary, blue, grey, snow, secondary, pencil
 } = Colors.colors;
 
 const ChipContainer = styled.div`
@@ -59,7 +59,7 @@ const UserList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-
+  z-index: 2;
   left: 0;
   min-width: 150px;
   li {
@@ -69,6 +69,19 @@ const UserList = styled.ul`
       background-image: linear-gradient(to right, ${primary}, ${secondary});
       color: ${snow};
     }
+  }
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 0.25em;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px ${pencil};
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${secondary};
+    outline: 1px solid ${secondary};
   }
 `;
 
@@ -101,6 +114,14 @@ class TagPost extends Component {
     const { users } = group;
     onGetAllUsersOfAGroup(groupId);
     this.setState({ users });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { group } = nextProps;
+    const { users } = this.state;
+    if (users !== group.users) {
+      this.setState({ users: group.users });
+    }
   }
 
   handleKeyDown = event => {

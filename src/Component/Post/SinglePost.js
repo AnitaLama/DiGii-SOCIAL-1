@@ -231,7 +231,13 @@ class SinglePost extends Component {
   getContent = data => {
     const { user } = this.props;
     // const type = post_type && post_type.pt_title;
-    return <ShowFeed post={data} user={user.user} />;
+    return (
+      <ShowFeed
+        post={data}
+        user={user.user}
+        selectPollAnswer={this.selectPollAnswer}
+      />
+    );
   };
 
   handleReactionSelection = action => {
@@ -256,7 +262,6 @@ class SinglePost extends Component {
     post_activities.map(item => {
       if (item && item.activity_type && item.activity_type.at_id === param) {
         getOnlyReactionOnHover1.push(item);
-        console.log('Test,getOnlyReactionOnHover1', getOnlyReactionOnHover1);
       }
     });
     this.setState({ getOnlyReactionOnHover: getOnlyReactionOnHover1 });

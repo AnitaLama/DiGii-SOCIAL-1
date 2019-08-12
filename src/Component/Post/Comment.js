@@ -67,7 +67,6 @@ class Comment extends Component {
 
   getEmoji = data => {
     const feeling = FeelingsList.find(item => item.name === data);
-    console.log(feeling);
     return ` ${feeling.emoji}`;
   };
 
@@ -94,7 +93,8 @@ class Comment extends Component {
       lastname = up_lastname;
       userAvatar = avatar;
     }
-
+    const { pc_commentator_id, pc_is_student } = data;
+    const checkIfCanBeDeleted = pc_is_student == isStudent && pc_commentator_id === id;
     return !isCommentHidden ? (
       <CommentWrapper>
         <Avatar
@@ -110,13 +110,14 @@ class Comment extends Component {
             {lastname}
           </span>
           {/* Hide/Edit/Delete comment  */}
-          <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>
-            <FaTimes />
-          </Close>
+          {checkIfCanBeDeleted && (
+            <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>
+              <FaTimes />
+            </Close>
+          )}
           {/* <span className="date">
             {new Date(createdAt).toLocaleDateString()}
           </span> */}
-          {console.log(data)}
           <span>
             {data.pc_image_path && <img src={data.pc_image_path} />}
             {data.pc_title.toLowerCase() !== 'feeling' && data.pc_body}

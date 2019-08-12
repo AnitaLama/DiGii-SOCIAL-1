@@ -147,9 +147,9 @@ class ShowData extends Component {
 
                 return (
                   <PollWrapper
-                    onClick={() => {
-                      this.selectPollAnswer(option, hasUserVoted);
-                    }}
+                    // onClick={() => {
+                    //   this.props.selectPollAnswer(option, hasUserVoted);
+                    // }}
                     key={`${option}${i}`}
                   >
                     <div>
@@ -289,7 +289,7 @@ class ShowData extends Component {
               return (
                 <PollWrapper
                   onClick={() => {
-                    this.selectPollAnswer(option, hasUserVoted);
+                    this.props.selectPollAnswer(option, hasUserVoted);
                   }}
                   key={`${option}${i}`}
                 >
