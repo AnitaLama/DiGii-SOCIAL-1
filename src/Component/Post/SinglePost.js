@@ -191,15 +191,15 @@ class SinglePost extends Component {
   }
 
   componentWillMount() {
-    this.props.onHandleLikeReaction();
+    // this.props.onHandleLikeReaction();
 
     // Display total count of reactions
 
-    const { data, likeReactions } = this.props;
+    const { data } = this.props;
     const { post_activities } = data;
     const reactioncount = [];
     post_activities
-      && post_activities.map(item => reactioncount.push(item.pa_at_id));
+      && post_activities.map(item => reactioncount.push(item.pa_activityTypeId));
     this.setState({ totalReactionCounts: reactioncount.length });
   }
 
@@ -209,7 +209,7 @@ class SinglePost extends Component {
     const reactioncount = [];
 
     post_activities.map(
-      item => item.pa_at_id !== 0 && reactioncount.push(item.pa_at_id)
+      item => item.pa_activityTypeId !== 0 && reactioncount.push(item.pa_activityTypeId)
     );
     this.setState({ totalReactionCounts: reactioncount.length });
   }
@@ -246,12 +246,12 @@ class SinglePost extends Component {
     }
   };
 
-  toggleHover = at_id => {
-    this.setState({ currentHoverId: at_id });
+  toggleHover = activityTypeId => {
+    this.setState({ currentHoverId: activityTypeId });
 
     this.setState({ toggleHover: true });
 
-    this.getCurrentLikesReactions(at_id);
+    this.getCurrentLikesReactions(activityTypeId);
   };
 
   getCurrentLikesReactions = param => {
@@ -260,7 +260,7 @@ class SinglePost extends Component {
     const { post_activities } = data;
 
     post_activities.map(item => {
-      if (item && item.activity_type && item.activity_type.at_id === param) {
+      if (item && item.activity_type && item.activity_type.activityTypeId === param) {
         getOnlyReactionOnHover1.push(item);
       }
     });
@@ -274,11 +274,11 @@ class SinglePost extends Component {
     const { id } = user.user;
 
     const selectedReaction = this.props.likeReactions.find(
-      item => item.at_name === value
+      item => item.activityTypeName === value
     );
 
     const values = {
-      pa_at_id: selectedReaction.at_id,
+      pa_activityTypeId: selectedReaction.activityTypeId,
       pa_actor_id: id,
       pa_is_student: p_isStudent,
       pa_p_id: p_id
@@ -301,7 +301,7 @@ class SinglePost extends Component {
     const { post_activities } = data;
     const reactionId = [];
     post_activities
-      && post_activities.map(item => reactionId.push(item.pa_at_id));
+      && post_activities.map(item => reactionId.push(item.pa_activityTypeId));
 
     // Taking only unique emo to display
 
@@ -309,25 +309,25 @@ class SinglePost extends Component {
 
     return uniquereactions.map(item => {
       const reaction = likeReactions.find(
-        reactionItem => reactionItem.at_id === item
+        reactionItem => reactionItem.activityTypeId === item
       );
 
       if (reaction) {
-        const { at_id } = reaction;
+        const { activityTypeId } = reaction;
         return (
           <ReactorsList
             onMouseEnter={() => {
-              this.toggleHover(at_id);
+              this.toggleHover(activityTypeId);
             }}
             onMouseLeave={this.toggleHoverleave}
-            key={reaction.at_id}
+            key={reaction.activityTypeId}
           >
-            <FacebookEmoji type={reaction.at_name} size="xxs" />
+            <FacebookEmoji type={reaction.activityTypeName} size="xxs" />
             {' '}
             {this.state.toggleHover && (
               <div className="listOfReactors">
                 {this.state.getOnlyReactionOnHover.map(
-                  value => value.pa_at_id === reaction.at_id
+                  value => value.pa_activityTypeId === reaction.activityTypeId
                     && (value.pa_is_student ? (
                       <li>{value.student.st_username}</li>
                     ) : (

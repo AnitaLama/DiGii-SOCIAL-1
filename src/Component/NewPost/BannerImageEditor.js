@@ -124,7 +124,7 @@ class BannerImageModal extends Component {
     //     // BLOCK THE USER
     //     onBlockUser({ isStudent, id });
     //   }
-    //   const check = showWarning(strikes, isStudent);
+    //   const check = showWarning(strikes, isStudent, result);
     //   console.log(check);
     //   // if (check) {
     //   //   this.setState({

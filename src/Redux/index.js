@@ -11,6 +11,7 @@ const BannerRedux = require('./BannerRedux');
 const ErrorRedux = require('./ErrorRedux');
 const GroupRedux = require('./GroupRedux');
 const ProfileRedux = require('./ProfileRedux');
+const TutorialRedux = require('./TutorialRedux');
 
 const allReducers = combineReducers({
   test: TestReduxes.reducer,
@@ -23,7 +24,8 @@ const allReducers = combineReducers({
   banner: BannerRedux.reducer,
   error: ErrorRedux.reducer,
   group: GroupRedux.reducer,
-  profile: ProfileRedux.reducer
+  profile: ProfileRedux.reducer,
+  tutorial: TutorialRedux.reducer
 });
 
 export default allReducers;

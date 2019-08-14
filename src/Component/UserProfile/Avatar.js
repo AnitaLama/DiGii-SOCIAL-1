@@ -323,7 +323,7 @@ class UserAvatar extends Component {
         a_clothes_color,
         a_mouth,
         a_skin,
-        a_style,
+        avatarStyle,
         a_top
       } = avatar;
       this.setState({
@@ -640,8 +640,8 @@ class UserAvatar extends Component {
       topType
     } = this.state;
     const data = {
-      a_id: avatar ? avatar.a_id : null,
-      a_style: avatarStyle,
+      avatarId: avatar ? avatar.avatarId : null,
+      avatarStyle: avatarStyle,
       a_top: topType,
       a_accessories: accessoriesType,
       a_haircolor: hairColor,

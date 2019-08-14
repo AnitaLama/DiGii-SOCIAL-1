@@ -27,7 +27,7 @@ class UserAvatar extends Component {
         a_haircolor,
         a_mouth,
         a_skin,
-        a_style,
+        avatarStyle,
         a_top,
         a_graphic_type
       } = avatar;
@@ -35,7 +35,7 @@ class UserAvatar extends Component {
         <div>
           <Avatar
             style={{ width: `${height}px`, height: `${height}px` }}
-            avatarStyle={a_style}
+            avatarStyle={avatarStyle}
             topType={a_top}
             accessoriesType={a_accessories}
             hairColor={a_haircolor}

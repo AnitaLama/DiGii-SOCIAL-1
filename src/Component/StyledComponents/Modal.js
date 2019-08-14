@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { FaPlay, FaPause } from 'react-icons/fa';
-import { Colors, Images } from '../../Theme';
+import { connect } from 'react-redux';
+import Slider from 'react-slick';
+import { Colors, Images, flexCentering } from '../../Theme';
 import { Button, Avatar } from './index';
 import { ShowFeed } from '../Functions';
+import TutorialActions from '../../Redux/TutorialRedux';
 
 const { snow, tint, peach } = Colors.colors;
 const ModalContainer = styled.div`
@@ -17,6 +20,7 @@ const ModalContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  ${flexCentering()}
 `;
 const ModalBox = styled.div`
   width: 50%;
@@ -88,11 +92,7 @@ class Modal extends Component {
     console.log(showCheckButton);
     return (
       <ModalContainer>
-        <ModalBox
-          style={{
-            marginTop: '200px'
-          }}
-        >
+        <ModalBox>
           {/*  <div className="close">
             <CloseButton onClick={hideModal}>x</CloseButton>
           </div> */}
@@ -162,11 +162,7 @@ class DeleteModal extends Component {
     const { avatar } = user;
     return (
       <ModalContainer>
-        <ModalBox
-          style={{
-            marginTop: '200px'
-          }}
-        >
+        <ModalBox>
           <Header>
             <div>
               <Avatar avatar={avatar} height={60} />
@@ -239,11 +235,7 @@ class EditModal extends Component {
     const { avatar } = user;
     return (
       <ModalContainer>
-        <ModalBox
-          style={{
-            marginTop: '200px'
-          }}
-        >
+        <ModalBox>
           <Header>
             <div>
               <Avatar avatar={avatar} height={60} />
@@ -300,80 +292,175 @@ const VideoOverlay = styled.div`
     }
   }
 `;
-class VideoModal extends Component {
+class VideoModalContainer extends Component {
   state = {
     playing: false,
     showQuestions: false
   };
 
-  componentDidMount() {
-    const player = this.fullscreenVideo;
-    player.addEventListener('pause', () => {
-      console.log('paused');
-      this.setState({ playing: false });
-    });
-    player.addEventListener('playing', () => {
-      console.log('playing');
-      this.setState({ playing: true });
-    });
-    player.addEventListener('ended', () => {
-      console.log('the video has ended show the questions');
-      this.setState({ showQuestions: true });
-    });
+  componentWillMount() {
+    const { onTutorialRequest, type } = this.props;
+    onTutorialRequest(type);
   }
+
+  componentDidUpdate(prevProps) {
+    const { tutorial } = this.props;
+    if (tutorial !== prevProps.tutorial) {
+      const player = this.fullscreenVideo;
+      console.log('PLAYER', player, prevProps, this.props);
+      player.addEventListener('pause', () => {
+        this.setState({ playing: false });
+      });
+      player.addEventListener('playing', () => {
+        this.setState({ playing: true });
+      });
+      player.addEventListener('ended', () => {
+        this.setState({ showQuestions: true });
+      });
+    }
+  }
+
+  getVideo = () => {
+    const { tutorial } = this.props;
+    const { tutorialList } = tutorial;
+    const { tu_path } = tutorialList;
+    console.log(tutorialList);
+    return (
+      <video
+        src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
+        autoPlay
+        controls
+        ref={r => {
+          this.fullscreenVideo = r;
+        }}
+        style={{
+          width: '100%'
+        }}
+        preload="auto"
+        onClick={time => {
+          console.log('onclick', time);
+        }}
+        onTimeUpdate={val => {
+          // console.log('on time update', val);
+        }}
+      >
+        <track>Hey</track>
+      </video>
+    );
+  };
+
+  getQuestions = questions => {
+    const settings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
+    return (
+      <Slider {...settings}>
+        {questions.map(item => {
+          const { tq_questions, tutorials_questions_options } = item;
+          console.log(item);
+
+          return (
+            <div>
+              <div>{tq_questions}</div>
+              {tutorials_questions_options.map(option => (
+                <div>
+                  <input type="checkbox" />
+                  {option.tqo_option}
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </Slider>
+    );
+  };
 
   render() {
-    const { message, hideModal, showCheckButton } = this.props;
+    const {
+      message, hideModal, showCheckButton, type, tutorial
+    } = this.props;
+
     const { playing, showQuestions } = this.state;
-    return (
-      <ModalContainer>
-        <ModalBox
-          style={{
-            marginTop: '200px',
-            width: '80%',
-            position: 'relative'
-          }}
-        >
+    const { tu_path, tutorials_questions } = tutorial.tutorialList;
+    console.log(
+      'moderationType in the modal componnet',
+      tu_path,
+      tutorial.tutorialList
+    );
+    if (tu_path) {
+      return (
+        <ModalContainer>
           {!showQuestions && (
-            <div>
-              <video
-                src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
-                autoPlay
-                controls
-                ref={r => {
-                  this.fullscreenVideo = r;
-                }}
-                style={{
-                  width: '100%'
-                }}
-                preload="auto"
-                onClick={time => {
-                  console.log('onclick', time);
-                }}
-                onTimeUpdate={val => {
-                  // console.log('on time update', val);
-                }}
-              />
-              <VideoOverlay
-                onClick={() => {
-                  // console.log('pause the video');
-                  // console.log(this.fullscreenVideo.paused);
-                  const player = this.fullscreenVideo;
-                  player.paused ? player.play() : player.pause();
-                }}
-              >
-                <span>{playing ? <FaPause /> : <FaPlay />}</span>
-                {/*  {this.getVideoValue()} */}
-              </VideoOverlay>
+            <div
+              style={{
+                marginTop: '0px',
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <div>
+                <video
+                  src={tu_path}
+                  autoPlay
+                  controls
+                  ref={r => {
+                    this.fullscreenVideo = r;
+                  }}
+                  style={{
+                    width: '100%'
+                  }}
+                  preload="auto"
+                  onClick={time => {
+                    console.log('onclick', time);
+                  }}
+                  onTimeUpdate={val => {
+                    // console.log('on time update', val);
+                  }}
+                />
+
+                <VideoOverlay
+                  onClick={() => {
+                    // console.log('pause the video');
+                    // console.log(this.fullscreenVideo.paused);
+                    const player = this.fullscreenVideo;
+                    player.paused ? player.play() : player.pause();
+                  }}
+                >
+                  <span>{playing ? <FaPause /> : <FaPlay />}</span>
+                </VideoOverlay>
+              </div>
             </div>
           )}
-          {showQuestions && <div> Questions</div>}
-        </ModalBox>
-      </ModalContainer>
-    );
+          {showQuestions && (
+            <ModalBox>
+              {' '}
+              {this.getQuestions(tutorials_questions)}
+            </ModalBox>
+          )}
+        </ModalContainer>
+      );
+    }
+    return <div>LOADING</div>;
   }
 }
-
+const mapStateToProps = state => ({
+  tutorial: state.tutorial
+});
+const mapDispatchToProps = dispatch => ({
+  onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value))
+});
+const VideoModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(VideoModalContainer);
 export {
   Modal,
   ModalContainer,

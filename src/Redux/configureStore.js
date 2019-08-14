@@ -9,7 +9,7 @@ import rootReducer from './index';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['error', 'group']
+  blacklist: ['error', 'group', 'tutorial']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

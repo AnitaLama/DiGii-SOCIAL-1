@@ -45,7 +45,7 @@ const onFormLoginSuccess = (state, action) => {
   const {
     u_id,
     u_name,
-    u_a_id,
+    u_avatarId,
     u_activated,
     user_profile,
     user_groups,
@@ -73,7 +73,7 @@ const onFormLoginSuccess = (state, action) => {
       isStudent: false,
       isActivated: u_activated,
       groupId: groups,
-      avatarId: u_a_id,
+      avatarId: u_avatarId,
       avatar
     }
   };
@@ -93,7 +93,7 @@ const onStudentFormLoginSuccess = (state, action) => {
     st_lastname,
     st_id,
     student_group,
-    st_a_id,
+    st_avatarId,
     avatar
   } = action.data;
   const { school_group } = student_group;
@@ -110,7 +110,7 @@ const onStudentFormLoginSuccess = (state, action) => {
       id: st_id,
       isStudent: true,
       groupId: groups,
-      avatarId: st_a_id,
+      avatarId: st_avatarId,
       avatar
     },
     error: null

@@ -173,7 +173,7 @@ class ShowData extends Component {
                           : item.user.avatar;
                         return (
                           <Avatar
-                            key={avatar.a_id}
+                            key={avatar.avatarId}
                             avatar={avatar}
                             height={17.75}
                           />
@@ -314,7 +314,7 @@ class ShowData extends Component {
                         : item.user.avatar;
                       return (
                         <Avatar
-                          key={avatar.a_id}
+                          key={avatar.avatarId}
                           avatar={avatar}
                           height={17.75}
                         />

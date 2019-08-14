@@ -10,6 +10,7 @@ import { CommentTypes } from '../Redux/CommentRedux';
 import { BannerTypes } from '../Redux/BannerRedux';
 import { GroupTypes } from '../Redux/GroupRedux';
 import { ProfileTypes } from '../Redux/ProfileRedux';
+import { TutorialTypes } from '../Redux/TutorialRedux';
 import {
   onLoginRequest,
   onStudentLoginRequest,
@@ -47,6 +48,7 @@ import {
   onGetAvatarOfTheUser,
   onSaveMyAvatar
 } from './ProfileSaga';
+import onTutorialRequest from './TutorialSaga';
 
 export default function* root() {
   yield all([
@@ -92,6 +94,7 @@ export default function* root() {
     takeLatest(ProfileTypes.ON_GET_AVATAR_OF_THE_USER, onGetAvatarOfTheUser),
     takeLatest(PostTypes.ON_POST_DELETE, onPostDelete),
     takeLatest(PostTypes.ON_COMMENT_DELETE, onCommentDelete),
-    takeLatest(PostTypes.ON_EDIT_POST, onEditPost)
+    takeLatest(PostTypes.ON_EDIT_POST, onEditPost),
+    takeLatest(TutorialTypes.ON_TUTORIAL_REQUEST, onTutorialRequest)
   ]);
 }

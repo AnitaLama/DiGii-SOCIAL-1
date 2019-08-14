@@ -70,7 +70,7 @@ class VideoPost extends Component {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      showWarning(strikes, isStudent);
+      showWarning(strikes, isStudent, result);
       isBad = 1;
     }
 
