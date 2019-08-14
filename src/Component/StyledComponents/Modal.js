@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import ReactPlayer from 'react-player';
+import { FaPlay, FaPause } from 'react-icons/fa';
 import { Colors, Images } from '../../Theme';
 import { Button, Avatar } from './index';
 import { ShowFeed } from '../Functions';
@@ -277,41 +277,97 @@ EditModal.propTypes = {
   hideDeleteModal: PropTypes.func
 };
 
+const VideoOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  span {
+    color: white;
+  }
+  svg {
+    font-size: 65px;
+    opacity: 0;
+  }
+  &:hover {
+    svg {
+      opacity: 1;
+    }
+  }
+`;
 class VideoModal extends Component {
   state = {
-    currentTime: 0
+    playing: false,
+    showQuestions: false
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    const player = this.fullscreenVideo;
+    player.addEventListener('pause', () => {
+      console.log('paused');
+      this.setState({ playing: false });
+    });
+    player.addEventListener('playing', () => {
+      console.log('playing');
+      this.setState({ playing: true });
+    });
+    player.addEventListener('ended', () => {
+      console.log('the video has ended show the questions');
+      this.setState({ showQuestions: true });
+    });
+  }
 
   render() {
     const { message, hideModal, showCheckButton } = this.props;
+    const { playing, showQuestions } = this.state;
     return (
       <ModalContainer>
         <ModalBox
           style={{
             marginTop: '200px',
-            width: '80%'
+            width: '80%',
+            position: 'relative'
           }}
         >
-          <video
-            src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
-            autoPlay
-            controls
-            ref={r => {
-              this.fullscreenVideo = r;
-            }}
-            style={{
-              width: '100%'
-            }}
-            preload="auto"
-            onClick={time => {
-              console.log('onclick', time);
-            }}
-            onTimeUpdate={val => {
-              console.log('on time update', val);
-            }}
-          />
+          {!showQuestions && (
+            <div>
+              <video
+                src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
+                autoPlay
+                controls
+                ref={r => {
+                  this.fullscreenVideo = r;
+                }}
+                style={{
+                  width: '100%'
+                }}
+                preload="auto"
+                onClick={time => {
+                  console.log('onclick', time);
+                }}
+                onTimeUpdate={val => {
+                  // console.log('on time update', val);
+                }}
+              />
+              <VideoOverlay
+                onClick={() => {
+                  // console.log('pause the video');
+                  // console.log(this.fullscreenVideo.paused);
+                  const player = this.fullscreenVideo;
+                  player.paused ? player.play() : player.pause();
+                }}
+              >
+                <span>{playing ? <FaPause /> : <FaPlay />}</span>
+                {/*  {this.getVideoValue()} */}
+              </VideoOverlay>
+            </div>
+          )}
+          {showQuestions && <div> Questions</div>}
         </ModalBox>
       </ModalContainer>
     );
