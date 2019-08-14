@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/bin/node /usr/local/bin/yarn
+  /usr/bin/node /usr/local/bin/yarn add jwt-token
 
 PATH: 
-  /home/ec2-user/.local/bin::/home/anita/.local/bin:/home/anita/.local/bin:/home/anita/bin:/home/anita/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/anita/.local/bin/:/home/anita/.local/bin
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 
 Yarn version: 
   1.16.0
@@ -14,7 +14,17 @@ Platform:
   linux x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/anita/DiGii-SOCIAL/node_modules/@babel/plugin-proposal-dynamic-import/LICENSE'
+  Error: https://registry.yarnpkg.com/jwt-token: Not found
+      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66091:18)
+      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:129590:22)
+      at Request.emit (events.js:198:13)
+      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:130562:10)
+      at Request.emit (events.js:198:13)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:130484:12)
+      at Object.onceWrapper (events.js:286:20)
+      at IncomingMessage.emit (events.js:203:15)
+      at endReadableNT (_stream_readable.js:1129:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
   {
@@ -26,7 +36,9 @@ npm manifest:
       "@emotion/styled": "^10.0.12",
       "ak-editor-bitbucket": "^6.9.6",
       "antd": "^3.19.5",
+      "avataaars": "^1.2.1",
       "axios": "^0.19.0",
+      "bootstrap": "^4.3.1",
       "emoji-dictionary": "^1.0.10",
       "emoji-js": "^3.4.1",
       "emoji-mart": "^2.11.1",
@@ -42,11 +54,14 @@ npm manifest:
       "react-contenteditable": "^3.2.6",
       "react-cursor-position": "^3.0.3",
       "react-dom": "^16.8.6",
+      "react-facebook-emoji": "^1.0.11",
       "react-icons": "^3.7.0",
       "react-media-recorder": "^0.7.1",
+      "react-player": "^1.11.2",
       "react-redux": "^7.1.0",
       "react-router-dom": "^5.0.1",
       "react-scripts": "3.0.1",
+      "react-slick": "^0.24.0",
       "react-video-recorder": "^3.10.0",
       "react-webcam": "^1.1.1",
       "redux": "^4.0.1",
@@ -54,6 +69,7 @@ npm manifest:
       "redux-saga": "^1.0.3",
       "reduxsauce": "^1.1.0",
       "seamless-immutable": "^7.1.4",
+      "slick-carousel": "^1.8.1",
       "socket.io-client": "^2.2.0",
       "styled-components": "^4.3.2"
     },
@@ -2436,6 +2452,14 @@ Lockfile:
       postcss "^7.0.17"
       postcss-value-parser "^4.0.0"
   
+  avataaars@^1.2.1:
+    version "1.2.1"
+    resolved "https://registry.yarnpkg.com/avataaars/-/avataaars-1.2.1.tgz#8e2e968dbd7f558876f1f18f56973e7aa47afbec"
+    integrity sha512-4MmcXx3EKGwkKqEtVRiKxM08MMib2KYC1o5DcotpLUVuoe5EkWNuhJVB2JAH753II4VzMK7fO2EA5rf5QirPQg==
+    dependencies:
+      lodash "^4.17.4"
+      prop-types "^15.6.0"
+  
   aws-sign2@~0.7.0:
     version "0.7.0"
     resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
@@ -2779,6 +2803,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
     integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
   
+  bootstrap@^4.3.1:
+    version "4.3.1"
+    resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
+    integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
+  
   brace-expansion@^1.1.7:
     version "1.1.11"
     resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
@@ -2879,14 +2908,9 @@ Lockfile:
     dependencies:
       pako "~1.0.5"
   
-  browserkeymap@^1.0.0:
+  browserkeymap@^1.0.0, "browserkeymap@git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types":
     version "1.0.1"
-    resolved "https://registry.yarnpkg.com/browserkeymap/-/browserkeymap-1.0.1.tgz#e4b49023db77723b688319e1148dbf61fd026e0f"
-    integrity sha1-5LSQI9t3cjtogxnhFI2/Yf0Cbg8=
-  
-  "browserkeymap@git://github.com/bradleyayers/browserkeymap.git#es6-modules-compat-with-types":
-    version "1.0.1"
-    resolved "git://github.com/bradleyayers/browserkeymap.git#3615382475d0d6beeb1c5f0b27a1eadc94a108ac"
+    resolved "git://github.com/bradleyayers/browserkeymap#3615382475d0d6beeb1c5f0b27a1eadc94a108ac"
   
   browserslist@4.5.4:
     version "4.5.4"
@@ -3955,6 +3979,11 @@ Lockfile:
     version "2.2.1"
     resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
     integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
+  
+  deepmerge@^3.0.0:
+    version "3.3.0"
+    resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-3.3.0.tgz#d3c47fd6f3a93d517b14426b0628a17b0125f5f7"
+    integrity sha512-GRQOafGHwMHpjPx9iCvTgpu9NojZ49q794EEL94JVEw6VaeA8XTUyBKvAkOOjBX9oJNiV6G3P+T+tihFjo2TqA==
   
   default-gateway@^4.2.0:
     version "4.2.0"
@@ -7073,6 +7102,11 @@ Lockfile:
       pify "^3.0.0"
       strip-bom "^3.0.0"
   
+  load-script@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
+    integrity sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ=
+  
   loader-fs-cache@^1.0.0:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/loader-fs-cache/-/loader-fs-cache-1.0.2.tgz#54cedf6b727e1779fd8f01205f05f6e88706f086"
@@ -9837,6 +9871,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
     integrity sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==
   
+  react-facebook-emoji@^1.0.11:
+    version "1.0.11"
+    resolved "https://registry.yarnpkg.com/react-facebook-emoji/-/react-facebook-emoji-1.0.11.tgz#539762198d81eed1d02d34552ae02b661b354539"
+    integrity sha512-o6XPQ0k77U0PABNANYmW8HCGwM5vwZcJdzNm3e3r2lHMwXEakjXBntkwlO6+tp6JkeobjbJPeT0LOu1jn3KE8w==
+  
   react-fast-compare@^2.0.1:
     version "2.0.4"
     resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
@@ -9873,6 +9912,15 @@ Lockfile:
     version "0.7.1"
     resolved "https://registry.yarnpkg.com/react-media-recorder/-/react-media-recorder-0.7.1.tgz#4c38aa6ad08079f534748f73b0256ddaccd671e7"
     integrity sha512-lEIZCZbKGfZFy8j0Pgv/qXoJZ7wuIvhO9GiLGYcaMV4qC3DcY0oIzxCI2IP8UiRaubsqCEsyJamYCyW0hu2Dlw==
+  
+  react-player@^1.11.2:
+    version "1.11.2"
+    resolved "https://registry.yarnpkg.com/react-player/-/react-player-1.11.2.tgz#fc164f1ca12631887e6b46eee5462b5709f102da"
+    integrity sha512-VOO+3np/4DBy6A6NYxDUSvfigo2mkBqwQgpKgyNSq46Ew2XA6f+K26DWs0KLxtkLRbm2tcPrQMRqek8hh21ipg==
+    dependencies:
+      deepmerge "^3.0.0"
+      load-script "^1.0.0"
+      prop-types "^15.5.6"
   
   react-redux@^7.1.0:
     version "7.1.0"
@@ -9975,7 +10023,7 @@ Lockfile:
     optionalDependencies:
       fsevents "2.0.6"
   
-  react-slick@~0.24.0:
+  react-slick@^0.24.0, react-slick@~0.24.0:
     version "0.24.0"
     resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.24.0.tgz#1a4e078a82de4e9458255d9ce26aa6f3b17b168b"
     integrity sha512-Pvo0B74ohumQdYOf0qP+pdQpj9iUbAav7+2qiF3uTc5XeQp/Y/cnIeDBM2tB3txthfSe05jKIqLMJTS6qVvt5g==
@@ -9985,6 +10033,21 @@ Lockfile:
       json2mq "^0.2.0"
       lodash.debounce "^4.0.8"
       resize-observer-polyfill "^1.5.0"
+  
+  react-svg-inline@^2.1.0:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/react-svg-inline/-/react-svg-inline-2.1.1.tgz#532664006bf5b4f9ca2879d185e546df9a7476ef"
+    integrity sha512-mN7/qwq133dHMMQdtJRMtZ6tK1ynzOJMZBKR34blzv3HqQpNBsaOKXkEe1kN14hcJJhzrUbsB+uix2ZOpF4kQg==
+    dependencies:
+      classnames "^2.2.1"
+      prop-types "^15.5.8"
+  
+  react-video-recorder@^3.10.0:
+    version "3.10.0"
+    resolved "https://registry.yarnpkg.com/react-video-recorder/-/react-video-recorder-3.10.0.tgz#2772a37db5220d29ecc9ca542c199aa1ca3adf76"
+    integrity sha512-op+tHuXMJV/VSYri4OH0P2rVGeeMEy5v6EEozpngVETyD45vjpJ0IANrZWYcsuwKMzKM95kn6mtiFnVgycoUPw==
+    dependencies:
+      react-svg-inline "^2.1.0"
   
   react-virtualized@^8.7.1:
     version "8.11.4"
@@ -10738,6 +10801,11 @@ Lockfile:
       astral-regex "^1.0.0"
       is-fullwidth-code-point "^2.0.0"
   
+  slick-carousel@^1.8.1:
+    version "1.8.1"
+    resolved "https://registry.yarnpkg.com/slick-carousel/-/slick-carousel-1.8.1.tgz#a4bfb29014887bb66ce528b90bd0cda262cc8f8d"
+    integrity sha512-XB9Ftrf2EEKfzoQXt3Nitrt/IPbT+f1fgqBdoxO3W/+JYvtEOW6EgxnWfr9GH6nmULv7Y2tPmEX3koxThVmebA==
+  
   snapdragon-node@^2.0.1:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
@@ -11150,6 +11218,16 @@ Lockfile:
       browserslist "^4.0.0"
       postcss "^7.0.0"
       postcss-selector-parser "^3.0.0"
+  
+  stylis-rule-sheet@^0.0.10:
+    version "0.0.10"
+    resolved "https://registry.yarnpkg.com/stylis-rule-sheet/-/stylis-rule-sheet-0.0.10.tgz#44e64a2b076643f4b52e5ff71efc04d8c3c4a430"
+    integrity sha512-nTbZoaqoBnmK+ptANthb10ZRZOGC+EmTLLUxeYIuHNkEKcmKgXX1XWKkUBT2Ac4es3NybooPe0SmvKdhKJZAuw==
+  
+  stylis@^3.5.0:
+    version "3.5.4"
+    resolved "https://registry.yarnpkg.com/stylis/-/stylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
+    integrity sha512-8/3pSmthWM7lsPBKv7NXkzn2Uc9W7NotcwGNpJaa3k7WMM1XDCA4MgT5k/8BIexd5ydZdboXtU90XH9Ec4Bv/Q==
   
   subscription@^3.0.0:
     version "3.0.0"

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
 import { Colors, Images } from '../../Theme';
 import { Button, Avatar } from './index';
 import { ShowFeed } from '../Functions';
@@ -67,6 +68,13 @@ const Points = styled.div`
   }
 `;
 
+const TermsAndConditionBox = styled.div`
+  display: flex;
+  flex: auto;
+  input {
+    width: auto;
+  }
+`;
 class Modal extends Component {
   constructor() {
     super();
@@ -76,7 +84,8 @@ class Modal extends Component {
   }
 
   render() {
-    const { message, hideModal } = this.props;
+    const { message, hideModal, showCheckButton } = this.props;
+    console.log(showCheckButton);
     return (
       <ModalContainer>
         <ModalBox
@@ -99,7 +108,14 @@ class Modal extends Component {
           </Header>
 
           <Message>{message}</Message>
-
+          {showCheckButton && (
+            <TermsAndConditionBox>
+              <input type="checkbox" id="CheckBox" name="CheckBox" checked />
+              <label htmlFor="CheckBox">
+                I understand and agree to the terms and conditions
+              </label>
+            </TermsAndConditionBox>
+          )}
           <ButtonWrapper>
             <Button className="rounded short" onClick={hideModal}>
               OK
@@ -261,6 +277,47 @@ EditModal.propTypes = {
   hideDeleteModal: PropTypes.func
 };
 
+class VideoModal extends Component {
+  state = {
+    currentTime: 0
+  };
+
+  componentDidMount() {}
+
+  render() {
+    const { message, hideModal, showCheckButton } = this.props;
+    return (
+      <ModalContainer>
+        <ModalBox
+          style={{
+            marginTop: '200px',
+            width: '80%'
+          }}
+        >
+          <video
+            src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
+            autoPlay
+            controls
+            ref={r => {
+              this.fullscreenVideo = r;
+            }}
+            style={{
+              width: '100%'
+            }}
+            preload="auto"
+            onClick={time => {
+              console.log('onclick', time);
+            }}
+            onTimeUpdate={val => {
+              console.log('on time update', val);
+            }}
+          />
+        </ModalBox>
+      </ModalContainer>
+    );
+  }
+}
+
 export {
   Modal,
   ModalContainer,
@@ -270,5 +327,6 @@ export {
   Points,
   ButtonWrapper,
   DeleteModal,
-  EditModal
+  EditModal,
+  VideoModal
 };

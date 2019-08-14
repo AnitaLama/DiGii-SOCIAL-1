@@ -15,6 +15,7 @@ export function* onLoginRequest(action) {
     if (data.success) {
       yield put(LoginActions.onFormLoginSuccess(data.result));
       yield localStorage.setItem('user', JSON.stringify(data.result));
+      yield localStorage.setItem('token', data.token);
       history.push('/messageboard');
     } else {
       yield put(ErrorActions.onFormLoginFailure(data.error));
@@ -33,10 +34,10 @@ export function* onStudentLoginRequest(action) {
       `${DEV_URL}/student/verifyStudent`,
       action.data
     );
-
     if (data.success) {
       yield put(LoginActions.onStudentFormLoginSuccess(data.result));
       yield localStorage.setItem('user', JSON.stringify(data.result));
+      yield localStorage.setItem('token', data.token);
       history.push('/messageboard');
     } else {
       yield put(ErrorActions.onStudentFormLoginFailure(data.error));

@@ -95,9 +95,15 @@ class Header extends Component {
   };
 
   logOut = () => {
-    const { onLogOut } = this.props;
+    const { onLogOut, users } = this.props;
+    const { isStudent } = users.user;
     localStorage.removeItem('user');
-    history.push('/');
+    localStorage.removeItem('token');
+    if (isStudent) {
+      history.push('/student/login');
+    } else {
+      history.push('/');
+    }
     onLogOut();
   };
 

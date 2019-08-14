@@ -10,7 +10,8 @@ import {
   Points,
   ButtonWrapper,
   DeleteModal,
-  EditModal
+  EditModal,
+  VideoModal
 } from './Modal';
 
 export {
@@ -26,7 +27,8 @@ export {
   ButtonWrapper,
   Loader,
   DeleteModal,
-  EditModal
+  EditModal,
+  VideoModal
 };
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';

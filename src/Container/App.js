@@ -1,7 +1,9 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import NProgress from 'nprogress';
+import { Switch, Route, Redirect } from 'react-router-dom';
+// import NProgress from 'nprogress';
 import { css } from '@emotion/core';
+import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 import HomePage from './Home';
 import StudentLogin from './StudentLogin';
 import MessageBoard from './MessageBoard';
@@ -22,22 +24,35 @@ class ActualRoute extends React.Component {
   // }
 
   render() {
-    return <Route {...this.props} strict />;
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common.Authorization = token;
+      const decodedToken = jwt_decode(token).exp;
+      const currentDate = new Date().getTime() / 1000;
+      if (decodedToken < currentDate) {
+        return <Redirect to={{ pathname: '/' }} />;
+      }
+
+      return <Route {...this.props} strict />;
+    }
+    axios.defaults.headers.common.Authorization = null;
+
+    return <Redirect to={{ pathname: '/' }} />;
   }
 }
 const routes = [
-  {
-    title: 'Login',
-    path: '/',
-    exact: true,
-    component: HomePage
-  },
-  {
-    title: 'Login',
-    path: '/student/login',
-    exact: true,
-    component: StudentLogin
-  },
+  // {
+  //   title: 'Login',
+  //   path: '/',
+  //   exact: true,
+  //   component: HomePage
+  // },
+  // {
+  //   title: 'Login',
+  //   path: '/student/login',
+  //   exact: true,
+  //   component: StudentLogin
+  // },
   {
     title: 'MessageBoard',
     path: '/messageboard',
@@ -76,7 +91,9 @@ const Routes = () => (
     {routes.map(route => (
       <ActualRoute key={route.title} {...route} />
     ))}
+    <Route path="/" component={HomePage} exact />
+    <Route path="/student/login" component={StudentLogin} exact />
   </Switch>
 );
-
+//
 export default Routes;

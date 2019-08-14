@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import history from '../../history';
-import { Modal } from '../StyledComponents';
+import { Modal, VideoModal } from '../StyledComponents';
 import { FilterKeyWords, Warnings } from './index';
 
 const strikeCount = 3;
@@ -13,7 +13,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       isBad: false,
       blockUser: false,
       isModalVisible: false,
-      alertMessage: 'hey'
+      alertMessage: '',
+      showVideo: false
     };
   }
 
@@ -48,20 +49,27 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     showWarning = (count, isStudent) => {
-      if (count >= 9) {
-        this.setState({
-          isModalVisible: true,
-          alertMessage: 'You\'ll be blocked from  DiGii'
-        });
-      } else {
-        let index = (count % strikeCount) + 1;
-        index -= 1;
-
-        this.setState({
-          isModalVisible: true,
-          alertMessage: `${Warnings[index]}`
-        });
+      console.log('strike count', count);
+      if ((count + 1) % strikeCount === 0) {
+        console.log(' shhow video');
       }
+      this.setState({ showVideo: true }, () => {
+        // this.fullscreenVideo.webkitEnterFullScreen();
+      });
+      // if (count >= 9) {
+      //   this.setState({
+      //     isModalVisible: true,
+      //     alertMessage: 'You\'ll be blocked from  DiGii'
+      //   });
+      // } else {
+      //   let index = (count % strikeCount) + 1;
+      //   index -= 1;
+      //
+      //   this.setState({
+      //     isModalVisible: true,
+      //     alertMessage: `${Warnings[index]}`
+      //   });
+      // }
     };
 
     onFocus = (posts, userId) => {
@@ -80,9 +88,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     render() {
-      const { isModalVisible, alertMessage } = this.state;
+      const { isModalVisible, alertMessage, showVideo } = this.state;
       return (
         <div>
+          {showVideo && <VideoModal />}
           <WrappedComponent
             {...this.props}
             {...this.state}
@@ -94,7 +103,11 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             updatePostText={this.updatePostText}
           />
           {isModalVisible && (
-            <Modal message={alertMessage} hideModal={this.hideModal} />
+            <Modal
+              message={alertMessage}
+              hideModal={this.hideModal}
+              showCheckButton
+            />
           )}
         </div>
       );

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { BrandLogo, StudentLoginForm } from '../../Component/Home';
 import { flexCentering } from '../../Theme';
-import { SessionHOC } from '../HOC';
 
 const HomeContainer = styled.div`
   display: grid;
@@ -22,4 +21,4 @@ function Home() {
   );
 }
 
-export default SessionHOC(Home);
+export default Home;
