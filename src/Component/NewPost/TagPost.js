@@ -143,7 +143,7 @@ class TagPost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
@@ -155,7 +155,7 @@ class TagPost extends Component {
     handlePostText(e);
   };
 
-  onFocus = () => {
+  onFocusUsers = () => {
     const { group } = this.props;
 
     this.setState({ showUsers: group.users.length > 0 });
@@ -194,16 +194,16 @@ class TagPost extends Component {
     }
 
     const data = {
-      p_pt_id: postTypeId,
-      p_isStudent: isStudent,
-      p_actor_id: id,
-      p_text: postText,
+      postPostTypeId: postTypeId,
+      postIsStudent: isStudent,
+      postActorId: id,
+      postText,
       taggedUsers,
-      p_is_bad: isBad,
+      postIsBad: isBad,
       isBad,
-      str_type: result,
-      str_is_student: user.user.isStudent,
-      str_actor_id: user.user.id
+      strikeType: result,
+      strikeIsStudent: user.user.isStudent,
+      strikeActorId: user.user.id
     };
     if (postText.length > 0) {
       onSubmitTagPost(data);
@@ -216,17 +216,17 @@ class TagPost extends Component {
     const newArr = [];
     users.map(item => {
       if (
-        item.u_name !== user.u_name
-        || item.st_username !== user.st_username
+        item.userName !== user.userName
+        || item.studentUsername !== user.studentUsername
       ) {
         newArr.push(item);
       }
       return true;
     });
     const data = {
-      userName: user.u_name || user.st_username,
-      isStudent: !!user.st_username,
-      id: user.u_id || user.st_id
+      userName: user.userName || user.studentUsername,
+      isStudent: !!user.studentUsername,
+      id: user.userId || user.studentId
     };
     this.setState(prevState => ({
       taggedUsers: [...prevState.taggedUsers, data],
@@ -239,7 +239,7 @@ class TagPost extends Component {
     const { taggedUsers } = this.state;
     const { group } = this.props;
     const removedUser = group.users.find(
-      item => item.u_name === user || item.st_username === user
+      item => item.userName === user || item.studentUsername === user
     );
     const newArr = taggedUsers.filter(item => item !== user && item !== user);
     this.setState(prevState => ({
@@ -317,7 +317,7 @@ x
                         this.selectUser(item);
                       }}
                     >
-                      {item.u_name || item.st_username}
+                      {item.userName || item.studentUsername}
                     </li>
                   ))}
                 </UserList>

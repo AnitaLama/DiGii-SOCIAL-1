@@ -70,7 +70,7 @@ class ShowData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: props && props.post && props.post.p_text
+      text: props && props.post && props.post.postText
     };
   }
 
@@ -85,9 +85,9 @@ class ShowData extends Component {
     const { text } = this.state;
     const { post, user } = this.props;
     const {
-      p_body, post_type, p_text, edit
+      postBody, post_type, postText, edit
     } = post;
-    const type = post_type && post_type.pt_title;
+    const type = post_type && post_type.postTypeTitle;
 
     if (edit) {
       switch (type) {
@@ -101,12 +101,12 @@ class ShowData extends Component {
                 className="captions"
                 onChange={this.handleTextChange}
               />
-              <Gif src={`${p_body}`} />
+              <Gif src={`${postBody}`} />
             </div>
           );
         case 'photo/video':
-          const { p_is_image } = post;
-          if (p_is_image) {
+          const { postIsImage } = post;
+          if (postIsImage) {
             return (
               <div>
                 <FormTextArea
@@ -114,7 +114,7 @@ class ShowData extends Component {
                   value={text}
                   onChange={this.handleTextChange}
                 />
-                <Gif src={`${p_body}`} />
+                <Gif src={`${postBody}`} />
               </div>
             );
           }
@@ -125,25 +125,26 @@ class ShowData extends Component {
                 value={text}
                 onChange={this.handleTextChange}
               />
-              <Video src={`${p_body}`} controls />
+              <Video src={`${postBody}`} controls />
             </div>
           );
         case 'poll':
           const { poll } = post;
-          const { po_question, poll_options } = poll;
+          const { pollOptionQuestion, poll_options } = poll;
 
           let { isStudent, id } = user;
           isStudent = isStudent ? 1 : 0;
           return (
             <div>
-              <div className="captions">{po_question}</div>
+              <div className="captions">{pollOptionQuestion}</div>
               {poll_options.map((option, i) => {
                 const { poll_responses } = option;
                 const hasUserVoted = poll_responses.find(
-                  item => item.pr_is_student === isStudent
-                    && item.pr_commentator_id === id
+                  item => item.pollResponseIsStudent === isStudent
+                    && item.pollResponseCommentatorId === id
                 );
-                const selectedAnswer = hasUserVoted && hasUserVoted.pr_popt_id === option.popt_id;
+                const selectedAnswer = hasUserVoted
+                  && hasUserVoted.pollResponsePollOptionId === option.pollOptionId;
 
                 return (
                   <PollWrapper
@@ -156,19 +157,19 @@ class ShowData extends Component {
                       <FaCircle
                         style={{ color: selectedAnswer ? '#707070' : 'white' }}
                       />
-                      {option.popt_image_path && (
+                      {option.pollOptionImagePath && (
                         <img
-                          src={`${url}/${option.popt_image_path}`}
-                          alt={`${po_question}-option${i}`}
+                          src={`${url}/${option.pollOptionImagePath}`}
+                          alt={`${pollOptionQuestion}-option${i}`}
                         />
                       )}
-                      {option.popt_text}
+                      {option.pollOptionText}
                     </div>
                     <span>
                       {poll_responses.slice(0, 3).map(item => {
                         let avatar;
 
-                        avatar = item.pr_is_student
+                        avatar = item.pollResponseIsStudent
                           ? item.student.avatar
                           : item.user.avatar;
                         return (
@@ -195,7 +196,7 @@ class ShowData extends Component {
                 onChange={this.handleTextChange}
               />
               <BannerWrapper>
-                <Banner src={p_body} />
+                <Banner src={postBody} />
                 <div>
                   {' '}
                   <span
@@ -222,9 +223,9 @@ class ShowData extends Component {
             </div>
           );
         case 'tag':
-          // const { n_is_student, student, user } = notifications;
+          // const { notificationIsStudent, student, user } = notifications;
           // console.log(notifications);
-          // <div>{n_is_student ? student.st_username : user.u_name}</div>
+          // <div>{notificationIsStudent ? student.studentUsername : user.userName}</div>
           return (
             <FormTextArea
               className="captions"
@@ -245,46 +246,47 @@ class ShowData extends Component {
     }
     switch (type) {
       case 'text':
-        return <div>{p_text}</div>;
+        return <div>{postText}</div>;
       case 'gif':
         return (
           <div>
-            <div className="captions">{p_text}</div>
-            <Gif src={`${p_body}`} />
+            <div className="captions">{postText}</div>
+            <Gif src={`${postBody}`} />
           </div>
         );
       case 'photo/video':
-        const { p_is_image } = post;
-        if (p_is_image) {
+        const { postIsImage } = post;
+        if (postIsImage) {
           return (
             <div>
-              <div className="captions">{p_text}</div>
-              <Gif src={`${p_body}`} />
+              <div className="captions">{postText}</div>
+              <Gif src={`${postBody}`} />
             </div>
           );
         }
         return (
           <div>
-            <div className="captions">{p_text}</div>
-            <Video src={`${p_body}`} controls />
+            <div className="captions">{postText}</div>
+            <Video src={`${postBody}`} controls />
           </div>
         );
       case 'poll':
         const { poll } = post;
-        const { po_question, poll_options } = poll;
+        const { pollOptionQuestion, poll_options } = poll;
 
         let { isStudent, id } = user;
         isStudent = isStudent ? 1 : 0;
         return (
           <div>
-            <div className="captions">{po_question}</div>
+            <div className="captions">{pollOptionQuestion}</div>
             {poll_options.map((option, i) => {
               const { poll_responses } = option;
               const hasUserVoted = poll_responses.find(
-                item => item.pr_is_student === isStudent
-                  && item.pr_commentator_id === id
+                item => item.pollResponseIsStudent === isStudent
+                  && item.pollResponseCommentatorId === id
               );
-              const selectedAnswer = hasUserVoted && hasUserVoted.pr_popt_id === option.popt_id;
+              const selectedAnswer = hasUserVoted
+                && hasUserVoted.pollResponsePollOptionId === option.pollOptionId;
 
               return (
                 <PollWrapper
@@ -297,19 +299,19 @@ class ShowData extends Component {
                     <FaCircle
                       style={{ color: selectedAnswer ? '#707070' : 'white' }}
                     />
-                    {option.popt_image_path && (
+                    {option.pollOptionImagePath && (
                       <img
-                        src={`${url}/${option.popt_image_path}`}
-                        alt={`${po_question}-option${i}`}
+                        src={`${url}/${option.pollOptionImagePath}`}
+                        alt={`${pollOptionQuestion}-option${i}`}
                       />
                     )}
-                    {option.popt_text}
+                    {option.pollOptionText}
                   </div>
                   <span>
                     {poll_responses.slice(0, 3).map(item => {
                       let avatar;
 
-                      avatar = item.pr_is_student
+                      avatar = item.pollResponseIsStudent
                         ? item.student.avatar
                         : item.user.avatar;
                       return (
@@ -330,38 +332,38 @@ class ShowData extends Component {
       case 'banner':
         return (
           <BannerWrapper>
-            <Banner src={p_body} />
+            <Banner src={postBody} />
             <div>
               {' '}
               <span
                 style={{
                   fontSize:
-                    p_text.length < 30
+                    postText.length < 30
                       ? '45px'
-                      : p_text.length < 80
+                      : postText.length < 80
                         ? '30px'
                         : '25px',
                   lineHeight:
-                    p_text.length < 30
+                    postText.length < 30
                       ? '40px'
-                      : p_text.length < 80
+                      : postText.length < 80
                         ? '30px'
                         : '25px'
                 }}
               >
                 {' '}
-                {p_text}
+                {postText}
               </span>
             </div>
           </BannerWrapper>
         );
       case 'tag':
-        // const { n_is_student, student, user } = notifications;
+        // const { notificationIsStudent, student, user } = notifications;
         // console.log(notifications);
-        // <div>{n_is_student ? student.st_username : user.u_name}</div>
-        return <div>{p_text}</div>;
+        // <div>{notificationIsStudent ? student.studentUsername : user.userName}</div>
+        return <div>{postText}</div>;
       default:
-        return <div>{p_text}</div>;
+        return <div>{postText}</div>;
     }
   };
 

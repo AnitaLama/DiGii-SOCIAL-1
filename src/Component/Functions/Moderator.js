@@ -75,9 +75,11 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       // }
     };
 
-    onFocus = (posts, userId) => {
-      const isFirstTimePosting = posts.find(item => item.p_actor_id === userId);
-      if (!isFirstTimePosting) {
+    onFocus = (posts, userId, isFirstTime) => {
+      const isFirstTimePosting = posts.find(
+        item => item.postActorId === userId
+      );
+      if (!isFirstTimePosting && isFirstTime) {
         this.setState({
           isModalVisible: true,
           alertMessage: 'Congratulations!!! it\'s your first time posting.'

@@ -195,11 +195,12 @@ class SinglePost extends Component {
 
     // Display total count of reactions
 
-    const { data } = this.props;
+    const { data, onHandleLikeReaction } = this.props;
+    onHandleLikeReaction();
     const { post_activities } = data;
     const reactioncount = [];
     post_activities
-      && post_activities.map(item => reactioncount.push(item.pa_activityTypeId));
+      && post_activities.map(item => reactioncount.push(item.postActivityActivityTypeId));
     this.setState({ totalReactionCounts: reactioncount.length });
   }
 
@@ -209,28 +210,29 @@ class SinglePost extends Component {
     const reactioncount = [];
 
     post_activities.map(
-      item => item.pa_activityTypeId !== 0 && reactioncount.push(item.pa_activityTypeId)
+      item => item.postActivityActivityTypeId !== 0
+        && reactioncount.push(item.postActivityActivityTypeId)
     );
     this.setState({ totalReactionCounts: reactioncount.length });
   }
 
   selectPollAnswer = (option, selected) => {
-    const { popt_po_id, popt_id } = option;
+    const { pollOptionPollId, pollOptionId } = option;
     const { user, onRespondToPoll } = this.props;
     const { isStudent, id } = user.user;
     const data = {
-      pr_po_id: popt_po_id,
-      pr_popt_id: popt_id,
-      pr_is_student: isStudent ? 1 : 0,
-      pr_commentator_id: id,
-      pr_id: selected ? selected.pr_id : null
+      pollResponsePollId: pollOptionPollId,
+      pollResponsePollOptionId: pollOptionId,
+      pollResponseIsStudent: isStudent ? 1 : 0,
+      pollResponseCommentatorId: id,
+      pollResponseId: selected ? selected.pollResponseId : null
     };
     onRespondToPoll(data);
   };
 
   getContent = data => {
     const { user } = this.props;
-    // const type = post_type && post_type.pt_title;
+    // const type = post_type && post_type.postTypeTitle;
     return (
       <ShowFeed
         post={data}
@@ -260,7 +262,11 @@ class SinglePost extends Component {
     const { post_activities } = data;
 
     post_activities.map(item => {
-      if (item && item.activity_type && item.activity_type.activityTypeId === param) {
+      if (
+        item
+        && item.activity_type
+        && item.activity_type.activityTypeId === param
+      ) {
         getOnlyReactionOnHover1.push(item);
       }
     });
@@ -268,23 +274,23 @@ class SinglePost extends Component {
   };
 
   handleReactionClicked = value => {
-    const { onSelectReaction, data, user } = this.props;
-    const { p_id, p_isStudent } = data;
+    const {
+      onSelectReaction, data, user, likeReactions
+    } = this.props;
+    const { postId, postIsStudent } = data;
 
     const { id } = user.user;
-
-    const selectedReaction = this.props.likeReactions.find(
+    const selectedReaction = likeReactions.find(
       item => item.activityTypeName === value
     );
-
     const values = {
-      pa_activityTypeId: selectedReaction.activityTypeId,
-      pa_actor_id: id,
-      pa_is_student: p_isStudent,
-      pa_p_id: p_id
+      postActivityActivityTypeId: selectedReaction.activityTypeId,
+      postActivityActorId: id,
+      postActivityIsStudent: postIsStudent,
+      postActivityPostId: postId
     };
 
-    this.props.onSelectReaction(values);
+    onSelectReaction(values);
     this.multipleLikes();
   };
 
@@ -301,7 +307,7 @@ class SinglePost extends Component {
     const { post_activities } = data;
     const reactionId = [];
     post_activities
-      && post_activities.map(item => reactionId.push(item.pa_activityTypeId));
+      && post_activities.map(item => reactionId.push(item.postActivityActivityTypeId));
 
     // Taking only unique emo to display
 
@@ -327,11 +333,12 @@ class SinglePost extends Component {
             {this.state.toggleHover && (
               <div className="listOfReactors">
                 {this.state.getOnlyReactionOnHover.map(
-                  value => value.pa_activityTypeId === reaction.activityTypeId
-                    && (value.pa_is_student ? (
-                      <li>{value.student.st_username}</li>
+                  value => value.postActivityActivityTypeId
+                      === reaction.activityTypeId
+                    && (value.postActivityIsStudent ? (
+                      <li>{value.student.studentUsername}</li>
                     ) : (
-                      <li>{value.user.u_name}</li>
+                      <li>{value.user.userName}</li>
                     ))
                 )}
               </div>
@@ -347,7 +354,8 @@ class SinglePost extends Component {
     const { data, modalpopup } = this.props;
     const { showCommentBox } = this.state;
     let { post_comments } = data;
-    post_comments = post_comments && post_comments.sort((a, b) => a.pc_id - b.pc_id);
+    post_comments = post_comments
+      && post_comments.sort((a, b) => a.postCommentId - b.postCommentId);
     return (
       <PostWrapper style={{ position: 'relative' }}>
         <ActualPostWrapper>
@@ -437,7 +445,7 @@ class SinglePost extends Component {
             }}
           >
             {post_comments
-              && post_comments.map((comment, i) => (!comment.pc_is_bad ? (
+              && post_comments.map((comment, i) => (!comment.postCommentIsBad ? (
                 <Comment key={comment + i} data={comment} />
               ) : null))}
           </div>

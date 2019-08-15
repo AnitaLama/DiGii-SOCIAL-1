@@ -42,22 +42,23 @@ export const INITIAL_STATE = Immutable({
 
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
+  console.log(action.data);
   const {
-    u_id,
-    u_name,
-    u_avatarId,
-    u_activated,
+    userId,
+    userName,
+    userAvatarId,
+    userActivated,
     user_profile,
     user_groups,
     avatar
   } = action.data;
-  const firstname = user_profile.up_firstname || '';
-  const lastname = user_profile.up_lastname || '';
+  // const firstname = user_profile.userProfileFirstname || '';
+  // const lastname = user_profile.userProfileLastname || '';
   // const { user_groups } = user_profile;
   // const { ug_scg_id } = user_groups[0];
   const groups = [];
   user_groups.map(item => {
-    groups.push(item.school_group.scg_id);
+    groups.push(item.school_group.schoolGroupsId);
     return true;
   });
   return {
@@ -66,14 +67,14 @@ const onFormLoginSuccess = (state, action) => {
     error: null,
     user: {
       ...state.user,
-      username: u_name,
-      firstname,
-      lastname,
-      id: u_id,
+      username: userName,
+      firstname: 'anita',
+      lastname: 'lama',
+      id: userId,
       isStudent: false,
-      isActivated: u_activated,
+      isActivated: userActivated,
       groupId: groups,
-      avatarId: u_avatarId,
+      avatarId: userAvatarId,
       avatar
     }
   };
@@ -88,29 +89,29 @@ const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const groups = [];
   const {
-    st_username,
-    st_firstname,
-    st_lastname,
-    st_id,
+    studentUsername,
+    studentFirstname,
+    studentLastname,
+    studentId,
     student_group,
-    st_avatarId,
+    studentAvatarId,
     avatar
   } = action.data;
   const { school_group } = student_group;
-  const { scg_id } = school_group;
-  groups.push(scg_id);
+  const { schoolGroupsId } = school_group;
+  groups.push(schoolGroupsId);
   return {
     ...state,
     user: {
       ...state.user,
-      username: st_username,
-      firstname: st_firstname,
-      lastname: st_lastname,
+      username: studentUsername,
+      firstname: studentFirstname,
+      lastname: studentLastname,
       password: null,
-      id: st_id,
+      id: studentId,
       isStudent: true,
       groupId: groups,
-      avatarId: st_avatarId,
+      avatarId: studentAvatarId,
       avatar
     },
     error: null
@@ -123,11 +124,11 @@ const onStudentFormLoginSuccess = (state, action) => {
   //   // error: null,
   //   // user: {
   //   //   ...state.user,
-  //   //   username: st_username,
-  //   //   firstname: st_firstname,
+  //   //   username: studentUsername,
+  //   //   firstname: studentFirstname,
   //   //   lastname: st_lastname,
   //   //   password: null,
-  //   //   id: st_id,
+  //   //   id: studentId,
   //   //   isStudent: true
   //   // }
   // };

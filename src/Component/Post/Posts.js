@@ -33,7 +33,7 @@ class Posts extends Component {
     // console.log('socket data user', user, this.socket);
 
     this.socket.on('posts', data => {
-      // console.log('data socket', data, groupId);
+      console.log('data socket', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
@@ -59,25 +59,27 @@ class Posts extends Component {
     const { post } = this.props;
 
     let { posts } = this.state;
-    posts = posts.length > 1 ? posts.sort((a, b) => b.p_id - a.p_id) : posts;
+    posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
     return (
       <div key={posts}>
         {post.error && <ErrorAlertMessage error={post.error} />}
         {posts.length > 0
           && posts.map((item, i) => {
+            // console.log(item.postIsStudent && item.student);
+            // console.log(!item.postIsStudent, item.user);
             // {
             //   console.log(
-            //     item.p_id,
-            //     (item.p_isStudent && item.student)
-            //       || (!item.p_isStudent && item.user)
+            //     item.postId,
+            //     (item.postIsStudent && item.student)
+            //       || (!item.postIsStudent && item.user)
             //   );
             // }
-            if (item.p_is_deleted || item.p_is_bad) {
+            if ((item.postIsDeleted, item.postIsBad)) {
               return <div key={item + i} />;
             }
             if (
-              (item.p_isStudent && item.student)
-              || (!item.p_isStudent && item.user)
+              (item.postIsStudent && item.student)
+              || (!item.postIsStudent && item.user)
             ) {
               return <SinglePost key={item + i} data={item} />;
             }

@@ -31,7 +31,7 @@ class UserProfileComponent extends Component {
     const { showAvatarOptions } = this.state;
     const { profile } = profiles;
     if (profile && profile.user_profile) {
-      const { user_profile, u_email } = profile;
+      const { user_profile, userEmail } = profile;
       const { up_firstname, up_lastname } = user_profile;
       return (
         <div>
@@ -40,22 +40,22 @@ class UserProfileComponent extends Component {
             {' '}
             {up_lastname}
           </div>
-          <div>{u_email}</div>
+          <div>{userEmail}</div>
           <Button onClick={this.showAvatarOptions}>Create your avatar</Button>
           {showAvatarOptions && <Avatar />}
         </div>
       );
     }
     if (profile) {
-      const { st_firstname, st_lastname, st_username } = profile;
+      const { studentFirstname, st_lastname, studentUsername } = profile;
       return (
         <div>
           <div>
-            {st_firstname}
+            {studentFirstname}
             {' '}
             {st_lastname}
           </div>
-          <div>{st_username}</div>
+          <div>{studentUsername}</div>
           <Button onClick={this.showAvatarOptions}>Create your avatar</Button>
           {showAvatarOptions && <Avatar />}
         </div>

@@ -139,7 +139,7 @@ class CommentBox extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
@@ -186,7 +186,7 @@ class CommentBox extends Component {
       onSubmitComment,
       resetPostText
     } = this.props;
-    const { p_id } = data;
+    const { postId } = data;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
@@ -198,21 +198,21 @@ class CommentBox extends Component {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      showWarning(strikes, isStudent);
+      showWarning(strikes, isStudent, result);
       isBad = 1;
     }
 
     const comment = {
-      pc_p_id: p_id,
-      pc_is_student: user.user.isStudent,
-      pc_commentator_id: user.user.id,
-      pc_title: 'Comment',
-      pc_body: postText,
+      postCommentPostId: postId,
+      postCommentIsStudent: user.user.isStudent,
+      postCommentCommentatorId: user.user.id,
+      postCommentTitle: 'Comment',
+      postCommentBody: postText,
       isBad,
-      pc_is_bad: isBad,
-      str_type: result,
-      str_is_student: user.user.isStudent,
-      str_actor_id: user.user.id
+      postCommentIsBad: isBad,
+      strikeType: result,
+      strikeIsStudent: user.user.isStudent,
+      strikeActorId: user.user.id
     };
     if (postText.length > 0) {
       onSubmitComment(comment);
@@ -230,7 +230,7 @@ class CommentBox extends Component {
     const { user } = this.props.user;
 
     const { e, data } = params;
-    const { p_id } = data;
+    const { postId } = data;
     const { isStudent, id } = user;
 
     const { files } = e.target;
@@ -238,10 +238,10 @@ class CommentBox extends Component {
 
     const formData = new FormData();
     formData.append('file', files[0]);
-    formData.append('pc_p_id', p_id);
+    formData.append('postCommentPostId', postId);
     formData.append('pc_isStudent', isStudent);
-    formData.append('pc_commentator_id', id);
-    formData.append('pc_is_bad', 0);
+    formData.append('postCommentCommentatorId', id);
+    formData.append('postCommentIsBad', 0);
     formData.append('filename', Date.now() + files[0].name);
 
     onPostImage(formData);
@@ -262,6 +262,7 @@ class CommentBox extends Component {
     console.log('find gifs', window.innerWidth, window.innerHeight);
     const { onFindGifForComments } = this.props;
     const { gifText } = this.state;
+    this.setState({ showGifInput: true });
     const width = window.innerWidth || 1024;
     onFindGifForComments({ text: gifText, limit: width > 960 ? 20 : 12 });
   };
@@ -288,18 +289,18 @@ class CommentBox extends Component {
       user, onSubmitComment, data, clearCommentGif
     } = this.props;
     console.log('selectgif', data);
-    const { p_id } = data;
+    const { postId } = data;
     const comment = {
-      pc_p_id: p_id,
-      pc_is_student: user.user.isStudent,
-      pc_commentator_id: user.user.id,
-      pc_title: 'Comment',
-      pc_image_path: gif,
+      postCommentPostId: postId,
+      postCommentIsStudent: user.user.isStudent,
+      postCommentCommentatorId: user.user.id,
+      postCommentTitle: 'Comment',
+      postCommentImagePath: gif,
       isBad: 0,
-      pc_is_bad: 0,
-      str_type: null,
-      str_is_student: user.user.isStudent,
-      str_actor_id: user.user.id
+      postCommentIsBad: 0,
+      strikeType: null,
+      strikeIsStudent: user.user.isStudent,
+      strikeActorId: user.user.id
     };
     console.log(comment);
     onSubmitComment(comment);
@@ -331,16 +332,16 @@ class CommentBox extends Component {
       onSubmitComment,
       resetPostText
     } = this.props;
-    const { p_id } = data;
+    const { postId } = data;
     const { isStudent, id } = user.user;
     const comment = {
-      pc_p_id: p_id,
-      pc_is_student: isStudent,
-      pc_commentator_id: id,
-      pc_title: 'feeling',
-      pc_body: feeling.name,
+      postCommentPostId: postId,
+      postCommentIsStudent: isStudent,
+      postCommentCommentatorId: id,
+      postCommentTitle: 'feeling',
+      postCommentBody: feeling.name,
       isBad: 0,
-      pc_is_bad: 0
+      postCommentIsBad: 0
     };
     // console.log(comment);
     onSubmitComment(comment);
@@ -349,7 +350,7 @@ class CommentBox extends Component {
 
   userSelected = value => {
     const { updatePostText, postText } = this.props;
-    updatePostText(postText + (value.u_name || value.st_username));
+    updatePostText(postText + (value.userName || value.studentUsername));
     this.setState({ showUsers: false });
     this.commentInput.focus();
   };
@@ -395,7 +396,7 @@ class CommentBox extends Component {
                   this.userSelected(users);
                 }}
               >
-                {users.u_name || users.st_username}
+                {users.userName || users.studentUsername}
               </UserListElement>
             ))}
           </UserList>

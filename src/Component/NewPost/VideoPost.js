@@ -84,10 +84,10 @@ class VideoPost extends Component {
     formData.append('description', postText);
     formData.append('postTypeId', postTypeId);
     formData.append('isBad', isBad);
-    formData.append('p_is_bad', isBad);
-    formData.append('str_type', result);
-    formData.append('str_is_student', isBad);
-    formData.append('str_actor_id', isBad);
+    formData.append('postIsBad', isBad);
+    formData.append('strikeType', result);
+    formData.append('strikeIsStudent', isBad);
+    formData.append('strikeActorId', isBad);
     onVideoPost(formData);
     resetPostType();
   };
@@ -104,7 +104,7 @@ class VideoPost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();

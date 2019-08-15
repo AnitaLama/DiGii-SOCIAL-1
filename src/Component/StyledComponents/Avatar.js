@@ -17,38 +17,38 @@ class UserAvatar extends Component {
     if (avatar) {
       const { height } = this.props;
       const {
-        a_accessories,
-        a_clothes,
-        a_clothes_color,
-        a_eyebrow,
-        a_eyes,
-        a_facialhair_moustache,
-        a_facial_hair_color,
-        a_haircolor,
+        avatarTop,
+        avatarClothes,
+        avatarClothesColor,
+        avatarEyebrow,
+        avatarEyes,
+        avatarFacialHairMoustache,
+        avatarFacialHairColor,
+        avatarHair,
         a_mouth,
-        a_skin,
+        avatarSkin,
         avatarStyle,
-        a_top,
-        a_graphic_type
+        avatarAccessories,
+        avatarGraphicType
       } = avatar;
       return (
         <div>
           <Avatar
             style={{ width: `${height}px`, height: `${height}px` }}
             avatarStyle={avatarStyle}
-            topType={a_top}
-            accessoriesType={a_accessories}
-            hairColor={a_haircolor}
-            facialHairType={a_facialhair_moustache}
-            facialHairColor={a_facial_hair_color}
-            clotheType={a_clothes}
-            clotheColor={a_clothes_color}
-            eyeType={a_eyes}
-            eyebrowType={a_eyebrow}
+            topType={avatarTop}
+            accessoriesType={avatarAccessories}
+            hairColor={avatarHair}
+            facialHairType={avatarFacialHairMoustache}
+            facialHairColor={avatarFacialHairColor}
+            clotheType={avatarClothes}
+            clotheColor={avatarClothesColor}
+            eyeType={avatarEyes}
+            eyebrowType={avatarEyebrow}
             mouthType={a_mouth}
-            skinColor={a_skin}
-            facialHairColor={a_facial_hair_color}
-            graphicType={a_graphic_type}
+            skinColor={avatarSkin}
+            facialHairColor={avatarFacialHairColor}
+            graphicType={avatarGraphicType}
           />
         </div>
       );

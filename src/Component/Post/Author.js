@@ -104,14 +104,14 @@ class Author extends Component {
 
   getExtraInfo = () => {
     const { data } = this.props;
-    const { post_type, p_text, notifications } = data;
-    const type = (post_type && post_type.pt_title) || '';
-    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === p_text);
+    const { post_type, postText, notifications } = data;
+    const type = (post_type && post_type.postTypeTitle) || '';
+    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === postText);
     if (type === 'feeling') {
       return (
         emoji && (
           <span className="emoji">
-            {` is feeling ${p_text} ${emoji.emoji}`}
+            {` is feeling ${postText} ${emoji.emoji}`}
           </span>
         )
       );
@@ -120,15 +120,15 @@ class Author extends Component {
       return (
         <TaggedList>
           {notifications.map((item, i) => {
-            const { n_is_student, student, user } = item;
-            if (n_is_student) {
+            const { notificationIsStudent, student, user } = item;
+            if (notificationIsStudent) {
               return (
                 <span key={`${item}-${student}-${i}`}>
-                  {student.st_username}
+                  {student.studentUsername}
                 </span>
               );
             }
-            return <span key={`${item}-${user}-${i}`}>{user.u_name}</span>;
+            return <span key={`${item}-${user}-${i}`}>{user.userName}</span>;
           })}
         </TaggedList>
       );
@@ -201,28 +201,28 @@ class Author extends Component {
     const { data } = this.props;
     const { user } = this.props;
     const { isStudent, id } = user.user;
-    const { p_actor_id, p_isStudent } = data;
+    const { postActorId, postIsStudent } = data;
     let firstname = '';
     let lastname = '';
     let userAvatar = null;
     // console.log(data);
     // post typet,po ypepost console.log('data author', data);
-    if (data.p_isStudent) {
+    if (data.postIsStudent) {
       const { student } = data;
       const { avatar } = student;
-      firstname = student.st_firstname;
-      lastname = student.st_lastname;
+      firstname = student.studentFirstname;
+      lastname = student.studentLastname;
       userAvatar = avatar;
     } else {
       const { user } = data;
       const { user_profile, avatar } = user;
-      const { up_firstname, up_lastname } = user_profile;
-      firstname = up_firstname;
-      lastname = up_lastname;
+      const { userProfileFirstname, userProfileLastname } = user_profile;
+      firstname = userProfileFirstname;
+      lastname = userProfileLastname;
       userAvatar = avatar;
     }
     const { showDeleteModal, selectedPost, showEditModal } = this.state;
-    const check = p_actor_id === id && p_isStudent == isStudent;
+    const check = postActorId === id && postIsStudent == isStudent;
 
     return (
       <AuthorWrapper>

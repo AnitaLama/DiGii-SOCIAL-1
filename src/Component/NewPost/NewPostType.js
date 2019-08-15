@@ -47,9 +47,9 @@ class NewPostType extends Component {
     const { firstname } = user.user;
     let selectedPostType = '';
     selectedPostType = postTypes.length > 0
-      && postTypes.find(item => item.pt_title === type.toLowerCase());
+      && postTypes.find(item => item.postTypeTitle === type.toLowerCase());
     const props = {
-      postTypeId: selectedPostType.pt_id,
+      postTypeId: selectedPostType.postTypeId,
       username: firstname,
       resetPostType
     };

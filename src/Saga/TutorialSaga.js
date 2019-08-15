@@ -9,6 +9,7 @@ export default function* onTutorialRequest(action) {
     const { data } = yield call(axios.post, `${DEV_URL}/tutorial`, {
       type: action.data
     });
+    console.log('saga tutorial output', data);
     if (data.success) {
       yield put(TutorialActions.onTutorialRequestSuccess(data.result));
     } else {

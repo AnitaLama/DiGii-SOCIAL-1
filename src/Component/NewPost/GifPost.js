@@ -78,7 +78,7 @@ class GifContainer extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
+    const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
@@ -90,7 +90,7 @@ class GifContainer extends Component {
     const { posts } = post;
     // console.log(posts);
     const isFirstTimePosting = posts.find(
-      item => item.p_actor_id === user.user.id
+      item => item.postActorId === user.user.id
     );
     if (
       user.user.isStudent
@@ -153,16 +153,16 @@ class GifContainer extends Component {
     // const { isStudent, id } = user.user;
     //
     const data = {
-      p_pt_id: postTypeId,
-      p_body: selectedGif.images.downsized_medium.url,
-      p_isStudent: isStudent,
-      p_actor_id: id,
-      p_text: postText,
-      p_is_bad: isBad,
+      postPostTypeId: postTypeId,
+      postBody: selectedGif.images.downsized_medium.url,
+      postIsStudent: isStudent,
+      postActorId: id,
+      postText: postText,
+      postIsBad: isBad,
       isBad,
-      str_type: result,
-      str_is_student: user.user.isStudent,
-      str_actor_id: user.user.id
+     strikeType: result,
+      strikeIsStudent: user.user.isStudent,
+      strikeActorId: user.user.id
     };
     onPostSubmit(data);
     // if (blockUser) {
@@ -187,7 +187,7 @@ class GifContainer extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
+    const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();

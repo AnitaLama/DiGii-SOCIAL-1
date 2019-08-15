@@ -73,28 +73,28 @@ class Comment extends Component {
   render() {
     const { isCommentHidden } = this.state;
     const { data, user } = this.props;
-    const { pc_id } = data;
+    const { postCommentId } = data;
     const { isStudent, id } = user.user;
 
     let firstname = '';
     let lastname = '';
     let userAvatar = null;
-    if (data.pc_is_student) {
+    if (data.postCommentIsStudent) {
       const { student } = data;
       const { avatar } = student;
-      firstname = student.st_firstname || '';
-      lastname = student.st_lastname || '';
+      firstname = student.studentFirstname || '';
+      lastname = student.studentLastname || '';
       userAvatar = avatar;
     } else {
       const { user } = data;
       const { user_profile, avatar } = user;
-      const { up_firstname, up_lastname } = user_profile;
-      firstname = up_firstname;
-      lastname = up_lastname;
+      const { userProfileFirstname, userProfileLastname } = user_profile;
+      firstname = userProfileFirstname;
+      lastname = userProfileLastname;
       userAvatar = avatar;
     }
-    const { pc_commentator_id, pc_is_student } = data;
-    const checkIfCanBeDeleted = pc_is_student == isStudent && pc_commentator_id === id;
+    const { postCommentCommentatorId, postCommentIsStudent } = data;
+    const checkIfCanBeDeleted = postCommentIsStudent == isStudent && postCommentCommentatorId === id;
     return !isCommentHidden ? (
       <CommentWrapper>
         <Avatar
@@ -111,7 +111,9 @@ class Comment extends Component {
           </span>
           {/* Hide/Edit/Delete comment  */}
           {checkIfCanBeDeleted && (
-            <Close onClick={() => this.hideComment({ pc_id, isStudent, id })}>
+            <Close
+              onClick={() => this.hideComment({ postCommentId, isStudent, id })}
+            >
               <FaTimes />
             </Close>
           )}
@@ -119,12 +121,17 @@ class Comment extends Component {
             {new Date(createdAt).toLocaleDateString()}
           </span> */}
           <span>
-            {data.pc_image_path && <img src={data.pc_image_path} />}
-            {data.pc_title.toLowerCase() !== 'feeling' && data.pc_body}
+            {data.postCommentImagePath && (
+              <img src={data.postCommentImagePath} />
+            )}
+            {data.postCommentTitle.toLowerCase() !== 'feeling'
+              && data.postCommentBody}
           </span>
           <span>
-            {data.pc_title.toLowerCase() === 'feeling'
-              && `is feeling ${data.pc_body} ${this.getEmoji(data.pc_body)}`}
+            {data.postCommentTitle.toLowerCase() === 'feeling'
+              && `is feeling ${data.postCommentBody} ${this.getEmoji(
+                data.postCommentBody
+              )}`}
           </span>
         </CommentDiv>
       </CommentWrapper>

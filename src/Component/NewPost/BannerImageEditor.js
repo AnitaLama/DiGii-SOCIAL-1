@@ -85,7 +85,7 @@ class BannerImageModal extends Component {
     // } = this.props;
     // const { posts } = post;
     // const { id, isFirstTimePosting } = user.user;
-    // const checkFirstTimePosting = onFocus(posts, id);
+    // const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
     //
     // if (checkFirstTimePosting && isFirstTimePosting) {
     //   disableFirstTimePosting();
@@ -135,15 +135,15 @@ class BannerImageModal extends Component {
     //   isBad = 1;
     // }
     // const saveData = {
-    //   p_pt_id: postTypeId,
-    //   p_isStudent: isStudent,
-    //   p_actor_id: id,
-    //   p_body: `${url}/${data.Key}`,
-    //   p_text: postText,
-    //   p_is_bad: isBad,
-    //   str_type: result,
-    //   str_is_student: user.user.isStudent,
-    //   str_actor_id: user.user.id,
+    //   postPostTypeId: postTypeId,
+    //   postIsStudent: isStudent,
+    //   postActorId: id,
+    //   postBody: `${url}/${data.Key}`,
+    //   postText: postText,
+    //   postIsBad: isBad,
+    //  strikeType: result,
+    //   strikeIsStudent: user.user.isStudent,
+    //   strikeActorId: user.user.id,
     //   isBad
     // };
     // onSubmitPost(saveData);

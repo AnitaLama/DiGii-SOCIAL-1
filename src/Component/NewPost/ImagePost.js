@@ -161,16 +161,16 @@ class ImagePost extends Component {
     if (!fromWebcam) {
       const formData = new FormData();
       formData.append('file', file[0]);
-      formData.append('p_pt_id', postTypeId);
+      formData.append('postPostTypeId', postTypeId);
       formData.append('isBad', isBad);
-      formData.append('p_isStudent', isStudent);
-      formData.append('p_actor_id', id);
-      formData.append('p_text', postText);
-      formData.append('p_is_image', 1);
-      formData.append('p_is_bad', isBad);
-      formData.append('str_type', result);
-      formData.append('str_is_student', isBad);
-      formData.append('str_actor_id', isBad);
+      formData.append('postIsStudent', isStudent);
+      formData.append('postActorId', id);
+      formData.append('postText', postText);
+      formData.append('postIsImage', 1);
+      formData.append('postIsBad', isBad);
+      formData.append('strikeType', result);
+      formData.append('strikeIsStudent', isStudent);
+      formData.append('strikeActorId', id);
 
       onPostImage(formData);
     } else {
@@ -179,16 +179,16 @@ class ImagePost extends Component {
         file: imageObject.imageData,
         fileName: imageObject.image_name,
         fileFrom: 'webcam',
-        p_isStudent: isStudent,
-        p_actor_id: id,
-        p_pt_id: postTypeId,
-        p_text: postText,
+        postIsStudent: isStudent,
+        postActorId: id,
+        postPostTypeId: postTypeId,
+        postText,
         isBad,
-        p_is_image: 1,
-        p_is_bad: isBad,
-        str_type: result,
-        str_is_student: user.user.isStudent,
-        str_actor_id: user.user.id
+        postIsImage: 1,
+        postIsBad: isBad,
+        strikeType: result,
+        strikeIsStudent: isStudent,
+        strikeActorId: id
       };
       onPostImage(data);
     }
@@ -221,7 +221,7 @@ class ImagePost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();

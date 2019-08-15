@@ -12,6 +12,7 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
+    console.log(data);
     if (data.success) {
       yield put(LoginActions.onFormLoginSuccess(data.result));
       yield localStorage.setItem('user', JSON.stringify(data.result));

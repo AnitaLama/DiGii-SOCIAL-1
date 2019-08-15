@@ -312,34 +312,34 @@ class UserAvatar extends Component {
     const { avatar } = user;
     if (avatar) {
       const {
-        a_accessories,
-        a_clothes,
-        a_eyebrow,
-        a_eyes,
-        a_facial_hair_color,
-        a_facialhair_moustache,
-        a_haircolor,
-        a_graphic_type,
-        a_clothes_color,
+        avatarTop,
+        avatarClothes,
+        avatarEyebrow,
+        avatarEyes,
+        avatarFacialHairColor,
+        avatarFacialHairMoustache,
+        avatarHair,
+        avatarGraphicType,
+        avatarClothesColor,
         a_mouth,
-        a_skin,
+        avatarSkin,
         avatarStyle,
-        a_top
+        avatarAccessories
       } = avatar;
       this.setState({
         avatarStyle: 'Circle',
-        topType: a_top,
-        accessoriesType: a_accessories,
-        hairColor: a_haircolor,
-        facialHairType: a_facialhair_moustache,
-        facialHairColor: a_facial_hair_color,
-        clotheType: a_clothes,
-        clotheColor: a_clothes_color,
-        eyeType: a_eyes,
-        eyebrowType: a_eyebrow,
+        topType: avatarTop,
+        accessoriesType: avatarAccessories,
+        hairColor: avatarHair,
+        facialHairType: avatarFacialHairMoustache,
+        facialHairColor: avatarFacialHairColor,
+        clotheType: avatarClothes,
+        clotheColor: avatarClothesColor,
+        eyeType: avatarEyes,
+        eyebrowType: avatarEyebrow,
         mouthType: a_mouth,
-        skinColor: a_skin,
-        graphicType: a_graphic_type
+        skinColor: avatarSkin,
+        graphicType: avatarGraphicType
       });
     }
   }
@@ -641,19 +641,19 @@ class UserAvatar extends Component {
     } = this.state;
     const data = {
       avatarId: avatar ? avatar.avatarId : null,
-      avatarStyle: avatarStyle,
-      a_top: topType,
-      a_accessories: accessoriesType,
-      a_haircolor: hairColor,
-      a_facialhair_moustache: facialHairType,
-      a_facial_hair_color: facialHairColor,
-      a_clothes: clotheType,
-      a_clothes_color: clotheColor,
-      a_eyes: eyeType,
-      a_eyebrow: eyebrowType,
+      avatarStyle,
+      avatarTop: topType,
+      avatarAccessories: accessoriesType,
+      avatarHair: hairColor,
+      avatarFacialHairMoustache: facialHairType,
+      avatarFacialHairColor: facialHairColor,
+      avatarClothes: clotheType,
+      avatarClothesColor: clotheColor,
+      avatarEyes: eyeType,
+      avatarEyebrow: eyebrowType,
       a_mouth: mouthType,
-      a_skin: skinColor,
-      a_graphic_type: graphicType,
+      avatarSkin: skinColor,
+      avatarGraphicType: graphicType,
       userId: id,
       isStudent
     };

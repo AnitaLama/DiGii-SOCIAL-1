@@ -4,7 +4,9 @@ import { DEV_URL, GIPHY_API } from '../config';
 import PostActions from '../Redux/PostRedux';
 
 const URL = `${DEV_URL}/post`;
-
+const defaultOptions = {
+  header: {}
+};
 export function* onListPosts() {
   try {
     const { data } = yield call(axios.get, `${URL}`);
@@ -21,11 +23,13 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
+    console.log('saga input', action.data);
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/post/findFeedsOfAGroup`,
       action.data
     );
+    console.log('find post saga', data);
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
     } else {
@@ -52,12 +56,22 @@ export function* onPostSubmit(action) {
 
 export function* onFindGif(action) {
   try {
+    // axios.defaults.headers.common =
     const { data } = yield call(
       axios,
       `http://api.giphy.com/v1/gifs/search?q=${
         action.data
-      }&api_key=${GIPHY_API}`
+      }&api_key=${GIPHY_API}`,
+      {
+        transformRequest: [
+          (data, headers) => {
+            delete headers.common.Authorization;
+            return data;
+          }
+        ]
+      }
     );
+
     if (data) {
       yield put(PostActions.onFindGifSuccess(data.data));
     } else {
@@ -73,8 +87,17 @@ export function* onFindGifForComments(action) {
     const { text, limit } = action.data;
     const { data } = yield call(
       axios,
-      `http://api.giphy.com/v1/gifs/search?q=${text}&api_key=${GIPHY_API}&limit=${limit}`
+      `http://api.giphy.com/v1/gifs/search?q=${text}&api_key=${GIPHY_API}&limit=${limit}`,
+      {
+        transformRequest: [
+          (data, headers) => {
+            delete headers.common.Authorization;
+            return data;
+          }
+        ]
+      }
     );
+
     if (data) {
       yield put(PostActions.onFindGifForCommentsSuccess(data.data));
     } else {
@@ -89,7 +112,6 @@ export function* onPostImage(action) {
   console.log('onPostImage action', action);
   try {
     const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
-    console.log('saga data', data);
   } catch (err) {
     console.log(err);
   }
@@ -98,7 +120,6 @@ export function* onPostImage(action) {
 export function* onUploadImage(action) {
   try {
     const data = yield call(axios.post, `${URL}/uploadImage`, action.data);
-    console.log('saga data', data);
   } catch (err) {
     console.log(err);
   }
@@ -107,7 +128,6 @@ export function* onUploadImage(action) {
 export function* onPostPoll(action) {
   try {
     const data = yield call(axios.post, `${URL}/addNewPoll`, action.data);
-    console.log('saga data', data);
   } catch (err) {
     console.log(err);
   }
@@ -115,9 +135,7 @@ export function* onPostPoll(action) {
 
 export function* onVideoPost(action) {
   try {
-    console.log(action);
     const data = yield call(axios.post, `${URL}/uploadVideo`, action.data);
-    console.log('saga data', data);
   } catch (err) {
     console.log(err);
   }
@@ -130,7 +148,6 @@ export function* onRespondToPoll(action) {
       `${URL}/voteForThePoll`,
       action.data
     );
-    console.log(data);
   } catch (err) {
     console.log(err);
   }
@@ -150,9 +167,7 @@ export function* onSubmitTagPost(action) {
 
 export function* onPostDelete(action) {
   try {
-    console.log('On Post delete', action.data);
     const { data } = yield call(axios.post, `${URL}/onPostDelete`, action.data);
-    console.log(data);
   } catch (err) {
     console.log(err);
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { FaPlay, FaPause } from 'react-icons/fa';
+import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import Slider from 'react-slick';
 import { Colors, Images, flexCentering } from '../../Theme';
@@ -9,7 +9,9 @@ import { Button, Avatar } from './index';
 import { ShowFeed } from '../Functions';
 import TutorialActions from '../../Redux/TutorialRedux';
 
-const { snow, tint, peach } = Colors.colors;
+const {
+  snow, tint, peach, blue
+} = Colors.colors;
 const ModalContainer = styled.div`
   position: fixed;
   background: rgba(0, 0, 0, 0.32);
@@ -37,6 +39,15 @@ const ModalBox = styled.div`
     margin-top: -10px;
     color: red;
     text-align: right;
+  }
+  .slick-slider {
+    margin: 0 6px;
+  }
+  .slick-next,
+  .slick-prev {
+    &::before {
+      color: ${blue};
+    }
   }
 `;
 
@@ -151,7 +162,7 @@ class DeleteModal extends Component {
     const { post, user, onDeletePost } = this.props;
     const { isStudent, id } = user;
     onDeletePost({
-      p_id: post.p_id,
+      postId: post.postId,
       isStudent,
       id
     });
@@ -200,7 +211,7 @@ class EditModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: props.post && props.post.p_text
+      text: props.post && props.post.postText
     };
   }
 
@@ -220,8 +231,8 @@ class EditModal extends Component {
     const { text } = this.state;
     const { post, user, onEditPost } = this.props;
     const data = {
-      p_text: text,
-      p_id: post.p_id
+      postText: text,
+      postId: post.postId
     };
     onEditPost(data);
   };
@@ -292,10 +303,22 @@ const VideoOverlay = styled.div`
     }
   }
 `;
+
+const QuestionOptions = styled.div`
+  text-align: center;
+  cursor: pointer;
+  padding: 6px;
+  svg {
+    float: left;
+    color: #88cc00;
+    font-size: 22px;
+  }
+`;
 class VideoModalContainer extends Component {
   state = {
     playing: false,
-    showQuestions: false
+    showQuestions: false,
+    userAnswer: []
   };
 
   componentWillMount() {
@@ -306,8 +329,8 @@ class VideoModalContainer extends Component {
   componentDidUpdate(prevProps) {
     const { tutorial } = this.props;
     if (tutorial !== prevProps.tutorial) {
+      console.log('PLAYER', prevProps, this.props);
       const player = this.fullscreenVideo;
-      console.log('PLAYER', player, prevProps, this.props);
       player.addEventListener('pause', () => {
         this.setState({ playing: false });
       });
@@ -349,29 +372,66 @@ class VideoModalContainer extends Component {
     );
   };
 
+  changeAnswer = (index, answer) => {
+    console.log('answer', answer);
+    const { userAnswer } = this.state;
+    userAnswer[index] = answer.tutorialQuestionOptionOption;
+    this.setState({ userAnswer });
+  };
+
   getQuestions = questions => {
     const settings = {
-      dots: true,
+      dots: false,
       infinite: false,
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1
     };
-    return (
-      <Slider {...settings}>
-        {questions.map(item => {
-          const { tq_questions, tutorials_questions_options } = item;
-          console.log(item);
+    const { userAnswer } = this.state;
 
+    return (
+      <Slider
+        {...settings}
+        style={{
+          marginLeft: '5px',
+          marginRight: '5px'
+        }}
+      >
+        {questions.map((item, index) => {
+          const { tq_questions, tutorials_questions_options } = item;
           return (
             <div>
               <div>{tq_questions}</div>
-              {tutorials_questions_options.map(option => (
-                <div>
-                  <input type="checkbox" />
-                  {option.tqo_option}
-                </div>
-              ))}
+              {tutorials_questions_options.map(option => {
+                const check = userAnswer[index] === option.tutorialQuestionOptionOption;
+                console.log('check answer', questions.length - 1, index);
+                return (
+                  <QuestionOptions
+                    onClick={() => {
+                      this.changeAnswer(index, option);
+                    }}
+                    style={{
+                      background: check ? 'rgba(52, 52, 52, 0.2)' : null
+                    }}
+                  >
+                    <FaCheck
+                      style={{
+                        visibility: check ? 'visible' : 'hidden'
+                      }}
+                    />
+                    {option.tutorialQuestionOptionOption}
+                  </QuestionOptions>
+                );
+              })}
+              <div
+                style={{
+                  textAlign: 'center'
+                }}
+              >
+                {questions.length - 1 === index && (
+                  <button>Check answers</button>
+                )}
+              </div>
             </div>
           );
         })}
@@ -385,13 +445,9 @@ class VideoModalContainer extends Component {
     } = this.props;
 
     const { playing, showQuestions } = this.state;
-    const { tu_path, tutorials_questions } = tutorial.tutorialList;
-    console.log(
-      'moderationType in the modal componnet',
-      tu_path,
-      tutorial.tutorialList
-    );
-    if (tu_path) {
+    const { tutorialPath, tutorials_questions } = tutorial.tutorialList;
+    console.log('moderationType in the modal componnet', tutorial);
+    if (tutorialPath) {
       return (
         <ModalContainer>
           {!showQuestions && (
@@ -408,7 +464,7 @@ class VideoModalContainer extends Component {
             >
               <div>
                 <video
-                  src={tu_path}
+                  src={tutorialPath}
                   autoPlay
                   controls
                   ref={r => {
@@ -426,7 +482,7 @@ class VideoModalContainer extends Component {
                   }}
                 />
 
-                <VideoOverlay
+                {/*      <VideoOverlay
                   onClick={() => {
                     // console.log('pause the video');
                     // console.log(this.fullscreenVideo.paused);
@@ -435,7 +491,7 @@ class VideoModalContainer extends Component {
                   }}
                 >
                   <span>{playing ? <FaPause /> : <FaPlay />}</span>
-                </VideoOverlay>
+                </VideoOverlay> */}
               </div>
             </div>
           )}

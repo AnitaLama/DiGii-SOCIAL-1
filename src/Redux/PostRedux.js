@@ -51,7 +51,7 @@ const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-const onListPosts = (state, action) => ({ ...state, loading: true });
+const onListPosts = state => ({ ...state, loading: true });
 
 const onListPostsSuccess = (state, action) => ({
   ...state,
@@ -69,7 +69,7 @@ const onListPostsFailure = (state, action) => ({
   gif: []
 });
 
-const onPostSubmit = (state, action) => ({
+const onPostSubmit = state => ({
   ...state,
   loading: true,
   posting: true

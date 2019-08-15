@@ -36,9 +36,10 @@ class TextPost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id);
-
-    if (checkFirstTimePosting && isFirstTimePosting) {
+    console.log(posts);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
+    console.log(checkFirstTimePosting, isFirstTimePosting);
+    if (isFirstTimePosting) {
       disableFirstTimePosting();
     }
   };
@@ -69,15 +70,15 @@ class TextPost extends Component {
       isBad = 1;
     }
     const post = {
-      p_pt_id: postTypeId,
-      p_text: postText,
-      p_isStudent: isStudent,
-      p_actor_id: id,
-      p_is_bad: isBad,
+      postPostTypeId: postTypeId,
+      postText,
+      postIsStudent: isStudent,
+      postActorId: id,
+      postIsBad: isBad,
       isBad,
-      str_type: result,
-      str_is_student: user.user.isStudent,
-      str_actor_id: user.user.id
+      strikeType: result,
+      strikeIsStudent: user.user.isStudent,
+      strikeActorId: user.user.id
     };
     onPostSubmit(post);
     resetPostText();
