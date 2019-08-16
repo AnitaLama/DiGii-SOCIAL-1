@@ -52,14 +52,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     showWarning = (count, isStudent, moderationType) => {
       console.log('strike count', count, moderationType);
-      // if ((count + 1) % strikeCount === 0) {
-      //   console.log(' shhow video');
-      // }
-      // this.setState({ showVideo: true });
-      // , () => {
-      //   // this.fullscreenVideo.webkitEnterFullScreen();
-      // });
-      if (count >= 9) {
+      if (count >= strikeCount * 3) {
         this.setState({
           isModalVisible: true,
           alertMessage: 'You\'ll be blocked from  DiGii'
@@ -96,6 +89,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       this.setState({ showVideo: false });
     };
 
+    showVideo = () => {
+      this.setState({ showVideo: true });
+    };
+
     render() {
       const {
         isModalVisible,
@@ -122,6 +119,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             <Modal
               message={alertMessage}
               hideModal={this.hideModal}
+              showVideo={this.showVideo}
               showCheckButton
             />
           )}

@@ -24,6 +24,12 @@ const ModalContainer = styled.div`
   bottom: 0;
   ${flexCentering()}
 `;
+const CenteredELementsModalWrapper = styled.div`
+  display: flex;
+
+  ${flexCentering('column')};
+  justify-content: space-around;
+`;
 const ModalBox = styled.div`
   width: 50%;
   min-width: 50%;
@@ -39,6 +45,9 @@ const ModalBox = styled.div`
     margin-top: -10px;
     color: red;
     text-align: right;
+  }
+  &.centeredModal {
+    display: flex;
   }
 `;
 
@@ -75,22 +84,37 @@ const Points = styled.div`
 `;
 
 const TermsAndConditionBox = styled.div`
-  display: flex;
-  flex: auto;
+  ${flexCentering()};
   input {
     width: auto;
   }
 `;
-class Modal extends Component {
+class BasicModal extends Component {
   constructor() {
     super();
     this.state = {
-      text: ''
+      text: '',
+      checkboxSelected: false
     };
   }
 
+  handleCheckboxClick = e => {
+    const { checked } = e.target;
+    this.setState({ checkboxSelected: checked });
+  };
+
+  handleOK = () => {
+    const { hideModal, showVideo, strike } = this.props;
+    console.log('strike', strike);
+    hideModal();
+    if ((strike + 1) % 3 === 0) {
+      showVideo();
+    }
+  };
+
   render() {
     const { message, hideModal, showCheckButton } = this.props;
+    const { checkboxSelected } = this.state;
     // console.log(showCheckButton);
     return (
       <ModalContainer>
@@ -112,14 +136,22 @@ class Modal extends Component {
           <Message>{message}</Message>
           {showCheckButton && (
             <TermsAndConditionBox>
-              <input type="checkbox" id="CheckBox" name="CheckBox" checked />
+              <input
+                type="checkbox"
+                id="CheckBox"
+                name="CheckBox"
+                onChange={this.handleCheckboxClick}
+              />
               <label htmlFor="CheckBox">
                 I understand and agree to the terms and conditions
               </label>
             </TermsAndConditionBox>
           )}
           <ButtonWrapper>
-            <Button className="rounded short" onClick={hideModal}>
+            <Button
+              className={`rounded short ${!checkboxSelected && 'disabled'}`}
+              onClick={this.handleOK}
+            >
               OK
             </Button>
           </ButtonWrapper>
@@ -129,7 +161,7 @@ class Modal extends Component {
   }
 }
 
-Modal.propTypes = {
+BasicModal.propTypes = {
   message: PropTypes.string,
   hideModal: PropTypes.func
 };
@@ -309,12 +341,22 @@ const QuestionOptions = styled.div`
     font-size: 22px;
   }
 `;
+const CenteredDiv = styled.div`
+  text-align: center;
+  .nextButton {
+    background: transparent;
+    border: 0;
+    outline: 0;
+  }
+`;
 class VideoModalContainer extends Component {
   state = {
     playing: false,
     showQuestions: false,
     userAnswer: [],
-    showVideo: true
+    showVideo: true,
+    showFinalMessage: false,
+    gotAllQuestionsCorrect: false
   };
 
   componentWillMount() {
@@ -335,33 +377,10 @@ class VideoModalContainer extends Component {
         this.setState({ playing: true });
       });
       player.addEventListener('ended', () => {
-        console.log('endend');
         this.setState({ showQuestions: true, showVideo: false });
       });
     }
   }
-
-  getVideo = () => {
-    const { tutorial } = this.props;
-    const { tutorialList } = tutorial;
-    const { tu_path } = tutorialList;
-    return (
-      <video
-        src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
-        autoPlay
-        controls
-        ref={r => {
-          this.fullscreenVideo = r;
-        }}
-        style={{
-          width: '100%'
-        }}
-        preload="auto"
-      >
-        <track>Hey</track>
-      </video>
-    );
-  };
 
   changeAnswer = (index, answer) => {
     const { userAnswer } = this.state;
@@ -377,27 +396,29 @@ class VideoModalContainer extends Component {
     const { userAnswer } = this.state;
     const hasUnansweredQuestion = userAnswer.includes(undefined);
     if (hasUnansweredQuestion) {
-      console.log('answer all questions');
       alert('Please answer all the questions');
       this.setState({ notice: 'Please answer all the questions.' });
     }
     const hasWrongAnswer = userAnswer.find(
       item => item && item.isCorrect === 0
     );
-    console.log('wrong answer', hasWrongAnswer);
-    if (hasWrongAnswer) {
-      alert('You\'ll have to watch the video again');
-      this.setState({ showVideo: true, showQuestions: false, userAnswer: [] });
-    }
-    if (!hasWrongAnswer) {
-      console.log('user>>>>>>>>', user);
-      // onSaveTutorialWatchersInfo()
-      hideModal();
-    }
+    // if (hasWrongAnswer) {
+    //   alert('You\'ll have to watch the video again');
+    //   this.setState({ showVideo: true, showQuestions: false, userAnswer: [] });
+    // }
+    // if (!hasWrongAnswer) {
+    //   // onSaveTutorialWatchersInfo()
+    //   // hideModal();
+    // }
+    this.setState({
+      showFinalMessage: true,
+      userAnswer: [],
+      gotAllQuestionsCorrect: !hasWrongAnswer,
+      showQuestions: false
+    });
   };
 
   goback = index => {
-    console.log('goback function', this.slider);
     this.slider.slickPrev();
   };
 
@@ -425,32 +446,18 @@ class VideoModalContainer extends Component {
           this.slider = r;
         }}
         beforeChange={(oldIndex, newIndex) => {
-          console.log(
-            'after change',
-            oldIndex,
-            newIndex,
-            newIndex > oldIndex,
-            typeof newIndex
-          );
           if (newIndex > oldIndex) {
-            console.log('after change go back');
             this.goback(oldIndex);
           }
         }}
       >
         {questions.map((item, index) => {
-          const { tq_questions, tutorials_questions_options } = item;
+          const { tutorialQuestions, tutorials_questions_options } = item;
           const lastSlide = questions.length - 1 === index;
           const answerSelected = userAnswer[index];
           return (
-            <div className="anita">
-              <div
-                style={{
-                  textAlign: 'center'
-                }}
-              >
-                {tq_questions}
-              </div>
+            <div key={item.tutorialQuestions}>
+              <CenteredDiv>{tutorialQuestions}</CenteredDiv>
               <div>
                 {tutorials_questions_options.map(option => {
                   const check = userAnswer[index]
@@ -459,6 +466,7 @@ class VideoModalContainer extends Component {
 
                   return (
                     <QuestionOptions
+                      key={option.tutorialQuestionOptionOption}
                       onClick={() => {
                         if (!lastSlide) {
                           // this.slickNext();
@@ -479,14 +487,14 @@ class VideoModalContainer extends Component {
                   );
                 })}
               </div>
-              <div
+              <CenteredDiv
                 style={{
                   textAlign: lastSlide ? 'center' : 'right'
                 }}
               >
                 {answerSelected && !lastSlide && (
-                  <button className="rounded short" onClick={this.slickNext}>
-                    NEXT
+                  <button className="nextButton" onClick={this.slickNext}>
+                    NEXT »
                   </button>
                 )}
                 {lastSlide && (
@@ -497,7 +505,7 @@ class VideoModalContainer extends Component {
                     Check answers
                   </Button>
                 )}
-              </div>
+              </CenteredDiv>
             </div>
           );
         })}
@@ -505,14 +513,34 @@ class VideoModalContainer extends Component {
     );
   };
 
+  showFinalMessage = () => {
+    const { gotAllQuestionsCorrect } = this.state;
+    if (gotAllQuestionsCorrect) {
+      return (
+        <div>
+          {'You\'ve answered all the questions correctly. You can return now'}
+        </div>
+      );
+    }
+  };
+
+  watchVideoAgain = () => {
+    this.setState({ showVideo: true });
+  };
+
   render() {
     const {
       message, hideModal, showCheckButton, type, tutorial
     } = this.props;
 
-    const { playing, showQuestions, showVideo } = this.state;
+    const {
+      playing,
+      showQuestions,
+      showVideo,
+      showFinalMessage,
+      gotAllQuestionsCorrect
+    } = this.state;
     const { tutorialPath, tutorials_questions } = tutorial.tutorialList;
-    console.log(tutorial, showVideo);
     return (
       <ModalContainer>
         {!showQuestions && showVideo && (
@@ -563,18 +591,49 @@ class VideoModalContainer extends Component {
             {this.getQuestions(tutorials_questions)}
           </ModalBox>
         )}
+        {showFinalMessage && !showVideo && !showQuestions && (
+          <ModalBox className="centeredModal">
+            {!!gotAllQuestionsCorrect && (
+              <CenteredELementsModalWrapper className="test">
+                <span>
+                  {`  You've answered all the questions correctly. You can return
+                  now`}
+                </span>
+                <Button className="short" onClick={hideModal}>
+                  OK
+                </Button>
+              </CenteredELementsModalWrapper>
+            )}
+            {!gotAllQuestionsCorrect && (
+              <CenteredELementsModalWrapper className="test">
+                <span>
+                  {
+                    'You did\'nt answer all the questions correctly. You\'ll have to watch the video again'
+                  }
+                </span>
+                <Button className="short" onClick={this.watchVideoAgain}>
+                  Watch video again
+                </Button>
+              </CenteredELementsModalWrapper>
+            )}
+          </ModalBox>
+        )}
       </ModalContainer>
     );
   }
 }
 const mapStateToProps = state => ({
   tutorial: state.tutorial,
-  user: state.user.user
+  user: state.user.user,
+  strike: state.strike.strikes
 });
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
   onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
 });
+
+const Modal = connect(mapStateToProps)(BasicModal);
+
 const VideoModal = connect(
   mapStateToProps,
   mapDispatchToProps

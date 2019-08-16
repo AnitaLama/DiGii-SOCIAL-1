@@ -135,7 +135,8 @@ class BannerPost extends Component {
       strikeActorId: user.user.id,
       isBad
     };
-    this.onSubmitPost(saveData);
+    console.log(saveData);
+    // this.onSubmitPost(saveData);
   };
 
   render() {

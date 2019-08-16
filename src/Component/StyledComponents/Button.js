@@ -8,7 +8,7 @@ import {
 } from '../../Theme';
 
 const {
-  primary, secondary, snow, pen
+  primary, secondary, snow, pen, grey
 } = Colors.colors;
 
 const Button = styled.button`
@@ -49,6 +49,10 @@ const Button = styled.button`
   }
   &.small {
     padding: 0;
+  }
+  &.disabled {
+    pointer-events: none;
+    background: ${grey};
   }
 `;
 
