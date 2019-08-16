@@ -36,9 +36,7 @@ class TextPost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    console.log(posts);
     const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
-    console.log(checkFirstTimePosting, isFirstTimePosting);
     if (isFirstTimePosting) {
       disableFirstTimePosting();
     }

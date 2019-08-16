@@ -23,13 +23,11 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
-    console.log('saga input', action.data);
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/post/findFeedsOfAGroup`,
       action.data
     );
-    console.log('find post saga', data);
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
     } else {

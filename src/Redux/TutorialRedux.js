@@ -6,7 +6,8 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   onTutorialRequest: ['data'],
   onTutorialRequestSuccess: ['data'],
-  onTutorialRequestFailure: ['data']
+  onTutorialRequestFailure: ['data'],
+  onSaveTutorialWatchersInfo: ['data']
 });
 
 export const TutorialTypes = Types;
@@ -16,20 +17,23 @@ export default Creators;
 
 export const INITIAL_STATE = Immutable({
   loading: false,
-  tutorialList: []
+  tutorialList: [],
+  hasFinishedWatching: true
 });
 
 /* ------------- Reducers ------------- */
 
-const onTutorialRequestSuccess = (state, action) => {
-  console.log('here', action.data);
-  return { ...state, loading: false, tutorialList: action.data };
-};
+const onTutorialRequestSuccess = (state, action) => ({
+  ...state,
+  loading: false,
+  tutorialList: action.data,
+  hasFinishedWatching: false
+});
 
-const onTutorialRequestFailure = (state, action) => {
-  console.log('here', action);
-  return { ...state, loading: false };
-};
+const onTutorialRequestFailure = (state, action) => ({
+  ...state,
+  loading: false
+});
 
 /* ------------- Hookup Reducers To Types ------------- */
 

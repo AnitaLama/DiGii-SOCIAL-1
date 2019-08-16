@@ -5,7 +5,7 @@ import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import Slider from 'react-slick';
 import { Colors, Images, flexCentering } from '../../Theme';
-import { Button, Avatar } from './index';
+import { Button, Avatar, Loader } from './index';
 import { ShowFeed } from '../Functions';
 import TutorialActions from '../../Redux/TutorialRedux';
 
@@ -39,15 +39,6 @@ const ModalBox = styled.div`
     margin-top: -10px;
     color: red;
     text-align: right;
-  }
-  .slick-slider {
-    margin: 0 6px;
-  }
-  .slick-next,
-  .slick-prev {
-    &::before {
-      color: ${blue};
-    }
   }
 `;
 
@@ -100,7 +91,7 @@ class Modal extends Component {
 
   render() {
     const { message, hideModal, showCheckButton } = this.props;
-    console.log(showCheckButton);
+    // console.log(showCheckButton);
     return (
       <ModalContainer>
         <ModalBox>
@@ -304,10 +295,14 @@ const VideoOverlay = styled.div`
   }
 `;
 
+const QuestionOptionsWrapper = styled.div`
+  margin: 10px;
+`;
 const QuestionOptions = styled.div`
   text-align: center;
   cursor: pointer;
   padding: 6px;
+  margin: 6px;
   svg {
     float: left;
     color: #88cc00;
@@ -318,19 +313,21 @@ class VideoModalContainer extends Component {
   state = {
     playing: false,
     showQuestions: false,
-    userAnswer: []
+    userAnswer: [],
+    showVideo: true
   };
 
   componentWillMount() {
     const { onTutorialRequest, type } = this.props;
     onTutorialRequest(type);
+    console.log('save user info in tutorial watchers');
   }
 
   componentDidUpdate(prevProps) {
     const { tutorial } = this.props;
-    if (tutorial !== prevProps.tutorial) {
-      console.log('PLAYER', prevProps, this.props);
-      const player = this.fullscreenVideo;
+
+    const player = this.fullscreenVideo;
+    if (tutorial.tutorialList && tutorial.tutorialList.tutorialPath && player) {
       player.addEventListener('pause', () => {
         this.setState({ playing: false });
       });
@@ -338,7 +335,8 @@ class VideoModalContainer extends Component {
         this.setState({ playing: true });
       });
       player.addEventListener('ended', () => {
-        this.setState({ showQuestions: true });
+        console.log('endend');
+        this.setState({ showQuestions: true, showVideo: false });
       });
     }
   }
@@ -347,7 +345,6 @@ class VideoModalContainer extends Component {
     const { tutorial } = this.props;
     const { tutorialList } = tutorial;
     const { tu_path } = tutorialList;
-    console.log(tutorialList);
     return (
       <video
         src="https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/insults.mp4"
@@ -360,12 +357,6 @@ class VideoModalContainer extends Component {
           width: '100%'
         }}
         preload="auto"
-        onClick={time => {
-          console.log('onclick', time);
-        }}
-        onTimeUpdate={val => {
-          // console.log('on time update', val);
-        }}
       >
         <track>Hey</track>
       </video>
@@ -373,63 +364,138 @@ class VideoModalContainer extends Component {
   };
 
   changeAnswer = (index, answer) => {
-    console.log('answer', answer);
     const { userAnswer } = this.state;
-    userAnswer[index] = answer.tutorialQuestionOptionOption;
+    userAnswer[index] = {
+      answer: answer.tutorialQuestionOptionOption,
+      isCorrect: answer.tutorialQuestionOptionIsCorrect
+    };
     this.setState({ userAnswer });
+  };
+
+  checkTheUserAnswers = () => {
+    const { hideModal, user } = this.props;
+    const { userAnswer } = this.state;
+    const hasUnansweredQuestion = userAnswer.includes(undefined);
+    if (hasUnansweredQuestion) {
+      console.log('answer all questions');
+      alert('Please answer all the questions');
+      this.setState({ notice: 'Please answer all the questions.' });
+    }
+    const hasWrongAnswer = userAnswer.find(
+      item => item && item.isCorrect === 0
+    );
+    console.log('wrong answer', hasWrongAnswer);
+    if (hasWrongAnswer) {
+      alert('You\'ll have to watch the video again');
+      this.setState({ showVideo: true, showQuestions: false, userAnswer: [] });
+    }
+    if (!hasWrongAnswer) {
+      console.log('user>>>>>>>>', user);
+      // onSaveTutorialWatchersInfo()
+      hideModal();
+    }
+  };
+
+  goback = index => {
+    console.log('goback function', this.slider);
+    this.slider.slickPrev();
+  };
+
+  slickNext = () => {
+    this.slider.slickNext();
   };
 
   getQuestions = questions => {
     const settings = {
       dots: false,
       infinite: false,
-      speed: 500,
+      speed: 1500,
       slidesToShow: 1,
-      slidesToScroll: 1
+      slidesToScroll: 1,
+      draggable: false,
+      arrows: false,
+      autoplaySpeed: 1000
     };
     const { userAnswer } = this.state;
 
     return (
       <Slider
         {...settings}
-        style={{
-          marginLeft: '5px',
-          marginRight: '5px'
+        ref={r => {
+          this.slider = r;
+        }}
+        beforeChange={(oldIndex, newIndex) => {
+          console.log(
+            'after change',
+            oldIndex,
+            newIndex,
+            newIndex > oldIndex,
+            typeof newIndex
+          );
+          if (newIndex > oldIndex) {
+            console.log('after change go back');
+            this.goback(oldIndex);
+          }
         }}
       >
         {questions.map((item, index) => {
           const { tq_questions, tutorials_questions_options } = item;
+          const lastSlide = questions.length - 1 === index;
+          const answerSelected = userAnswer[index];
           return (
-            <div>
-              <div>{tq_questions}</div>
-              {tutorials_questions_options.map(option => {
-                const check = userAnswer[index] === option.tutorialQuestionOptionOption;
-                console.log('check answer', questions.length - 1, index);
-                return (
-                  <QuestionOptions
-                    onClick={() => {
-                      this.changeAnswer(index, option);
-                    }}
-                    style={{
-                      background: check ? 'rgba(52, 52, 52, 0.2)' : null
-                    }}
-                  >
-                    <FaCheck
-                      style={{
-                        visibility: check ? 'visible' : 'hidden'
-                      }}
-                    />
-                    {option.tutorialQuestionOptionOption}
-                  </QuestionOptions>
-                );
-              })}
+            <div className="anita">
               <div
                 style={{
                   textAlign: 'center'
                 }}
               >
-                {questions.length - 1 === index && (
-                  <button>Check answers</button>
+                {tq_questions}
+              </div>
+              <div>
+                {tutorials_questions_options.map(option => {
+                  const check = userAnswer[index]
+                    && userAnswer[index].answer
+                      === option.tutorialQuestionOptionOption;
+
+                  return (
+                    <QuestionOptions
+                      onClick={() => {
+                        if (!lastSlide) {
+                          // this.slickNext();
+                        }
+                        this.changeAnswer(index, option);
+                      }}
+                      style={{
+                        background: check ? 'rgba(52, 52, 52, 0.2)' : null
+                      }}
+                    >
+                      <FaCheck
+                        style={{
+                          visibility: check ? 'visible' : 'hidden'
+                        }}
+                      />
+                      {option.tutorialQuestionOptionOption}
+                    </QuestionOptions>
+                  );
+                })}
+              </div>
+              <div
+                style={{
+                  textAlign: lastSlide ? 'center' : 'right'
+                }}
+              >
+                {answerSelected && !lastSlide && (
+                  <button className="rounded short" onClick={this.slickNext}>
+                    NEXT
+                  </button>
+                )}
+                {lastSlide && (
+                  <Button
+                    className="rounded short"
+                    onClick={this.checkTheUserAnswers}
+                  >
+                    Check answers
+                  </Button>
                 )}
               </div>
             </div>
@@ -444,25 +510,26 @@ class VideoModalContainer extends Component {
       message, hideModal, showCheckButton, type, tutorial
     } = this.props;
 
-    const { playing, showQuestions } = this.state;
+    const { playing, showQuestions, showVideo } = this.state;
     const { tutorialPath, tutorials_questions } = tutorial.tutorialList;
-    console.log('moderationType in the modal componnet', tutorial);
-    if (tutorialPath) {
-      return (
-        <ModalContainer>
-          {!showQuestions && (
-            <div
-              style={{
-                marginTop: '0px',
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <div>
+    console.log(tutorial, showVideo);
+    return (
+      <ModalContainer>
+        {!showQuestions && showVideo && (
+          <div
+            style={{
+              marginTop: '0px',
+              width: '100%',
+              height: '100%',
+              position: 'relative',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <div>
+              {!tutorialPath && <Loader size={20} />}
+              {tutorialPath && (
                 <video
                   src={tutorialPath}
                   autoPlay
@@ -474,15 +541,10 @@ class VideoModalContainer extends Component {
                     width: '100%'
                   }}
                   preload="auto"
-                  onClick={time => {
-                    console.log('onclick', time);
-                  }}
-                  onTimeUpdate={val => {
-                    // console.log('on time update', val);
-                  }}
                 />
+              )}
 
-                {/*      <VideoOverlay
+              {/*      <VideoOverlay
                   onClick={() => {
                     // console.log('pause the video');
                     // console.log(this.fullscreenVideo.paused);
@@ -492,26 +554,26 @@ class VideoModalContainer extends Component {
                 >
                   <span>{playing ? <FaPause /> : <FaPlay />}</span>
                 </VideoOverlay> */}
-              </div>
             </div>
-          )}
-          {showQuestions && (
-            <ModalBox>
-              {' '}
-              {this.getQuestions(tutorials_questions)}
-            </ModalBox>
-          )}
-        </ModalContainer>
-      );
-    }
-    return <div>LOADING</div>;
+          </div>
+        )}
+        {showQuestions && (
+          <ModalBox>
+            {' '}
+            {this.getQuestions(tutorials_questions)}
+          </ModalBox>
+        )}
+      </ModalContainer>
+    );
   }
 }
 const mapStateToProps = state => ({
-  tutorial: state.tutorial
+  tutorial: state.tutorial,
+  user: state.user.user
 });
 const mapDispatchToProps = dispatch => ({
-  onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value))
+  onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
 });
 const VideoModal = connect(
   mapStateToProps,

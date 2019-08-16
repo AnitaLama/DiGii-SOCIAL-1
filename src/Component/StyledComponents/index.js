@@ -33,4 +33,9 @@ export {
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';
 export { ContainerWrapper, ContentWrapper } from './Wrapper';
-export { FormInput, FormTextArea, ImageInputContainer } from './Form';
+export {
+  FormInput,
+  FormTextArea,
+  ImageInputContainer,
+  FormSelect
+} from './Form';

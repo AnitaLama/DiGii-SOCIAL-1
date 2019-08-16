@@ -11,6 +11,8 @@ import { BannerTypes } from '../Redux/BannerRedux';
 import { GroupTypes } from '../Redux/GroupRedux';
 import { ProfileTypes } from '../Redux/ProfileRedux';
 import { TutorialTypes } from '../Redux/TutorialRedux';
+import { SchoolTypes } from '../Redux/SchoolRedux';
+
 import {
   onLoginRequest,
   onStudentLoginRequest,
@@ -48,7 +50,8 @@ import {
   onGetAvatarOfTheUser,
   onSaveMyAvatar
 } from './ProfileSaga';
-import onTutorialRequest from './TutorialSaga';
+import { onTutorialRequest, onSaveTutorialWatchersInfo } from './TutorialSaga';
+import onGetAllSchools from './SchoolSaga';
 
 export default function* root() {
   yield all([
@@ -95,6 +98,11 @@ export default function* root() {
     takeLatest(PostTypes.ON_POST_DELETE, onPostDelete),
     takeLatest(PostTypes.ON_COMMENT_DELETE, onCommentDelete),
     takeLatest(PostTypes.ON_EDIT_POST, onEditPost),
-    takeLatest(TutorialTypes.ON_TUTORIAL_REQUEST, onTutorialRequest)
+    takeLatest(TutorialTypes.ON_TUTORIAL_REQUEST, onTutorialRequest),
+    takeLatest(
+      TutorialTypes.ON_SAVE_TUTORIAL_WATCHERS_INFO,
+      onSaveTutorialWatchersInfo
+    ),
+    takeLatest(SchoolTypes.ON_GET_ALL_SCHOOLS, onGetAllSchools)
   ]);
 }

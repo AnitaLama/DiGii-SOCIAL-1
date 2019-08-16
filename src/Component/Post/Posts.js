@@ -33,7 +33,7 @@ class Posts extends Component {
     // console.log('socket data user', user, this.socket);
 
     this.socket.on('posts', data => {
-      console.log('data socket', data, groupId);
+      // console.log('data socket', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }

@@ -3,8 +3,15 @@ import styled from '@emotion/styled';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, FormInput, ErrorMessage } from '../StyledComponents';
+import {
+  Button,
+  FormInput,
+  ErrorMessage,
+  FormSelect
+} from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
+import SchoolActions from '../../Redux/SchoolRedux';
+
 import {
   Colors, fontWeight, fontFilson, fontSize
 } from '../../Theme';
@@ -34,10 +41,16 @@ const ClickableSpan = styled.h6`
     }
   }
 `;
+
 class LoginForm extends Component {
   constructor() {
     super();
     this.state = { isModalVisible: false };
+  }
+
+  componentWillMount() {
+    const { onGetAllSchools } = this.props;
+    onGetAllSchools();
   }
 
   openModal = () => {
@@ -50,6 +63,16 @@ class LoginForm extends Component {
 
   handleOk = () => {
     this.setState({ isModalVisible: false });
+  };
+
+  getSchoolsList = () => {
+    const { school } = this.props;
+    return (
+      school
+      && school.map(item => (
+        <option value={item.schoolName}>{item.schoolName}</option>
+      ))
+    );
   };
 
   render() {
@@ -93,14 +116,17 @@ class LoginForm extends Component {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <FormInput
-                type="text"
+              <FormSelect
                 name="school"
                 onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.school}
-                placeholder="School name"
-              />
+                defaultValue="-- School Name --"
+              >
+                <option disabled hidden>
+                  -- School Name --
+                </option>
+                {this.getSchoolsList()}
+              </FormSelect>
+
               <p>
                 {' '}
                 {errors.school && touched.school && errors.school}
@@ -160,10 +186,12 @@ LoginForm.propTypes = {
   loginErrors: PropTypes.object
 };
 const mapStateToProps = state => ({
+  school: state.school.schools,
   loginErrors: state.error
 });
 const mapDispatchToProps = dispatch => ({
-  onFormLogin: values => dispatch(LoginActions.onStudentFormLoginRequest(values))
+  onFormLogin: values => dispatch(LoginActions.onStudentFormLoginRequest(values)),
+  onGetAllSchools: values => dispatch(SchoolActions.onGetAllSchools())
 });
 
 export default connect(

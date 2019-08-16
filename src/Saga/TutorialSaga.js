@@ -3,19 +3,31 @@ import axios from 'axios';
 import { DEV_URL } from '../config';
 import TutorialActions from '../Redux/TutorialRedux';
 
-export default function* onTutorialRequest(action) {
+export function* onTutorialRequest(action) {
   try {
-    console.log('saga input', action);
+    console.log('saga', action.data);
     const { data } = yield call(axios.post, `${DEV_URL}/tutorial`, {
       type: action.data
     });
-    console.log('saga tutorial output', data);
+    console.log('saga', data);
     if (data.success) {
       yield put(TutorialActions.onTutorialRequestSuccess(data.result));
     } else {
-      console.log('saga data failure', data);
       yield put(TutorialActions.onTutorialRequestFailure(data.error));
     }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onSaveTutorialWatchersInfo(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${DEV_URL}/tutorial/saveTutorialWatchersInfo`,
+      action.data
+    );
+    console.log('saga tutorial watchers info', data);
   } catch (err) {
     console.log(err);
   }

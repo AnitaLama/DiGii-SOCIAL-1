@@ -55,24 +55,24 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       // if ((count + 1) % strikeCount === 0) {
       //   console.log(' shhow video');
       // }
-      this.setState({ showVideo: true });
+      // this.setState({ showVideo: true });
       // , () => {
       //   // this.fullscreenVideo.webkitEnterFullScreen();
       // });
-      // if (count >= 9) {
-      //   this.setState({
-      //     isModalVisible: true,
-      //     alertMessage: 'You\'ll be blocked from  DiGii'
-      //   });
-      // } else {
-      //   let index = (count % strikeCount) + 1;
-      //   index -= 1;
-      //
-      //   this.setState({
-      //     isModalVisible: true,
-      //     alertMessage: `${Warnings[index]}`
-      //   });
-      // }
+      if (count >= 9) {
+        this.setState({
+          isModalVisible: true,
+          alertMessage: 'You\'ll be blocked from  DiGii'
+        });
+      } else {
+        let index = (count % strikeCount) + 1;
+        index -= 1;
+
+        this.setState({
+          isModalVisible: true,
+          alertMessage: `${Warnings[index]}`
+        });
+      }
     };
 
     onFocus = (posts, userId, isFirstTime) => {
@@ -92,6 +92,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       this.setState({ isModalVisible: false });
     };
 
+    hideVideoModal = () => {
+      this.setState({ showVideo: false });
+    };
+
     render() {
       const {
         isModalVisible,
@@ -101,7 +105,9 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       } = this.state;
       return (
         <div>
-          {showVideo && <VideoModal type={moderationType} />}
+          {showVideo && (
+            <VideoModal type={moderationType} hideModal={this.hideVideoModal} />
+          )}
           <WrappedComponent
             {...this.props}
             {...this.state}

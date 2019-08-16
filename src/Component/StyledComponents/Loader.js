@@ -10,9 +10,9 @@ const Spinner = styled.div`
   text-align: center;
 
   div {
-    width: 6px;
-    height: 6px;
-    background: ${props => `${props.color}` || '#fff'};
+    width: ${props => (props && props.size ? `${props.size}px` : '6px')};
+    height: ${props => (props && props.size ? `${props.size}px` : '6px')};
+    background: ${props => (props && props.color ? `${props.color}` : '#fff')};
     border-radius: 100%;
     display: inline-block;
     animation: ${bouncedelay} 1.4s infinite ease-in-out both;
