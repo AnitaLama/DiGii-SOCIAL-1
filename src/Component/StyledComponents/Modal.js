@@ -105,10 +105,10 @@ class BasicModal extends Component {
 
   handleOK = () => {
     const { hideModal, showVideo, strike } = this.props;
-    console.log('strike', strike);
-    hideModal();
     if ((strike + 1) % 3 === 0) {
       showVideo();
+    } else {
+      hideModal();
     }
   };
 
@@ -362,7 +362,6 @@ class VideoModalContainer extends Component {
   componentWillMount() {
     const { onTutorialRequest, type } = this.props;
     onTutorialRequest(type);
-    console.log('save user info in tutorial watchers');
   }
 
   componentDidUpdate(prevProps) {
@@ -377,6 +376,7 @@ class VideoModalContainer extends Component {
         this.setState({ playing: true });
       });
       player.addEventListener('ended', () => {
+        this.saveTutorialWatchersInfo();
         this.setState({ showQuestions: true, showVideo: false });
       });
     }
@@ -402,14 +402,7 @@ class VideoModalContainer extends Component {
     const hasWrongAnswer = userAnswer.find(
       item => item && item.isCorrect === 0
     );
-    // if (hasWrongAnswer) {
-    //   alert('You\'ll have to watch the video again');
-    //   this.setState({ showVideo: true, showQuestions: false, userAnswer: [] });
-    // }
-    // if (!hasWrongAnswer) {
-    //   // onSaveTutorialWatchersInfo()
-    //   // hideModal();
-    // }
+
     this.setState({
       showFinalMessage: true,
       userAnswer: [],
@@ -426,6 +419,21 @@ class VideoModalContainer extends Component {
     this.slider.slickNext();
   };
 
+  saveTutorialWatchersInfo = () => {
+    const { userInfoSaved } = this.state;
+    this.setState({ userInfoSaved: true });
+    const { user, tutorial, onSaveTutorialWatchersInfo } = this.props;
+    const { id, isStudent } = user;
+    const { tutorialId } = tutorial.tutorialList;
+    const watchersData = {
+      tutorialWatcherTutorialId: tutorialId,
+      tutorialWatcherStudentId: id
+    };
+    if (!userInfoSaved) {
+      onSaveTutorialWatchersInfo(watchersData);
+    }
+  };
+
   getQuestions = questions => {
     const settings = {
       dots: false,
@@ -438,7 +446,6 @@ class VideoModalContainer extends Component {
       autoplaySpeed: 1000
     };
     const { userAnswer } = this.state;
-
     return (
       <Slider
         {...settings}
@@ -571,17 +578,14 @@ class VideoModalContainer extends Component {
                   preload="auto"
                 />
               )}
-
-              {/*      <VideoOverlay
-                  onClick={() => {
-                    // console.log('pause the video');
-                    // console.log(this.fullscreenVideo.paused);
-                    const player = this.fullscreenVideo;
-                    player.paused ? player.play() : player.pause();
-                  }}
-                >
-                  <span>{playing ? <FaPause /> : <FaPlay />}</span>
-                </VideoOverlay> */}
+              <VideoOverlay
+                onClick={() => {
+                  const player = this.fullscreenVideo;
+                  player.paused ? player.play() : player.pause();
+                }}
+              >
+                <span>{playing ? <FaPause /> : <FaPlay />}</span>
+              </VideoOverlay>
             </div>
           </div>
         )}

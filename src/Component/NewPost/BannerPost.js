@@ -67,7 +67,7 @@ class BannerPost extends Component {
     const { onSubmitPost, resetPostType } = this.props;
     onSubmitPost(data);
     this.hideModal();
-    resetPostType();
+    // resetPostType();
   };
 
   handlePostText = e => {
@@ -113,7 +113,7 @@ class BannerPost extends Component {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      const check = showWarning(strikes, isStudent, result);
+      const check = showWarning(strikes, isStudent, result, null);
       console.log(check, result);
       // if (check) {
       //   this.setState({
@@ -135,8 +135,10 @@ class BannerPost extends Component {
       strikeActorId: user.user.id,
       isBad
     };
-    console.log(saveData);
-    // this.onSubmitPost(saveData);
+    this.onSubmitPost(saveData);
+    if (!isBad) {
+      resetPostType();
+    }
   };
 
   render() {
@@ -151,7 +153,6 @@ class BannerPost extends Component {
             hideModal={this.hideModal}
             user={user.user}
             postTypeId={postTypeId}
-            onSubmitPost={this.onSubmitPost}
             handlePostText={this.handlePostText}
             postText={this.props.postText}
             saveBanner={this.saveBanner}

@@ -34,17 +34,11 @@ class ImagePost extends Component {
     super(props);
     this.state = {
       isWebcamModalVisible: false,
-      isModalVisible: false,
       postTypeId: props.postTypeId,
       imageObject: null,
-      showPostButton: false,
       selectedImage: null,
       fromWebcam: false,
-      fileName: '',
-      postText: '',
-      isBad: false,
-      strikeType: null,
-      alertMessage: null
+      imageIsBad: false
     };
     this.socket = socketClient(SOCKET_URL);
   }
@@ -66,7 +60,6 @@ class ImagePost extends Component {
   handleOk = () => {
     this.setState({
       isWebcamModalVisible: false,
-      showPostButton: true,
       fromWebcam: true
     });
   };
@@ -119,55 +112,41 @@ class ImagePost extends Component {
       onPostImage
     } = this.props;
     const {
-      postTypeId, imageObject, fromWebcam, file
+      postTypeId,
+      imageObject,
+      fromWebcam,
+      file,
+      imageIsBad
     } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
     onGetStrikesCountOfAUser({ isStudent, id });
     let isBad = 0;
-    if (result) {
+    if (result || imageIsBad) {
       if (strikes > 8 && isStudent) {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      showWarning(strikes, isStudent, result);
+      showWarning(
+        strikes,
+        isStudent,
+        result,
+        'This picture has a few different people in it. Have you got consent from all of them to put their picture online?'
+      );
       isBad = 1;
     }
-    // const {
-    //   imageObject,
-    //   fromWebcam,
-    //   file,
-    //   postTypeId,
-    //   postText,
-    //   strikeType,
-    //   isBad,
-    //   blockUser
-    // } = this.state;
-    // const {
-    //   user,
-    //   resetPostType,
-    //   onPostImage,
-    //   onBlockUser,
-    //   onGetStrikesCountOfAUser,
-    //   strike,
-    //   submitPost
-    // } = this.props;
-    // const { isStudent, id } = user.user;
-    // const { strikes } = strike;
-    // const result = submitPost();
-    // onGetStrikesCountOfAUser({ isStudent, id });
-    // // APPEND THE NECESSARY INFO WITH FORMDATA
+
     if (!fromWebcam) {
       const formData = new FormData();
       formData.append('file', file[0]);
       formData.append('postPostTypeId', postTypeId);
-      formData.append('isBad', isBad);
+      formData.append('isBad', isBad || imageIsBad);
       formData.append('postIsStudent', isStudent);
       formData.append('postActorId', id);
       formData.append('postText', postText);
       formData.append('postIsImage', 1);
-      formData.append('postIsBad', isBad);
+      formData.append('postIsBad', isBad || imageIsBad);
       formData.append('strikeType', result);
       formData.append('strikeIsStudent', isStudent);
       formData.append('strikeActorId', id);
@@ -183,9 +162,9 @@ class ImagePost extends Component {
         postActorId: id,
         postPostTypeId: postTypeId,
         postText,
-        isBad,
+        isBad: isBad || imageIsBad,
         postIsImage: 1,
-        postIsBad: isBad,
+        postIsBad: isBad || imageIsBad,
         strikeType: result,
         strikeIsStudent: isStudent,
         strikeActorId: id
@@ -193,21 +172,28 @@ class ImagePost extends Component {
       onPostImage(data);
     }
 
-    resetPostType();
+    if (!isBad) {
+      resetPostType();
+    }
   };
 
   selectImage = e => {
+    const { checkImageName } = this.props;
+    const file = e.target.files;
+    const result = checkImageName(file[0].name);
+    console.log('image name>>>>', file[0].name, result);
+    if (result) {
+      this.setState({
+        imageIsBad: true
+      });
+    }
     this.setState({
-      selectedImage: URL.createObjectURL(e.target.files[0]),
+      selectedImage: URL.createObjectURL(file[0]),
       showPostButton: true,
       fromWebcam: false,
-      fileName: e.target.files[0].name,
+      fileName: file[0].name,
       file: e.target.files
     });
-  };
-
-  hideModal = () => {
-    // this.setState({ isModalVisible: false, alertMessage: null });
   };
 
   handleCaption = e => {
@@ -234,19 +220,13 @@ class ImagePost extends Component {
       height: 720,
       facingMode: 'user'
     };
-    const {
-      isModalVisible,
-      alertMessage,
-      selectedImage,
-      imageObject,
-      isWebcamModalVisible
-    } = this.state;
+    const { selectedImage, imageObject, isWebcamModalVisible } = this.state;
     const { postText } = this.props;
     if (!selectedImage && !imageObject) {
       return (
         <PostWrapperContainer>
           <PhotoOptionContent>
-            <input type="file" multiple="" onChange={this.selectImage} />
+            <input type="file" onChange={this.selectImage} />
             <div style={{ textAlign: 'center' }}>
               <Button className="rounded short" onClick={this.switchOnWebcam}>
                 Take a picture
@@ -327,9 +307,6 @@ class ImagePost extends Component {
             Post
           </Button>
         </div>
-        {isModalVisible && (
-          <AlertModal message={alertMessage} hideModal={this.hideModal} />
-        )}
       </PostWrapper>
     );
   }

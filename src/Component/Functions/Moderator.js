@@ -19,6 +19,11 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
   }
 
+    checkImageName = filename => {
+      const check = FilterKeyWords(filename);
+      return check;
+    };
+
     resetPostText = () => {
       this.setState({ postText: '' });
     };
@@ -50,9 +55,14 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       return blacklistedWord;
     };
 
-    showWarning = (count, isStudent, moderationType) => {
+    showWarning = (count, isStudent, moderationType, msg) => {
       console.log('strike count', count, moderationType);
-      if (count >= strikeCount * 3) {
+      if (msg) {
+        this.setState({
+          isModalVisible: true,
+          alertMessage: msg
+        });
+      } else if (count >= strikeCount * 3) {
         this.setState({
           isModalVisible: true,
           alertMessage: 'You\'ll be blocked from  DiGii'
@@ -83,14 +93,22 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     hideModal = () => {
       this.setState({ isModalVisible: false });
+      // console.log('inside modal', strike);
+      // if strike % 3 !== 0  , reset the post type else dont do anything
+      this.resetPost();
+    };
+
+    resetPost = () => {
+      const { resetPostType } = this.props;
+      resetPostType();
     };
 
     hideVideoModal = () => {
-      this.setState({ showVideo: false });
+      this.setState({ showVideo: false, isModalVisible: false });
     };
 
     showVideo = () => {
-      this.setState({ showVideo: true });
+      this.setState({ showVideo: true, isModalVisible: false });
     };
 
     render() {
@@ -114,6 +132,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             onFocus={this.onFocus}
             resetPostText={this.resetPostText}
             updatePostText={this.updatePostText}
+            checkImageName={this.checkImageName}
           />
           {isModalVisible && (
             <Modal

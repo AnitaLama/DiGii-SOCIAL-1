@@ -100,53 +100,6 @@ class BannerImageModal extends Component {
   saveBanner = () => {
     const { data } = this.props;
     this.props.saveBanner(`${url}/${data.Key}`);
-    // const {
-    //   submitPost,
-    //   strike,
-    //   user,
-    //   onBlockUser,
-    //   postText,
-    //   showWarning,
-    //   resetPostType,
-    //   onGetStrikesCountOfAUser,
-    //   data,
-    //   onSubmitPost
-    // } = this.props;
-    // const { postTypeId } = this.state;
-    // const { isStudent, id } = user.user;
-    // const { strikes } = strike;
-    // const result = submitPost();
-    // onGetStrikesCountOfAUser({ isStudent, id });
-    //
-    // let isBad = 0;
-    // if (result) {
-    //   if (strikes > 8 && isStudent) {
-    //     // BLOCK THE USER
-    //     onBlockUser({ isStudent, id });
-    //   }
-    //   const check = showWarning(strikes, isStudent, result);
-    //   console.log(check);
-    //   // if (check) {
-    //   //   this.setState({
-    //   //     isModalVisible: check.isModalVisible,
-    //   //     alertMessage: check.alertMessage
-    //   //   });
-    //   // }
-    //   isBad = 1;
-    // }
-    // const saveData = {
-    //   postPostTypeId: postTypeId,
-    //   postIsStudent: isStudent,
-    //   postActorId: id,
-    //   postBody: `${url}/${data.Key}`,
-    //   postText: postText,
-    //   postIsBad: isBad,
-    //  strikeType: result,
-    //   strikeIsStudent: user.user.isStudent,
-    //   strikeActorId: user.user.id,
-    //   isBad
-    // };
-    // onSubmitPost(saveData);
   };
 
   hideModal = () => {
@@ -173,12 +126,7 @@ class BannerImageModal extends Component {
                 <Icon src={Images.digii5.icon} />
                 Digii
               </div>
-              <Points>
-                {/* <span>-5</span>
-              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-        */}
-                {' '}
-              </Points>
+              <Points />
             </Header>
 
             <ImageWrapper>

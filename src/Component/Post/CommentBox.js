@@ -198,7 +198,7 @@ class CommentBox extends Component {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      showWarning(strikes, isStudent, result);
+      showWarning(strikes, isStudent, result, null);
       isBad = 1;
     }
 

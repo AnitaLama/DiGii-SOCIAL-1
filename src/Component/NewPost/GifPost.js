@@ -140,7 +140,7 @@ class GifContainer extends Component {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
-      showWarning(strikes, isStudent, result);
+      showWarning(strikes, isStudent, result, null);
       isBad = 1;
     }
 
@@ -168,7 +168,7 @@ class GifContainer extends Component {
     // if (blockUser) {
     //   onBlockUser({ isStudent, id });
     // }
-    resetPostType();
+    if(!isBad){resetPostType();}
     // this.setState({ selectedGif: null });
   };
 
