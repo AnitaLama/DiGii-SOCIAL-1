@@ -56,14 +56,14 @@ const SettingsSubList = styled.ul`
     border-left: 8px solid transparent;
     border-bottom: 15px solid #e9e9e9;
   }
-  li {
-    padding: 10px;
-    cursor: pointer;
-    &:hover {
-      display: block;
-      background: ${pen};
-      color: ${snow};
-    }
+`;
+const SettingsListElement = styled.li`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    display: block;
+    background: ${pen};
+    color: ${snow};
   }
 `;
 const Settings = styled.div`
@@ -151,10 +151,14 @@ class Header extends Component {
             />
             {isListVisible && (
               <SettingsSubList>
-                <li onClick={this.logOut}>Logout</li>
-                <li onClick={() => this.delete({ isStudent, groupId, id })}>
+                <SettingsListElement onClick={this.logOut}>
+                  Logout
+                </SettingsListElement>
+                <SettingsListElement
+                  onClick={() => this.delete({ isStudent, groupId, id })}
+                >
                   Reset Message Board
-                </li>
+                </SettingsListElement>
               </SettingsSubList>
             )}
           </Settings>
@@ -165,7 +169,8 @@ class Header extends Component {
 }
 Header.propTypes = {
   users: PropTypes.object,
-  onLogOut: PropTypes.func
+  onLogOut: PropTypes.func,
+  onMasterDelete: PropTypes.func
 };
 const mapStateToProps = state => ({
   users: state.user

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import history from '../../history';
+import PropTypes from 'prop-types';
 import { Modal, VideoModal } from '../StyledComponents';
 import { FilterKeyWords, Warnings } from './index';
 
@@ -147,4 +148,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     }
 };
 
+Moderator.propTypes = {
+  resetPostType: PropTypes.func
+};
 export default Moderator;

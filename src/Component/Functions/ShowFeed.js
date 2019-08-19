@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { FaCircle } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 import { FormTextArea, Avatar } from '../StyledComponents';
 import { Colors, fontSize, flexCentering } from '../../Theme';
 
@@ -83,7 +84,7 @@ class ShowData extends Component {
 
   getMessageBoardFeed = () => {
     const { text } = this.state;
-    const { post, user } = this.props;
+    const { post, user, selectPollAnswer } = this.props;
     const {
       postBody, post_type, postText, edit
     } = post;
@@ -167,9 +168,7 @@ class ShowData extends Component {
                     </div>
                     <span>
                       {poll_responses.slice(0, 3).map(item => {
-                        let avatar;
-
-                        avatar = item.pollResponseIsStudent
+                        const avatar = item.pollResponseIsStudent
                           ? item.student.avatar
                           : item.user.avatar;
                         return (
@@ -291,7 +290,7 @@ class ShowData extends Component {
               return (
                 <PollWrapper
                   onClick={() => {
-                    this.props.selectPollAnswer(option, hasUserVoted);
+                    selectPollAnswer(option, hasUserVoted);
                   }}
                   key={`${option}${i}`}
                 >
@@ -309,9 +308,7 @@ class ShowData extends Component {
                   </div>
                   <span>
                     {poll_responses.slice(0, 3).map(item => {
-                      let avatar;
-
-                      avatar = item.pollResponseIsStudent
+                      const avatar = item.pollResponseIsStudent
                         ? item.student.avatar
                         : item.user.avatar;
                       return (
@@ -372,4 +369,8 @@ class ShowData extends Component {
   }
 }
 
+ShowData.propTypes = {
+  post: PropTypes.object,
+  handlePostChange: PropTypes.func
+};
 export default ShowData;

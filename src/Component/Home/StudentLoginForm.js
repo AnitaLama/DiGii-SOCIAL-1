@@ -11,7 +11,6 @@ import {
 } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import SchoolActions from '../../Redux/SchoolRedux';
-
 import {
   Colors, fontWeight, fontFilson, fontSize
 } from '../../Theme';
@@ -183,7 +182,9 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   onFormLogin: PropTypes.func,
-  loginErrors: PropTypes.object
+  loginErrors: PropTypes.object,
+  onGetAllSchools: PropTypes.func,
+  school: PropTypes.array
 };
 const mapStateToProps = state => ({
   school: state.school.schools,
@@ -191,7 +192,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onFormLogin: values => dispatch(LoginActions.onStudentFormLoginRequest(values)),
-  onGetAllSchools: values => dispatch(SchoolActions.onGetAllSchools())
+  onGetAllSchools: () => dispatch(SchoolActions.onGetAllSchools())
 });
 
 export default connect(
