@@ -25,7 +25,7 @@ class UserAvatar extends Component {
         avatarFacialHairMoustache,
         avatarFacialHairColor,
         avatarHair,
-        a_mouth,
+        avatarMouth,
         avatarSkin,
         avatarStyle,
         avatarAccessories,
@@ -45,15 +45,13 @@ class UserAvatar extends Component {
             clotheColor={avatarClothesColor}
             eyeType={avatarEyes}
             eyebrowType={avatarEyebrow}
-            mouthType={a_mouth}
+            mouthType={avatarMouth}
             skinColor={avatarSkin}
-            facialHairColor={avatarFacialHairColor}
             graphicType={avatarGraphicType}
           />
         </div>
       );
     }
-    const { src } = this.props;
     return <ImageAvatar src={Images.stockImage} {...this.props} />;
   }
 }
@@ -63,7 +61,8 @@ export default UserAvatar;
 //   const { src } = props;
 //   return <Images src={src} {...props} />;
 // };
-Avatar.propTypes = {
-  src: PropTypes.string
+UserAvatar.propTypes = {
+  avatar: PropTypes.object,
+  height: PropTypes.number
 };
 // export default UserAvatar;

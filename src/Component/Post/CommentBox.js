@@ -17,6 +17,7 @@ const {
   snow, primary, secondary, pencil
 } = Colors.colors;
 
+const ClickableButton = styled.div``;
 const UserList = styled.ul`
   list-style-type: none;
   background: white;
@@ -101,6 +102,7 @@ const FeelingsDiv = styled.div`
     cursor: pointer;
   }
 `;
+const FeelingsButton = styled.span``;
 class CommentBox extends Component {
   state = {
     showGifInput: false,
@@ -159,13 +161,6 @@ class CommentBox extends Component {
     if (e.key === 'Enter') {
       this.handleCommentReply();
     }
-  };
-
-  hideModal = () => {
-    this.setState({
-      isModalVisible: false,
-      alertMessage: null
-    });
   };
 
   handleComment = e => {
@@ -259,7 +254,6 @@ class CommentBox extends Component {
   };
 
   findGif = () => {
-    console.log('find gifs', window.innerWidth, window.innerHeight);
     const { onFindGifForComments } = this.props;
     const { gifText } = this.state;
     this.setState({ showGifInput: true });
@@ -273,13 +267,17 @@ class CommentBox extends Component {
     return (
       commentGif
       && commentGif.map(item => (
-        <img
-          src={item.images.downsized_medium.url}
-          style={{ height: '60px', width: '60px' }}
+        <ClickableButton
+          key={item.images.downsized_medium.url}
           onClick={() => {
             this.selectAGif(item.images.downsized_medium.url);
           }}
-        />
+        >
+          <img
+            src={item.images.downsized_medium.url}
+            style={{ height: '60px', width: '60px' }}
+          />
+        </ClickableButton>
       ))
     );
   };
@@ -357,7 +355,7 @@ class CommentBox extends Component {
 
   render() {
     const {
-      usersInGroup, showUsers, showFeelings, text
+      usersInGroup, showUsers, showFeelings, showGifInput
     } = this.state;
     const { postText, user, data } = this.props;
     const { avatar } = user.user;
@@ -392,6 +390,7 @@ class CommentBox extends Component {
           <UserList>
             {usersInGroup.map(users => (
               <UserListElement
+                key={users.userName || users.studentUsername}
                 onClick={() => {
                   this.userSelected(users);
                 }}
@@ -410,7 +409,7 @@ class CommentBox extends Component {
         >
           <FeelingsDiv>
             {FeelingsList.map(feeling => (
-              <span
+              <FeelingsButton
                 onClick={() => {
                   this.handleClickOnFeeling(feeling);
                 }}
@@ -418,13 +417,13 @@ class CommentBox extends Component {
               >
                 {feeling.name}
                 {feeling.emoji}
-              </span>
+              </FeelingsButton>
             ))}
           </FeelingsDiv>
         </GifContainer>
         <GifContainer
           style={{
-            display: this.state.showGifInput ? 'block' : 'none'
+            display: showGifInput ? 'block' : 'none'
           }}
         >
           {this.getGif()}
@@ -452,16 +451,16 @@ class CommentBox extends Component {
             style={{ display: 'none' }}
             onChange={e => this.selectImage({ e, data, user })}
           />
-          <button onClick={this.handleSelectImage}>
+          <button type="submit" onClick={this.handleSelectImage}>
             <FaImage />
           </button>
-          <button onClick={this.handleGifButtonClick}>
+          <button type="submit" onClick={this.handleGifButtonClick}>
             <MdGif />
           </button>
-          <button onClick={this.handleFeelingsClick}>
+          <button type="submit" onClick={this.handleFeelingsClick}>
             <FaSmile />
           </button>
-          <button onClick={this.handleCommentReply}>
+          <button type="submit" onClick={this.handleCommentReply}>
             <FaCaretRight />
           </button>
         </div>
@@ -475,7 +474,20 @@ CommentBox.propTypes = {
   user: PropTypes.object,
   post: PropTypes.object,
   onGetStrikesCountOfAUser: PropTypes.func,
-  disableFirstTimePosting: PropTypes.func
+  disableFirstTimePosting: PropTypes.func,
+  onGetAllUsersOfAGroup: PropTypes.func,
+  group: PropTypes.object,
+  onFocus: PropTypes.func,
+  postText: PropTypes.string,
+  handlePostText: PropTypes.func,
+  submitPost: PropTypes.func,
+  onBlockUser: PropTypes.func,
+  showWarning: PropTypes.func,
+  onSubmitComment: PropTypes.func,
+  resetPostText: PropTypes.func,
+  data: PropTypes.object,
+  updatePostText: PropTypes.func,
+  onPostImage: PropTypes.func
 };
 const mapStateToProps = state => ({
   postActivity: state.postActivity,

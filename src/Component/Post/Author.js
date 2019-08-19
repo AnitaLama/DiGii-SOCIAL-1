@@ -1,3 +1,6 @@
+//  THE TOP PART OF EACH SINGLE POST
+// WHERE THE AUTHOR INFO IS SHOWN + THE EDIT OPTIONS DROPSOWN
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -91,6 +94,9 @@ const EditOptionsWrapper = styled.div`
   border-radius: 12px;
   box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.25);
 `;
+
+const PostOptionButton = styled.div``;
+
 class Author extends Component {
   constructor(props) {
     super(props);
@@ -136,7 +142,8 @@ class Author extends Component {
   };
 
   onPostChange = () => {
-    this.setState({ open: !this.state.open });
+    const { open } = this.state;
+    this.setState({ open: !open });
   };
 
   closeDeleteModal = () => {
@@ -164,23 +171,22 @@ class Author extends Component {
       <div>
         <FaTimes onClick={this.onPostChange} />
       </div>
-      <div
+      <PostOptionButton
         onClick={() => {
           this.editPost(data);
-          // this.props.onDelete(value);
         }}
       >
         <FaEllipsisH />
         Edit
-      </div>
-      <div
+      </PostOptionButton>
+      <PostOptionButton
         onClick={() => {
           this.deletePost(data);
         }}
       >
         <FaTimes />
         Delete
-      </div>
+      </PostOptionButton>
     </EditOptionsWrapper>
   );
 
@@ -191,22 +197,19 @@ class Author extends Component {
   };
 
   onEditPost = post => {
-    const { onEditPost, user } = this.props;
-    const { isStudent, id } = user.user;
+    const { onEditPost, users } = this.props;
+    const { isStudent, id } = users;
     onEditPost({ ...post, isStudent, id });
     this.setState({ showEditModal: false });
   };
 
   render() {
-    const { data } = this.props;
-    const { user } = this.props;
-    const { isStudent, id } = user.user;
+    const { data, users } = this.props;
+    const { isStudent, id } = users;
     const { postActorId, postIsStudent } = data;
     let firstname = '';
     let lastname = '';
     let userAvatar = null;
-    // console.log(data);
-    // post typet,po ypepost console.log('data author', data);
     if (data.postIsStudent) {
       const { student } = data;
       const { avatar } = student;
@@ -223,7 +226,7 @@ class Author extends Component {
     }
     const { showDeleteModal, selectedPost, showEditModal } = this.state;
     const check = postActorId === id && postIsStudent == isStudent;
-
+    const { open } = this.state;
     return (
       <AuthorWrapper>
         <Avatar avatar={userAvatar} height={53} />
@@ -242,7 +245,7 @@ class Author extends Component {
         {/* Edit And Delete */}
         {check && (
           <EditOptionsContainer>
-            {this.state.open ? (
+            {open ? (
               this.onPostChangepopup(data)
             ) : (
               <IconContext.Provider
@@ -252,6 +255,7 @@ class Author extends Component {
                 }}
               >
                 <button
+                  type="submit"
                   className="dropbtn"
                   onClick={this.onPostChange}
                   style={{
@@ -271,7 +275,7 @@ class Author extends Component {
           <DeleteModal
             closeDeleteModal={this.closeDeleteModal}
             post={selectedPost}
-            user={user.user}
+            user={users}
             onDeletePost={this.onDeletePost}
           />
         )}
@@ -279,7 +283,7 @@ class Author extends Component {
           <EditModal
             closeEditModal={this.closeEditModal}
             post={selectedPost}
-            user={user.user}
+            user={users}
             onEditPost={this.onEditPost}
           />
         )}
@@ -288,10 +292,13 @@ class Author extends Component {
   }
 }
 Author.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  users: PropTypes.object,
+  onDelete: PropTypes.func,
+  onEditPost: PropTypes.func
 };
 const mapStateToProps = state => ({
-  user: state.user
+  users: state.user.user
 });
 const mapDispatchToProps = dispatch => ({
   onDelete: value => dispatch(PostAction.onPostDelete(value)),

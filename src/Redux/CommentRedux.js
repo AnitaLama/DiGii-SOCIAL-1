@@ -18,7 +18,7 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const onSubmitCommentRequest = (state, action) => ({
+const onSubmitCommentRequest = state => ({
   ...state,
   loading: true
 });

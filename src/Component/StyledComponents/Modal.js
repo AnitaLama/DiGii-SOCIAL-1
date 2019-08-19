@@ -9,9 +9,7 @@ import { Button, Avatar, Loader } from './index';
 import { ShowFeed } from '../Functions';
 import TutorialActions from '../../Redux/TutorialRedux';
 
-const {
-  snow, tint, peach, blue
-} = Colors.colors;
+const { snow, tint, peach } = Colors.colors;
 const ModalContainer = styled.div`
   position: fixed;
   background: rgba(0, 0, 0, 0.32);
@@ -93,7 +91,6 @@ class BasicModal extends Component {
   constructor() {
     super();
     this.state = {
-      text: '',
       checkboxSelected: false
     };
   }
@@ -113,7 +110,7 @@ class BasicModal extends Component {
   };
 
   render() {
-    const { message, hideModal, showCheckButton } = this.props;
+    const { message, showCheckButton } = this.props;
     const { checkboxSelected } = this.state;
     // console.log(showCheckButton);
     return (
@@ -142,19 +139,17 @@ class BasicModal extends Component {
                 name="CheckBox"
                 onChange={this.handleCheckboxClick}
               />
-              <label htmlFor="CheckBox">
-                I understand and agree to the terms and conditions
-              </label>
+              <label>I understand and agree to the terms and conditions</label>
             </TermsAndConditionBox>
           )}
-          <ButtonWrapper>
+          <span>
             <Button
               className={`rounded short ${!checkboxSelected && 'disabled'}`}
               onClick={this.handleOK}
             >
               OK
             </Button>
-          </ButtonWrapper>
+          </span>
         </ModalBox>
       </ModalContainer>
     );
@@ -167,13 +162,6 @@ BasicModal.propTypes = {
 };
 
 class DeleteModal extends Component {
-  constructor() {
-    super();
-    this.state = {
-      text: ''
-    };
-  }
-
   getContent = () => {
     const { post, user } = this.props;
     return <ShowFeed post={post} user={user} />;
@@ -536,9 +524,7 @@ class VideoModalContainer extends Component {
   };
 
   render() {
-    const {
-      message, hideModal, showCheckButton, type, tutorial
-    } = this.props;
+    const { hideModal, tutorial } = this.props;
 
     const {
       playing,
@@ -638,6 +624,34 @@ const mapDispatchToProps = dispatch => ({
 
 const Modal = connect(mapStateToProps)(BasicModal);
 
+BasicModal.propTypes = {
+  showVideo: PropTypes.func,
+  strike: PropTypes.object,
+  hideModal: PropTypes.func,
+  showCheckButton: PropTypes.bool
+};
+
+DeleteModal.propTypes = {
+  post: PropTypes.array,
+  user: PropTypes.object,
+  onDeletePost: PropTypes.func,
+  closeDeleteModal: PropTypes.func
+};
+
+EditModal.propTypes = {
+  post: PropTypes.array,
+  user: PropTypes.object,
+  onEditPost: PropTypes.func,
+  closeEditModal: PropTypes.func
+};
+
+VideoModalContainer.propTypes = {
+  message: PropTypes.string,
+  hideModal: PropTypes.func,
+  showCheckButton: PropTypes.bool,
+  type: PropTypes.number,
+  tutorial: PropTypes.object
+};
 const VideoModal = connect(
   mapStateToProps,
   mapDispatchToProps

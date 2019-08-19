@@ -1,3 +1,5 @@
+// THIS IS THE SECTION WHERE THE COMMENTS ARE SHOWN
+
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
@@ -61,8 +63,9 @@ class Comment extends Component {
   }
 
   hideComment = value => {
+    const { onDelete } = this.props;
     this.setState({ isCommentHidden: true });
-    this.props.onDelete(value);
+    onDelete(value);
   };
 
   getEmoji = data => {
@@ -72,9 +75,9 @@ class Comment extends Component {
 
   render() {
     const { isCommentHidden } = this.state;
-    const { data, user } = this.props;
+    const { data, users } = this.props;
     const { postCommentId } = data;
-    const { isStudent, id } = user.user;
+    const { isStudent, id } = users;
 
     let firstname = '';
     let lastname = '';
@@ -122,7 +125,10 @@ class Comment extends Component {
           </span> */}
           <span>
             {data.postCommentImagePath && (
-              <img src={data.postCommentImagePath} />
+              <img
+                src={data.postCommentImagePath}
+                alt={data.postCommentImagePath}
+              />
             )}
             {data.postCommentTitle.toLowerCase() !== 'feeling'
               && data.postCommentBody}
@@ -142,12 +148,14 @@ class Comment extends Component {
 }
 
 Comment.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  users: PropTypes.object,
+  onDelete: PropTypes.func
 };
 
 const mapStateToProps = state => ({
   comment: state.comment,
-  user: state.user
+  users: state.user.user
 });
 
 const mapDispatchToProps = dispatch => ({

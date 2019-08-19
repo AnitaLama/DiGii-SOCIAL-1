@@ -40,14 +40,10 @@ const TabName = styled.div`
   }
 `;
 const SingleTab = props => {
-  const { data, handleTabChange } = props;
+  const { data } = props;
   const selected = history.location.pathname === data.pathname;
   return (
-    <div
-      onClick={() => {
-        handleTabChange(data);
-      }}
-    >
+    <div>
       <Tab className={selected && 'active'}>
         <Box className={selected && 'active'} />
       </Tab>
@@ -72,7 +68,9 @@ class Tabs extends Component {
           <SingleTab
             key={`tab${i}`}
             data={item}
-            handleTabChange={this.handleTabChange}
+            onClick={() => {
+              this.handleTabChange(item);
+            }}
           />
         ))}
       </TabsWrapper>
@@ -80,7 +78,6 @@ class Tabs extends Component {
   }
 }
 SingleTab.propTypes = {
-  data: PropTypes.object,
-  handleTabChange: PropTypes.func
+  data: PropTypes.object
 };
 export default Tabs;
