@@ -275,6 +275,7 @@ class CommentBox extends Component {
         >
           <img
             src={item.images.downsized_medium.url}
+            alt={item.images.downsized_medium.url}
             style={{ height: '60px', width: '60px' }}
           />
         </ClickableButton>
@@ -319,8 +320,6 @@ class CommentBox extends Component {
 
   handleClickOnFeeling = feeling => {
     const {
-      submitPost,
-      strike,
       user,
       onBlockUser,
       postText,

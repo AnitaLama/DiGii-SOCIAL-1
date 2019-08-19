@@ -240,7 +240,7 @@ class EditModal extends Component {
 
   onEditPost = () => {
     const { text } = this.state;
-    const { post, user, onEditPost } = this.props;
+    const { post, onEditPost } = this.props;
     const data = {
       postText: text,
       postId: post.postId
@@ -253,7 +253,7 @@ class EditModal extends Component {
   };
 
   render() {
-    const { post, closeEditModal, user } = this.props;
+    const { closeEditModal, user } = this.props;
     const { avatar } = user;
     return (
       <ModalContainer>
@@ -286,11 +286,6 @@ class EditModal extends Component {
   }
 }
 
-EditModal.propTypes = {
-  message: PropTypes.string,
-  hideDeleteModal: PropTypes.func
-};
-
 const VideoOverlay = styled.div`
   position: absolute;
   top: 0;
@@ -315,9 +310,6 @@ const VideoOverlay = styled.div`
   }
 `;
 
-const QuestionOptionsWrapper = styled.div`
-  margin: 10px;
-`;
 const QuestionOptions = styled.div`
   text-align: center;
   cursor: pointer;
@@ -380,7 +372,6 @@ class VideoModalContainer extends Component {
   };
 
   checkTheUserAnswers = () => {
-    const { hideModal, user } = this.props;
     const { userAnswer } = this.state;
     const hasUnansweredQuestion = userAnswer.includes(undefined);
     if (hasUnansweredQuestion) {
@@ -399,19 +390,11 @@ class VideoModalContainer extends Component {
     });
   };
 
-  goback = index => {
-    this.slider.slickPrev();
-  };
-
-  slickNext = () => {
-    this.slider.slickNext();
-  };
-
   saveTutorialWatchersInfo = () => {
     const { userInfoSaved } = this.state;
     this.setState({ userInfoSaved: true });
     const { user, tutorial, onSaveTutorialWatchersInfo } = this.props;
-    const { id, isStudent } = user;
+    const { id } = user;
     const { tutorialId } = tutorial.tutorialList;
     const watchersData = {
       tutorialWatcherTutorialId: tutorialId,
@@ -439,11 +422,6 @@ class VideoModalContainer extends Component {
         {...settings}
         ref={r => {
           this.slider = r;
-        }}
-        beforeChange={(oldIndex, newIndex) => {
-          if (newIndex > oldIndex) {
-            this.goback(oldIndex);
-          }
         }}
       >
         {questions.map((item, index) => {
@@ -488,7 +466,11 @@ class VideoModalContainer extends Component {
                 }}
               >
                 {answerSelected && !lastSlide && (
-                  <button className="nextButton" onClick={this.slickNext}>
+                  <button
+                    type="submit"
+                    className="nextButton"
+                    onClick={this.slickNext}
+                  >
                     NEXT »
                   </button>
                 )}
@@ -632,14 +614,14 @@ BasicModal.propTypes = {
 };
 
 DeleteModal.propTypes = {
-  post: PropTypes.array,
+  post: PropTypes.object,
   user: PropTypes.object,
   onDeletePost: PropTypes.func,
   closeDeleteModal: PropTypes.func
 };
 
 EditModal.propTypes = {
-  post: PropTypes.array,
+  post: PropTypes.object,
   user: PropTypes.object,
   onEditPost: PropTypes.func,
   closeEditModal: PropTypes.func
@@ -650,12 +632,17 @@ VideoModalContainer.propTypes = {
   hideModal: PropTypes.func,
   showCheckButton: PropTypes.bool,
   type: PropTypes.number,
-  tutorial: PropTypes.object
+  tutorial: PropTypes.object,
+  onSaveTutorialWatchersInfo: PropTypes.func,
+  user: PropTypes.object,
+  onTutorialRequest: PropTypes.func
 };
+
 const VideoModal = connect(
   mapStateToProps,
   mapDispatchToProps
 )(VideoModalContainer);
+
 export {
   Modal,
   ModalContainer,

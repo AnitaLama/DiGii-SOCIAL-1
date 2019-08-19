@@ -11,16 +11,6 @@ const AvatarWrapper = styled.div`
   text-align: center;
 `;
 
-const AvatarCustomizationWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 100px auto;
-  button {
-    width: 100%;
-  }
-  div {
-    margin: auto;
-  }
-`;
 const AvatarSelectionWrapper = styled.div``;
 const AvatarStyleParameterWrapper = styled.div`
   display: grid;
@@ -321,13 +311,13 @@ class UserAvatar extends Component {
         avatarHair,
         avatarGraphicType,
         avatarClothesColor,
-        a_mouth,
+        avatarMouth,
         avatarSkin,
         avatarStyle,
         avatarAccessories
       } = avatar;
       this.setState({
-        avatarStyle: 'Circle',
+        avatarStyle,
         topType: avatarTop,
         accessoriesType: avatarAccessories,
         hairColor: avatarHair,
@@ -337,7 +327,7 @@ class UserAvatar extends Component {
         clotheColor: avatarClothesColor,
         eyeType: avatarEyes,
         eyebrowType: avatarEyebrow,
-        mouthType: a_mouth,
+        mouthType: avatarMouth,
         skinColor: avatarSkin,
         graphicType: avatarGraphicType
       });
@@ -355,6 +345,7 @@ class UserAvatar extends Component {
                 onClick={() => {
                   this.setState({ avatarStyle: item });
                 }}
+                key={`background-${item}`}
               >
                 {item}
               </PieceWrapper>

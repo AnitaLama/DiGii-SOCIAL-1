@@ -14,9 +14,7 @@ import {
   Modal
 } from '../StyledComponents';
 import { Colors, Images } from '../../Theme';
-import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
-import { Moderator } from '../Functions';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -62,9 +60,6 @@ class BannerImageModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
-      imageURL: null,
-      postTypeId: props.postTypeId,
       isModalVisible: false,
       alertMessage: null
     };
@@ -80,16 +75,6 @@ class BannerImageModal extends Component {
   onFocus = () => {
     const { onFocus } = this.props;
     onFocus();
-    // const {
-    //   user, disableFirstTimePosting, post, onFocus
-    // } = this.props;
-    // const { posts } = post;
-    // const { id, isFirstTimePosting } = user.user;
-    // const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
-    //
-    // if (checkFirstTimePosting && isFirstTimePosting) {
-    //   disableFirstTimePosting();
-    // }
   };
 
   handleTextChange = e => {
@@ -98,8 +83,8 @@ class BannerImageModal extends Component {
   };
 
   saveBanner = () => {
-    const { data } = this.props;
-    this.props.saveBanner(`${url}/${data.Key}`);
+    const { data, saveBanner } = this.props;
+    saveBanner(`${url}/${data.Key}`);
   };
 
   hideModal = () => {
@@ -171,7 +156,15 @@ class BannerImageModal extends Component {
 }
 
 BannerImageModal.propTypes = {
-  // hideModal: PropTypes.func
+  // hideModal: PropTypes.func,
+  onGetStrikesCountOfAUser: PropTypes.func,
+  user: PropTypes.object,
+  hideModal: PropTypes.func,
+  data: PropTypes.object,
+  postText: PropTypes.string,
+  handlePostText: PropTypes.func,
+  saveBanner: PropTypes.func,
+  onFocus: PropTypes.func
 };
 const mapStateToProps = state => ({
   user: state.user,
@@ -179,9 +172,7 @@ const mapStateToProps = state => ({
   strike: state.strike
 });
 const mapDispatchToProps = dispatch => ({
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
-  onBlockUser: value => dispatch(LoginActions.onBlockUser(value))
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
 });
 export default connect(
   mapStateToProps,

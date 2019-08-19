@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import socketClient from 'socket.io-client';
 import { grid } from '../../Theme';
-import { Button, FormTextArea, Modal as AlertModal } from '../StyledComponents';
+import { Button, FormTextArea } from '../StyledComponents';
 import { PostWrapper, PostWrapperContainer } from './index';
 import PostActions from '../../Redux/PostRedux';
 import LoginActions from '../../Redux/LoginRedux';
