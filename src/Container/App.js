@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { notification } from 'antd';
 // import NProgress from 'nprogress';
 import { css } from '@emotion/core';
 import jwt_decode from 'jwt-decode';
@@ -10,6 +11,18 @@ import MessageBoard from './MessageBoard';
 import UserProfile from './UserProfile';
 import './styles.css';
 
+const showTokenExpiredNotification = () => {
+  notification.error({
+    message: 'Token expired',
+    description: 'Your token has expired.'
+  });
+};
+const showNoTokenNotification = () => {
+  notification.error({
+    message: 'Log in',
+    description: 'You need to login.'
+  });
+};
 class ActualRoute extends React.Component {
   // componentWillMount() {
   //   NProgress.start();
@@ -30,12 +43,14 @@ class ActualRoute extends React.Component {
       const decodedToken = jwt_decode(token).exp;
       const currentDate = new Date().getTime() / 1000;
       if (decodedToken < currentDate) {
+        showTokenExpiredNotification();
         return <Redirect to={{ pathname: '/' }} />;
       }
 
       return <Route {...this.props} strict />;
     }
     axios.defaults.headers.common.Authorization = null;
+    showNoTokenNotification();
 
     return <Redirect to={{ pathname: '/' }} />;
   }

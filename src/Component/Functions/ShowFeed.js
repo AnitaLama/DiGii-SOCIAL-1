@@ -232,7 +232,8 @@ class ShowData extends Component {
               onChange={this.handleTextChange}
             />
           );
-
+        case 'feeling':
+          return <div>{postBody}</div>;
         default:
           return (
             <FormTextArea
@@ -359,6 +360,8 @@ class ShowData extends Component {
         // console.log(notifications);
         // <div>{notificationIsStudent ? student.studentUsername : user.userName}</div>
         return <div>{postText}</div>;
+      case 'feeling':
+        return <div>{postBody}</div>;
       default:
         return <div>{postText}</div>;
     }

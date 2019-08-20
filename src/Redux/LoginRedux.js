@@ -42,7 +42,6 @@ export const INITIAL_STATE = Immutable({
 
 const onFormLogin = (state, action) => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
-  console.log(action.data);
   const {
     userId,
     userName,
@@ -50,7 +49,8 @@ const onFormLoginSuccess = (state, action) => {
     userActivated,
     user_profile,
     user_groups,
-    avatar
+    avatar,
+    total
   } = action.data;
   // const firstname = user_profile.userProfileFirstname || '';
   // const lastname = user_profile.userProfileLastname || '';
@@ -75,7 +75,8 @@ const onFormLoginSuccess = (state, action) => {
       isActivated: userActivated,
       groupId: groups,
       avatarId: userAvatarId,
-      avatar
+      avatar,
+      isFirstTimePosting: !(total > 0)
     }
   };
 };

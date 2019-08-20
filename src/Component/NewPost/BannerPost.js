@@ -98,9 +98,11 @@ class BannerPost extends Component {
       showWarning,
       resetPostType,
       onGetStrikesCountOfAUser,
-      data
+      data,
+      post
       // onSubmitPost
     } = this.props;
+    const { page, pageSize } = post;
     const { postTypeId } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
@@ -133,7 +135,9 @@ class BannerPost extends Component {
       strikeType: result,
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id,
-      isBad
+      isBad,
+      page,
+      pageSize
     };
     this.onSubmitPost(saveData);
     if (!isBad) {

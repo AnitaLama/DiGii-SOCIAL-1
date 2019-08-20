@@ -190,9 +190,11 @@ class Author extends Component {
     </EditOptionsWrapper>
   );
 
-  onDeletePost = post => {
-    const { onDelete } = this.props;
-    onDelete(post);
+  onDeletePost = posts => {
+    const { onDelete, post } = this.props;
+    const { page, pageSize } = post;
+    console.log({ ...posts, page, pageSize });
+    onDelete(posts);
     this.setState({ showDeleteModal: false });
   };
 
@@ -298,7 +300,8 @@ Author.propTypes = {
   onEditPost: PropTypes.func
 };
 const mapStateToProps = state => ({
-  users: state.user.user
+  users: state.user.user,
+  post: state.post
 });
 const mapDispatchToProps = dispatch => ({
   onDelete: value => dispatch(PostAction.onPostDelete(value)),

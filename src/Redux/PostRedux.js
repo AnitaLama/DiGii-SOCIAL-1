@@ -46,6 +46,8 @@ const INITIAL_STATE = Immutable({
   posts: [],
   error: null,
   gif: [],
+  page: 0,
+  pageSize: 20,
   commentGif: []
 });
 
@@ -96,7 +98,7 @@ const onSaveImageFailure = state => ({
   loading: false,
   posting: false
 });
-const onFindPosts = state => ({
+const onFindPosts = (state, action) => ({
   ...state,
   loading: true,
   gif: [],

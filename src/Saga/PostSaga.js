@@ -23,6 +23,13 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
+    console.log('saga data', action.data);
+    const { page, pageSize } = action.data;
+    // const { data } = yield call(
+    //   axios.post,
+    //   `${DEV_URL}/post/findFeedsOfAGroup/${page}/${pageSize}`,
+    //   action.data
+    // );
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/post/findFeedsOfAGroup`,

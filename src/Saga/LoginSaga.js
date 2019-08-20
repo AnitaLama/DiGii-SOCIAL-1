@@ -12,9 +12,13 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
-    console.log(data);
     if (data.success) {
-      yield put(LoginActions.onFormLoginSuccess(data.result));
+      // const result = { ...data.result, ...data.postNumber };
+      // console.log(data.result, data.postNumber);
+      // console.log(result);
+      yield put(
+        LoginActions.onFormLoginSuccess({ ...data.result, ...data.postNumber })
+      );
       yield localStorage.setItem('user', JSON.stringify(data.result));
       yield localStorage.setItem('token', data.token);
       history.push('/messageboard');

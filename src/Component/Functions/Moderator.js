@@ -16,7 +16,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       isModalVisible: false,
       alertMessage: '',
       showVideo: false,
-      moderationType: null
+      moderationType: null,
+      alertIndex: -1
     };
   }
 
@@ -71,25 +72,26 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       } else {
         let index = (count % strikeCount) + 1;
         index -= 1;
-
+        console.log('alertMessage', index);
         this.setState({
           isModalVisible: true,
-          alertMessage: `${Warnings[index]}`
+          alertIndex: index,
+          // alertMessage: `${Warnings[index]}`
+          alertMessage: null
         });
       }
     };
 
     onFocus = (posts, userId, isFirstTime) => {
-      const isFirstTimePosting = posts.find(
-        item => item.postActorId === userId
-      );
-      if (!isFirstTimePosting && isFirstTime) {
+      // const isFirstTimePosting = posts.find(
+      //   item => item.postActorId === userId
+      // );
+      if (isFirstTime) {
         this.setState({
           isModalVisible: true,
           alertMessage: 'Congratulations!!! it\'s your first time posting.'
         });
       }
-      return isFirstTimePosting;
     };
 
     hideModal = () => {
@@ -117,7 +119,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
         isModalVisible,
         alertMessage,
         showVideo,
-        moderationType
+        moderationType,
+        alertIndex
       } = this.state;
       return (
         <div>
@@ -140,6 +143,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
               message={alertMessage}
               hideModal={this.hideModal}
               showVideo={this.showVideo}
+              index={alertIndex}
               showCheckButton
             />
           )}

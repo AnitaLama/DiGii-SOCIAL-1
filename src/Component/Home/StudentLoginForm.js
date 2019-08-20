@@ -69,7 +69,9 @@ class LoginForm extends Component {
     return (
       school
       && school.map(item => (
-        <option value={item.schoolName}>{item.schoolName}</option>
+        <option value={item.schoolName} key={item.schoolName}>
+          {item.schoolName}
+        </option>
       ))
     );
   };

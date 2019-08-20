@@ -5,6 +5,8 @@ import {
 } from '../../Component/StyledComponents';
 import { Header, Body } from '../../Component/MessageBoard';
 
+// const Body = lazy(() => import('../../Component/MessageBoard/Body'));
+
 class MessageBoard extends Component {
   render() {
     return (

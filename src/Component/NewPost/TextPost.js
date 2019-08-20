@@ -36,7 +36,7 @@ class TextPost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
+    onFocus(posts, id, isFirstTimePosting);
     if (isFirstTimePosting) {
       disableFirstTimePosting();
     }
@@ -51,8 +51,11 @@ class TextPost extends Component {
       postText,
       onPostSubmit,
       showWarning,
-      resetPostText
+      resetPostText,
+      post
     } = this.props;
+    const { page, pageSize } = post;
+
     const { postTypeId } = this.state;
     const { isStudent, id } = user.user;
     const { strikes } = strike;
@@ -67,7 +70,7 @@ class TextPost extends Component {
       showWarning(strikes, isStudent, result, null);
       isBad = 1;
     }
-    const post = {
+    const postToBeSubmitted = {
       postPostTypeId: postTypeId,
       postText,
       postIsStudent: isStudent,
@@ -76,9 +79,11 @@ class TextPost extends Component {
       isBad,
       strikeType: result,
       strikeIsStudent: user.user.isStudent,
-      strikeActorId: user.user.id
+      strikeActorId: user.user.id,
+      page,
+      pageSize
     };
-    onPostSubmit(post);
+    onPostSubmit(postToBeSubmitted);
     resetPostText();
   };
 

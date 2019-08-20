@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Slider from 'react-slick';
 import { Colors, Images, flexCentering } from '../../Theme';
 import { Button, Avatar, Loader } from './index';
-import { ShowFeed } from '../Functions';
+import { ShowFeed, Warnings } from '../Functions';
 import TutorialActions from '../../Redux/TutorialRedux';
 
 const { snow, tint, peach } = Colors.colors;
@@ -63,7 +63,12 @@ const Header = styled.div`
     align-items: center;
   }
 `;
-const Message = styled.p``;
+const Message = styled.div`
+  margin: 15px 0;
+  div {
+    text-align: center;
+  }
+`;
 const ButtonWrapper = styled.div`
   margin: auto;
   text-align: center;
@@ -86,6 +91,7 @@ const TermsAndConditionBox = styled.div`
   input {
     width: auto;
   }
+  margin: 4px;
 `;
 class BasicModal extends Component {
   constructor() {
@@ -101,18 +107,24 @@ class BasicModal extends Component {
   };
 
   handleOK = () => {
-    const { hideModal, showVideo, strike } = this.props;
-    if ((strike + 1) % 3 === 0) {
-      showVideo();
-    } else {
-      hideModal();
-    }
+    const { hideModal } = this.props;
+    // const { hideModal, showVideo, strike } = this.props;
+    // if ((strike + 1) % 3 === 0) {
+    //   showVideo();
+    // } else {
+    //   hideModal();
+    // }
+    hideModal();
   };
 
   render() {
-    const { message, showCheckButton } = this.props;
+    const {
+      message, showCheckButton, strike, showVideo, index
+    } = this.props;
     const { checkboxSelected } = this.state;
     // console.log(showCheckButton);
+    console.log('>>>>>>>>>>>>>>>', message, index);
+    const hasToShowTutorial = (strike + 1) % 3 === 0;
     return (
       <ModalContainer>
         <ModalBox>
@@ -129,27 +141,60 @@ class BasicModal extends Component {
               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
             </Points>
           </Header>
-
-          <Message>{message}</Message>
-          {showCheckButton && (
-            <TermsAndConditionBox>
-              <input
-                type="checkbox"
-                id="CheckBox"
-                name="CheckBox"
-                onChange={this.handleCheckboxClick}
-              />
-              <label>I understand and agree to the terms and conditions</label>
-            </TermsAndConditionBox>
+          {message && <Message>{message}</Message>}
+          {index !== -1 && !message && (
+            <Message>
+              <Warnings index={index} />
+            </Message>
           )}
-          <span>
+          {!hasToShowTutorial && (
+            <div>
+              {showCheckButton && (
+                <TermsAndConditionBox>
+                  <input
+                    type="checkbox"
+                    id="CheckBox"
+                    name="CheckBox"
+                    onChange={this.handleCheckboxClick}
+                  />
+                  <span>I understand</span>
+                </TermsAndConditionBox>
+              )}
+              <TermsAndConditionBox>
+                <input
+                  type="checkbox"
+                  id="CheckBox"
+                  name="CheckBox"
+                  onChange={this.handleOK}
+                  disabled={!checkboxSelected}
+                />
+                <span>Back to messageboard</span>
+              </TermsAndConditionBox>
+            </div>
+          )}
+          {hasToShowTutorial && (
+            <div
+              style={{
+                textAlign: 'center'
+              }}
+            >
+              <Button className={'rounded short\'}'} onClick={showVideo}>
+                Watch Tutorial
+              </Button>
+            </div>
+          )}
+          {/*  <div
+            style={{
+              textAlign: 'center'
+            }}
+          >
             <Button
               className={`rounded short ${!checkboxSelected && 'disabled'}`}
               onClick={this.handleOK}
             >
-              OK
+              Back to messageboard
             </Button>
-          </span>
+          </div> */}
         </ModalBox>
       </ModalContainer>
     );
@@ -405,6 +450,10 @@ class VideoModalContainer extends Component {
     }
   };
 
+  slickNext = () => {
+    this.slider.slickNext();
+  };
+
   getQuestions = questions => {
     const settings = {
       dots: false,
@@ -608,7 +657,7 @@ const Modal = connect(mapStateToProps)(BasicModal);
 
 BasicModal.propTypes = {
   showVideo: PropTypes.func,
-  strike: PropTypes.object,
+  strike: PropTypes.number,
   hideModal: PropTypes.func,
   showCheckButton: PropTypes.bool
 };
@@ -631,7 +680,7 @@ VideoModalContainer.propTypes = {
   message: PropTypes.string,
   hideModal: PropTypes.func,
   showCheckButton: PropTypes.bool,
-  type: PropTypes.number,
+  type: PropTypes.string,
   tutorial: PropTypes.object,
   onSaveTutorialWatchersInfo: PropTypes.func,
   user: PropTypes.object,
