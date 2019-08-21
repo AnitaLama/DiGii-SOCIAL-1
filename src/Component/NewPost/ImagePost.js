@@ -79,6 +79,7 @@ class ImagePost extends Component {
       image_name: `${username}-${currentDate}`,
       imageData: imageSrc
     };
+    console.log('img obj', imageObject);
     this.setState(prevState => ({
       imageData: imageSrc,
       imageObject,
@@ -158,6 +159,7 @@ class ImagePost extends Component {
       onPostImage(formData);
     } else {
       // IMAGE CAPTURED VIA WEBCAM
+      console.log(imageObject);
       const data = {
         file: imageObject.imageData,
         fileName: imageObject.image_name,
@@ -174,7 +176,6 @@ class ImagePost extends Component {
         strikeActorId: id
       };
 
-      const { imageObject } = this.state;
       this.props.saveImage(imageObject.imageData);
 
       onPostImage(data);
@@ -188,9 +189,7 @@ class ImagePost extends Component {
   selectImage = e => {
     const { checkImageName } = this.props;
     const file = e.target.files;
-    const result = checkImageName(file[0].name);
-    console.log('image name>>>>', file[0].name, result);
-    if (result) {
+    if (file[0].name.toLowerCase() === 'people.jpg') {
       this.setState({
         imageIsBad: true
       });

@@ -44,7 +44,8 @@ class StrikesModalContainer extends Component {
     this.state = {
       checkboxSelected: false,
       postText: props.postText,
-      imageName: props.imageName
+      imageName: props.imageName,
+      banner: props.banner
     };
   }
 
@@ -78,7 +79,8 @@ class StrikesModalContainer extends Component {
       showVideo,
       index,
       user,
-      feeling
+      feeling,
+      banner
     } = this.props;
     const { checkboxSelected, postText, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
@@ -113,6 +115,7 @@ class StrikesModalContainer extends Component {
               }}
             />
             {imageName && <img src={imageName} style={{ width: '100%' }} />}
+            {banner && <img src={banner} style={{ width: '100%' }} />}
           </ModalBox>
           <ModalBox>
             <Header>

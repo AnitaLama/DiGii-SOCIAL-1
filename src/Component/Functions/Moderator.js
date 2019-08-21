@@ -37,11 +37,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       this.setState({ banner });
     };
 
-    checkImageName = filename => {
-      const check = FilterKeyWords(filename);
-      return check;
-    };
-
     resetPostText = () => {
       this.setState({ postText: '' });
     };
@@ -162,7 +157,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             onFocus={this.onFocus}
             resetPostText={this.resetPostText}
             updatePostText={this.updatePostText}
-            checkImageName={this.checkImageName}
             saveImage={this.saveImage}
             saveFeelings={this.saveFeelings}
             saveBanner={this.saveBanner}
