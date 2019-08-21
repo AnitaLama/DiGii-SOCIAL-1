@@ -8,11 +8,12 @@ import { connect } from 'react-redux';
 import { IconContext } from 'react-icons';
 import { FaEllipsisH, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import PostAction from '../../Redux/PostRedux';
-import { Avatar, DeleteModal, EditModal } from '../StyledComponents';
+import { Avatar } from '../StyledComponents';
 import {
   flex, fontSize, fontWeight, fontFilson, Colors
 } from '../../Theme';
 import { FeelingsList } from '../Functions';
+import { EditModal, DeleteModal } from './index';
 // const { grey } = Colors.colors;
 
 const { snow, light, tint } = Colors.colors;

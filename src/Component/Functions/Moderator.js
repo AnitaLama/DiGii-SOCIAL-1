@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 // import history from '../../history';
 import PropTypes from 'prop-types';
-import { Modal, VideoModal } from '../StyledComponents';
-import { FilterKeyWords, Warnings } from './index';
+import { Modal, VideoModal, StrikesModal } from '../StyledComponents';
+import { FilterKeyWords } from './index';
 
 const strikeCount = 3;
 
@@ -17,17 +17,14 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       alertMessage: '',
       showVideo: false,
       moderationType: null,
-      alertIndex: -1
+      alertIndex: -1,
+      isStrikeModalVisible: false
     };
   }
 
     checkImageName = filename => {
       const check = FilterKeyWords(filename);
       return check;
-    };
-
-    resetPostText = () => {
-      this.setState({ postText: '' });
     };
 
     resetPostText = () => {
@@ -43,7 +40,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       const actualValue = value.trim();
       if (actualValue.length > 250) {
         this.setState({
-          isModalVisible: true,
+          isBasicModalVisible: true,
           alertMessage: 'Please limit the number of characters to 250'
         });
       }
@@ -66,7 +63,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
         });
       } else if (count >= strikeCount * 3) {
         this.setState({
-          isModalVisible: true,
+          isBasicModalVisible: true,
           alertMessage: 'You\'ll be blocked from  DiGii'
         });
       } else {
@@ -88,14 +85,26 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       // );
       if (isFirstTime) {
         this.setState({
-          isModalVisible: true,
+          isBasicModalVisible: true,
           alertMessage: 'Congratulations!!! it\'s your first time posting.'
         });
       }
     };
 
+    hideBasicModal = () => {
+      console.log('hide basic modal');
+      this.setState({ isBasicModalVisible: false });
+    };
+
     hideModal = () => {
       this.setState({ isModalVisible: false });
+      // console.log('inside modal', strike);
+      // if strike % 3 !== 0  , reset the post type else dont do anything
+      this.resetPost();
+    };
+
+    hideStrikesModal = () => {
+      this.setState({ isStrikeModalVisible: false });
       // console.log('inside modal', strike);
       // if strike % 3 !== 0  , reset the post type else dont do anything
       this.resetPost();
@@ -117,15 +126,22 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     render() {
       const {
         isModalVisible,
+        isBasicModalVisible,
         alertMessage,
         showVideo,
         moderationType,
-        alertIndex
+        alertIndex,
+        postText
       } = this.state;
+      console.log('inside moderator', this.state.postText);
       return (
         <div>
           {showVideo && (
-            <VideoModal type={moderationType} hideModal={this.hideVideoModal} />
+            <VideoModal
+              type={moderationType}
+              hideModal={this.hideVideoModal}
+              text={postText}
+            />
           )}
           <WrappedComponent
             {...this.props}
@@ -139,12 +155,21 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             checkImageName={this.checkImageName}
           />
           {isModalVisible && (
-            <Modal
+            <StrikesModal
               message={alertMessage}
               hideModal={this.hideModal}
               showVideo={this.showVideo}
               index={alertIndex}
               showCheckButton
+              postText={postText}
+            />
+          )}
+          {isBasicModalVisible && (
+            <Modal
+              message={alertMessage}
+              hideModal={this.hideBasicModal}
+              showVideo={this.showVideo}
+              index={alertIndex}
             />
           )}
         </div>

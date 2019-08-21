@@ -1,7 +1,9 @@
 import { ErrorMessage, ErrorAlertMessage } from './ErrorMessage';
 import Avatar from './Avatar';
 import Loader from './Loader';
-import {
+import StrikesModal from './StrikesModal';
+
+export {
   Modal,
   ModalContainer,
   ModalBox,
@@ -9,27 +11,19 @@ import {
   Icon,
   Points,
   ButtonWrapper,
-  DeleteModal,
-  EditModal,
-  VideoModal
+  TermsAndConditionBox,
+  Message,
+  // DeleteModal,
+  // EditModal,
+  VideoModal,
+  // StrikesModal,
+  CenteredElementsModalWrapper
 } from './Modal';
 
 export {
-  ErrorMessage,
-  ErrorAlertMessage,
-  Avatar,
-  Modal,
-  ModalContainer,
-  ModalBox,
-  Header,
-  Icon,
-  Points,
-  ButtonWrapper,
-  Loader,
-  DeleteModal,
-  EditModal,
-  VideoModal
+  ErrorMessage, ErrorAlertMessage, Avatar, Loader, StrikesModal
 };
+
 export { Button, WhiteButton } from './Button';
 export { Logo, BigLogo } from './Logo';
 export { ContainerWrapper, ContentWrapper } from './Wrapper';

@@ -1,178 +1,26 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
-import { connect } from 'react-redux';
 import Slider from 'react-slick';
-import { Colors, Images, flexCentering } from '../../Theme';
-import { Button, Loader, WhiteButton } from './index';
-import { Warnings } from '../Functions';
+import { connect } from 'react-redux';
+import {
+  ModalContainer,
+  ModalBox,
+  Button,
+  CenteredElementsModalWrapper,
+  Loader
+} from '../StyledComponents';
 import TutorialActions from '../../Redux/TutorialRedux';
 
-const { snow, tint, peach } = Colors.colors;
-const ModalContainer = styled.div`
-  position: fixed;
-  background: rgba(0, 0, 0, 0.32);
-  height: 100%;
-  width: 100%;
-  z-index: 10000;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  ${flexCentering()}
-`;
-const CenteredElementsModalWrapper = styled.div`
-  display: flex;
-
-  ${flexCentering('column')};
-  justify-content: space-around;
-`;
-const ModalBox = styled.div`
-  width: 50%;
-  min-width: 50%;
-  min-height: 200px;
-  margin: auto;
-  background: ${snow};
-
-  vertical-align: center;
-  border-radius: 40px;
-  padding: 20px;
-  .close {
-    cursor: pointer;
-    margin-top: -10px;
-    color: red;
-    text-align: right;
-  }
-  &.centeredModal {
-    display: flex;
-  }
-`;
-
-const Icon = styled.img`
-  height: 60px;
-  &.small {
-    height: 30px;
-  }
-`;
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  div:first-of-type {
-    display: flex;
-    align-items: center;
-  }
-`;
-const Message = styled.div`
-  margin: 20px 0;
+const CenteredDiv = styled.div`
   text-align: center;
-  div {
-    text-align: center;
-    div {
-      margin: 15px 0;
-    }
+  .nextButton {
+    background: transparent;
+    border: 0;
+    outline: 0;
   }
 `;
-const ButtonWrapper = styled.div`
-  margin: auto;
-  text-align: center;
-  button {
-    width: 30% !important;
-  }
-  display: flex;
-  justify-content: space-around;
-`;
-
-const Points = styled.div`
-  margin: auto 0;
-  span {
-    margin-right: 6px;
-  }
-`;
-
-const TermsAndConditionBox = styled.div`
-  ${flexCentering()};
-  input {
-    width: auto;
-    margin: 0 10px;
-  }
-  margin: 4px;
-`;
-
-class BasicModal extends Component {
-  constructor() {
-    super();
-    this.state = {
-      checkboxSelected: false
-    };
-  }
-
-  handleCheckboxClick = e => {
-    const { checked } = e.target;
-    this.setState({ checkboxSelected: checked });
-  };
-
-  handleOK = () => {
-    const { hideModal } = this.props;
-    // const { hideModal, showVideo, strike } = this.props;
-    // if ((strike + 1) % 3 === 0) {
-    //   showVideo();
-    // } else {
-    //   hideModal();
-    // }
-    hideModal();
-  };
-
-  render() {
-    const {
-      message,
-      showCheckButton,
-      strike,
-      showVideo,
-      index,
-      text
-    } = this.props;
-    const { checkboxSelected } = this.state;
-    // console.log(showCheckButton);
-    const hasToShowTutorial = (strike + 1) % 3 === 0;
-    return (
-      <ModalContainer>
-        <ModalBox>
-          <Header>
-            <div>
-              <Icon src={Images.digii5.icon} />
-              Digii
-            </div>
-            <Points>
-              <span>-5</span>
-              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-            </Points>
-          </Header>
-          {message && <Message>{message}</Message>}
-          {index !== -1 && !message && (
-            <Message>
-              <Warnings index={index} />
-            </Message>
-          )}
-          <CenteredDiv>
-            <WhiteButton
-              className="roundedShadow short "
-              onClick={this.handleOK}
-            >
-              Back to Chat
-            </WhiteButton>
-          </CenteredDiv>
-        </ModalBox>
-      </ModalContainer>
-    );
-  }
-}
-
-BasicModal.propTypes = {
-  message: PropTypes.string,
-  hideModal: PropTypes.func
-};
-
 const VideoOverlay = styled.div`
   position: absolute;
   top: 0;
@@ -208,15 +56,7 @@ const QuestionOptions = styled.div`
     font-size: 22px;
   }
 `;
-const CenteredDiv = styled.div`
-  text-align: center;
-  .nextButton {
-    background: transparent;
-    border: 0;
-    outline: 0;
-  }
-`;
-class VideoModalContainer extends Component {
+class VideoModal extends Component {
   state = {
     playing: false,
     showQuestions: false,
@@ -262,7 +102,7 @@ class VideoModalContainer extends Component {
     const { userAnswer } = this.state;
     const hasUnansweredQuestion = userAnswer.includes(undefined);
     if (hasUnansweredQuestion) {
-      alert('Please answer all the questions');
+      // alert('Please answer all the questions');
       this.setState({ notice: 'Please answer all the questions.' });
     }
     const hasWrongAnswer = userAnswer.find(
@@ -398,7 +238,7 @@ class VideoModalContainer extends Component {
 
   render() {
     const { hideModal, tutorial } = this.props;
-    console.log(tutorial);
+
     const {
       playing,
       showQuestions,
@@ -485,26 +325,8 @@ class VideoModalContainer extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  tutorial: state.tutorial,
-  user: state.user.user,
-  strike: state.strike.strikes
-});
-const mapDispatchToProps = dispatch => ({
-  onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
-  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
-});
 
-const Modal = connect(mapStateToProps)(BasicModal);
-
-BasicModal.propTypes = {
-  showVideo: PropTypes.func,
-  strike: PropTypes.number,
-  hideModal: PropTypes.func,
-  showCheckButton: PropTypes.bool
-};
-
-VideoModalContainer.propTypes = {
+VideoModal.propTypes = {
   message: PropTypes.string,
   hideModal: PropTypes.func,
   showCheckButton: PropTypes.bool,
@@ -515,22 +337,22 @@ VideoModalContainer.propTypes = {
   onTutorialRequest: PropTypes.func
 };
 
-const VideoModal = connect(
+const mapStateToProps = state => ({
+  tutorial: state.tutorial,
+  user: state.user.user,
+  strike: state.strike.strikes
+});
+const mapDispatchToProps = dispatch => ({
+  onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
+});
+
+// const VideoModal = connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(VideoModal);
+
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(VideoModalContainer);
-
-export {
-  Modal,
-  ModalContainer,
-  ModalBox,
-  Header,
-  Icon,
-  Points,
-  ButtonWrapper,
-  Message,
-  Warnings,
-  TermsAndConditionBox,
-  VideoModal,
-  CenteredElementsModalWrapper
-};
+)(VideoModal);

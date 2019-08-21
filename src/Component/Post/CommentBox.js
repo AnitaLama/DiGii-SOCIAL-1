@@ -488,6 +488,7 @@ CommentBox.propTypes = {
   updatePostText: PropTypes.func,
   onPostImage: PropTypes.func
 };
+
 const mapStateToProps = state => ({
   postActivity: state.postActivity,
   user: state.user,
@@ -506,6 +507,7 @@ const mapDispatchToProps = dispatch => ({
   onPostImage: value => dispatch(PostActions.onPostImage(value)),
   onGetAllUsersOfAGroup: value => dispatch(GroupActions.onGetAllUsersOfAGroup(value))
 });
+
 export default Moderator(
   connect(
     mapStateToProps,

@@ -82,6 +82,15 @@ const WhiteButton = styled.button`
   &:focus {
     outline: 0;
   }
+  &.short {
+    width: 50%;
+  }
+  &.small {
+    padding: 0;
+  }
+  &.disabled {
+    pointer-events: none;
+  }
 `;
 
 export { Button, WhiteButton };

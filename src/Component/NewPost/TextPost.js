@@ -84,7 +84,9 @@ class TextPost extends Component {
       pageSize
     };
     onPostSubmit(postToBeSubmitted);
-    resetPostText();
+    setTimeout(() => {
+      resetPostText();
+    }, 1500);
   };
 
   render() {

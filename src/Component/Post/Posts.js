@@ -203,6 +203,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import socketClient from 'socket.io-client';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import PostAction from '../../Redux/PostRedux';
 import SinglePost from './SinglePost';
 import { SOCKET_URL } from '../../config';
@@ -275,7 +276,7 @@ class Posts extends Component {
             //       || (!item.postIsStudent && item.user)
             //   );
             // }
-            if ((item.postIsDeleted, item.postIsBad)) {
+            if (item.postIsDeleted || item.postIsBad) {
               return <div key={item + i} />;
             }
             if (
