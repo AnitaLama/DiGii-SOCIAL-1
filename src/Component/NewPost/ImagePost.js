@@ -151,6 +151,10 @@ class ImagePost extends Component {
       formData.append('strikeIsStudent', isStudent);
       formData.append('strikeActorId', id);
 
+      // save the img val in HOC Moderator
+      const { selectedImage } = this.state;
+      this.props.saveImage(selectedImage);
+
       onPostImage(formData);
     } else {
       // IMAGE CAPTURED VIA WEBCAM
@@ -169,6 +173,10 @@ class ImagePost extends Component {
         strikeIsStudent: isStudent,
         strikeActorId: id
       };
+
+      const { imageObject } = this.state;
+      this.props.saveImage(imageObject.imageData);
+
       onPostImage(data);
     }
 

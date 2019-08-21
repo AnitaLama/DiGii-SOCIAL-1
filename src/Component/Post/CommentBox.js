@@ -211,7 +211,7 @@ class CommentBox extends Component {
     };
     if (postText.length > 0) {
       onSubmitComment(comment);
-      resetPostText();
+      // resetPostText();
     }
   };
 

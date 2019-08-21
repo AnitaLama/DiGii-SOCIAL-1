@@ -65,6 +65,7 @@ class BannerPost extends Component {
 
   onSubmitPost = data => {
     const { onSubmitPost, resetPostType } = this.props;
+    // this.props.saveBanner()
     onSubmitPost(data);
     this.hideModal();
     // resetPostType();
@@ -139,6 +140,7 @@ class BannerPost extends Component {
       page,
       pageSize
     };
+    this.props.saveBanner(image);
     this.onSubmitPost(saveData);
     if (!isBad) {
       resetPostType();

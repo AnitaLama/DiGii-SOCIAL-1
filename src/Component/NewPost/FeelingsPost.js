@@ -101,13 +101,16 @@ class FeelingsPost extends Component {
       postIsBad: isBad,
       postText: feeling.name,
       isBad,
-     strikeType: result,
+      strikeType: result,
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
+    this.props.saveFeelings(feeling);
     onPostSubmit(data);
 
-    if(!isBad){resetPostType();}
+    if (!isBad) {
+      resetPostType();
+    }
   };
 
   onFocus = () => {
@@ -116,7 +119,7 @@ class FeelingsPost extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();

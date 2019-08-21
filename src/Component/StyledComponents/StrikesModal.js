@@ -12,7 +12,8 @@ import {
   Message,
   TermsAndConditionBox,
   Points,
-  WhiteButton
+  WhiteButton,
+  ContentWrapper
 } from './index';
 import { Colors, Images, flexCentering } from '../../Theme';
 import { Warnings, BlacklistedWords } from '../Functions';
@@ -21,6 +22,11 @@ const { tint, peach } = Colors.colors;
 const User = styled.div`
   ${flexCentering()};
   justify-content: flex-start;
+  .username {
+    text-transform: capitalize;
+    font-size: 16px;
+    color: #383746;
+  }
 `;
 const ModeratedPost = styled.div`
   margin: 20px 0;
@@ -37,17 +43,24 @@ class StrikesModalContainer extends Component {
     super(props);
     this.state = {
       checkboxSelected: false,
-      postText: props.postText
+      postText: props.postText,
+      imageName: props.imageName
     };
   }
 
-  handleCheckboxClick = e => {
+  handleCheckboxClick = () => {
+    const { checkboxSelected } = this.state;
+    this.setState({ checkboxSelected: !checkboxSelected });
+  };
+
+  handleCheckboxValueChange = e => {
     const { checked } = e.target;
     this.setState({ checkboxSelected: checked });
   };
 
   handleOK = () => {
     const { hideModal } = this.props;
+
     // const { hideModal, showVideo, strike } = this.props;
     // if ((strike + 1) % 3 === 0) {
     //   showVideo();
@@ -64,86 +77,102 @@ class StrikesModalContainer extends Component {
       strike,
       showVideo,
       index,
-      user
+      user,
+      feeling
     } = this.props;
-    const { checkboxSelected, postText } = this.state;
+    const { checkboxSelected, postText, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
-    console.log(postText);
     const newText = BlacklistedWords(postText);
-    console.log(newText);
     const hasToShowTutorial = (strike + 1) % 3 === 0;
     return (
       <ModalContainer>
-        <ModalBox>
-          <User>
-            <Avatar avatar={avatar} height={42} />
-            {firstname}
-            {' '}
-            {lastname}
-          </User>
-          <ModeratedPost
-            dangerouslySetInnerHTML={{
-              __html: newText
-            }}
-          />
-        </ModalBox>
-        <ModalBox>
-          <Header>
-            <div>
-              <Icon src={Images.digii5.icon} />
-              Digii
-            </div>
-            <Points>
-              <span>-5</span>
-              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-            </Points>
-          </Header>
-          {message && <Message>{message}</Message>}
-          {index !== -1 && !message && (
-            <Message>
-              <Warnings index={index} />
-            </Message>
-          )}
-          {!hasToShowTutorial && (
-            <div>
-              {showCheckButton && (
-                <TermsAndConditionBox>
-                  <input
-                    type="checkbox"
-                    id="CheckBox"
-                    name="CheckBox"
-                    onChange={this.handleCheckboxClick}
-                  />
-                  <span>I understand</span>
-                </TermsAndConditionBox>
-              )}
+        <ContentWrapper style={{ display: 'flex' }}>
+          <ModalBox>
+            <User>
+              <Avatar avatar={avatar} height={42} />
+              <div>
+                <div className="username">
+                  {firstname}
+                  {' '}
+                  {lastname}
+                </div>
+                {feeling && (
+                  <div>
+                    - is feeling
+                    {' '}
+                    {feeling.name}
+                    {' '}
+                    {feeling.emoji}
+                  </div>
+                )}
+              </div>
+            </User>
+            <ModeratedPost
+              dangerouslySetInnerHTML={{
+                __html: newText
+              }}
+            />
+            {imageName && <img src={imageName} style={{ width: '100%' }} />}
+          </ModalBox>
+          <ModalBox>
+            <Header>
+              <div>
+                <Icon src={Images.digii5.icon} />
+                Digii
+              </div>
+              <Points>
+                <span>-5</span>
+                <Icon src={Images.digii5.DiGiitIconColored} className="small" />
+              </Points>
+            </Header>
+            {message && <Message>{message}</Message>}
+            {index !== -1 && !message && (
+              <Message>
+                <Warnings index={index} />
+              </Message>
+            )}
+            {!hasToShowTutorial && (
+              <div>
+                {showCheckButton && (
+                  <TermsAndConditionBox onClick={this.handleCheckboxClick}>
+                    <input
+                      type="checkbox"
+                      id="CheckBox"
+                      name="CheckBox"
+                      checked={this.state.checkboxSelected}
+                      onChange={this.handleCheckboxValueChange}
+                    />
+                    <span>I understand</span>
+                  </TermsAndConditionBox>
+                )}
+                <div
+                  style={{
+                    textAlign: 'center'
+                  }}
+                >
+                  <WhiteButton
+                    className={`roundedShadow short ${!checkboxSelected
+                      && 'disabled'}`}
+                    onClick={this.handleOK}
+                  >
+                    Back to Chat
+                  </WhiteButton>
+                </div>
+              </div>
+            )}
+            {hasToShowTutorial && (
               <div
                 style={{
                   textAlign: 'center'
                 }}
               >
-                <WhiteButton
-                  className={`roundedShadow short ${!checkboxSelected
-                    && 'disabled'}`}
-                  onClick={this.handleOK}
-                >
-                  Back to Chat
-                </WhiteButton>
+                <Button className={'rounded short\'}'} onClick={showVideo}>
+                  Watch Tutorial
+                </Button>
               </div>
-            </div>
-          )}
-          {hasToShowTutorial && (
-            <div
-              style={{
-                textAlign: 'center'
-              }}
-            >
-              <Button className={'rounded short\'}'} onClick={showVideo}>
-                Watch Tutorial
-              </Button>
-            </div>
-          )}
-        </ModalBox>
+            )}
+          </ModalBox>
+        </ContentWrapper>
       </ModalContainer>
     );
   }

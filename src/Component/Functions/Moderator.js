@@ -18,9 +18,24 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       showVideo: false,
       moderationType: null,
       alertIndex: -1,
-      isStrikeModalVisible: false
+      isStrikeModalVisible: false,
+      imageName: null,
+      feeling: null,
+      banner: null
     };
   }
+
+    saveImage = img => {
+      this.setState({ imageName: img });
+    };
+
+    saveFeelings = feeling => {
+      this.setState({ feeling });
+    };
+
+    saveBanner = banner => {
+      this.setState({ banner });
+    };
 
     checkImageName = filename => {
       const check = FilterKeyWords(filename);
@@ -55,7 +70,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     showWarning = (count, isStudent, moderationType, msg) => {
-      console.log('strike count', count, moderationType);
       if (msg) {
         this.setState({
           isModalVisible: true,
@@ -69,7 +83,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       } else {
         let index = (count % strikeCount) + 1;
         index -= 1;
-        console.log('alertMessage', index);
         this.setState({
           isModalVisible: true,
           alertIndex: index,
@@ -92,12 +105,11 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     hideBasicModal = () => {
-      console.log('hide basic modal');
       this.setState({ isBasicModalVisible: false });
     };
 
     hideModal = () => {
-      this.setState({ isModalVisible: false });
+      this.setState({ isModalVisible: false, postText: '' });
       // console.log('inside modal', strike);
       // if strike % 3 !== 0  , reset the post type else dont do anything
       this.resetPost();
@@ -112,7 +124,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     resetPost = () => {
       const { resetPostType } = this.props;
-      resetPostType();
+      resetPostType && resetPostType();
     };
 
     hideVideoModal = () => {
@@ -131,17 +143,15 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
         showVideo,
         moderationType,
         alertIndex,
-        postText
+        postText,
+        imageName,
+        feeling,
+        banner
       } = this.state;
-      console.log('inside moderator', this.state.postText);
       return (
         <div>
           {showVideo && (
-            <VideoModal
-              type={moderationType}
-              hideModal={this.hideVideoModal}
-              text={postText}
-            />
+            <VideoModal type={moderationType} hideModal={this.hideVideoModal} />
           )}
           <WrappedComponent
             {...this.props}
@@ -153,6 +163,9 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             resetPostText={this.resetPostText}
             updatePostText={this.updatePostText}
             checkImageName={this.checkImageName}
+            saveImage={this.saveImage}
+            saveFeelings={this.saveFeelings}
+            saveBanner={this.saveBanner}
           />
           {isModalVisible && (
             <StrikesModal
@@ -162,6 +175,9 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
               index={alertIndex}
               showCheckButton
               postText={postText}
+              imageName={imageName}
+              feeling={feeling}
+              banner={banner}
             />
           )}
           {isBasicModalVisible && (

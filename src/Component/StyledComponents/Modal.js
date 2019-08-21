@@ -29,14 +29,15 @@ const CenteredElementsModalWrapper = styled.div`
   justify-content: space-around;
 `;
 const ModalBox = styled.div`
-  width: 50%;
-  min-width: 50%;
+  width: 45%;
+  min-width: 45%;
   min-height: 200px;
   margin: auto;
   background: ${snow};
 
   vertical-align: center;
-  border-radius: 40px;
+  border-radius: 44px;
+  box-shadow: 4px 4px 8px #000000;
   padding: 20px;
   .close {
     cursor: pointer;
@@ -97,6 +98,7 @@ const TermsAndConditionBox = styled.div`
     margin: 0 10px;
   }
   margin: 4px;
+  cursor: pointer;
 `;
 
 class BasicModal extends Component {
@@ -106,11 +108,6 @@ class BasicModal extends Component {
       checkboxSelected: false
     };
   }
-
-  handleCheckboxClick = e => {
-    const { checked } = e.target;
-    this.setState({ checkboxSelected: checked });
-  };
 
   handleOK = () => {
     const { hideModal } = this.props;

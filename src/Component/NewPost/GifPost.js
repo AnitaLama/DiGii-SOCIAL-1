@@ -78,7 +78,7 @@ class GifContainer extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
@@ -157,18 +157,21 @@ class GifContainer extends Component {
       postBody: selectedGif.images.downsized_medium.url,
       postIsStudent: isStudent,
       postActorId: id,
-      postText: postText,
+      postText,
       postIsBad: isBad,
       isBad,
-     strikeType: result,
+      strikeType: result,
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
+    this.props.saveImage(selectedGif.images.downsized_medium.url);
     onPostSubmit(data);
     // if (blockUser) {
     //   onBlockUser({ isStudent, id });
     // }
-    if(!isBad){resetPostType();}
+    if (!isBad) {
+      resetPostType();
+    }
     // this.setState({ selectedGif: null });
   };
 
@@ -187,7 +190,7 @@ class GifContainer extends Component {
     } = this.props;
     const { posts } = post;
     const { id, isFirstTimePosting } = user.user;
-    const checkFirstTimePosting = onFocus(posts, id,isFirstTimePosting);
+    const checkFirstTimePosting = onFocus(posts, id, isFirstTimePosting);
 
     if (checkFirstTimePosting && isFirstTimePosting) {
       disableFirstTimePosting();
