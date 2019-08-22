@@ -9,6 +9,7 @@ import HomePage from './Home';
 import StudentLogin from './StudentLogin';
 import MessageBoard from './MessageBoard';
 import UserProfile from './UserProfile';
+import NeedHelp from './NeedHelp';
 import './styles.css';
 
 const showTokenExpiredNotification = () => {
@@ -77,6 +78,11 @@ const routes = [
     title: 'Profile',
     path: '/userProfile/:isStudent/:user',
     component: UserProfile
+  },
+  {
+    title: 'NeedHelp',
+    path: '/askForHelp',
+    component: NeedHelp
   }
 ];
 

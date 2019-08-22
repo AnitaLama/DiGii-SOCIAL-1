@@ -54,6 +54,10 @@ const Button = styled.button`
     pointer-events: none;
     background: ${grey};
   }
+  &.default {
+    width: auto;
+    padding: 10px 20px;
+  }
 `;
 
 const WhiteButton = styled.button`

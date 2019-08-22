@@ -29,8 +29,9 @@ const media = Object.keys(sizes).reduce((accumulator, label) => {
 }, {});
 // End Media Queries
 
+// box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
 const boxShadow = () => `
-box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
+box-shadow:3px 3px 6px rgba(0, 0, 0, 0.25);
 `;
 
 const resetList = () => `

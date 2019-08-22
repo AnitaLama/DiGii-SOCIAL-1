@@ -112,6 +112,10 @@ class Header extends Component {
     onMasterDelete(props);
   };
 
+  geToNeedHelpPage = () => {
+    history.push('/askForHelp');
+  };
+
   render() {
     const { isListVisible } = this.state;
     const { users } = this.props;
@@ -123,7 +127,12 @@ class Header extends Component {
       <HeaderWrapper>
         <Logo src={Images.digii5.logo} />
         <UserInfoWrapper>
-          <WhiteButton className="roundedShadow">Need help?</WhiteButton>
+          <WhiteButton
+            className="roundedShadow"
+            onClick={this.geToNeedHelpPage}
+          >
+            Need help?
+          </WhiteButton>
           <Button
             className="roundedShadow short"
             style={{ marginLeft: '20px' }}

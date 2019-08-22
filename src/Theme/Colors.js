@@ -26,7 +26,8 @@ const Colors = {
     background: '#f1f3f4',
     dark: '#5E5E5E',
     light: '#777777',
-    peach: '#F78361'
+    peach: '#F78361',
+    black: '#2D2D2D'
   }
 };
 
