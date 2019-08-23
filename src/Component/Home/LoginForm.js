@@ -9,7 +9,14 @@ import {
   Colors, fontWeight, fontFilson, fontSize
 } from '../../Theme';
 import ResetPasswordModal from './ResetPasswordModal';
-
+// import {notification} from 'antd';
+//
+// const loginErrorNotification = msg => {
+//   notification.error({
+//     message: 'Error',
+//     description: msg
+//   });
+// };
 const FormWrapper = styled.div`
   margin: auto 40px;
   width: 80%;

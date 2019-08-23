@@ -142,7 +142,7 @@ class BannerImageModal extends Component {
               SAVE
             </Button> */}
               <Button className="rounded short" onClick={this.saveBanner}>
-                POST
+                Post
               </Button>
             </ButtonWrapper>
           </ModalBox>

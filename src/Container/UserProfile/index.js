@@ -4,6 +4,7 @@ import {
   ContentWrapper
 } from '../../Component/StyledComponents';
 import { UserProfileComponent } from '../../Component/UserProfile';
+import { Header } from '../../Component/Header';
 
 class UserProfile extends Component {
   constructor() {
@@ -23,6 +24,7 @@ class UserProfile extends Component {
     const { username, isProfileOfAUser } = this.state;
     return (
       <ContainerWrapper>
+        <Header />
         <ContentWrapper>
           <UserProfileComponent
             username={username}

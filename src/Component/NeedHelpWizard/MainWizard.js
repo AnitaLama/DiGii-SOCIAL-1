@@ -18,9 +18,11 @@ class MainWizard extends Component {
 
   next = nextStep => {
     const { step, history } = this.state;
-    history.push(nextStep);
-    console.log('history next', history);
-    this.setState({ step: step < 4 ? nextStep : 4, history });
+    if (step !== nextStep) {
+      history.push(nextStep);
+      console.log('history next', history);
+      this.setState({ step: step < 4 ? nextStep : 4, history });
+    }
   };
 
   render() {

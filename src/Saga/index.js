@@ -12,6 +12,7 @@ import { GroupTypes } from '../Redux/GroupRedux';
 import { ProfileTypes } from '../Redux/ProfileRedux';
 import { TutorialTypes } from '../Redux/TutorialRedux';
 import { SchoolTypes } from '../Redux/SchoolRedux';
+import { HelperTypes } from '../Redux/HelperRedux';
 
 import {
   onLoginRequest,
@@ -52,6 +53,7 @@ import {
 } from './ProfileSaga';
 import { onTutorialRequest, onSaveTutorialWatchersInfo } from './TutorialSaga';
 import onGetAllSchools from './SchoolSaga';
+import onGetAllInternalHelpers from './HelperSaga';
 
 export default function* root() {
   yield all([
@@ -103,6 +105,7 @@ export default function* root() {
       TutorialTypes.ON_SAVE_TUTORIAL_WATCHERS_INFO,
       onSaveTutorialWatchersInfo
     ),
-    takeLatest(SchoolTypes.ON_GET_ALL_SCHOOLS, onGetAllSchools)
+    takeLatest(SchoolTypes.ON_GET_ALL_SCHOOLS, onGetAllSchools),
+    takeLatest(HelperTypes.ON_GET_ALL_INTERNAL_HELPERS, onGetAllInternalHelpers)
   ]);
 }

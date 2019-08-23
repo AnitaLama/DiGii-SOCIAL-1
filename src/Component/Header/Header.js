@@ -7,13 +7,27 @@ import {
   Images, flexCentering, Colors, fontSize
 } from '../../Theme';
 import {
-  Logo, WhiteButton, Button, Avatar
+  Logo,
+  WhiteButton,
+  Button,
+  Avatar,
+  ContentWrapper
 } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import history from '../../history';
 import PostActions from '../../Redux/PostRedux';
 
 const { pen, secondary, snow } = Colors.colors;
+
+const HeaderMainContainer = styled.div`
+  position:sticky;
+  top:0;
+  border-bottom 1px solid rgba(0,0,0,0.15);
+  z-index:10;
+  background:white;
+  box-shadow:0px 2px 10px 0px rgba(0,0,0,0.15)
+`;
+
 const HeaderWrapper = styled.div`
   padding: 20px 0;
   display: grid;
@@ -78,6 +92,7 @@ const Settings = styled.div`
 const DiGiiIcon = styled.img`
   height: 20.91px;
 `;
+
 const AvatarWrapper = styled.div``;
 class Header extends Component {
   constructor() {
@@ -116,6 +131,10 @@ class Header extends Component {
     history.push('/askForHelp');
   };
 
+  goToFeed = () => {
+    history.push('/messageboard');
+  };
+
   render() {
     const { isListVisible } = this.state;
     const { users } = this.props;
@@ -124,55 +143,59 @@ class Header extends Component {
       id, isStudent, groupId, username, avatar
     } = user;
     return (
-      <HeaderWrapper>
-        <Logo src={Images.digii5.logo} />
-        <UserInfoWrapper>
-          <WhiteButton
-            className="roundedShadow"
-            onClick={this.geToNeedHelpPage}
-          >
-            Need help?
-          </WhiteButton>
-          <Button
-            className="roundedShadow short"
-            style={{ marginLeft: '20px' }}
-          >
-            100
-            <DiGiiIcon src={Images.digii5.DiGiit} />
-          </Button>
-          <Name>{user.firstname}</Name>
-          <AvatarWrapper
-            style={{
-              marginRight: '20px',
-              marginLeft: '10px'
-            }}
-            onClick={() => {
-              history.push(`/userprofile/${isStudent ? 1 : 0}/${username}`);
-            }}
-          >
-            <Avatar avatar={avatar} height={53} />
-          </AvatarWrapper>
-          {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
-          <Settings>
-            <FiSettings
-              style={{ height: '50px' }}
-              onClick={this.handleSettingsButtonClick}
-            />
-            {isListVisible && (
-              <SettingsSubList>
-                <SettingsListElement onClick={this.logOut}>
-                  Logout
-                </SettingsListElement>
-                <SettingsListElement
-                  onClick={() => this.delete({ isStudent, groupId, id })}
-                >
-                  Reset Message Board
-                </SettingsListElement>
-              </SettingsSubList>
-            )}
-          </Settings>
-        </UserInfoWrapper>
-      </HeaderWrapper>
+      <HeaderMainContainer>
+        <ContentWrapper>
+          <HeaderWrapper>
+            <Logo src={Images.digii5.logo} onClick={this.goToFeed} />
+            <UserInfoWrapper>
+              <WhiteButton
+                className="roundedShadow"
+                onClick={this.geToNeedHelpPage}
+              >
+                Need help?
+              </WhiteButton>
+              <Button
+                className="roundedShadow short"
+                style={{ marginLeft: '20px' }}
+              >
+                100
+                <DiGiiIcon src={Images.digii5.DiGiit} />
+              </Button>
+              <Name>{user.firstname}</Name>
+              <AvatarWrapper
+                style={{
+                  marginRight: '20px',
+                  marginLeft: '10px'
+                }}
+                onClick={() => {
+                  history.push(`/userprofile/${isStudent ? 1 : 0}/${username}`);
+                }}
+              >
+                <Avatar avatar={avatar} height={53} />
+              </AvatarWrapper>
+              {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
+              <Settings>
+                <FiSettings
+                  style={{ height: '50px' }}
+                  onClick={this.handleSettingsButtonClick}
+                />
+                {isListVisible && (
+                  <SettingsSubList>
+                    <SettingsListElement onClick={this.logOut}>
+                      Logout
+                    </SettingsListElement>
+                    <SettingsListElement
+                      onClick={() => this.delete({ isStudent, groupId, id })}
+                    >
+                      Reset Message Board
+                    </SettingsListElement>
+                  </SettingsSubList>
+                )}
+              </Settings>
+            </UserInfoWrapper>
+          </HeaderWrapper>
+        </ContentWrapper>
+      </HeaderMainContainer>
     );
   }
 }

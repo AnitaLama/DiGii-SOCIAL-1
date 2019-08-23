@@ -126,8 +126,9 @@ class NewPost extends Component {
   };
 
   handleButtonClick = option => {
+    const { type } = this.state;
     const { text } = option;
-    this.setState({ type: text });
+    this.setState({ type: type === text ? 'text' : text });
   };
 
   postArea = () => {

@@ -3,11 +3,12 @@ import styled from '@emotion/styled';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+// import { notification } from 'antd';
 import {
   Button,
   FormInput,
-  ErrorMessage,
-  FormSelect
+  FormSelect,
+  ErrorMessage
 } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
 import SchoolActions from '../../Redux/SchoolRedux';
@@ -16,6 +17,12 @@ import {
 } from '../../Theme';
 import ResetPasswordModal from './ResetPasswordModal';
 
+// const loginErrorNotification = msg => {
+//   notification.error({
+//     message: 'Error',
+//     description: msg
+//   });
+// };
 const FormWrapper = styled.div`
   margin: auto 40px;
   width: 80%;
@@ -168,6 +175,7 @@ class LoginForm extends Component {
                   <span>Sign Up</span>
                 </ClickableSpan>
               </HelpBlock>
+
               {studentLoginError && <ErrorMessage error={studentLoginError} />}
             </form>
           )}

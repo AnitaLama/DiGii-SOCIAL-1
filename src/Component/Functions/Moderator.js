@@ -21,7 +21,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       isStrikeModalVisible: false,
       imageName: null,
       feeling: null,
-      banner: null
+      banner: null,
+      points: null
     };
   }
 
@@ -65,6 +66,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     showWarning = (count, isStudent, moderationType, msg) => {
+      console.log('strikes count', count);
       if (msg) {
         this.setState({
           isModalVisible: true,
@@ -73,7 +75,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       } else if (count >= strikeCount * 3) {
         this.setState({
           isBasicModalVisible: true,
-          alertMessage: 'You\'ll be blocked from  DiGii'
+          alertMessage: 'You have been excluded from the Message Board.'
         });
       } else {
         let index = (count % strikeCount) + 1;
@@ -94,7 +96,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       if (isFirstTime) {
         this.setState({
           isBasicModalVisible: true,
-          alertMessage: 'Congratulations!!! it\'s your first time posting.'
+          alertMessage: 'Congratulations!!! It\'s your first time posting.',
+          points: 5
         });
       }
     };
@@ -141,7 +144,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
         postText,
         imageName,
         feeling,
-        banner
+        banner,
+        points
       } = this.state;
       return (
         <div>
@@ -172,6 +176,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
               imageName={imageName}
               feeling={feeling}
               banner={banner}
+              points={-5}
             />
           )}
           {isBasicModalVisible && (
@@ -180,6 +185,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
               hideModal={this.hideBasicModal}
               showVideo={this.showVideo}
               index={alertIndex}
+              points={points}
             />
           )}
         </div>

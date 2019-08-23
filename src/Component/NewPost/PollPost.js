@@ -239,7 +239,7 @@ class PollPost extends Component {
           </QuestionWrapper>
           <div>
             <Button className="small rounded" onClick={this.onPostPoll}>
-              POST
+              Post
             </Button>
           </div>
         </PostWrapper>

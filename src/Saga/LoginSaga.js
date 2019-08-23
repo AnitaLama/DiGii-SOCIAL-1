@@ -64,7 +64,7 @@ export function* onBlockUser(action) {
     );
     console.log(data);
     if (data.success) {
-      alert('You\'ve been striked out.');
+      alert('You\'ve been locked out.');
       yield localStorage.removeItem('user');
       history.push('/student/login');
     }

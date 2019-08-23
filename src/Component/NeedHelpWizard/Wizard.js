@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
+import { connect } from 'react-redux';
 import { Button } from '../StyledComponents';
 import {
   Colors,
@@ -10,6 +11,7 @@ import {
   Images
 } from '../../Theme';
 import { NoticeContainer } from './index';
+import HelperActions from '../../Redux/HelperRedux';
 
 const { black, snow } = Colors.colors;
 
@@ -32,6 +34,7 @@ const WizardContainer = styled.div`
   @media (max-width: 800px) {
     transform: translate(-35%, 0%);
   }
+  // top: 200px;
 `;
 
 const WizardDescription = styled.div`
@@ -56,256 +59,244 @@ const Description = styled.div`
   }
 `;
 
-const WizardSteps = [
-  {
-    step: 1,
-    title: 'DiGii Help',
-    description: (
-      <div>
-        There are lots of places for you to get help online and in our school
-        community.
-        {' '}
-        <span>What sort of help are you after?</span>
-      </div>
-    ),
-    button1: 'Inside Our School',
-    button1Action: 2,
-    button2: 'Outside Our School',
-    button2Action: 5,
-    notice:
-      'Well done for checking out the HELP option on DiGii. On social media you’re surrounded by lots of people. Those people might need help, or you might need help because of what they say or do. There’s lots of help on DiGii – so let’s HAVE A LOOK AROUND!'
-  },
-  {
-    step: 2,
-    title: 'Who do you need help for?',
-    description: null,
-    button1: 'For Me',
-    button1Action: 3,
-    button2: 'For Someone Else',
-    button2Action: 3,
-    notice:
-      'Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!'
-  },
-  {
-    step: 3,
-    title: 'I need help',
-    description: null,
-    button1: 'Right Now',
-    button1Action: 4,
-    button2: 'Soon',
-    button2Action: 4,
-    notice:
-      'Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!'
-  },
-  {
-    step: 4,
-    title: 'I\'d like to speak to:',
-    description: null,
-
-    notice:
-      'Now that you’ve started asking for help – keep going! You’re nearly there.'
-  },
-  {
-    step: 5,
-    title: 'Help Outside School',
-    description: (
-      <div>
-        Being safe online means knowing where to read up about your rights and
-        responsibilities. The eSafety Commissioner website has lots of
-        information and you can report cyberbullying there too.
-        <span>
-          If you or a friend need to talk to someone about what’s happening in
-          your online or offline life, there are lots of people who can help
-          outside our school.
-        </span>
-        <span>
-          In your home or community: Your parent or carer can be a great place
-          to start, maybe you have a grandparent, aunty or uncle who’s good at
-          listening. There’s also your sport coach or a leader in an afterschool
-          group.
-        </span>
-        <span>
-          {' '}
-          24 hours a day: Here are some great options that you can access around
-          the clock by hopping online or picking up the phone:
-        </span>
-        <span>
-          Kids Helpline
-          {' '}
-          <a href="https://kidshelpline.com.au/">
-            https://kidshelpline.com.au/
-          </a>
-          {' '}
-          or 1800 55 1800
-        </span>
-      </div>
-    ),
-    button1: 'eSafety Commissioner',
-    button1Action: 4,
-    button2: 'Kids Helpline',
-    button2Action: 4,
-    notice: null
-  }
-];
-
-const CurrentWizardScreen = ({ screen, next }) => {
-  const {
-    step,
-    title,
-    description,
-    button1,
-    button2,
-    notice,
-    button1Action,
-    button2Action
-  } = screen;
-  console.log('inside >>>', screen);
+const CurrentWizardScreen = ({
+  title, description, notice, next
+}) => {
   const check = title.toLowerCase() === 'help outside school';
   return (
-    <WizardContainer style={{ width: check && '585px' }}>
+    <div>
       <WizardDescription style={{ width: check && '100%' }}>
         <Title>{title}</Title>
-        <Description>{description}</Description>
+        {description && (
+          <Description
+            dangerouslySetInnerHTML={{
+              __html: description
+            }}
+          />
+        )}
       </WizardDescription>
-      <div
-        style={{
-          display: check && 'flex',
-          justifyContent: check && 'space-around'
+
+      {notice && <NoticeContainer notice={notice} />}
+    </div>
+  );
+};
+const StepOne = ({ handleButtonClick }) => (
+  <WizardContainer>
+    <CurrentWizardScreen
+      title="DiGii Help"
+      description={`  <div>
+    There are lots of places for you to get help online and in our school
+    community.
+
+    <span>What sort of help are you after?</span>
+    </div>`}
+      notice="Well done for checking out the HELP option on DiGii. On social media you’re surrounded by lots of people. Those people might need help, or you might need help because of what they say or do. There’s lots of help on DiGii – so let’s HAVE A LOOK AROUND!"
+      next={handleButtonClick}
+    />
+    <div>
+      <Button
+        className="roundedShadow default"
+        onClick={() => {
+          handleButtonClick(2, 'where', 'inside');
         }}
       >
-        {button1 && (
-          <div>
-            <Button
-              className="roundedShadow default"
-              onClick={() => {
-                next(button1Action);
-              }}
-            >
-              {button1}
-            </Button>
-          </div>
-        )}
-        {button2 && (
-          <div>
-            <Button
-              className="roundedShadow default"
-              onClick={() => {
-                next(button2Action);
-              }}
-            >
-              {button2}
-            </Button>
-          </div>
-        )}
+        Inside Our School
+      </Button>
+    </div>
+    <div>
+      <Button
+        className="roundedShadow default"
+        onClick={() => {
+          handleButtonClick(5, 'where', 'outside');
+        }}
+      >
+        Outside OurSchool
+      </Button>
+    </div>
+  </WizardContainer>
+);
+
+const StepTwo = ({ handleButtonClick }) => (
+  <WizardContainer>
+    <CurrentWizardScreen
+      title="Who do you need help for?"
+      notice="Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!"
+    />
+    <div>
+      <Button
+        className="roundedShadow default"
+        onClick={() => {
+          handleButtonClick(3, 'forWhom', 'me');
+        }}
+      >
+        For Me
+      </Button>
+    </div>
+    <div>
+      <Button
+        className="roundedShadow default"
+        onClick={() => {
+          handleButtonClick(3, 'forWhom', 'someone');
+        }}
+      >
+        For Someone Else
+      </Button>
+    </div>
+  </WizardContainer>
+);
+const StepThree = ({ handleButtonClick }) => (
+  <WizardContainer>
+    <CurrentWizardScreen
+      title="I need help"
+      notice="Now that you’ve started asking for help – keep going! You’re nearly there."
+    />
+    <div>
+      <Button
+        className="roundedShadow default"
+        onClick={() => {
+          handleButtonClick(4, 'when', 'Right Now');
+        }}
+      >
+        Right Now
+      </Button>
+    </div>
+    <div>
+      <Button
+        className="roundedShadow default"
+        onClick={() => {
+          handleButtonClick(4, 'when', 'Soon');
+        }}
+      >
+        Soon
+      </Button>
+    </div>
+  </WizardContainer>
+);
+const StepFour = () => {
+  console.log('stepfour');
+  return (
+    <WizardContainer>
+      <CurrentWizardScreen title={'I\'d like to speak to:'} />
+      <div>
+        <input type="checkbox" />
+        My Teacher - Mr. AppleCore
       </div>
-      {notice && <NoticeContainer notice={notice} />}
+      <div>
+        <input type="checkbox" />
+        My Teacher - Mr. AppleCore
+      </div>
+      <div>
+        <input type="checkbox" />
+        My Teacher - Mr. AppleCore
+      </div>
+      <div>
+        <input type="checkbox" />
+        My Teacher - Mr. AppleCore
+      </div>
     </WizardContainer>
   );
 };
-// const StepOne = ({ next }) => (
-//   <WizardContainer>
-//     <WizardDescription>
-//       <Title>DiGii Help</Title>
-//       <Description>
-//         There are lots of places for you to get help online and in our school
-//         community.
-//         {' '}
-//         <span>What sort of help are you after?</span>
-//       </Description>
-//     </WizardDescription>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         Inside Our School
-//       </Button>
-//     </div>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         Outside Our School
-//       </Button>
-//     </div>
-//     <NoticeContainer notice="Well done for checking out the HELP option on DiGii. On social media you’re surrounded by lots of people. Those people might need help, or you might need help because of what they say or do. There’s lots of help on DiGii – so let’s HAVE A LOOK AROUND!" />
-//   </WizardContainer>
-// );
-//
-// const StepTwo = ({ next }) => (
-//   <WizardContainer>
-//     <Title>Who do you need help for?</Title>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         For Me
-//       </Button>
-//     </div>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         For Someone Else
-//       </Button>
-//     </div>
-//     <NoticeContainer notice="Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!" />
-//   </WizardContainer>
-// );
-//
-// const StepThree = ({ next }) => (
-//   <WizardContainer>
-//     <Title>I need help</Title>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         Right Now
-//       </Button>
-//     </div>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         Soon
-//       </Button>
-//     </div>
-//     <NoticeContainer notice="Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!" />
-//   </WizardContainer>
-// );
-//
-// const StepFour = ({ next }) => (
-//   <WizardContainer>
-//     <Title>I would like to speak to:</Title>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         Right Now
-//       </Button>
-//     </div>
-//     <div>
-//       <Button className="roundedShadow default" onClick={next}>
-//         Soon
-//       </Button>
-//     </div>
-//     <NoticeContainer notice="Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!" />
-//   </WizardContainer>
-// );
+const StepFive = ({ handleButtonClick }) => (
+  <WizardContainer
+    style={{
+      width: '585px'
+    }}
+  >
+    <CurrentWizardScreen
+      title="Help Outside School"
+      description={`<div>
+      Being safe online means knowing where to read up about your rights and responsibilities. The eSafety Commissioner website has lots of
+      information and you can report cyberbullying there too.<span>  If you or a friend need to talk to someone about what’s happening  in your online or offline life, there are lots of people who can  help outside our school.</span><span>  In your home or community: Your parent or carer can be a great  place to start, maybe you have a grandparent, aunty or uncle who’s  good at listening. There’s also your sport coach or a leader in an  afterschool group.</span><span>    24 hours a day: Here are some great options that you can access  around the clock by hopping online or picking up the phone:</span><span>  Kids Helpline    <a href="https://kidshelpline.com.au/">    https://kidshelpline.com.au/  </a>    or 1800 55 1800</span>
+      </div>`}
+    />
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around'
+      }}
+    >
+      <div>
+        <Button
+          className="roundedShadow default"
+          // onClick={() => {
+          //   handleButtonClick(4, 'when', 'Right Now');
+          // }}
+        >
+          eSafety Commissioner
+        </Button>
+      </div>
+      <div>
+        <Button
+          className="roundedShadow default"
+          // onClick={() => {
+          //   handleButtonClick(4, 'when', 'Soon');
+          // }}
+        >
+          Kids Helpline
+        </Button>
+      </div>
+    </div>
+  </WizardContainer>
+);
 
 class Wizard extends Component {
-  state = {
-    step: this.props.step
+  state = {};
+
+  next = step => {
+    const { next } = this.props;
+    next(step);
   };
 
-  // getComponent = step => {
-  //   const props = { ...this.props };
-  //   switch (step) {
-  //     case 1:
-  //       return <StepOne {...props} />;
-  //     case 2:
-  //       return <StepTwo {...props} />;
-  //     case 3:
-  //       return <StepThree {...props} />;
-  //     case 4:
-  //       return <StepFour {...props} />;
-  //     default:
-  //       return <StepOne {...props} />;
-  //   }
-  // };
+  handleButtonClick = (nextStep, temp, values) => {
+    console.log('values', values, nextStep);
+    const { next } = this.props;
+    this.setState({ [temp]: values });
+    if (this.props.step === 3) {
+      const { user, onGetAllInternalHelpers } = this.props;
+      const group = user.groupId[0];
+      console.log('>>>>>', this.props.user);
+      // this.props.onGetAllInternalHelpers(groupId)
+      onGetAllInternalHelpers({ stGroupId: group });
+    }
+    next(nextStep);
+  };
 
   render() {
     const { step } = this.props;
-    const screen = WizardSteps.find(item => item.step === step);
+    const props = { ...this.props, handleButtonClick: this.handleButtonClick };
+    const WizardStepsList = [
+      {
+        step: 1,
+        component: <StepOne {...props} />,
+        title: 'DiGii Help'
+      },
+      {
+        step: 2,
+        component: <StepTwo {...props} />,
+        title: 'Who do you need help for?'
+      },
+      {
+        step: 3,
+        component: <StepThree {...props} />,
+        title: 'I need help'
+      },
+      {
+        step: 4,
+        component: <StepFour {...props} />,
+        title: 'I\'d like to speak to:'
+      },
+      {
+        step: 5,
+        component: <StepFive {...props} />,
+        title: 'Help Outside School'
+      }
+    ];
+    const screen = WizardStepsList.find(item => item.step === step);
     console.log(step, screen);
     return (
       <WizardWrapper>
-        <CurrentWizardScreen screen={screen} next={this.props.next} />
+        {screen.component}
+        {/*  <CurrentWizardScreen screen={screen} next={this.next} /> */}
         {/*  {this.getComponent(this.props.step)} */}
         {/*  <button onClick={this.props.next}>NEXT</button> */}
       </WizardWrapper>
@@ -313,4 +304,13 @@ class Wizard extends Component {
   }
 }
 
-export default Wizard;
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+const mapDispatchToProps = dispatch => ({
+  onGetAllInternalHelpers: value => dispatch(HelperActions.onGetAllInternalHelpers(value))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wizard);

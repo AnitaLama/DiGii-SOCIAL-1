@@ -20,11 +20,7 @@ class MessageBoard extends Component {
   render() {
     return (
       <div>
-        <HeaderWrapper>
-          <ContentWrapper>
-            <Header />
-          </ContentWrapper>
-        </HeaderWrapper>
+        <Header />
         <ContainerWrapper>
           <ContentWrapper>
             {/* <Features />

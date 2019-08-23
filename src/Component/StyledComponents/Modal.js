@@ -8,6 +8,7 @@ import { Colors, Images, flexCentering } from '../../Theme';
 import { Button, Loader, WhiteButton } from './index';
 import { Warnings } from '../Functions';
 import TutorialActions from '../../Redux/TutorialRedux';
+import history from '../../history';
 
 const { snow, tint, peach } = Colors.colors;
 const ModalContainer = styled.div`
@@ -120,6 +121,15 @@ class BasicModal extends Component {
     hideModal();
   };
 
+  logout = () => {
+    const { user } = this.props;
+    if (user.isStudent) {
+      history.push('/student/login');
+    } else {
+      history.push('/');
+    }
+  };
+
   render() {
     const {
       message,
@@ -127,11 +137,13 @@ class BasicModal extends Component {
       strike,
       showVideo,
       index,
-      text
+      text,
+      points
     } = this.props;
     const { checkboxSelected } = this.state;
     // console.log(showCheckButton);
     const hasToShowTutorial = (strike + 1) % 3 === 0;
+    const check = message && message === 'You have been excluded from the Message Board.';
     return (
       <ModalContainer>
         <ModalBox>
@@ -141,7 +153,7 @@ class BasicModal extends Component {
               Digii
             </div>
             <Points>
-              <span>-5</span>
+              <span>{points || -5}</span>
               <Icon src={Images.digii5.DiGiitIconColored} className="small" />
             </Points>
           </Header>
@@ -154,9 +166,9 @@ class BasicModal extends Component {
           <CenteredDiv>
             <WhiteButton
               className="roundedShadow short "
-              onClick={this.handleOK}
+              onClick={check ? this.logout : this.handleOK}
             >
-              Back to Chat
+              {check ? 'Logout' : 'Back to Chat'}
             </WhiteButton>
           </CenteredDiv>
         </ModalBox>
@@ -177,8 +189,8 @@ const VideoOverlay = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
   cursor: pointer;
   span {
     color: white;
@@ -412,13 +424,16 @@ class VideoModalContainer extends Component {
               marginTop: '0px',
               width: '100%',
               height: '100%',
-              position: 'relative',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center'
             }}
           >
-            <div>
+            <div
+              style={{
+                position: 'relative'
+              }}
+            >
               {!tutorialPath && <Loader size={20} />}
               {tutorialPath && (
                 <video
