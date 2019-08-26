@@ -47,7 +47,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     handlePostText = e => {
-      const { value } = e.target;
+      const value = e.target && e.target.value ? e.target.value : e;
       const actualValue = value.trim();
       if (actualValue.length > 250) {
         this.setState({
@@ -97,7 +97,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
         this.setState({
           isBasicModalVisible: true,
           alertMessage: 'Congratulations!!! It\'s your first time posting.',
-          points: 5
+          points: '+5'
         });
       }
     };

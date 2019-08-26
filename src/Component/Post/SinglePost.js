@@ -350,6 +350,10 @@ class SinglePost extends Component {
     });
   };
 
+  hideCommentBox = () => {
+    this.setState({ showCommentBox: false });
+  };
+
   render() {
     const { data, modalpopup } = this.props;
     const { showCommentBox } = this.state;
@@ -450,7 +454,9 @@ class SinglePost extends Component {
               ) : null))}
           </div>
           <div className="commentBox">
-            {showCommentBox && <CommentBox data={data} />}
+            {showCommentBox && (
+              <CommentBox data={data} hideCommentBox={this.hideCommentBox} />
+            )}
           </div>
         </CommentContainer>
       </PostWrapper>

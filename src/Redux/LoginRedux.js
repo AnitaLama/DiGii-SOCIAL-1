@@ -96,7 +96,8 @@ const onStudentFormLoginSuccess = (state, action) => {
     studentId,
     student_group,
     studentAvatarId,
-    avatar
+    avatar,
+    total
   } = action.data;
   const { school_group } = student_group;
   const { schoolGroupsId } = school_group;
@@ -113,7 +114,8 @@ const onStudentFormLoginSuccess = (state, action) => {
       isStudent: true,
       groupId: groups,
       avatarId: studentAvatarId,
-      avatar
+      avatar,
+      isFirstTimePosting: !(total > 0)
     },
     error: null
   };

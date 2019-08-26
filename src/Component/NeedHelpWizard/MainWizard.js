@@ -12,7 +12,7 @@ class MainWizard extends Component {
     if (history.length > 1) {
       history.pop();
     }
-    console.log('history prev', history);
+
     this.setState({ step: history[history.length - 1], history });
   };
 
@@ -20,7 +20,6 @@ class MainWizard extends Component {
     const { step, history } = this.state;
     if (step !== nextStep) {
       history.push(nextStep);
-      console.log('history next', history);
       this.setState({ step: step < 4 ? nextStep : 4, history });
     }
   };

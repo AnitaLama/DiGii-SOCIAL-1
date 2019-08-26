@@ -56,7 +56,7 @@ class EditModal extends Component {
           <Header>
             <div>
               <Avatar avatar={avatar} height={60} />
-              Digii
+              DiGii
             </div>
           </Header>
           <div>{this.getContent()}</div>

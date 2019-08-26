@@ -53,7 +53,11 @@ import {
 } from './ProfileSaga';
 import { onTutorialRequest, onSaveTutorialWatchersInfo } from './TutorialSaga';
 import onGetAllSchools from './SchoolSaga';
-import onGetAllInternalHelpers from './HelperSaga';
+import {
+  onGetAllInternalHelpers,
+  onSaveNeedHelp,
+  onGetHelpNotificationsCount
+} from './HelperSaga';
 
 export default function* root() {
   yield all([
@@ -106,6 +110,14 @@ export default function* root() {
       onSaveTutorialWatchersInfo
     ),
     takeLatest(SchoolTypes.ON_GET_ALL_SCHOOLS, onGetAllSchools),
-    takeLatest(HelperTypes.ON_GET_ALL_INTERNAL_HELPERS, onGetAllInternalHelpers)
+    takeLatest(
+      HelperTypes.ON_GET_ALL_INTERNAL_HELPERS,
+      onGetAllInternalHelpers
+    ),
+    takeLatest(HelperTypes.ON_SAVE_NEED_HELP, onSaveNeedHelp),
+    takeLatest(
+      HelperTypes.ON_GET_HELP_NOTIFICATIONS_COUNT,
+      onGetHelpNotificationsCount
+    )
   ]);
 }

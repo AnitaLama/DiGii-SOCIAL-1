@@ -207,7 +207,9 @@ class TagPost extends Component {
     };
     if (postText.length > 0) {
       onSubmitTagPost(data);
-      if(!isBad){resetPostType();}
+      if (!isBad) {
+        resetPostType();
+      }
     }
   };
 

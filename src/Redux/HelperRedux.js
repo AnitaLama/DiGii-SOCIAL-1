@@ -6,7 +6,9 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   onGetAllInternalHelpers: ['data'],
   onGetAllInternalHelpersSuccess: ['data'],
-  onGetAllInternalHelpersFailure: ['data']
+  onGetAllInternalHelpersFailure: ['data'],
+  onSaveNeedHelp: ['data'],
+  onGetHelpNotificationsCount: ['data']
 });
 
 export const HelperTypes = Types;
@@ -23,7 +25,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 const onGetAllInternalHelpersSuccess = (state, action) => {
-  console.log('here', action);
+  console.log('here>>>>', action);
   return { ...state, loading: false, internalHelpersList: action.data };
 };
 

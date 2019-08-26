@@ -20,7 +20,8 @@ export {
   size,
   flex,
   resetList,
-  grid
+  grid,
+  listArrowTop
 } from './Mixins';
 
 export {

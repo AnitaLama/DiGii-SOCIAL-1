@@ -109,7 +109,7 @@ class BannerImageModal extends Component {
             <Header>
               <div>
                 <Icon src={Images.digii5.icon} />
-                Digii
+                DiGii
               </div>
               <Points />
             </Header>

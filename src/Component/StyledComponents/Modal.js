@@ -150,7 +150,7 @@ class BasicModal extends Component {
           <Header>
             <div>
               <Icon src={Images.digii5.icon} />
-              Digii
+              DiGii
             </div>
             <Points>
               <span>{points || -5}</span>
@@ -211,8 +211,10 @@ const QuestionOptions = styled.div`
   cursor: pointer;
   padding: 6px;
   margin: 6px;
+  position: relative;
   svg {
-    float: left;
+    position: absolute;
+    left: 0;
     color: #88cc00;
     font-size: 22px;
   }
@@ -271,7 +273,7 @@ class VideoModalContainer extends Component {
     const { userAnswer } = this.state;
     const hasUnansweredQuestion = userAnswer.includes(undefined);
     if (hasUnansweredQuestion) {
-      alert('Please answer all the questions');
+      // alert('Please answer all the questions');
       this.setState({ notice: 'Please answer all the questions.' });
     }
     const hasWrongAnswer = userAnswer.find(
@@ -395,7 +397,7 @@ class VideoModalContainer extends Component {
     if (gotAllQuestionsCorrect) {
       return (
         <div>
-          {'You\'ve answered all the questions correctly. You can return now'}
+          {'You\'ve answered all the questions correctly. You can return now.'}
         </div>
       );
     }
@@ -483,7 +485,7 @@ class VideoModalContainer extends Component {
               <CenteredElementsModalWrapper className="test">
                 <span>
                   {
-                    'You did\'nt answer all the questions correctly. You\'ll have to watch the video again'
+                    'You didn\'t answer all the questions correctly. You\'ll have to watch the video again.'
                   }
                 </span>
                 <Button className="short" onClick={this.watchVideoAgain}>

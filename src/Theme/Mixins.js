@@ -126,6 +126,26 @@ const grid = (columns, columnSize, gap = 0) => `
   grid-template-columns: repeat(${columns}, ${columnSize});
 `;
 
+const listArrowTop = () => `
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+
+  right: 0;
+  background: #e9e9e9;
+  z-index: 10000;
+  &:before {
+    content: ' ';
+    position: absolute;
+    right: 4px;
+    top: -15px;
+    border-top: none;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    border-bottom: 15px solid #e9e9e9;
+  }
+`;
 export {
   sizes,
   media,
@@ -142,5 +162,6 @@ export {
   size,
   flex,
   resetList,
-  grid
+  grid,
+  listArrowTop
 };

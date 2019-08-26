@@ -40,7 +40,12 @@ export function* onStudentLoginRequest(action) {
       action.data
     );
     if (data.success) {
-      yield put(LoginActions.onStudentFormLoginSuccess(data.result));
+      yield put(
+        LoginActions.onStudentFormLoginSuccess({
+          ...data.result,
+          ...data.postNumber
+        })
+      );
       yield localStorage.setItem('user', JSON.stringify(data.result));
       yield localStorage.setItem('token', data.token);
       history.push('/messageboard');

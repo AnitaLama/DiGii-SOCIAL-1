@@ -58,9 +58,15 @@ const Description = styled.div`
     margin: 10px;
   }
 `;
-
+const InternalHelper = styled.div`
+  padding: 10px;
+`;
 const CurrentWizardScreen = ({
-  title, description, notice, next
+  title,
+  description,
+  notice,
+  next
+  // extraInfo
 }) => {
   const check = title.toLowerCase() === 'help outside school';
   return (
@@ -172,27 +178,77 @@ const StepThree = ({ handleButtonClick }) => (
     </div>
   </WizardContainer>
 );
-const StepFour = () => {
-  console.log('stepfour');
+const ReasonsDiv = ({ selectReason }) => (
+  <div>
+    <div>I need help because of:</div>
+    <ul>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        being cyberbullied
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        being asked for inappropriate images
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        feeling very down
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        being purposefully excluded
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        hate speak or racism
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        Something else
+      </li>
+    </ul>
+  </div>
+);
+const StepFour = props => {
+  const { helper, selectHelper, findHelpFromList } = props;
+  const { internalHelpersList } = helper;
+  console.log('stepfour inside >>>>>>>>>>>>', props);
   return (
-    <WizardContainer>
-      <CurrentWizardScreen title={'I\'d like to speak to:'} />
-      <div>
-        <input type="checkbox" />
-        My Teacher - Mr. AppleCore
+    <WizardContainer
+      style={{
+        textAlign: 'left'
+      }}
+    >
+      <CurrentWizardScreen title="I would like to speak to:" />
+      <div
+        style={{
+          padding: '0 20px'
+        }}
+      >
+        {internalHelpersList.map(help => {
+          const { internalHelpFirstname, internalHelpLastname, role } = help;
+
+          return (
+            <InternalHelper>
+              <input
+                type="checkbox"
+                onChange={e => {
+                  selectHelper(e, help);
+                }}
+              />
+              <span>
+                {role && role.roleName}
+                {' '}
+-
+                {internalHelpFirstname}
+                {' '}
+                {internalHelpLastname}
+              </span>
+            </InternalHelper>
+          );
+        })}
       </div>
-      <div>
-        <input type="checkbox" />
-        My Teacher - Mr. AppleCore
-      </div>
-      <div>
-        <input type="checkbox" />
-        My Teacher - Mr. AppleCore
-      </div>
-      <div>
-        <input type="checkbox" />
-        My Teacher - Mr. AppleCore
-      </div>
+      {findHelpFromList.length > 0 && <ReasonsDiv />}
     </WizardContainer>
   );
 };
@@ -240,7 +296,9 @@ const StepFive = ({ handleButtonClick }) => (
 );
 
 class Wizard extends Component {
-  state = {};
+  state = {
+    findHelpFromList: []
+  };
 
   next = step => {
     const { next } = this.props;
@@ -261,9 +319,31 @@ class Wizard extends Component {
     next(nextStep);
   };
 
+  selectHelper = (e, helper) => {
+    console.log('helper', e.target.checked, helper);
+    const { checked } = e.target;
+    const { findHelpFromList } = this.state;
+    let newArr;
+    if (checked) {
+      newArr = findHelpFromList;
+      newArr.push(helper);
+    } else {
+      newArr = findHelpFromList.filter(item => item !== helper);
+    }
+
+    this.setState({ findHelpFromList: newArr }, () => {
+      console.log('newArr>>>>>>', this.state.findHelpFromList);
+    });
+  };
+
   render() {
     const { step } = this.props;
-    const props = { ...this.props, handleButtonClick: this.handleButtonClick };
+    const props = {
+      ...this.props,
+      ...this.state,
+      handleButtonClick: this.handleButtonClick,
+      selectHelper: this.selectHelper
+    };
     const WizardStepsList = [
       {
         step: 1,
@@ -293,6 +373,7 @@ class Wizard extends Component {
     ];
     const screen = WizardStepsList.find(item => item.step === step);
     console.log(step, screen);
+    console.log('helpers>>>>>>>>>>>>', this.props.helper);
     return (
       <WizardWrapper>
         {screen.component}
@@ -305,7 +386,8 @@ class Wizard extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user.user
+  user: state.user.user,
+  helper: state.helper
 });
 const mapDispatchToProps = dispatch => ({
   onGetAllInternalHelpers: value => dispatch(HelperActions.onGetAllInternalHelpers(value))

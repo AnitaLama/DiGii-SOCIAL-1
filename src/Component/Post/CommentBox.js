@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { FaCaretRight, FaImage, FaSmile } from 'react-icons/fa';
 import { MdGif } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import { Mentions } from 'antd';
 import { FormInput, Avatar, Button } from '../StyledComponents';
 import CommentActions from '../../Redux/CommentRedux';
 import LoginActions from '../../Redux/LoginRedux';
@@ -13,6 +14,7 @@ import GroupActions from '../../Redux/GroupRedux';
 import { Colors } from '../../Theme';
 import { Moderator, FeelingsList } from '../Functions';
 
+const { Option } = Mentions;
 const {
   snow, primary, secondary, pencil
 } = Colors.colors;
@@ -45,7 +47,7 @@ const UserListElement = styled.li`
   &:hover {
     cursor: pointer;
     background-image: linear-gradient(to right, ${primary}, ${secondary});
-    color: ${snow};
+    color: red;
   }
 `;
 const CommentBoxWrapper = styled.div`
@@ -109,6 +111,7 @@ class CommentBox extends Component {
     gifText: '',
     showFeelings: false,
     usersInGroup: [],
+    usersList: [],
     showUsers: false
   };
 
@@ -119,19 +122,22 @@ class CommentBox extends Component {
   }
 
   componentDidMount() {
-    this.commentInput.focus();
     const { user, onGetAllUsersOfAGroup, group } = this.props;
     const { groupId } = user.user;
     const { users } = group;
     onGetAllUsersOfAGroup(groupId);
-    this.setState({ usersInGroup: users });
+    // this.setState({ usersInGroup: users, usersList: users });
   }
 
   componentWillReceiveProps(nextProps) {
     const { group } = nextProps;
-    const { users } = this.state;
-    if (users !== group.users) {
+    const { usersInGroup, usersList } = this.state;
+
+    if (usersInGroup !== group.users) {
       this.setState({ usersInGroup: group.users });
+    }
+    if (usersList.length === 0 && usersList !== group.users) {
+      this.setState({ usersList: group.users });
     }
   }
 
@@ -152,12 +158,12 @@ class CommentBox extends Component {
     // console.log(e.key);
     // console.log(e.target.selectionStart);
     // console.log(e.target.selectionEnd);
-    const start = e.target.selectionStart;
-    const { postText } = this.props;
-    console.log(start, postText, postText[start - 1]);
-    if (e.key === '@') {
-      this.setState({ showUsers: true });
-    }
+    // const start = e.target.selectionStart;
+    // const { postText } = this.props;
+    // console.log(start, postText, postText[start - 1]);
+    // if (e.key === '@') {
+    //   this.setState({ showUsers: true });
+    // }
     if (e.key === 'Enter') {
       this.handleCommentReply();
     }
@@ -179,7 +185,8 @@ class CommentBox extends Component {
       onGetStrikesCountOfAUser,
       data,
       onSubmitComment,
-      resetPostText
+      resetPostText,
+      hideCommentBox
     } = this.props;
     const { postId } = data;
     const { isStudent, id } = user.user;
@@ -211,7 +218,8 @@ class CommentBox extends Component {
     };
     if (postText.length > 0) {
       onSubmitComment(comment);
-      // resetPostText();
+      hideCommentBox();
+      resetPostText();
     }
   };
 
@@ -287,7 +295,6 @@ class CommentBox extends Component {
     const {
       user, onSubmitComment, data, clearCommentGif
     } = this.props;
-    console.log('selectgif', data);
     const { postId } = data;
     const comment = {
       postCommentPostId: postId,
@@ -301,7 +308,6 @@ class CommentBox extends Component {
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
-    console.log(comment);
     onSubmitComment(comment);
     clearCommentGif();
     this.setState({ showGifInput: false });
@@ -345,16 +351,33 @@ class CommentBox extends Component {
     this.setState({ showFeelings: false });
   };
 
-  userSelected = value => {
+  // userSelected = value => {
+  //   console.log('here');
+  //   const { updatePostText, postText } = this.props;
+  //   updatePostText(postText + (value.userName || value.studentUsername));
+  //   this.setState({ showUsers: false });
+  //   this.commentInput.focus();
+  // };
+
+  onChange = value => {
+    // console.log('Change: onchange', value);
+    // this.commentInput.focus();
+  };
+
+  onSelect = option => {
+    const { usersList } = this.state;
     const { updatePostText, postText } = this.props;
-    updatePostText(postText + (value.userName || value.studentUsername));
-    this.setState({ showUsers: false });
-    this.commentInput.focus();
+    const newArr = usersList.filter(item => {
+      const username = item.userName || item.studentUsername;
+      return username !== option.value;
+    });
+    updatePostText(postText + option.value);
+    this.setState({ showUsers: false, usersList: newArr });
   };
 
   render() {
     const {
-      usersInGroup, showUsers, showFeelings, showGifInput
+      usersList, showUsers, showFeelings, showGifInput
     } = this.state;
     const { postText, user, data } = this.props;
     const { avatar } = user.user;
@@ -365,8 +388,30 @@ class CommentBox extends Component {
         }}
       >
         <Avatar avatar={avatar} height={20} />
-
-        <FormInput
+        <div onKeyDown={this.handleKeyDown}>
+          <Mentions
+            style={{ width: '100%' }}
+            onChange={this.handleComment}
+            onSelect={this.onSelect}
+            placeholder="Write a comment"
+            ref={r => {
+              this.commentInput = r;
+            }}
+          >
+            {usersList.map(users => (
+              <Option
+                key={users.userName || users.studentUsername}
+                value={users.userName || users.studentUsername}
+                // onClick={() => {
+                //   this.userSelected(users);
+                // }}
+              >
+                {users.userName || users.studentUsername}
+              </Option>
+            ))}
+          </Mentions>
+        </div>
+        {/*  <FormInput
           placeholder="Write a comment"
           onChange={this.handleComment}
           onKeyDown={this.handleKeyDown}
@@ -398,7 +443,7 @@ class CommentBox extends Component {
               </UserListElement>
             ))}
           </UserList>
-        </GifContainer>
+        </GifContainer> */}
 
         <GifContainer
           style={{
