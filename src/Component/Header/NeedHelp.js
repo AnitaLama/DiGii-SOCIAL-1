@@ -58,36 +58,51 @@ class NeedHelp extends Component {
     console.log('count', notificationCount);
     if (isStudent) {
       return (
-        <NeedHelpWrapper>
-          {/* <Badge count={notificationCount}> */}
-          <WhiteButton
-            className="roundedShadow"
-            onClick={goToNeedHelpPage}
-            onMouseEnter={this.onHover}
-            onMouseLeave={this.onMouseLeave}
-            style={{
-              fontWeight: 'bold',
-              minWidth: '110px'
-            }}
-          >
-            Need Help?
-          </WhiteButton>
-          {/* </Badge> */}
-          {/*    {helper.length > 0 && (
-          <NotificationsWrapper
-            className={!showNotifications && 'disabled'}
-            onMouseEnter={this.onHover}
-            onMouseLeave={this.onMouseLeave}
-          >
-            {helper.map(item => (
-              <SingleNotification key={item.notificationId}>
-                {item.notificationText}
-              </SingleNotification>
-            ))}
-          </NotificationsWrapper>
-        )} */}
-        </NeedHelpWrapper>
+        <WhiteButton
+          className="roundedShadow"
+          onClick={goToNeedHelpPage}
+          onMouseEnter={this.onHover}
+          onMouseLeave={this.onMouseLeave}
+          style={{
+            fontWeight: 'bold',
+            minWidth: '110px'
+          }}
+        >
+          Need Help?
+        </WhiteButton>
       );
+      // return (
+      //   <NeedHelpWrapper>
+      //     {/* <Badge count={notificationCount}> */}
+      //     <WhiteButton
+      //       className="roundedShadow"
+      //       onClick={goToNeedHelpPage}
+      //       onMouseEnter={this.onHover}
+      //       onMouseLeave={this.onMouseLeave}
+      //       style={{
+      //         fontWeight: 'bold',
+      //         minWidth: '110px',
+      //         width: '100%'
+      //       }}
+      //     >
+      //       Need Help?
+      //     </WhiteButton>
+      //     {/* </Badge> */}
+      //     {/*    {helper.length > 0 && (
+      //     <NotificationsWrapper
+      //       className={!showNotifications && 'disabled'}
+      //       onMouseEnter={this.onHover}
+      //       onMouseLeave={this.onMouseLeave}
+      //     >
+      //       {helper.map(item => (
+      //         <SingleNotification key={item.notificationId}>
+      //           {item.notificationText}
+      //         </SingleNotification>
+      //       ))}
+      //     </NotificationsWrapper>
+      //   )} */}
+      //   </NeedHelpWrapper>
+      // );
     }
     return <div />;
   }

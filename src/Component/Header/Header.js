@@ -29,7 +29,7 @@ const HeaderWrapper = styled.div`
   padding: 20px 0;
   display: grid;
   grid-template-columns: 50% 50%;
-  @media (max-width: 560px) {
+  @media (max-width: 780px) {
     grid-template-columns: auto auto;
   }
 `;
@@ -124,8 +124,8 @@ class Header extends Component {
             <UserInfoWrapper>
               <NeedHelp goToNeedHelpPage={this.goToNeedHelpPage} />
               <Button
-                className="roundedShadow short"
-                style={{ marginLeft: '20px' }}
+                className="roundedShadow default"
+                style={{ marginLeft: '20px', minWidth: '90px' }}
               >
                 100
                 <DiGiiIcon src={Images.digii5.DiGiit} />
