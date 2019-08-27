@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { FiSettings } from 'react-icons/fi';
 import { connect } from 'react-redux';
 import { Colors, listArrowTop } from '../../Theme';
-import HelperActions from '../../Redux/HelperRedux';
 
 const { pen, secondary, snow } = Colors.colors;
 
@@ -42,13 +41,8 @@ class Settings extends Component {
     this.setState({ isListVisible: false });
   };
 
-  componentWillMount = () => {
-    const { onGetHelpNotificationsCount } = this.props;
-    onGetHelpNotificationsCount({ id: 1 });
-  };
-
   render() {
-    const { logOut, user } = this.props;
+    const { logOut, user, onDelete } = this.props;
     const { id, isStudent, groupId } = user;
     const { isListVisible } = this.state;
     return (
@@ -58,9 +52,9 @@ class Settings extends Component {
           <SettingsSubList>
             <SettingsListElement onClick={logOut}>Logout</SettingsListElement>
             <SettingsListElement
-              onClick={() => this.delete({ isStudent, groupId, id })}
+              onClick={() => onDelete({ isStudent, groupId, id })}
             >
-              Reset Message Board
+              Reset
             </SettingsListElement>
           </SettingsSubList>
         )}
@@ -71,10 +65,5 @@ class Settings extends Component {
 const mapStateToProps = state => ({
   user: state.user.user
 });
-const mapDispatchToProps = dispatch => ({
-  onGetHelpNotificationsCount: value => dispatch(HelperActions.onGetHelpNotificationsCount(value))
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Settings);
+
+export default connect(mapStateToProps)(Settings);

@@ -51,7 +51,9 @@ const DiGiiIcon = styled.img`
   height: 20.91px;
 `;
 
-const AvatarWrapper = styled.div``;
+const AvatarWrapper = styled.div`
+  cursor: pointer;
+`;
 class Header extends Component {
   constructor() {
     super();
@@ -59,6 +61,10 @@ class Header extends Component {
       isListVisible: false
     };
   }
+
+  // componentWillMount() {
+  //   const {} = this.props;
+  // }
 
   handleSettingsButtonClick = () => {
     const { isListVisible } = this.state;
@@ -80,17 +86,18 @@ class Header extends Component {
     onLogOut();
   };
 
-  delete = props => {
+  onDelete = props => {
     const { onMasterDelete } = this.props;
     onMasterDelete(props);
   };
 
   goToNeedHelpPage = () => {
     const { user, onSaveNeedHelp } = this.props;
-    const { isStudent, id } = user;
+    const { isStudent, id, groupId } = user;
     if (isStudent) {
       const data = {
-        needHelpStudentId: id
+        needHelpStudentId: id,
+        stGroupId: groupId
       };
       onSaveNeedHelp(data);
       history.push('/askForHelp');
@@ -136,7 +143,7 @@ class Header extends Component {
                 <Avatar avatar={avatar} height={53} />
               </AvatarWrapper>
               {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
-              <Settings logOut={this.logOut} />
+              <Settings logOut={this.logOut} onDelete={this.onDelete} />
             </UserInfoWrapper>
           </HeaderWrapper>
         </ContentWrapper>

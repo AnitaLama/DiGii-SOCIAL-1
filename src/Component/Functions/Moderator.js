@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, VideoModal, StrikesModal } from '../StyledComponents';
 import { FilterKeyWords } from './index';
-
-const strikeCount = 3;
+import { strikeCount, strikeRound } from '../../config';
 
 const Moderator = WrappedComponent => class ModeratorContainer extends Component {
   constructor() {
@@ -72,7 +71,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
           isModalVisible: true,
           alertMessage: msg
         });
-      } else if (count >= strikeCount * 3) {
+      } else if (count >= strikeCount * strikeRound) {
         this.setState({
           isBasicModalVisible: true,
           alertMessage: 'You have been excluded from the Message Board.'

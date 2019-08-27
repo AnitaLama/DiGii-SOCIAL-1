@@ -57,13 +57,17 @@ export function* onSaveNeedHelp(action) {
 
 export function* onGetHelpNotificationsCount(action) {
   try {
-    console.log('saga input', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/onGetHelpNotificationsCount`,
       action.data
     );
     console.log('saga output', data);
+    if (data.success) {
+      yield put(HelperActions.onGetHelpNotificationsCountSuccess(data.result));
+    } else {
+      yield put(HelperActions.onGetHelpNotificationsCountFailure(data.error));
+    }
   } catch (err) {
     console.log(err);
   }

@@ -95,6 +95,10 @@ const WhiteButton = styled.button`
   &.disabled {
     pointer-events: none;
   }
+  &.default {
+    width: auto;
+    padding: 10px 20px;
+  }
 `;
 
 export { Button, WhiteButton };

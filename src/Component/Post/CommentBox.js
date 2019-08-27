@@ -397,6 +397,7 @@ class CommentBox extends Component {
             ref={r => {
               this.commentInput = r;
             }}
+            value={postText}
           >
             {usersList.map(users => (
               <Option

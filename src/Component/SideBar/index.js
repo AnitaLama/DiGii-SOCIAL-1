@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
-import { FaRegTimesCircle } from 'react-icons/fa';
+import { FaRegTimesCircle, FaRegCircle } from 'react-icons/fa';
+import { connect } from 'react-redux';
 import { Colors, fontSize, Images } from '../../Theme';
 import { Tabs } from '../MessageBoard';
+import { strikeCount } from '../../config';
 
 const { blue, grey, pen } = Colors.colors;
 const SideBarContainer = styled.div`
@@ -55,6 +57,13 @@ const Count = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
+
+  svg {
+    color: green;
+  }
+  svg.red {
+    color: red;
+  }
 `;
 const SideBarMenus = [
   { menu: 'Videos', icon: Images.digii5.Video },
@@ -64,6 +73,9 @@ const SideBarMenus = [
 ];
 class SideBar extends Component {
   render() {
+    const { strike } = this.props;
+    const count = strike % strikeCount;
+    const check = strike !== 0 && count === 0;
     return (
       <SideBarContainer>
         <SideBarWrapper>
@@ -78,9 +90,17 @@ class SideBar extends Component {
           <GroupOne>
             <Title>Report Meter</Title>
             <Count>
-              <FaRegTimesCircle />
-              <FaRegTimesCircle />
-              <FaRegTimesCircle />
+              {check || count > 0 ? (
+                <FaRegTimesCircle className="red" />
+              ) : (
+                <FaRegCircle />
+              )}
+              {check || count > 1 ? (
+                <FaRegTimesCircle className="red" />
+              ) : (
+                <FaRegCircle />
+              )}
+              {check ? <FaRegTimesCircle className="red" /> : <FaRegCircle />}
             </Count>
           </GroupOne>
         </SideBarWrapper>
@@ -90,4 +110,7 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+const mapStateToProps = state => ({
+  strike: state.strike.strikes
+});
+export default connect(mapStateToProps)(SideBar);

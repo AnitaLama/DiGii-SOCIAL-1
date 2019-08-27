@@ -176,7 +176,9 @@ class LoginForm extends Component {
                 </ClickableSpan>
               </HelpBlock>
 
-              {studentLoginError && <ErrorMessage error={studentLoginError} />}
+              {studentLoginError && (
+                <ErrorMessage error="Looks like you have entered the wrong login information. Please try again." />
+              )}
             </form>
           )}
         </Formik>
