@@ -9,6 +9,7 @@ import {
   Logo, Button, Avatar, ContentWrapper
 } from '../StyledComponents';
 import LoginActions from '../../Redux/LoginRedux';
+import StrikeActions from '../../Redux/StrikeRedux';
 import history from '../../history';
 import PostActions from '../../Redux/PostRedux';
 import HelperActions from '../../Redux/HelperRedux';
@@ -78,6 +79,9 @@ class Header extends Component {
     const { isStudent } = user;
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('isFirstTimeAskingHelp');
+    localStorage.removeItem('isFirstTimeAskingHelpFor');
+    localStorage.removeItem('isFirstTimeAskingHelpWhen');
     if (isStudent) {
       history.push('/student/login');
     } else {
@@ -87,7 +91,20 @@ class Header extends Component {
   };
 
   onDelete = props => {
-    const { onMasterDelete } = this.props;
+    const { onMasterDelete, resetStrikes } = this.props;
+    Object.keys(localStorage).map(item => {
+      // console.log(
+      //   'localStorage item',
+      //   item,
+      //   item.includes('FirstTimeAskingHelp')
+      // );
+      if (item.includes('FirstTimeAskingHelp')) {
+        // console.log('yes');
+        localStorage.removeItem(item);
+      }
+      resetStrikes();
+    });
+    console.log('localStorage', Object.keys(localStorage));
     onMasterDelete(props);
   };
 
@@ -167,7 +184,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onLogOut: () => dispatch(LoginActions.onLogOut()),
   onMasterDelete: value => dispatch(PostActions.onMasterDelete(value)),
-  onSaveNeedHelp: value => dispatch(HelperActions.onSaveNeedHelp(value))
+  onSaveNeedHelp: value => dispatch(HelperActions.onSaveNeedHelp(value)),
+  resetStrikes: () => dispatch(StrikeActions.resetStrikes())
   // onDisableFirstTimeAskingHelp: () => dispatch(LoginActions.onDisableFirstTimeAskingHelp())
 });
 export default connect(

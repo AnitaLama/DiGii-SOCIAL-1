@@ -18,6 +18,7 @@ const FormInput = styled.input`
   &:focus {
     box-shadow: 0 0 6px ${secondary};
   }
+  cursor: pointer;
 `;
 
 const FormTextArea = styled.textarea`
@@ -34,6 +35,7 @@ const FormTextArea = styled.textarea`
     ${fontSize(14)};
     color: rgba(0, 0, 0, 0.2);
   }
+  cursor:pointer;
 `;
 
 const FormSelect = styled.select`

@@ -95,9 +95,28 @@ const CurrentWizardScreen = ({
   );
 };
 const StepOne = ({ user, handleButtonClick }) => {
-  console.log('>>>>>>USER', user);
-  const { isFirstTimeAskingHelp } = user;
-
+  // //console.log('>>>>>>USER', user);
+  // const { isFirstTimeAskingHelp } = user;
+  const localData = JSON.parse(
+    localStorage.getItem(`${user.username}isFirstTimeAskingHelp`)
+  );
+  const data = {
+    username: user.username,
+    isFirstTimeAskingHelp: false
+  };
+  let check;
+  if (localData) {
+    const { username } = localData;
+    check = !(user.username === username);
+  }
+  {
+    // console.log('set localstorage', JSON.stringify(data));
+    check = !localData;
+    localStorage.setItem(
+      `${user.username}isFirstTimeAskingHelp`,
+      JSON.stringify(data)
+    );
+  }
   return (
     <WizardContainer>
       <CurrentWizardScreen
@@ -109,7 +128,7 @@ const StepOne = ({ user, handleButtonClick }) => {
     <span>What sort of help are you after?</span>
     </div>`}
         notice={
-          isFirstTimeAskingHelp
+          check
           && 'Well done for checking out the HELP option on DiGii. On social media you’re surrounded by lots of people. Those people might need help, or you might need help because of what they say or do. There’s lots of help on DiGii – so let’s HAVE A LOOK AROUND!'
         }
         next={handleButtonClick}
@@ -139,13 +158,33 @@ const StepOne = ({ user, handleButtonClick }) => {
 };
 
 const StepTwo = ({ user, handleButtonClick }) => {
-  const { isFirstTimeAskingHelpFor } = user;
+  // const { isFirstTimeAskingHelpFor } = user;
+  const localData = JSON.parse(
+    localStorage.getItem(`${user.username}isFirstTimeAskingHelpFor`)
+  );
+  const data = {
+    username: user.username,
+    isFirstTimeAskingHelpFor: false
+  };
+  let check;
+  if (localData) {
+    const { username, isFirstTimeAskingHelpFor } = localData;
+    check = !(user.username === username);
+  }
+  {
+    // console.log('set localstorage', JSON.stringify(data));
+    check = !localData;
+    localStorage.setItem(
+      `${user.username}isFirstTimeAskingHelpFor`,
+      JSON.stringify(data)
+    );
+  }
   return (
     <WizardContainer>
       <CurrentWizardScreen
         title="Who do you need help for?"
         notice={
-          isFirstTimeAskingHelpFor
+          check
           && 'Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!'
         }
       />
@@ -173,13 +212,33 @@ const StepTwo = ({ user, handleButtonClick }) => {
   );
 };
 const StepThree = ({ user, handleButtonClick }) => {
-  const { isFirstTimeAskingHelpWhen } = user;
+  // const { isFirstTimeAskingHelpWhen } = user;
+  const localData = JSON.parse(
+    localStorage.getItem(`${user.username}isFirstTimeAskingHelpWhen`)
+  );
+  const data = {
+    username: user.username,
+    isFirstTimeAskingHelpWhen: false
+  };
+  let check;
+  if (localData) {
+    const { username, isFirstTimeAskingHelpWhen } = localData;
+    check = !(user.username === username);
+  }
+  {
+    // console.log('set localstorage', JSON.stringify(data));
+    check = !localData;
+    localStorage.setItem(
+      `${user.username}isFirstTimeAskingHelpWhen`,
+      JSON.stringify(data)
+    );
+  }
   return (
     <WizardContainer>
       <CurrentWizardScreen
         title="I need help"
         notice={
-          isFirstTimeAskingHelpWhen
+          check
           && 'Now that you’ve started asking for help – keep going! You’re nearly there.'
         }
       />
@@ -206,47 +265,45 @@ const StepThree = ({ user, handleButtonClick }) => {
     </WizardContainer>
   );
 };
-const ReasonsDiv = ({ user, selectReason }) => {
-  // const { isFirstTimeAskingHelpFrom } = user;
-  console.log('COMPONENT', user);
-  return (
-    <div>
-      <div>I need help because of:</div>
-      <ReasonsWrapper>
-        <li>
-          <input type="checkbox" onChange={selectReason} />
-          being cyberbullied
-        </li>
-        <li>
-          <input type="checkbox" onChange={selectReason} />
-          being asked for inappropriate images
-        </li>
-        <li>
-          <input type="checkbox" onChange={selectReason} />
-          feeling very down
-        </li>
-        <li>
-          <input type="checkbox" onChange={selectReason} />
-          being purposefully excluded
-        </li>
-        <li>
-          <input type="checkbox" onChange={selectReason} />
-          hate speak or racism
-        </li>
-        <li>
-          <input type="checkbox" onChange={selectReason} />
-          Something else
-        </li>
-      </ReasonsWrapper>
-    </div>
-  );
-};
+const ReasonsDiv = (
+  { user, selectReason } // const { isFirstTimeAskingHelpFrom } = user; // console.log('COMPONENT', user);
+) => (
+  <div>
+    <div>I need help because of:</div>
+    <ReasonsWrapper>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        being cyberbullied
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        being asked for inappropriate images
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        feeling very down
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        being purposefully excluded
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        hate speak or racism
+      </li>
+      <li>
+        <input type="checkbox" onChange={selectReason} />
+        Something else
+      </li>
+    </ReasonsWrapper>
+  </div>
+);
 const StepFour = props => {
   const {
     helper, selectHelper, findHelpFromList, askForHelp, forWhom
   } = props;
   const { internalHelpersList } = helper;
-  console.log('stepfour inside >>>>>>>>>>>>', props);
+  // console.log('stepfour inside >>>>>>>>>>>>', props);
   return (
     <WizardContainer
       style={{
@@ -283,9 +340,9 @@ const StepFour = props => {
           );
         })}
       </div>
-      {findHelpFromList.length > 0 && <ReasonsDiv />}
-      {findHelpFromList.length > 0 && (
-        <Button onClick={askForHelp}>Submit</Button>
+      {findHelpFromList && <ReasonsDiv />}
+      {findHelpFromList && (
+        <Button onClick={askForHelp}>Send Help Request</Button>
       )}
     </WizardContainer>
   );
@@ -338,7 +395,7 @@ const StepFive = ({ handleButtonClick }) => (
 
 class Wizard extends Component {
   state = {
-    findHelpFromList: []
+    findHelpFromList: null
   };
 
   next = step => {
@@ -347,37 +404,38 @@ class Wizard extends Component {
   };
 
   handleButtonClick = (nextStep, temp, values) => {
-    console.log('values', values, temp, nextStep);
+    // console.log('values', values, temp, nextStep);
     const { user } = this.props;
-    console.log(user);
+    // console.log(user);
     const { next } = this.props;
     this.setState({ [temp]: values });
 
     switch (temp) {
       case 'where':
-        console.log('disable from where');
+        // console.log('disable from where');
         break;
       case 'forWhom':
-        console.log('disable for whom');
+        // console.log('disable for whom');
         break;
       case 'when':
-        console.log('disable when');
+        // console.log('disable when');
         break;
     }
     if (this.props.step === 3) {
       const { user, onGetAllInternalHelpers } = this.props;
       const group = user.groupId[0];
-      console.log('>>>>>', this.props.user);
+      // console.log('>>>>>', this.props.user);
       // this.props.onGetAllInternalHelpers(groupId)
       onGetAllInternalHelpers({ stGroupId: group });
     }
     if (nextStep === 0) {
       const { user } = this.props;
       const { firstname } = user;
-      console.log('show modal');
+      // console.log('show modal');
       this.setState({
         showModal: true,
-        alertMessage: `${firstname} your teacher has been messaged and knows that you're asking for help right now. Well done for being brave enough to ask for help`
+        alertMessage: `${firstname}, your teacher has been messaged and knows that you're asking for help right now. Well done for being brave enough to ask for help`,
+        points: '=5'
       });
     } else {
       next(nextStep);
@@ -385,22 +443,32 @@ class Wizard extends Component {
   };
 
   askForHelp = data => {
-    console.log(data, this.state);
+    const { user } = this.props;
+    const { firstname } = user;
+    // console.log(data, this.state);
+    const { findHelpFromList } = this.state;
+    const { internalHelpFirstname, role } = findHelpFromList;
+    this.setState({
+      showModal: true,
+      alertMessage: `${firstname}, your help request has been sent to your ${
+        role.roleName
+      }. ${internalHelpFirstname} Well done on asking help! ${internalHelpFirstname} will message you soon `,
+      points: '=5'
+    });
   };
 
   selectHelper = (e, helper) => {
-    console.log('helper', e.target.checked, helper);
     const { checked } = e.target;
     const { findHelpFromList } = this.state;
-    let newArr;
-    if (checked) {
-      newArr = findHelpFromList;
-      newArr.push(helper);
-    } else {
-      newArr = findHelpFromList.filter(item => item !== helper);
-    }
+    // let newArr;
+    // if (checked) {
+    //   newArr = findHelpFromList;
+    //   newArr.push(helper);
+    // } else {
+    //   newArr = findHelpFromList.filter(item => item !== helper);
+    // }
 
-    this.setState({ findHelpFromList: newArr });
+    this.setState({ findHelpFromList: checked ? helper : null });
   };
 
   hideModal = () => {
@@ -409,7 +477,7 @@ class Wizard extends Component {
   };
 
   selectReason = e => {
-    console.log('selectReason', e.target.checked);
+    // console.log('selectReason', e.target.checked);
   };
 
   render() {
@@ -418,7 +486,8 @@ class Wizard extends Component {
       ...this.props,
       ...this.state,
       handleButtonClick: this.handleButtonClick,
-      selectHelper: this.selectHelper
+      selectHelper: this.selectHelper,
+      askForHelp: this.askForHelp
     };
     const WizardStepsList = [
       {
@@ -449,6 +518,7 @@ class Wizard extends Component {
     ];
     const screen = WizardStepsList.find(item => item.step === step);
     const { showModal, alertMessage } = this.state;
+
     return (
       <WizardWrapper>
         {screen.component}

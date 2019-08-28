@@ -9,8 +9,7 @@ const FirstWarning = () => (
 
 const SecondWarning = () => (
   <div>
-    Again? This is your second warning.
-    {`Think about it because next time you're off DiGii and you're going to have to
+    {`Again? This is your second warning. Think about it because next time you're off DiGii and you're going to have to
       watch a tutorial to get back on. `}
     <div>Know better and be better!</div>
   </div>
