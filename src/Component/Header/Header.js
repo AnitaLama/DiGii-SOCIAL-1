@@ -36,7 +36,7 @@ const HeaderWrapper = styled.div`
 
 const UserInfoWrapper = styled.div`
   ${flexCentering};
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 10px;
   border-radius: 6px;
 `;
@@ -93,8 +93,13 @@ class Header extends Component {
 
   goToNeedHelpPage = () => {
     const { user, onSaveNeedHelp } = this.props;
-    const { isStudent, id, groupId } = user;
+    const {
+      isStudent, id, groupId, isFirstTimeAskingHelp
+    } = user;
     if (isStudent) {
+      // if (isFirstTimeAskingHelp) {
+      //   onDisableFirstTimeAskingHelp();
+      // }
       const data = {
         needHelpStudentId: id,
         stGroupId: groupId
@@ -163,6 +168,7 @@ const mapDispatchToProps = dispatch => ({
   onLogOut: () => dispatch(LoginActions.onLogOut()),
   onMasterDelete: value => dispatch(PostActions.onMasterDelete(value)),
   onSaveNeedHelp: value => dispatch(HelperActions.onSaveNeedHelp(value))
+  // onDisableFirstTimeAskingHelp: () => dispatch(LoginActions.onDisableFirstTimeAskingHelp())
 });
 export default connect(
   mapStateToProps,

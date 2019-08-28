@@ -44,7 +44,7 @@ const NoticeContainer = ({ notice }) => (
   <NoticePopup>
     <DigiiHeader>
       <img src={Images.digii5.DiGiit} alt="Digii-icon" />
-      <span>Digii</span>
+      <span>DiGii</span>
     </DigiiHeader>
     {notice}
   </NoticePopup>

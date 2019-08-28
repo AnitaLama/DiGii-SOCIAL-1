@@ -52,6 +52,7 @@ const GroupElement = styled.div`
 const Type = styled.span``;
 const Title = styled.div`
   font-weight: bold;
+  text-align: center;
 `;
 const Count = styled.div`
   display: flex;
@@ -88,7 +89,7 @@ class SideBar extends Component {
             ))}
           </GroupOne>
           <GroupOne>
-            <Title>Report Meter</Title>
+            <Title>Strikes</Title>
             <Count>
               {check || count > 0 ? (
                 <FaRegTimesCircle className="red" />

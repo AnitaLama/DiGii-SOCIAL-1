@@ -67,7 +67,7 @@ class GifContainer extends Component {
 
     this.setState({ searchText: value });
     const hasFilteredWords = FilterKeyWords(value);
-    console.log('filtered word', hasFilteredWords);
+    // console.log('filtered word', hasFilteredWords);
 
     this.setState({ showPostButton: !hasFilteredWords });
   };
@@ -126,7 +126,8 @@ class GifContainer extends Component {
       onPostSubmit,
       showWarning,
       resetPostType,
-      onGetStrikesCountOfAUser
+      onGetStrikesCountOfAUser,
+      resetSelectedGif
     } = this.props;
     const { postTypeId, selectedGif } = this.state;
     const { isStudent, id } = user.user;
@@ -165,6 +166,7 @@ class GifContainer extends Component {
       strikeActorId: user.user.id
     };
     this.props.saveImage(selectedGif.images.downsized_medium.url);
+    resetSelectedGif();
     onPostSubmit(data);
     // if (blockUser) {
     //   onBlockUser({ isStudent, id });

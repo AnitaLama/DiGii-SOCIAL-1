@@ -131,6 +131,10 @@ class NewPost extends Component {
     this.setState({ type: type === text ? 'text' : text });
   };
 
+  resetSelectedGif = () => {
+    this.setState({ selectedGif: null });
+  };
+
   postArea = () => {
     const { type, selectedGif } = this.state;
     return (
@@ -138,6 +142,7 @@ class NewPost extends Component {
         type={type}
         selectedGif={selectedGif}
         resetPostType={this.resetPostType}
+        resetSelectedGif={this.resetSelectedGif}
       />
     );
   };

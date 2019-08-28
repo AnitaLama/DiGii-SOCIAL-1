@@ -8,9 +8,11 @@ const BigLogo = styled.img`
   @media (max-width: 720px) {
     height: 150px;
   }
+  cursor: pointer;
 `;
 const Logo = styled.img`
   height: 60px;
+  cursor: pointer;
 `;
 
 export { BigLogo, Logo };

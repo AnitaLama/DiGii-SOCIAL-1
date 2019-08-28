@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
-import { Button } from '../StyledComponents';
+import { Button, Modal } from '../StyledComponents';
 import {
   Colors,
   fontSize,
@@ -12,6 +12,7 @@ import {
 } from '../../Theme';
 import { NoticeContainer } from './index';
 import HelperActions from '../../Redux/HelperRedux';
+import history from '../../history';
 
 const { black, snow } = Colors.colors;
 
@@ -61,6 +62,13 @@ const Description = styled.div`
 const InternalHelper = styled.div`
   padding: 10px;
 `;
+
+const ReasonsWrapper = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`;
+
 const CurrentWizardScreen = ({
   title,
   description,
@@ -86,131 +94,157 @@ const CurrentWizardScreen = ({
     </div>
   );
 };
-const StepOne = ({ handleButtonClick }) => (
-  <WizardContainer>
-    <CurrentWizardScreen
-      title="DiGii Help"
-      description={`  <div>
+const StepOne = ({ user, handleButtonClick }) => {
+  console.log('>>>>>>USER', user);
+  const { isFirstTimeAskingHelp } = user;
+
+  return (
+    <WizardContainer>
+      <CurrentWizardScreen
+        title="DiGii Help"
+        description={`  <div>
     There are lots of places for you to get help online and in our school
     community.
 
     <span>What sort of help are you after?</span>
     </div>`}
-      notice="Well done for checking out the HELP option on DiGii. On social media you’re surrounded by lots of people. Those people might need help, or you might need help because of what they say or do. There’s lots of help on DiGii – so let’s HAVE A LOOK AROUND!"
-      next={handleButtonClick}
-    />
-    <div>
-      <Button
-        className="roundedShadow default"
-        onClick={() => {
-          handleButtonClick(2, 'where', 'inside');
-        }}
-      >
-        Inside Our School
-      </Button>
-    </div>
-    <div>
-      <Button
-        className="roundedShadow default"
-        onClick={() => {
-          handleButtonClick(5, 'where', 'outside');
-        }}
-      >
-        Outside OurSchool
-      </Button>
-    </div>
-  </WizardContainer>
-);
+        notice={
+          isFirstTimeAskingHelp
+          && 'Well done for checking out the HELP option on DiGii. On social media you’re surrounded by lots of people. Those people might need help, or you might need help because of what they say or do. There’s lots of help on DiGii – so let’s HAVE A LOOK AROUND!'
+        }
+        next={handleButtonClick}
+      />
+      <div>
+        <Button
+          className="roundedShadow default"
+          onClick={() => {
+            handleButtonClick(2, 'where', 'inside');
+          }}
+        >
+          Inside Our School
+        </Button>
+      </div>
+      <div>
+        <Button
+          className="roundedShadow default"
+          onClick={() => {
+            handleButtonClick(5, 'where', 'outside');
+          }}
+        >
+          Outside Our School
+        </Button>
+      </div>
+    </WizardContainer>
+  );
+};
 
-const StepTwo = ({ handleButtonClick }) => (
-  <WizardContainer>
-    <CurrentWizardScreen
-      title="Who do you need help for?"
-      notice="Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!"
-    />
+const StepTwo = ({ user, handleButtonClick }) => {
+  const { isFirstTimeAskingHelpFor } = user;
+  return (
+    <WizardContainer>
+      <CurrentWizardScreen
+        title="Who do you need help for?"
+        notice={
+          isFirstTimeAskingHelpFor
+          && 'Help us to help you by choosing which option is right for you. Asking for help for yourself or someone else is very brave. Well done!'
+        }
+      />
+      <div>
+        <Button
+          className="roundedShadow default"
+          onClick={() => {
+            handleButtonClick(3, 'forWhom', 'me');
+          }}
+        >
+          For Me
+        </Button>
+      </div>
+      <div>
+        <Button
+          className="roundedShadow default"
+          onClick={() => {
+            handleButtonClick(3, 'forWhom', 'someone');
+          }}
+        >
+          For Someone Else
+        </Button>
+      </div>
+    </WizardContainer>
+  );
+};
+const StepThree = ({ user, handleButtonClick }) => {
+  const { isFirstTimeAskingHelpWhen } = user;
+  return (
+    <WizardContainer>
+      <CurrentWizardScreen
+        title="I need help"
+        notice={
+          isFirstTimeAskingHelpWhen
+          && 'Now that you’ve started asking for help – keep going! You’re nearly there.'
+        }
+      />
+      <div>
+        <Button
+          className="roundedShadow default"
+          onClick={() => {
+            handleButtonClick(0, 'when', 'Right Now');
+          }}
+        >
+          Right Now
+        </Button>
+      </div>
+      <div>
+        <Button
+          className="roundedShadow default"
+          onClick={() => {
+            handleButtonClick(4, 'when', 'Soon');
+          }}
+        >
+          Soon
+        </Button>
+      </div>
+    </WizardContainer>
+  );
+};
+const ReasonsDiv = ({ user, selectReason }) => {
+  // const { isFirstTimeAskingHelpFrom } = user;
+  console.log('COMPONENT', user);
+  return (
     <div>
-      <Button
-        className="roundedShadow default"
-        onClick={() => {
-          handleButtonClick(3, 'forWhom', 'me');
-        }}
-      >
-        For Me
-      </Button>
+      <div>I need help because of:</div>
+      <ReasonsWrapper>
+        <li>
+          <input type="checkbox" onChange={selectReason} />
+          being cyberbullied
+        </li>
+        <li>
+          <input type="checkbox" onChange={selectReason} />
+          being asked for inappropriate images
+        </li>
+        <li>
+          <input type="checkbox" onChange={selectReason} />
+          feeling very down
+        </li>
+        <li>
+          <input type="checkbox" onChange={selectReason} />
+          being purposefully excluded
+        </li>
+        <li>
+          <input type="checkbox" onChange={selectReason} />
+          hate speak or racism
+        </li>
+        <li>
+          <input type="checkbox" onChange={selectReason} />
+          Something else
+        </li>
+      </ReasonsWrapper>
     </div>
-    <div>
-      <Button
-        className="roundedShadow default"
-        onClick={() => {
-          handleButtonClick(3, 'forWhom', 'someone');
-        }}
-      >
-        For Someone Else
-      </Button>
-    </div>
-  </WizardContainer>
-);
-const StepThree = ({ handleButtonClick }) => (
-  <WizardContainer>
-    <CurrentWizardScreen
-      title="I need help"
-      notice="Now that you’ve started asking for help – keep going! You’re nearly there."
-    />
-    <div>
-      <Button
-        className="roundedShadow default"
-        onClick={() => {
-          handleButtonClick(4, 'when', 'Right Now');
-        }}
-      >
-        Right Now
-      </Button>
-    </div>
-    <div>
-      <Button
-        className="roundedShadow default"
-        onClick={() => {
-          handleButtonClick(4, 'when', 'Soon');
-        }}
-      >
-        Soon
-      </Button>
-    </div>
-  </WizardContainer>
-);
-const ReasonsDiv = ({ selectReason }) => (
-  <div>
-    <div>I need help because of:</div>
-    <ul>
-      <li>
-        <input type="checkbox" onChange={selectReason} />
-        being cyberbullied
-      </li>
-      <li>
-        <input type="checkbox" onChange={selectReason} />
-        being asked for inappropriate images
-      </li>
-      <li>
-        <input type="checkbox" onChange={selectReason} />
-        feeling very down
-      </li>
-      <li>
-        <input type="checkbox" onChange={selectReason} />
-        being purposefully excluded
-      </li>
-      <li>
-        <input type="checkbox" onChange={selectReason} />
-        hate speak or racism
-      </li>
-      <li>
-        <input type="checkbox" onChange={selectReason} />
-        Something else
-      </li>
-    </ul>
-  </div>
-);
+  );
+};
 const StepFour = props => {
-  const { helper, selectHelper, findHelpFromList } = props;
+  const {
+    helper, selectHelper, findHelpFromList, askForHelp, forWhom
+  } = props;
   const { internalHelpersList } = helper;
   console.log('stepfour inside >>>>>>>>>>>>', props);
   return (
@@ -225,11 +259,12 @@ const StepFour = props => {
           padding: '0 20px'
         }}
       >
+        {forWhom && <input placeholder="Name" />}
         {internalHelpersList.map(help => {
           const { internalHelpFirstname, internalHelpLastname, role } = help;
 
           return (
-            <InternalHelper>
+            <InternalHelper key={internalHelpFirstname}>
               <input
                 type="checkbox"
                 onChange={e => {
@@ -249,6 +284,9 @@ const StepFour = props => {
         })}
       </div>
       {findHelpFromList.length > 0 && <ReasonsDiv />}
+      {findHelpFromList.length > 0 && (
+        <Button onClick={askForHelp}>Submit</Button>
+      )}
     </WizardContainer>
   );
 };
@@ -274,9 +312,11 @@ const StepFive = ({ handleButtonClick }) => (
       <div>
         <Button
           className="roundedShadow default"
-          // onClick={() => {
-          //   handleButtonClick(4, 'when', 'Right Now');
-          // }}
+          onClick={() => {
+            history.push('/messageboard');
+            window.open('https://www.esafety.gov.au/', '_blank');
+            // handleButtonClick(4, 'when', 'Right Now');
+          }}
         >
           eSafety Commissioner
         </Button>
@@ -284,9 +324,10 @@ const StepFive = ({ handleButtonClick }) => (
       <div>
         <Button
           className="roundedShadow default"
-          // onClick={() => {
-          //   handleButtonClick(4, 'when', 'Soon');
-          // }}
+          onClick={() => {
+            history.push('/messageboard');
+            window.open('https://kidshelpline.com.au/ ', '_blank');
+          }}
         >
           Kids Helpline
         </Button>
@@ -306,9 +347,23 @@ class Wizard extends Component {
   };
 
   handleButtonClick = (nextStep, temp, values) => {
-    console.log('values', values, nextStep);
+    console.log('values', values, temp, nextStep);
+    const { user } = this.props;
+    console.log(user);
     const { next } = this.props;
     this.setState({ [temp]: values });
+
+    switch (temp) {
+      case 'where':
+        console.log('disable from where');
+        break;
+      case 'forWhom':
+        console.log('disable for whom');
+        break;
+      case 'when':
+        console.log('disable when');
+        break;
+    }
     if (this.props.step === 3) {
       const { user, onGetAllInternalHelpers } = this.props;
       const group = user.groupId[0];
@@ -316,7 +371,21 @@ class Wizard extends Component {
       // this.props.onGetAllInternalHelpers(groupId)
       onGetAllInternalHelpers({ stGroupId: group });
     }
-    next(nextStep);
+    if (nextStep === 0) {
+      const { user } = this.props;
+      const { firstname } = user;
+      console.log('show modal');
+      this.setState({
+        showModal: true,
+        alertMessage: `${firstname} your teacher has been messaged and knows that you're asking for help right now. Well done for being brave enough to ask for help`
+      });
+    } else {
+      next(nextStep);
+    }
+  };
+
+  askForHelp = data => {
+    console.log(data, this.state);
   };
 
   selectHelper = (e, helper) => {
@@ -331,13 +400,20 @@ class Wizard extends Component {
       newArr = findHelpFromList.filter(item => item !== helper);
     }
 
-    this.setState({ findHelpFromList: newArr }, () => {
-      console.log('newArr>>>>>>', this.state.findHelpFromList);
-    });
+    this.setState({ findHelpFromList: newArr });
+  };
+
+  hideModal = () => {
+    this.setState({ showModal: false });
+    history.push('/messageboard');
+  };
+
+  selectReason = e => {
+    console.log('selectReason', e.target.checked);
   };
 
   render() {
-    const { step } = this.props;
+    const { step, user } = this.props;
     const props = {
       ...this.props,
       ...this.state,
@@ -372,14 +448,16 @@ class Wizard extends Component {
       }
     ];
     const screen = WizardStepsList.find(item => item.step === step);
-    console.log(step, screen);
-    console.log('helpers>>>>>>>>>>>>', this.props.helper);
+    const { showModal, alertMessage } = this.state;
     return (
       <WizardWrapper>
         {screen.component}
         {/*  <CurrentWizardScreen screen={screen} next={this.next} /> */}
         {/*  {this.getComponent(this.props.step)} */}
         {/*  <button onClick={this.props.next}>NEXT</button> */}
+        {showModal && (
+          <Modal hideModal={this.hideModal} message={alertMessage} />
+        )}
       </WizardWrapper>
     );
   }

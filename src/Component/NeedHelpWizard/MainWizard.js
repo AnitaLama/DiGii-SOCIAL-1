@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
 import { Header, Wizard } from './index';
+import history from '../../history';
 
 class MainWizard extends Component {
   state = {
     step: 1,
-    history: [1]
+    routeHistory: [1]
   };
 
   goBack = () => {
-    const { history } = this.state;
-    if (history.length > 1) {
-      history.pop();
+    const { routeHistory } = this.state;
+    if (routeHistory.length > 1) {
+      routeHistory.pop();
+    } else {
+      history.push('/messageboard');
     }
 
-    this.setState({ step: history[history.length - 1], history });
+    this.setState({
+      step: routeHistory[routeHistory.length - 1],
+      routeHistory
+    });
   };
 
   next = nextStep => {
-    const { step, history } = this.state;
+    const { step, routeHistory } = this.state;
     if (step !== nextStep) {
-      history.push(nextStep);
-      this.setState({ step: step < 4 ? nextStep : 4, history });
+      routeHistory.push(nextStep);
+      this.setState({ step: step < 4 ? nextStep : 4, routeHistory });
     }
   };
 

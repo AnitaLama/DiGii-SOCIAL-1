@@ -152,10 +152,12 @@ class BasicModal extends Component {
               <Icon src={Images.digii5.icon} />
               DiGii
             </div>
-            <Points>
-              <span>{points || -5}</span>
-              <Icon src={Images.digii5.DiGiitIconColored} className="small" />
-            </Points>
+            {points && (
+              <Points>
+                <span>{points}</span>
+                <Icon src={Images.digii5.DiGiitIconColored} className="small" />
+              </Points>
+            )}
           </Header>
           {message && <Message>{message}</Message>}
           {index !== -1 && !message && (

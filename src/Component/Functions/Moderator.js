@@ -74,7 +74,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       } else if (count >= strikeCount * strikeRound) {
         this.setState({
           isBasicModalVisible: true,
-          alertMessage: 'You have been excluded from the Message Board.'
+          alertMessage: 'You have been excluded from the Message Board.',
+          points: '-5'
         });
       } else {
         let index = (count % strikeCount) + 1;

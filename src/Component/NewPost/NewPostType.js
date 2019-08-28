@@ -42,7 +42,9 @@ class NewPostType extends Component {
 
   getPostArea = () => {
     const { type, selectedGif } = this.state;
-    const { postType, user, resetPostType } = this.props;
+    const {
+      postType, user, resetPostType, resetSelectedGif
+    } = this.props;
     const { postTypes } = postType;
     const { firstname } = user.user;
     let selectedPostType = '';
@@ -62,7 +64,13 @@ class NewPostType extends Component {
       case 'TAG':
         return <TagPost {...props} />;
       case 'GIF':
-        return <GifContainer {...props} selectedGif={selectedGif} />;
+        return (
+          <GifContainer
+            {...props}
+            selectedGif={selectedGif}
+            resetSelectedGif={resetSelectedGif}
+          />
+        );
       case 'FEELING':
         return <FeelingsPost {...props} />;
       case 'BANNER':

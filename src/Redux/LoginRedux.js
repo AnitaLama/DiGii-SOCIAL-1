@@ -33,7 +33,11 @@ export const INITIAL_STATE = Immutable({
     isFirstTimePosting: true,
     groupId: null,
     avatarId: null,
-    avatar: null
+    avatar: null,
+    isFirstTimeAskingHelp: true,
+    isFirstTimeAskingHelpFor: true,
+    isFirstTimeAskingHelpWhen: true,
+    isFirstTimeAskingHelpFrom: true
   },
   error: null
 });
@@ -97,10 +101,18 @@ const onStudentFormLoginSuccess = (state, action) => {
     student_group,
     studentAvatarId,
     avatar,
-    total
+    total,
+    helpsAsked
   } = action.data;
   const { school_group } = student_group;
   const { schoolGroupsId } = school_group;
+  // const isFirstTimeAskingHelpFor = !!helpsAsked.map(
+  //   item => item.needHelpIdFor || item.needHelpForName
+  // );
+  // const isFirstTimeAskingHelpFrom = !!helpsAsked.map(
+  //   item => item.needhelpFromId || item.needhelpFromName
+  // );
+  // console.log('reducer:', isFirstTimeAskingHelpFor, isFirstTimeAskingHelpFrom);
   groups.push(schoolGroupsId);
   return {
     ...state,
