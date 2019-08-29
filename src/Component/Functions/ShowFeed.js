@@ -173,7 +173,7 @@ class ShowData extends Component {
                           : item.user.avatar;
                         return (
                           <Avatar
-                            key={avatar.avatarId}
+                            key={`poll_responses-${item}`}
                             avatar={avatar}
                             height={17.75}
                           />
@@ -308,13 +308,13 @@ class ShowData extends Component {
                     {option.pollOptionText}
                   </div>
                   <span>
-                    {poll_responses.slice(0, 3).map(item => {
+                    {poll_responses.slice(0, 3).map((item, i) => {
                       const avatar = item.pollResponseIsStudent
                         ? item.student.avatar
                         : item.user.avatar;
                       return (
                         <Avatar
-                          key={avatar.avatarId}
+                          key={`pollResponse-${item}-${i}`}
                           avatar={avatar}
                           height={17.75}
                         />

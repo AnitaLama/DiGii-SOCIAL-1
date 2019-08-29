@@ -191,6 +191,7 @@ class SinglePost extends Component {
   }
 
   componentWillMount() {
+    // console.log('mount', this.state);
     // this.props.onHandleLikeReaction();
 
     // Display total count of reactions
@@ -351,7 +352,7 @@ class SinglePost extends Component {
   };
 
   hideCommentBox = () => {
-    this.setState({ showCommentBox: false });
+    // this.setState({ showCommentBox: false });
   };
 
   render() {
@@ -454,9 +455,7 @@ class SinglePost extends Component {
               ) : null))}
           </div>
           <div className="commentBox">
-            {showCommentBox && (
-              <CommentBox data={data} hideCommentBox={this.hideCommentBox} />
-            )}
+            {showCommentBox && <CommentBox data={data} />}
           </div>
         </CommentContainer>
       </PostWrapper>

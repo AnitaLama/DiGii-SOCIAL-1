@@ -7,6 +7,7 @@ import PostActions from '../../Redux/PostRedux';
 const Gif = styled.img`
   height: 100px;
   width: 100px;
+  cursor: pointer;
 `;
 class Container extends Component {
   selectGif = gif => {

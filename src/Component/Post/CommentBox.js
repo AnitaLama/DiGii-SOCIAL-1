@@ -5,14 +5,16 @@ import { FaCaretRight, FaImage, FaSmile } from 'react-icons/fa';
 import { MdGif } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { Mentions } from 'antd';
-import { FormInput, Avatar, Button } from '../StyledComponents';
+import {
+  FormInput, Avatar, Button, Modal
+} from '../StyledComponents';
 import CommentActions from '../../Redux/CommentRedux';
 import LoginActions from '../../Redux/LoginRedux';
 import StrikeActions from '../../Redux/StrikeRedux';
 import PostActions from '../../Redux/PostRedux';
 import GroupActions from '../../Redux/GroupRedux';
 import { Colors } from '../../Theme';
-import { Moderator, FeelingsList } from '../Functions';
+import { Moderator, FeelingsList, Warnings } from '../Functions';
 
 const { Option } = Mentions;
 const {
@@ -112,7 +114,9 @@ class CommentBox extends Component {
     showFeelings: false,
     usersInGroup: [],
     usersList: [],
-    showUsers: false
+    showUsers: false,
+    showModal: false,
+    alertMessage: null
   };
 
   componentWillMount() {
@@ -141,6 +145,10 @@ class CommentBox extends Component {
     }
   }
 
+  componentWillUnmount() {
+    // console.log('UNMOUNTED');
+  }
+
   onFocus = () => {
     const {
       user, disableFirstTimePosting, post, onFocus
@@ -155,12 +163,12 @@ class CommentBox extends Component {
   };
 
   handleKeyDown = e => {
-    // console.log(e.key);
-    // console.log(e.target.selectionStart);
-    // console.log(e.target.selectionEnd);
+    // //console.log(e.key);
+    // //console.log(e.target.selectionStart);
+    // //console.log(e.target.selectionEnd);
     // const start = e.target.selectionStart;
     // const { postText } = this.props;
-    // console.log(start, postText, postText[start - 1]);
+    // //console.log(start, postText, postText[start - 1]);
     // if (e.key === '@') {
     //   this.setState({ showUsers: true });
     // }
@@ -175,6 +183,7 @@ class CommentBox extends Component {
   };
 
   handleCommentReply = () => {
+    // e.preventDefault();
     const {
       submitPost,
       strike,
@@ -185,8 +194,8 @@ class CommentBox extends Component {
       onGetStrikesCountOfAUser,
       data,
       onSubmitComment,
-      resetPostText,
-      hideCommentBox
+      resetPostText
+      // hideCommentBox
     } = this.props;
     const { postId } = data;
     const { isStudent, id } = user.user;
@@ -195,12 +204,14 @@ class CommentBox extends Component {
     onGetStrikesCountOfAUser({ isStudent, id });
 
     let isBad = 0;
+    // console.log('submit blacklist', result, strikes);
     if (result) {
       if (strikes > 8 && isStudent) {
         // BLOCK THE USER
         onBlockUser({ isStudent, id });
       }
       showWarning(strikes, isStudent, result, null);
+
       isBad = 1;
     }
 
@@ -218,8 +229,6 @@ class CommentBox extends Component {
     };
     if (postText.length > 0) {
       onSubmitComment(comment);
-      hideCommentBox();
-      resetPostText();
     }
   };
 
@@ -262,6 +271,7 @@ class CommentBox extends Component {
   };
 
   findGif = () => {
+    console.log('findgif');
     const { onFindGifForComments } = this.props;
     const { gifText } = this.state;
     this.setState({ showGifInput: true });
@@ -346,13 +356,13 @@ class CommentBox extends Component {
       isBad: 0,
       postCommentIsBad: 0
     };
-    // console.log(comment);
+    // //console.log(comment);
     onSubmitComment(comment);
     this.setState({ showFeelings: false });
   };
 
   // userSelected = value => {
-  //   console.log('here');
+  //   //console.log('here');
   //   const { updatePostText, postText } = this.props;
   //   updatePostText(postText + (value.userName || value.studentUsername));
   //   this.setState({ showUsers: false });
@@ -360,7 +370,7 @@ class CommentBox extends Component {
   // };
 
   onChange = value => {
-    // console.log('Change: onchange', value);
+    // //console.log('Change: onchange', value);
     // this.commentInput.focus();
   };
 
@@ -377,7 +387,12 @@ class CommentBox extends Component {
 
   render() {
     const {
-      usersList, showUsers, showFeelings, showGifInput
+      usersList,
+      showUsers,
+      showFeelings,
+      showGifInput,
+      showModal,
+      alertMessage
     } = this.state;
     const { postText, user, data } = this.props;
     const { avatar } = user.user;
@@ -412,39 +427,6 @@ class CommentBox extends Component {
             ))}
           </Mentions>
         </div>
-        {/*  <FormInput
-          placeholder="Write a comment"
-          onChange={this.handleComment}
-          onKeyDown={this.handleKeyDown}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-          style={{ height: '24px', marginLeft: '6px', marginBottom: 0 }}
-          value={postText}
-          ref={r => {
-            this.commentInput = r;
-          }}
-        />
-        <GifContainer
-          style={{
-            bottom: '24px',
-            left: '30px',
-            display: showUsers ? 'block' : 'none',
-            zIndex: 2
-          }}
-        >
-          <UserList>
-            {usersInGroup.map(users => (
-              <UserListElement
-                key={users.userName || users.studentUsername}
-                onClick={() => {
-                  this.userSelected(users);
-                }}
-              >
-                {users.userName || users.studentUsername}
-              </UserListElement>
-            ))}
-          </UserList>
-        </GifContainer> */}
 
         <GifContainer
           style={{

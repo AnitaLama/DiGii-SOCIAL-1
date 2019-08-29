@@ -23,7 +23,7 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
-    console.log('saga data', action.data);
+    // console.log('saga data', action.data);
     const { page, pageSize } = action.data;
     // const { data } = yield call(
     //   axios.post,
@@ -90,6 +90,7 @@ export function* onFindGif(action) {
 export function* onFindGifForComments(action) {
   try {
     const { text, limit } = action.data;
+    console.log('saga gif comment search');
     const { data } = yield call(
       axios,
       `http://api.giphy.com/v1/gifs/search?q=${text}&api_key=${GIPHY_API}&limit=${limit}`,
@@ -114,7 +115,7 @@ export function* onFindGifForComments(action) {
 }
 
 export function* onPostImage(action) {
-  console.log('onPostImage action', action);
+  // console.log('onPostImage action', action);
   try {
     const data = yield call(axios.post, `${URL}/addImagePost`, action.data);
   } catch (err) {

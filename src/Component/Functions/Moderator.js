@@ -65,7 +65,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     showWarning = (count, isStudent, moderationType, msg) => {
-      console.log('strikes count', count);
+      console.log('strikes count', count, isStudent, moderationType, msg);
       if (msg) {
         this.setState({
           isModalVisible: true,
@@ -78,6 +78,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
           points: '-5'
         });
       } else {
+        console.log('strikes count', count);
+
         let index = (count % strikeCount) + 1;
         index -= 1;
         this.setState({

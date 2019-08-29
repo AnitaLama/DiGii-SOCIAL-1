@@ -47,15 +47,15 @@ class NeedHelp extends Component {
     const { goToNeedHelpPage, helper, user } = this.props;
     const { showNotifications } = this.state;
     const { isStudent } = user;
-    console.log('helper >>>>', isStudent);
+    // console.log('helper >>>>', isStudent);
     // helper.map(item=>[
-    //   console.log(item.notifi);
+    //   //console.log(item.notifi);
     // ])
     const notificationCount = helper.reduce(
       (accumulator, item) => (!item.notificationRead ? accumulator + 1 : accumulator + 0),
       0
     );
-    console.log('count', notificationCount);
+    // console.log('count', notificationCount);
     if (isStudent) {
       return (
         <WhiteButton

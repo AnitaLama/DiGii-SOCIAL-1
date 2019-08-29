@@ -272,27 +272,57 @@ const ReasonsDiv = (
     <div>I need help because of:</div>
     <ReasonsWrapper>
       <li>
-        <input type="checkbox" onChange={selectReason} />
+        <input
+          type="checkbox"
+          onChange={() => {
+            selectReason('being cyberbullied');
+          }}
+        />
         being cyberbullied
       </li>
       <li>
-        <input type="checkbox" onChange={selectReason} />
+        <input
+          type="checkbox"
+          onChange={() => {
+            selectReason('being asked for inappropriate images');
+          }}
+        />
         being asked for inappropriate images
       </li>
       <li>
-        <input type="checkbox" onChange={selectReason} />
+        <input
+          type="checkbox"
+          onChange={() => {
+            selectReason('feeling very down');
+          }}
+        />
         feeling very down
       </li>
       <li>
-        <input type="checkbox" onChange={selectReason} />
+        <input
+          type="checkbox"
+          onChange={() => {
+            selectReason('being purposefully excluded');
+          }}
+        />
         being purposefully excluded
       </li>
       <li>
-        <input type="checkbox" onChange={selectReason} />
+        <input
+          type="checkbox"
+          onChange={() => {
+            selectReason('hate speak or racism');
+          }}
+        />
         hate speak or racism
       </li>
       <li>
-        <input type="checkbox" onChange={selectReason} />
+        <input
+          type="checkbox"
+          onChange={() => {
+            selectReason('Something else');
+          }}
+        />
         Something else
       </li>
     </ReasonsWrapper>
@@ -303,6 +333,7 @@ const StepFour = props => {
     helper, selectHelper, findHelpFromList, askForHelp, forWhom
   } = props;
   const { internalHelpersList } = helper;
+  console.log('forWhom', forWhom);
   // console.log('stepfour inside >>>>>>>>>>>>', props);
   return (
     <WizardContainer
@@ -316,17 +347,20 @@ const StepFour = props => {
           padding: '0 20px'
         }}
       >
-        {forWhom && <input placeholder="Name" />}
+        {forWhom === 'someone' && <input placeholder="Name" />}
         {internalHelpersList.map(help => {
           const { internalHelpFirstname, internalHelpLastname, role } = help;
 
           return (
             <InternalHelper key={internalHelpFirstname}>
               <input
-                type="checkbox"
+                type="radio"
+                name="internalHelper"
+                value={internalHelpFirstname}
                 onChange={e => {
                   selectHelper(e, help);
                 }}
+                checked={help === findHelpFromList}
               />
               <span>
                 {role && role.roleName}
@@ -340,7 +374,7 @@ const StepFour = props => {
           );
         })}
       </div>
-      {findHelpFromList && <ReasonsDiv />}
+      {findHelpFromList && <ReasonsDiv {...props} />}
       {findHelpFromList && (
         <Button onClick={askForHelp}>Send Help Request</Button>
       )}
@@ -452,7 +486,7 @@ class Wizard extends Component {
       showModal: true,
       alertMessage: `${firstname}, your help request has been sent to your ${
         role.roleName
-      }. ${internalHelpFirstname} Well done on asking help! ${internalHelpFirstname} will message you soon `,
+      } ${internalHelpFirstname}. Well done on asking help! ${internalHelpFirstname} will message you soon `,
       points: '=5'
     });
   };
@@ -477,7 +511,7 @@ class Wizard extends Component {
   };
 
   selectReason = e => {
-    // console.log('selectReason', e.target.checked);
+    console.log('selectReason >>>>>>>>>>>>>>>>>>>>', e.target.checked);
   };
 
   render() {
@@ -487,7 +521,8 @@ class Wizard extends Component {
       ...this.state,
       handleButtonClick: this.handleButtonClick,
       selectHelper: this.selectHelper,
-      askForHelp: this.askForHelp
+      askForHelp: this.askForHelp,
+      selectReason: this.selectReason
     };
     const WizardStepsList = [
       {

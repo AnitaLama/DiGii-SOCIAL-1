@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { FaRegTimesCircle, FaRegCircle } from 'react-icons/fa';
 import { connect } from 'react-redux';
+import socketClient from 'socket.io-client';
 import { Colors, fontSize, Images } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 import { strikeCount } from '../../config';
+import { SOCKET_URL } from '../../config';
 
 const { blue, grey, pen } = Colors.colors;
 const SideBarContainer = styled.div`
@@ -60,6 +62,7 @@ const Count = styled.div`
   padding: 10px 0;
 
   svg {
+    ${fontSize(25)};
     color: green;
   }
   svg.red {
@@ -73,10 +76,18 @@ const SideBarMenus = [
   { menu: 'Report', icon: Images.digii5.Video }
 ];
 class SideBar extends Component {
+  constructor() {
+    super();
+    this.socket = socketClient(SOCKET_URL);
+  }
+
   render() {
     const { strike } = this.props;
     const count = strike % strikeCount;
     const check = strike !== 0 && count === 0;
+    this.socket.on('strikes', data => {
+      console.log('data sockets strikes', data);
+    });
     return (
       <SideBarContainer>
         <SideBarWrapper>

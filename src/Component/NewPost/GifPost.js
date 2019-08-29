@@ -206,7 +206,7 @@ class GifContainer extends Component {
       return (
         <PostWrapper>
           <Input>
-            <input
+            <FormTextArea
               onFocus={this.onFocus}
               onChange={this.handleInputChange}
               placeholder="Find a gif"
