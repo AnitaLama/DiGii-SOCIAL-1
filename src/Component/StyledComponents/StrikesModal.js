@@ -17,6 +17,7 @@ import {
 } from './index';
 import { Colors, Images, flexCentering } from '../../Theme';
 import { Warnings, BlacklistedWords } from '../Functions';
+import StrikeActions from '../../Redux/StrikeRedux';
 
 const { tint, peach } = Colors.colors;
 const User = styled.div`
@@ -60,8 +61,8 @@ class StrikesModalContainer extends Component {
   };
 
   handleOK = () => {
-    const { hideModal } = this.props;
-
+    const { hideModal, onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user;
     // const { hideModal, showVideo, strike } = this.props;
     // if ((strike + 1) % 3 === 0) {
     //   showVideo();
@@ -69,6 +70,14 @@ class StrikesModalContainer extends Component {
     //   hideModal();
     // }
     hideModal();
+    // onGetStrikesCountOfAUser({ isStudent, id });
+  };
+
+  showVideo = () => {
+    const { showVideo, onGetStrikesCountOfAUser, user } = this.props;
+    const { isStudent, id } = user;
+    onGetStrikesCountOfAUser({ isStudent, id });
+    showVideo();
   };
 
   render() {
@@ -169,7 +178,7 @@ class StrikesModalContainer extends Component {
                   textAlign: 'center'
                 }}
               >
-                <Button className={'rounded short\'}'} onClick={showVideo}>
+                <Button className={'rounded short\'}'} onClick={this.showVideo}>
                   Watch Tutorial
                 </Button>
               </div>
@@ -191,7 +200,12 @@ const mapStateToProps = state => ({
   user: state.user.user,
   strike: state.strike.strikes
 });
-
-const StrikesModal = connect(mapStateToProps)(StrikesModalContainer);
+const mapDispatchToProps = dispatch => ({
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
+});
+const StrikesModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StrikesModalContainer);
 
 export default StrikesModal;

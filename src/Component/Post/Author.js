@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { IconContext } from 'react-icons';
 import { FaEllipsisH, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import PostAction from '../../Redux/PostRedux';
-import { Avatar } from '../StyledComponents';
+import { Avatar, ReportModal } from '../StyledComponents';
 import {
   flex, fontSize, fontWeight, fontFilson, Colors
 } from '../../Theme';
@@ -105,7 +105,8 @@ class Author extends Component {
       open: false,
       showDeleteModal: false,
       selectedPost: {},
-      showEditModal: false
+      showEditModal: false,
+      showReportModal: false
     };
   }
 
@@ -206,6 +207,30 @@ class Author extends Component {
     this.setState({ showEditModal: false });
   };
 
+  onReport = () => {
+    this.setState({ showReportModal: true });
+  };
+
+  selectReason = reason => {
+    console.log(reason);
+    this.setState({ reportReason: reason });
+  };
+
+  reportThePost = () => {
+    console.log('report the post please');
+  };
+
+  hideReportModal = () => {
+    this.setState({ showReportModal: false });
+  };
+
+  makeTheReport = () => {
+    const { reportMade } = this.props;
+    console.log('make the report', this.state.reportReason);
+    this.hideReportModal();
+    reportMade();
+  };
+
   render() {
     const { data, users } = this.props;
     const { isStudent, id } = users;
@@ -227,7 +252,12 @@ class Author extends Component {
       lastname = userProfileLastname;
       userAvatar = avatar;
     }
-    const { showDeleteModal, selectedPost, showEditModal } = this.state;
+    const {
+      showDeleteModal,
+      selectedPost,
+      showEditModal,
+      showReportModal
+    } = this.state;
     const check = postActorId === id && postIsStudent == isStudent;
     const { open } = this.state;
     return (
@@ -274,6 +304,23 @@ class Author extends Component {
             )}
           </EditOptionsContainer>
         )}
+        {!check && (
+          <EditOptionsContainer>
+            <button
+              type="submit"
+              className="dropbtn"
+              onClick={this.onReport}
+              style={{
+                backgroundColor: 'transparent',
+                border: 0,
+                outline: 0,
+                padding: '12px'
+              }}
+            >
+              <FaTimesCircle />
+            </button>
+          </EditOptionsContainer>
+        )}
         {showDeleteModal && (
           <DeleteModal
             closeDeleteModal={this.closeDeleteModal}
@@ -288,6 +335,14 @@ class Author extends Component {
             post={selectedPost}
             user={users}
             onEditPost={this.onEditPost}
+          />
+        )}
+        {showReportModal && (
+          <ReportModal
+            selectReason={this.selectReason}
+            reportThePost={this.reportThePost}
+            hideModal={this.hideReportModal}
+            makeTheReport={this.makeTheReport}
           />
         )}
       </AuthorWrapper>

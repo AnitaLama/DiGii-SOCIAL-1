@@ -28,7 +28,9 @@ const NoticePopup = styled.div`
   text-align: left;
 `;
 
-const DigiiHeader = styled.div`
+const DigiiHeaderContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
   img {
     height: 22px;
     margin-right: 10px;
@@ -40,16 +42,32 @@ const DigiiHeader = styled.div`
   }
 `;
 
-const NoticeContainer = ({ notice }) => (
-  <NoticePopup>
-    <DigiiHeader>
+const Points = styled.div`
+  text-align: right;
+  img {
+    margin-left: 10px;
+  }
+`;
+const DigiiPopupHeader = ({ points }) => (
+  <DigiiHeaderContainer>
+    <div>
       <img src={Images.digii5.DiGiit} alt="Digii-icon" />
       <span>DiGii</span>
-    </DigiiHeader>
+    </div>
+    <Points>
+      {points}
+      <img src={Images.digii5.DiGiit} alt="Digii-icon" />
+    </Points>
+  </DigiiHeaderContainer>
+);
+
+const NoticeContainer = ({ notice }) => (
+  <NoticePopup>
+    <DigiiPopupHeader />
     {notice}
   </NoticePopup>
 );
 
 export {
-  Header, Wizard, MainWizard, NoticeContainer
+  Header, Wizard, MainWizard, NoticeContainer, DigiiPopupHeader
 };

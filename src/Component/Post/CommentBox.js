@@ -85,13 +85,16 @@ const CommentBoxWrapper = styled.div`
   }
 `;
 const GifContainer = styled.div`
-  maxheight: 250px;
+  max-height: 250px;
   width: 100%;
   position: absolute;
-  bottom: 0;
-  zindex: 1;
+  bottom: 0px;
+  z-index: 1;
   div {
     display: flex;
+  }
+  input {
+    margin-bottom: 0;
   }
 `;
 const FeelingsDiv = styled.div`
@@ -201,7 +204,7 @@ class CommentBox extends Component {
     const { isStudent, id } = user.user;
     const { strikes } = strike;
     const result = submitPost();
-    onGetStrikesCountOfAUser({ isStudent, id });
+    // onGetStrikesCountOfAUser({ isStudent, id });
 
     let isBad = 0;
     // console.log('submit blacklist', result, strikes);
@@ -229,6 +232,8 @@ class CommentBox extends Component {
     };
     if (postText.length > 0) {
       onSubmitComment(comment);
+      // log
+      // onGetStrikesCountOfAUser({ isStudent, id });
     }
   };
 
@@ -260,7 +265,7 @@ class CommentBox extends Component {
   };
 
   handleGifButtonClick = () => {
-    this.setState({ showGifInput: true }, () => {
+    this.setState({ showGifInput: true, showFeelings: false }, () => {
       this.gifInput.focus();
     });
   };
@@ -274,7 +279,7 @@ class CommentBox extends Component {
     console.log('findgif');
     const { onFindGifForComments } = this.props;
     const { gifText } = this.state;
-    this.setState({ showGifInput: true });
+    this.setState({ showGifInput: true, showFeelings: false });
     const width = window.innerWidth || 1024;
     onFindGifForComments({ text: gifText, limit: width > 960 ? 20 : 12 });
   };
@@ -327,11 +332,14 @@ class CommentBox extends Component {
     const { clearCommentGif } = this.props;
     const { gifText } = this.state;
     clearCommentGif();
-    this.setState({ showGifInput: !!(gifText.length > 0) });
+    this.setState({
+      showGifInput: !!(gifText.length > 0),
+      showFeelings: false
+    });
   };
 
   handleFeelingsClick = () => {
-    this.setState({ showFeelings: true });
+    this.setState({ showFeelings: true, showGifInput: false });
   };
 
   handleClickOnFeeling = feeling => {
@@ -430,7 +438,7 @@ class CommentBox extends Component {
 
         <GifContainer
           style={{
-            bottom: '20px',
+            bottom: '30px',
             display: showFeelings ? 'block' : 'none'
           }}
         >

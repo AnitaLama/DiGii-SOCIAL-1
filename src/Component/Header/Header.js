@@ -98,14 +98,16 @@ class Header extends Component {
       //   item,
       //   item.includes('FirstTimeAskingHelp')
       // );
-      if (item.includes('FirstTimeAskingHelp')) {
+      if (
+        item.includes('FirstTimeAskingHelp')
+        || item.includes('IsFirstTimeReporting')
+      ) {
         // console.log('yes');
         localStorage.removeItem(item);
       }
       resetStrikes();
     });
-    console.log('localStorage', Object.keys(localStorage));
-    onMasterDelete(props);
+    // onMasterDelete(props);
   };
 
   goToNeedHelpPage = () => {
