@@ -12,6 +12,7 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
+    console.log('SAGA LOGIN DATA:', data);
     if (data.success) {
       // const result = { ...data.result, ...data.postNumber };
       // console.log(data.result, data.postNumber);
