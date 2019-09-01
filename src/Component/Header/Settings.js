@@ -47,9 +47,15 @@ class Settings extends Component {
     this.setState({ isListVisible: !isListVisible });
   };
 
-  render() {
-    const { logOut, user, onDelete } = this.props;
+  onReset = () => {
+    console.log('reset');
+    const { onReset, user } = this.props;
     const { id, isStudent, groupId } = user;
+    onReset({ isStudent, groupId, id });
+  };
+
+  render() {
+    const { logOut } = this.props;
     const { isListVisible } = this.state;
     return (
       <SettingsWrapper
@@ -61,9 +67,7 @@ class Settings extends Component {
         {isListVisible && (
           <SettingsSubList>
             <SettingsListElement onClick={logOut}>Logout</SettingsListElement>
-            <SettingsListElement
-              onClick={() => onDelete({ isStudent, groupId, id })}
-            >
+            <SettingsListElement onClick={this.onReset}>
               Reset
             </SettingsListElement>
           </SettingsSubList>

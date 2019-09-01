@@ -12,6 +12,7 @@ import {
   Loader
 } from '../StyledComponents';
 import TutorialActions from '../../Redux/TutorialRedux';
+import StrikeActions from '../../Redux/StrikeRedux';
 
 const CenteredDiv = styled.div`
   text-align: center;
@@ -236,6 +237,13 @@ class VideoModal extends Component {
     this.setState({ showVideo: true });
   };
 
+  hideModal = () => {
+    const { hideModal, user, onGetStrikesCountOfAUser } = this.props;
+    const { isStudent, id } = user;
+    onGetStrikesCountOfAUser({ isStudent, id });
+    hideModal();
+  };
+
   render() {
     const { hideModal, tutorial } = this.props;
 
@@ -302,7 +310,7 @@ class VideoModal extends Component {
                   {`  You've answered all the questions correctly. You can return
                   now`}
                 </span>
-                <Button className="short" onClick={hideModal}>
+                <Button className="short" onClick={this.hideModal}>
                   OK
                 </Button>
               </CenteredElementsModalWrapper>
@@ -344,7 +352,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
-  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value)),
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
 });
 
 // const VideoModal = connect(

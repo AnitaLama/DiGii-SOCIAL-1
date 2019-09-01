@@ -356,7 +356,7 @@ class SinglePost extends Component {
   };
 
   render() {
-    const { data, modalpopup } = this.props;
+    const { data, modalpopup, reportMade } = this.props;
     const { showCommentBox } = this.state;
     let { post_comments } = data;
     post_comments = post_comments
@@ -365,7 +365,11 @@ class SinglePost extends Component {
       <PostWrapper style={{ position: 'relative' }}>
         <ActualPostWrapper>
           <div>
-            <Author data={data} modalpopup={modalpopup} />
+            <Author
+              data={data}
+              modalpopup={modalpopup}
+              reportMade={reportMade}
+            />
             <ActualPost>{this.getContent(data)}</ActualPost>
           </div>
           <DisplayReactionWrapper>

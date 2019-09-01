@@ -102,10 +102,10 @@ class Header extends Component {
         // console.log('yes');
         localStorage.removeItem(item);
       }
-      resetStrikes();
     });
     // console.log('localStorage', Object.keys(localStorage));
     onMasterDelete(props);
+    resetStrikes();
   };
 
   goToNeedHelpPage = () => {

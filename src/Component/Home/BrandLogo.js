@@ -11,7 +11,7 @@ const BrandLogo = () => (
   <LogoWrapper>
     <BigLogo
       src={Images.digii5.mainLogo}
-      alt="logo-of-digii-social"
+      alt="logo-of-digii5-social"
       height={161.22}
       style={{ height: '161.22px' }}
     />

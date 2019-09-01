@@ -2,6 +2,7 @@ import { ErrorMessage, ErrorAlertMessage } from './ErrorMessage';
 import Avatar from './Avatar';
 import Loader from './Loader';
 import StrikesModal from './StrikesModal';
+import ReportModal from './ReportModal';
 
 export {
   Modal,
@@ -21,7 +22,12 @@ export {
 } from './Modal';
 
 export {
-  ErrorMessage, ErrorAlertMessage, Avatar, Loader, StrikesModal
+  ErrorMessage,
+  ErrorAlertMessage,
+  Avatar,
+  Loader,
+  StrikesModal,
+  ReportModal
 };
 
 export { Button, WhiteButton } from './Button';
