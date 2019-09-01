@@ -104,7 +104,7 @@ class Header extends Component {
       }
       resetStrikes();
     });
-    console.log('localStorage', Object.keys(localStorage));
+    // console.log('localStorage', Object.keys(localStorage));
     onMasterDelete(props);
   };
 

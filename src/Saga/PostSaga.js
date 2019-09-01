@@ -193,11 +193,13 @@ export function* onCommentDelete(action) {
 
 export function* onMasterDelete(action) {
   try {
+    console.log('master delete input', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/onMasterDelete`,
       action.data
     );
+    console.log('master delete output', data);
   } catch (err) {
     console.log(err);
   }

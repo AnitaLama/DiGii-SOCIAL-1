@@ -63,11 +63,11 @@
 //     const { user } = this.props;
 //     const { posts } = this.state;
 //     const { groupId } = user.user;
-//     // console.log('socket data user', user, this.socket);
+//     // //console.log('socket data user', user, this.socket);
 //
 //     this.socket.on('posts', data => {
 //       const { page, pageSize } = this.state;
-//       console.log(data.result === posts, data.result);
+//       //console.log(data.result === posts, data.result);
 //       if (posts !== data.result && groupId.includes(data.group)) {
 //         this.setState(
 //           {
@@ -85,7 +85,7 @@
 //   }
 //
 //   loadMore = () => {
-//     console.log('loadmore', this.state.cursor);
+//     //console.log('loadmore', this.state.cursor);
 //     // this.setState({ cursor: this.state.cursor + 1 });
 //   };
 //
@@ -97,9 +97,9 @@
 //       posts !== nextProp.post.posts
 //       && this.state.posts !== nextProp.post.posts
 //     ) {
-//       console.log('>>>>>>>>>>>>', posts);
-//       console.log('>>>>>>>>>>>>', nextProp.post.posts);
-//       console.log('>>>>>>>>>>>>', this.state.posts);
+//       //console.log('>>>>>>>>>>>>', posts);
+//       //console.log('>>>>>>>>>>>>', nextProp.post.posts);
+//       //console.log('>>>>>>>>>>>>', this.state.posts);
 //       this.setState({
 //         posts: nextProp.post.posts
 //       });
@@ -116,12 +116,12 @@
 //     let {
 //       posts, page, pageSize, postSubset
 //     } = this.state;
-//     console.log('>>>>>>>>>>>>>>>postsubset', postSubset);
+//     //console.log('>>>>>>>>>>>>>>>postsubset', postSubset);
 //     posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
 //     return (
 //       <div key={posts}>
 //         {post.error && showErrorNotifications(post.error)}
-//         {console.log('posts', posts, this.state.postSubset)}
+//         {//console.log('posts', posts, this.state.postSubset)}
 //
 //         {posts.length > 0 && (
 //           <InfiniteScroll
@@ -142,13 +142,13 @@
 //               overflow: 'visible'
 //             }}
 //           >
-//             {console.log('>>>>>>>>>>>>>>>>>>', postSubset.length, postSubset)}
+//             {//console.log('>>>>>>>>>>>>>>>>>>', postSubset.length, postSubset)}
 //             {postSubset.length > 0
 //               && postSubset.map((item, i) => {
-//                 // console.log(item.postIsStudent && item.student);
-//                 // console.log(!item.postIsStudent, item.user);
+//                 // //console.log(item.postIsStudent && item.student);
+//                 // //console.log(!item.postIsStudent, item.user);
 //                 // {
-//                 //   console.log(
+//                 //   //console.log(
 //                 //     item.postId,
 //                 //     (item.postIsStudent && item.student)
 //                 //       || (!item.postIsStudent && item.user)
@@ -232,10 +232,10 @@ class Posts extends Component {
     const { user } = this.props;
     const { posts } = this.state;
     const { groupId } = user.user;
-    // console.log('socket data user', user, this.socket);
+    // //console.log('socket data user', user, this.socket);
 
     this.socket.on('posts', data => {
-      console.log('data socket', data, groupId);
+      // console.log('data socket', data, groupId);
       if (posts !== data.result && groupId.includes(data.group)) {
         this.setState({ posts: data.result });
       }
@@ -267,10 +267,10 @@ class Posts extends Component {
         {post.error && <ErrorAlertMessage error={post.error} />}
         {posts.length > 0
           && posts.map((item, i) => {
-            // console.log(item.postIsStudent && item.student);
-            // console.log(!item.postIsStudent, item.user);
+            // //console.log(item.postIsStudent && item.student);
+            // //console.log(!item.postIsStudent, item.user);
             // {
-            //   console.log(
+            //   //console.log(
             //     item.postId,
             //     (item.postIsStudent && item.student)
             //       || (!item.postIsStudent && item.user)

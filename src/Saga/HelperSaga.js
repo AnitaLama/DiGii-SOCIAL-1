@@ -7,13 +7,13 @@ const URL = `${DEV_URL}/help`;
 
 export function* onGetAllInternalHelpers(action) {
   try {
-    console.log('saga input>>>', action.data);
+    // console.log('saga input>>>', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/findHelpersFromSchool`,
       action.data
     );
-    console.log('saga >>>>', data);
+    // console.log('saga >>>>', data);
     if (data.success) {
       yield put(HelperActions.onGetAllInternalHelpersSuccess(data.result));
     } else {
@@ -26,13 +26,13 @@ export function* onGetAllInternalHelpers(action) {
 
 export function* onGetAllExternalHelpLines(action) {
   try {
-    console.log('saga input>>>', action.data);
+    // console.log('saga input>>>', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/findExternalHelplines`,
       action.data
     );
-    console.log(data);
+    // console.log(data);
     if (data.success) {
       yield put(HelperActions.onGetAllExternalHelpLinesSuccess(data.result));
     } else {
@@ -62,7 +62,7 @@ export function* onGetHelpNotificationsCount(action) {
       `${URL}/onGetHelpNotificationsCount`,
       action.data
     );
-    console.log('saga output', data);
+    // console.log('saga output', data);
     if (data.success) {
       yield put(HelperActions.onGetHelpNotificationsCountSuccess(data.result));
     } else {
