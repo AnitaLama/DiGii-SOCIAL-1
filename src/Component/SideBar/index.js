@@ -72,7 +72,7 @@ const Count = styled.div`
 const SideBarMenus = [
   { menu: 'Videos', icon: Images.digii5.Video },
   { menu: 'Tutorials', icon: Images.digii5.Video },
-  { menu: 'Quizes', icon: Images.digii5.Quiz },
+  { menu: 'Quizzes', icon: Images.digii5.Quiz },
   { menu: 'Report', icon: Images.digii5.Video }
 ];
 class SideBar extends Component {

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { BrandLogo, LoginForm } from '../../Component/Home';
-import './App.css';
 import { flexCentering } from '../../Theme';
 
 const HomeContainer = styled.div`

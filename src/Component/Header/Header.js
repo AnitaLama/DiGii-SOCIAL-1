@@ -90,8 +90,9 @@ class Header extends Component {
     onLogOut();
   };
 
-  onDelete = props => {
+  onReset = props => {
     const { onMasterDelete, resetStrikes } = this.props;
+    console.log('on delete props', props);
     Object.keys(localStorage).map(item => {
       // console.log(
       //   'localStorage item',
@@ -105,9 +106,9 @@ class Header extends Component {
         // console.log('yes');
         localStorage.removeItem(item);
       }
-      resetStrikes();
     });
-    // onMasterDelete(props);
+    onMasterDelete(props);
+    resetStrikes();
   };
 
   goToNeedHelpPage = () => {
@@ -167,7 +168,7 @@ class Header extends Component {
                 <Avatar avatar={avatar} height={53} />
               </AvatarWrapper>
               {/*  <UserAvatar avatar={user.avatar} height={50} /> */}
-              <Settings logOut={this.logOut} onDelete={this.onDelete} />
+              <Settings logOut={this.logOut} onReset={this.onReset} />
             </UserInfoWrapper>
           </HeaderWrapper>
         </ContentWrapper>
