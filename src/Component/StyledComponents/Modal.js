@@ -8,6 +8,7 @@ import { Colors, Images, flexCentering } from '../../Theme';
 import { Button, Loader, WhiteButton } from './index';
 import { Warnings } from '../Functions';
 import TutorialActions from '../../Redux/TutorialRedux';
+import StrikeActions from '../../Redux/StrikeRedux';
 import history from '../../history';
 
 const { snow, tint, peach } = Colors.colors;
@@ -409,9 +410,15 @@ class VideoModalContainer extends Component {
     this.setState({ showVideo: true });
   };
 
+  onAnsweredCorrectly = () => {
+    const { hideModal, user, onResetTheStrikesForUser } = this.props;
+    const { isStudent, id } = user;
+    onResetTheStrikesForUser({ isStudent, id });
+    hideModal();
+  };
+
   render() {
     const { hideModal, tutorial } = this.props;
-    console.log(tutorial);
     const {
       playing,
       showQuestions,
@@ -478,7 +485,7 @@ class VideoModalContainer extends Component {
                   {`  You've answered all the questions correctly. You can return
                   now`}
                 </span>
-                <Button className="short" onClick={hideModal}>
+                <Button className="short" onClick={this.onAnsweredCorrectly}>
                   OK
                 </Button>
               </CenteredElementsModalWrapper>
@@ -508,7 +515,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
-  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value)),
+  onResetTheStrikesForUser: value => dispatch(StrikeActions.onResetTheStrikesForUser(value))
 });
 
 const Modal = connect(mapStateToProps)(BasicModal);

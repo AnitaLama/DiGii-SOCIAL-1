@@ -7,7 +7,8 @@ const { Types, Creators } = createActions({
   onGetStrikesCountOfAUser: ['data'],
   onGetStrikesCountOfAUserSuccess: ['data'],
   onGetStrikesCountOfAUserFailure: ['data'],
-  resetStrikes: []
+  resetStrikes: [],
+  onResetTheStrikesForUser: ['data']
 });
 
 export const StrikeTypes = Types;
