@@ -45,6 +45,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       this.setState({ postText: `${newText} ` });
     };
 
+    resetComment = () => {
+      this.setState({ postText: '' });
+    };
+
     handlePostText = e => {
       const value = e.target && e.target.value ? e.target.value : e;
       const actualValue = value.trim();
@@ -166,6 +170,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             saveImage={this.saveImage}
             saveFeelings={this.saveFeelings}
             saveBanner={this.saveBanner}
+            resetComment={this.resetComment}
           />
           {isModalVisible && (
             <StrikesModal

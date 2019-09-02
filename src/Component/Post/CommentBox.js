@@ -232,6 +232,7 @@ class CommentBox extends Component {
     };
     if (postText.length > 0) {
       onSubmitComment(comment);
+      if (!isBad) resetPostText();
       // log
       // onGetStrikesCountOfAUser({ isStudent, id });
     }

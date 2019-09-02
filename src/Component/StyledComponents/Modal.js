@@ -113,12 +113,6 @@ class BasicModal extends Component {
 
   handleOK = () => {
     const { hideModal } = this.props;
-    // const { hideModal, showVideo, strike } = this.props;
-    // if ((strike + 1) % 3 === 0) {
-    //   showVideo();
-    // } else {
-    //   hideModal();
-    // }
     hideModal();
   };
 

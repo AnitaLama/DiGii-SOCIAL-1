@@ -70,7 +70,7 @@ class StrikesModalContainer extends Component {
     //   hideModal();
     // }
     hideModal();
-    // onGetStrikesCountOfAUser({ isStudent, id });
+    onGetStrikesCountOfAUser({ isStudent, id });
   };
 
   showVideo = () => {
