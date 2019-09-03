@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   onLogOut: [],
   onStudentFormLoginRequest: ['data'],
   onStudentFormLoginSuccess: ['data'],
+  onEnableFirstTimePosting: [],
   onDisableFirstTimePosting: [],
   onBlockUser: ['data'],
   onSaveMyAvatar: ['data'],
@@ -56,10 +57,6 @@ const onFormLoginSuccess = (state, action) => {
     avatar,
     total
   } = action.data;
-  // const firstname = user_profile.userProfileFirstname || '';
-  // const lastname = user_profile.userProfileLastname || '';
-  // const { user_groups } = user_profile;
-  // const { ug_scg_id } = user_groups[0];
   const groups = [];
   user_groups.map(item => {
     groups.push(item.school_group.schoolGroupsId);
@@ -84,12 +81,6 @@ const onFormLoginSuccess = (state, action) => {
     }
   };
 };
-
-// const onFormLoginFailure = (state, action) => {
-//   const { data } = action;
-//   return { ...state, error: data, loading: false };
-// };
-
 const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const groups = [];
@@ -106,13 +97,6 @@ const onStudentFormLoginSuccess = (state, action) => {
   } = action.data;
   const { school_group } = student_group;
   const { schoolGroupsId } = school_group;
-  // const isFirstTimeAskingHelpFor = !!helpsAsked.map(
-  //   item => item.needHelpIdFor || item.needHelpForName
-  // );
-  // const isFirstTimeAskingHelpFrom = !!helpsAsked.map(
-  //   item => item.needhelpFromId || item.needhelpFromName
-  // );
-  // console.log('reducer:', isFirstTimeAskingHelpFor, isFirstTimeAskingHelpFrom);
   groups.push(schoolGroupsId);
   return {
     ...state,
@@ -131,25 +115,18 @@ const onStudentFormLoginSuccess = (state, action) => {
     },
     error: null
   };
-
-  // return {
-  //   ...state
-  //   // userType: 'Student',
-  //   // loading: true,
-  //   // error: null,
-  //   // user: {
-  //   //   ...state.user,
-  //   //   username: studentUsername,
-  //   //   firstname: studentFirstname,
-  //   //   lastname: st_lastname,
-  //   //   password: null,
-  //   //   id: studentId,
-  //   //   isStudent: true
-  //   // }
-  // };
 };
 
 const onLogOut = () => INITIAL_STATE;
+
+const onEnableFirstTimePosting = state => ({
+  ...state,
+  user: {
+    ...state.user,
+    isFirstTimePosting: true,
+    error: null
+  }
+});
 
 const onDisableFirstTimePosting = state => ({
   ...state,
@@ -174,5 +151,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
   [Types.ON_LOG_OUT]: onLogOut,
   [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting,
+  [Types.ON_ENABLE_FIRST_TIME_POSTING]: onEnableFirstTimePosting,
   [Types.ON_SAVE_MY_AVATAR_SUCCESS]: onSaveMyAvatarSuccess
 });

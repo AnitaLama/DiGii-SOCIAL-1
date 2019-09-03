@@ -15,6 +15,7 @@ import {
 import { FeelingsList } from '../Functions';
 import { EditModal, DeleteModal } from './index';
 // const { grey } = Colors.colors;
+import ReportAction from '../../Redux/ReportRedux';
 
 const { snow, light, tint } = Colors.colors;
 const AuthorWrapper = styled.div`
@@ -225,10 +226,16 @@ class Author extends Component {
   };
 
   makeTheReport = () => {
-    const { reportMade } = this.props;
-    console.log('make the report', this.state.reportReason);
+    const { users, reportAnArticle, data } = this.props;
+    const { reportReason } = this.state;
     this.hideReportModal();
-    reportMade();
+    const report = {
+      reportType: 'post',
+      reportReporterId: users.id,
+      reportReason,
+      reportArticleId: data.postId
+    };
+    reportAnArticle(report);
   };
 
   render() {
@@ -353,7 +360,8 @@ Author.propTypes = {
   data: PropTypes.object,
   users: PropTypes.object,
   onDelete: PropTypes.func,
-  onEditPost: PropTypes.func
+  onEditPost: PropTypes.func,
+  reportAnArticle: PropTypes.func
 };
 const mapStateToProps = state => ({
   users: state.user.user,
@@ -361,7 +369,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onDelete: value => dispatch(PostAction.onPostDelete(value)),
-  onEditPost: value => dispatch(PostAction.onEditPost(value))
+  onEditPost: value => dispatch(PostAction.onEditPost(value)),
+  reportAnArticle: value => dispatch(ReportAction.onReportAnArticle(value))
 });
 export default connect(
   mapStateToProps,

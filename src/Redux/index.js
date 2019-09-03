@@ -14,6 +14,7 @@ const ProfileRedux = require('./ProfileRedux');
 const TutorialRedux = require('./TutorialRedux');
 const SchoolRedux = require('./SchoolRedux');
 const HelperRedux = require('./HelperRedux');
+const ReportRedux = require('./ReportRedux');
 
 const allReducers = combineReducers({
   test: TestReduxes.reducer,
@@ -29,7 +30,8 @@ const allReducers = combineReducers({
   profile: ProfileRedux.reducer,
   tutorial: TutorialRedux.reducer,
   school: SchoolRedux.reducer,
-  helper: HelperRedux.reducer
+  helper: HelperRedux.reducer,
+  report: ReportRedux.reducer
 });
 
 export default allReducers;

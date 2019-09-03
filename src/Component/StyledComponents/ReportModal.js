@@ -14,7 +14,6 @@ import { DigiiPopupHeader } from '../NeedHelpWizard';
 import {
   Colors, flexCentering, boxShadow, fontSize
 } from '../../Theme';
-import { Warnings, BlacklistedWords } from '../Functions';
 
 const { primary, secondary, snow } = Colors.colors;
 const reasonsForReporting = [
@@ -25,25 +24,24 @@ const reasonsForReporting = [
   'Hate speech or racism',
   'Something else'
 ];
-const { tint, peach } = Colors.colors;
-const User = styled.div`
-  ${flexCentering()};
-  justify-content: flex-start;
-  .username {
-    text-transform: capitalize;
-    font-size: 16px;
-    color: #383746;
-  }
-`;
-const ModeratedPost = styled.div`
-  margin: 20px 0;
-  color: #777777;
-  span {
-    padding: 0 4px;
-    margin: 0 4px;
-    background: rgba(245, 75, 100, 0.2);
-  }
-`;
+// const User = styled.div`
+//   ${flexCentering()};
+//   justify-content: flex-start;
+//   .username {
+//     text-transform: capitalize;
+//     font-size: 16px;
+//     color: #383746;
+//   }
+// `;
+// const ModeratedPost = styled.div`
+//   margin: 20px 0;
+//   color: #777777;
+//   span {
+//     padding: 0 4px;
+//     margin: 0 4px;
+//     background: rgba(245, 75, 100, 0.2);
+//   }
+// `;
 const CenteredDiv = styled.div`
   text-align: center;
   button {
@@ -64,6 +62,8 @@ const Popup = styled.div`
   left: 0;
   color: ${snow};
   border-radius: 42px;
+  min-width: 287px;
+  // @media(max-width: )
 `;
 
 const Title = styled.div`
@@ -137,13 +137,16 @@ class ReportModalContainer extends Component {
       localStorage.setItem(`${username}IsFirstTimeReporting`, false);
     }
     const check = !isFirstTimeReporting;
+    // const check = true;
     return (
       <ModalContainer>
         <ContentWrapper style={{ display: 'flex' }}>
           <ModalBox
             style={{
               position: 'relative',
-              padding: '30px'
+              padding: '30px',
+              minWidth: '287px',
+              width: '287px'
             }}
           >
             {check && (

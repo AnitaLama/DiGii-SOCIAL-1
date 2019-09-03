@@ -258,7 +258,7 @@ class Posts extends Component {
   }
 
   render() {
-    const { post, reportMade } = this.props;
+    const { post } = this.props;
 
     let { posts } = this.state;
     posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
@@ -283,13 +283,7 @@ class Posts extends Component {
               (item.postIsStudent && item.student)
               || (!item.postIsStudent && item.user)
             ) {
-              return (
-                <SinglePost
-                  key={item + i}
-                  data={item}
-                  reportMade={reportMade}
-                />
-              );
+              return <SinglePost key={item + i} data={item} />;
             }
 
             // return (!item.isStudent && item.user)

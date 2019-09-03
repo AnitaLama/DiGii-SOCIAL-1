@@ -214,3 +214,12 @@ export function* onEditPost(action) {
     console.log(err);
   }
 }
+
+export function* reportAnArticle(action) {
+  try {
+    const { data } = yield call(axios.post, `${URL}/reportAnArticle`);
+    console.log('saga output report ing an article', data);
+  } catch (err) {
+    console.log(err);
+  }
+}

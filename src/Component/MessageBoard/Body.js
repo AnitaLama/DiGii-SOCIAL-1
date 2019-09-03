@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   NewPost, Posts, SideBar, ReportNotifications
 } from './index';
+import ReportActions from '../../Redux/ReportRedux';
 
 const BodyWrapper = styled.div`
   display: grid;
@@ -10,37 +13,45 @@ const BodyWrapper = styled.div`
 `;
 
 class Body extends Component {
-  state = {
-    showReportNotifications: false
-  };
-
-  reportMade = () => {
-    this.setState({ showReportNotifications: true }, () => {
-      setTimeout(() => {
-        this.setState({ showReportNotifications: false });
-      }, 10000);
-    });
-  };
-
   hideNotification = () => {
-    this.setState({ showReportNotifications: false });
+    const { disableTheReportNotification } = this.props;
+    disableTheReportNotification();
   };
 
   render() {
-    const { showReportNotifications } = this.state;
+    const { report, disableTheReportNotification } = this.props;
+    const { enableNotification } = report;
+    if (enableNotification) {
+      setTimeout(() => {
+        disableTheReportNotification();
+      }, 10000);
+    }
     return (
       <BodyWrapper>
         <div>
           <NewPost />
-          {showReportNotifications && (
+          {enableNotification && (
             <ReportNotifications hideNotification={this.hideNotification} />
           )}
-          <Posts reportMade={this.reportMade} />
+          <Posts />
         </div>
         <SideBar />
       </BodyWrapper>
     );
   }
 }
+Body.propTypes = {
+  report: PropTypes.object,
+  disableTheReportNotification: PropTypes.func
+};
+const mapStateToProps = state => ({
+  report: state.report
+});
+const mapDispatchToProps = dispatch => ({
+  disableTheReportNotification: () => dispatch(ReportActions.disableTheReportNotification())
+});
 
-export { Body };
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Body);

@@ -92,7 +92,6 @@ class Header extends Component {
 
   onReset = props => {
     const { onMasterDelete, resetStrikes } = this.props;
-    console.log('on delete props', props);
     Object.keys(localStorage).map(item => {
       // console.log(
       //   'localStorage item',
@@ -186,6 +185,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onLogOut: () => dispatch(LoginActions.onLogOut()),
+  // onEnableFirstTimePosting: () => dispatch(LoginActions.onEnableFirstTimePosting()),
   onMasterDelete: value => dispatch(PostActions.onMasterDelete(value)),
   onSaveNeedHelp: value => dispatch(HelperActions.onSaveNeedHelp(value)),
   resetStrikes: () => dispatch(StrikeActions.resetStrikes())
