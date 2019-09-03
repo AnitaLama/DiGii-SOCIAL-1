@@ -124,7 +124,7 @@ class Header extends Component {
         stGroupId: groupId
       };
       onSaveNeedHelp(data);
-      history.push('/askForHelp');
+      // history.push('/askForHelp');
     } else {
       console.log('show the notifications');
     }
