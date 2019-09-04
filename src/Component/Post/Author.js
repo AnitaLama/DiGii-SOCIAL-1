@@ -231,7 +231,6 @@ class Author extends Component {
       reportReason,
       reportArticleId: data.postId
     };
-    console.log('make the report', report, data);
     this.hideReportModal();
     onMakeTheReport(report);
   };

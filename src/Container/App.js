@@ -11,6 +11,7 @@ import MessageBoard from './MessageBoard';
 import UserProfile from './UserProfile';
 import NeedHelp from './NeedHelp';
 import './styles.css';
+import { connect } from 'react-redux';
 
 const showTokenExpiredNotification = () => {
   notification.error({
@@ -39,12 +40,17 @@ class ActualRoute extends React.Component {
 
   render() {
     const token = localStorage.getItem('token');
+    const { user } = this.props;
+
     if (token) {
       axios.defaults.headers.common.Authorization = token;
       const decodedToken = jwt_decode(token).exp;
       const currentDate = new Date().getTime() / 1000;
       if (decodedToken < currentDate) {
         showTokenExpiredNotification();
+        if (user.isStudent) {
+          return <Redirect to={{ pathname: '/student/login' }} />;
+        }
         return <Redirect to={{ pathname: '/' }} />;
       }
 
@@ -86,7 +92,7 @@ const routes = [
   }
 ];
 
-const Routes = () => (
+const Routes = props => (
   <Switch
     className={css`
       #nprogress .bar {
@@ -110,11 +116,14 @@ const Routes = () => (
     `}
   >
     {routes.map(route => (
-      <ActualRoute key={route.title} {...route} />
+      <ActualRoute key={route.title} {...route} {...props} />
     ))}
     <Route path="/" component={HomePage} exact />
     <Route path="/student/login" component={StudentLogin} exact />
   </Switch>
 );
 //
-export default Routes;
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+export default connect(mapStateToProps)(Routes);

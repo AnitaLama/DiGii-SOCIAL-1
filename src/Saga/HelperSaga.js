@@ -50,6 +50,7 @@ export function* onSaveNeedHelp(action) {
       `${URL}/saveNeedHelpInfo`,
       action.data
     );
+    console.log('SAGA save need help info', data);
   } catch (err) {
     console.log(err);
   }

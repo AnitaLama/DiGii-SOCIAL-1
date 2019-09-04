@@ -19,6 +19,9 @@ const { black, snow } = Colors.colors;
 const WizardWrapper = styled.div`
   min-height: calc(100vh - 100px);
   display: flex;
+  @media (max-height: 900px) {
+    margin-top: 150px;
+  }
 `;
 
 const WizardContainer = styled.div`
@@ -105,18 +108,20 @@ const StepOne = ({ user, handleButtonClick }) => {
     isFirstTimeAskingHelp: false
   };
   let check;
-  if (localData) {
-    const { username } = localData;
-    check = !(user.username === username);
-  }
-  {
-    // console.log('set localstorage', JSON.stringify(data));
-    check = !localData;
-    localStorage.setItem(
-      `${user.username}isFirstTimeAskingHelp`,
-      JSON.stringify(data)
-    );
-  }
+  // if (localData) {
+  //   const { username } = localData;
+  //   check = !(user.username === username);
+  // }
+  // {
+  //   // console.log('set localstorage', JSON.stringify(data));
+  //   check = !localData;
+  //   localStorage.setItem(
+  //     `${user.username}isFirstTimeAskingHelp`,
+  //     JSON.stringify(data)
+  //   );
+  // }
+  check = true;
+  // check = true;
   return (
     <WizardContainer>
       <CurrentWizardScreen

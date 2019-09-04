@@ -13,8 +13,19 @@ const BodyWrapper = styled.div`
 `;
 
 class Body extends Component {
+  componentDidUpdate(prevProps) {
+    if (prevProps.report !== this.props.report) {
+      const { report, disableTheReportNotification } = this.props;
+      const { enableNotification } = report;
+      if (enableNotification) {
+        setTimeout(() => {
+          disableTheReportNotification();
+        }, 10000);
+      }
+    }
+  }
+
   hideNotification = () => {
-    // this.setState({ showReportNotifications: false });
     const { disableTheReportNotification } = this.props;
     disableTheReportNotification();
   };
@@ -22,11 +33,7 @@ class Body extends Component {
   render() {
     const { report, disableTheReportNotification } = this.props;
     const { enableNotification } = report;
-    if (enableNotification) {
-      setTimeout(() => {
-        disableTheReportNotification();
-      }, 10000);
-    }
+
     return (
       <BodyWrapper>
         <div>

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import { css } from 'emotion';
+
 import {
   ModalContainer,
   ModalBox,
@@ -11,11 +13,23 @@ import {
   FormTextArea
 } from './index';
 import { DigiiPopupHeader } from '../NeedHelpWizard';
-import {
-  Colors, flexCentering, boxShadow, fontSize
-} from '../../Theme';
-import { Warnings, BlacklistedWords } from '../Functions';
+import { Colors, boxShadow, fontSize } from '../../Theme';
 
+const contentWrapper = css`
+  display: flex;
+`;
+const reportModalStyle = css`
+  position: relative;
+  padding: 30px;
+  min-width: 287px !important;
+  width: 287px !important;
+  @media (max-height: 900px) {
+    margin-top: 100px !important;
+  }
+  @media (max-width: 800px) {
+    transform: translate(-35%, 0%) !important;
+  }
+`;
 const { primary, secondary, snow } = Colors.colors;
 const reasonsForReporting = [
   'Bad language',
@@ -25,25 +39,7 @@ const reasonsForReporting = [
   'Hate speech or racism',
   'Something else'
 ];
-const { tint, peach } = Colors.colors;
-const User = styled.div`
-  ${flexCentering()};
-  justify-content: flex-start;
-  .username {
-    text-transform: capitalize;
-    font-size: 16px;
-    color: #383746;
-  }
-`;
-const ModeratedPost = styled.div`
-  margin: 20px 0;
-  color: #777777;
-  span {
-    padding: 0 4px;
-    margin: 0 4px;
-    background: rgba(245, 75, 100, 0.2);
-  }
-`;
+
 const CenteredDiv = styled.div`
   text-align: center;
   button {
@@ -105,7 +101,6 @@ class ReportModalContainer extends Component {
   handleSelectReason = e => {
     const { value } = e.target;
     const { selectReason } = this.props;
-    const { showTextBox } = this.state;
     if (value === 'Something else') {
       this.setState({ showTextBox: true, reason: value });
     } else {
@@ -137,19 +132,12 @@ class ReportModalContainer extends Component {
     if (!isFirstTimeReporting) {
       localStorage.setItem(`${username}IsFirstTimeReporting`, false);
     }
-    const check = !isFirstTimeReporting;
-    // const check = true;
+    // const check = !isFirstTimeReporting;
+    const check = true;
     return (
       <ModalContainer>
-        <ContentWrapper style={{ display: 'flex' }}>
-          <ModalBox
-            style={{
-              position: 'relative',
-              padding: '30px',
-              minWidth: '287px',
-              width: '287px'
-            }}
-          >
+        <ContentWrapper className={contentWrapper}>
+          <ModalBox className={reportModalStyle}>
             {check && (
               <Popup>
                 <DigiiPopupHeader />
@@ -222,8 +210,10 @@ class ReportModalContainer extends Component {
 }
 
 ReportModalContainer.propTypes = {
-  message: PropTypes.string,
-  hideModal: PropTypes.func
+  hideModal: PropTypes.func,
+  selectReason: PropTypes.func,
+  reportThePost: PropTypes.func,
+  makeTheReport: PropTypes.func
 };
 
 const mapStateToProps = state => ({
