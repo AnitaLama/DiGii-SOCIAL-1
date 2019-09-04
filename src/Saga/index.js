@@ -13,6 +13,7 @@ import { ProfileTypes } from '../Redux/ProfileRedux';
 import { TutorialTypes } from '../Redux/TutorialRedux';
 import { SchoolTypes } from '../Redux/SchoolRedux';
 import { HelperTypes } from '../Redux/HelperRedux';
+import { ReportTypes } from '../Redux/ReportRedux';
 
 import {
   onLoginRequest,
@@ -58,6 +59,7 @@ import {
   onSaveNeedHelp,
   onGetHelpNotificationsCount
 } from './HelperSaga';
+import onReportTheArticle from './ReportSaga';
 
 export default function* root() {
   yield all([
@@ -118,6 +120,7 @@ export default function* root() {
     takeLatest(
       HelperTypes.ON_GET_HELP_NOTIFICATIONS_COUNT,
       onGetHelpNotificationsCount
-    )
+    ),
+    takeLatest(ReportTypes.ON_REPORT_THE_ARTICLE, onReportTheArticle)
   ]);
 }

@@ -64,6 +64,7 @@ const Popup = styled.div`
   left: 0;
   color: ${snow};
   border-radius: 42px;
+  width: '287px';
 `;
 
 const Title = styled.div`
@@ -128,7 +129,7 @@ class ReportModalContainer extends Component {
 
   render() {
     const { showTextBox, reason } = this.state;
-    const { hideModal, makeTheReport, user } = this.props;
+    const { hideModal, user } = this.props;
     const { username } = user;
     const isFirstTimeReporting = localStorage.getItem(
       `${username}IsFirstTimeReporting`
@@ -137,13 +138,16 @@ class ReportModalContainer extends Component {
       localStorage.setItem(`${username}IsFirstTimeReporting`, false);
     }
     const check = !isFirstTimeReporting;
+    // const check = true;
     return (
       <ModalContainer>
         <ContentWrapper style={{ display: 'flex' }}>
           <ModalBox
             style={{
               position: 'relative',
-              padding: '30px'
+              padding: '30px',
+              minWidth: '287px',
+              width: '287px'
             }}
           >
             {check && (

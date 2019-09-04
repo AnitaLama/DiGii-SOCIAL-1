@@ -14,6 +14,8 @@ import {
 } from '../../Theme';
 import { FeelingsList } from '../Functions';
 import { EditModal, DeleteModal } from './index';
+import ReportAction from '../../Redux/ReportRedux';
+
 // const { grey } = Colors.colors;
 
 const { snow, light, tint } = Colors.colors;
@@ -195,7 +197,6 @@ class Author extends Component {
   onDeletePost = posts => {
     const { onDelete, post } = this.props;
     const { page, pageSize } = post;
-    console.log({ ...posts, page, pageSize });
     onDelete(posts);
     this.setState({ showDeleteModal: false });
   };
@@ -212,23 +213,27 @@ class Author extends Component {
   };
 
   selectReason = reason => {
-    console.log(reason);
     this.setState({ reportReason: reason });
   };
 
-  reportThePost = () => {
-    console.log('report the post please');
-  };
+  reportThePost = () => {};
 
   hideReportModal = () => {
     this.setState({ showReportModal: false });
   };
 
   makeTheReport = () => {
-    const { reportMade } = this.props;
-    console.log('make the report', this.state.reportReason);
+    const { users, data, onMakeTheReport } = this.props;
+    const { reportReason } = this.state;
+    const report = {
+      reportType: 'help',
+      reportReporterId: users.id,
+      reportReason,
+      reportArticleId: data.postId
+    };
+    console.log('make the report', report, data);
     this.hideReportModal();
-    reportMade();
+    onMakeTheReport(report);
   };
 
   render() {
@@ -361,7 +366,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onDelete: value => dispatch(PostAction.onPostDelete(value)),
-  onEditPost: value => dispatch(PostAction.onEditPost(value))
+  onEditPost: value => dispatch(PostAction.onEditPost(value)),
+  onMakeTheReport: value => dispatch(ReportAction.onReportTheArticle(value))
 });
 export default connect(
   mapStateToProps,
