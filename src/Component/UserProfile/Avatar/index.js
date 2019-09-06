@@ -3,9 +3,9 @@ import Avatar, { Piece } from 'avataaars';
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
 import { connect } from 'react-redux';
-import { Colors, flexCentering } from '../../Theme';
-import { Button } from '../StyledComponents';
-import LoginActions from '../../Redux/LoginRedux';
+import { Colors, flexCentering } from '../../../Theme';
+import { Button } from '../../StyledComponents';
+import LoginActions from '../../../Redux/LoginRedux';
 
 const AvatarWrapper = styled.div`
   text-align: center;

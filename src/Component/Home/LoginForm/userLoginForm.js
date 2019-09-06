@@ -1,46 +1,19 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, FormInput, ErrorMessage } from '../StyledComponents';
-import LoginActions from '../../Redux/LoginRedux';
+import { Button, FormInput, ErrorMessage } from '../../StyledComponents';
+import LoginActions from '../../../Redux/LoginRedux';
+
+// import ResetPasswordModal from './ResetPasswordModal';
 import {
-  Colors, fontWeight, fontFilson, fontSize
-} from '../../Theme';
-import ResetPasswordModal from './ResetPasswordModal';
-// import {notification} from 'antd';
-//
-// const loginErrorNotification = msg => {
-//   notification.error({
-//     message: 'Error',
-//     description: msg
-//   });
-// };
-const FormWrapper = styled.div`
-  margin: auto 40px;
-  width: 80%;
-`;
-const FormTitle = styled.h1`
-  ${fontFilson};
-  ${fontWeight('bold')};
-  ${fontSize(32)};
-`;
-const HelpBlock = styled.div`
-  margin-top: 10px;
-  h6 {
-    color: ${Colors.colors.pen};
-  }
-`;
-const ClickableSpan = styled.h6`
-  cursor: pointer;
-  span {
-    color: ${Colors.colors.secondary} !important;
-    &:hover {
-      ${fontWeight('900')}
-    }
-  }
-`;
+  ResetPasswordModal,
+  FormWrapper,
+  FormTitle,
+  HelpBlock,
+  ClickableSpan
+} from './index';
+
 class LoginForm extends Component {
   constructor() {
     super();

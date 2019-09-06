@@ -11,9 +11,9 @@ import {
   WhiteButton,
   ContentWrapper,
   FormTextArea
-} from './index';
-import { DigiiPopupHeader } from '../NeedHelpWizard';
-import { Colors, boxShadow, fontSize } from '../../Theme';
+} from '../index';
+import { DigiiPopupHeader } from '../../NeedHelpWizard';
+import { Colors, boxShadow, fontSize } from '../../../Theme';
 
 const contentWrapper = css`
   display: flex;

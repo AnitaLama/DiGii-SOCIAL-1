@@ -5,7 +5,7 @@ import {
   fontWeight,
   boxShadow,
   fontFilson
-} from '../../Theme';
+} from '../../../Theme';
 
 const {
   primary, secondary, snow, pen, grey

@@ -1,60 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import { connect } from 'react-redux';
-import {
-  Images, flexCentering, Colors, fontSize
-} from '../../Theme';
+
 import {
   Logo, Button, Avatar, ContentWrapper
-} from '../StyledComponents';
-import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
-import history from '../../history';
-import PostActions from '../../Redux/PostRedux';
-import HelperActions from '../../Redux/HelperRedux';
-import { NeedHelp, Settings } from './index';
+} from '../../StyledComponents';
+import LoginActions from '../../../Redux/LoginRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
+import history from '../../../history';
+import PostActions from '../../../Redux/PostRedux';
+import HelperActions from '../../../Redux/HelperRedux';
+import { NeedHelp, Settings } from '../index';
+import {
+  HeaderMainContainer,
+  HeaderWrapper,
+  UserInfoWrapper,
+  Name,
+  DiGiiIcon,
+  AvatarWrapper
+} from './style';
+import { Images } from '../../../Theme';
 
-const { pen, secondary, snow } = Colors.colors;
-
-const HeaderMainContainer = styled.div`
-  position:sticky;
-  top:0;
-  border-bottom 1px solid rgba(0,0,0,0.15);
-  z-index:10;
-  background:white;
-  box-shadow:0px 2px 10px 0px rgba(0,0,0,0.15)
-`;
-
-const HeaderWrapper = styled.div`
-  padding: 20px 0;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  @media (max-width: 780px) {
-    grid-template-columns: auto auto;
-  }
-`;
-
-const UserInfoWrapper = styled.div`
-  ${flexCentering};
-  justify-content: flex-end;
-  padding: 0 10px;
-  border-radius: 6px;
-`;
-const Name = styled.span`
-  color: ${pen};
-  margin-left: 20px;
-  ${fontSize(22)};
-  text-transform: capitalize;
-`;
-
-const DiGiiIcon = styled.img`
-  height: 20.91px;
-`;
-
-const AvatarWrapper = styled.div`
-  cursor: pointer;
-`;
 class Header extends Component {
   constructor() {
     super();

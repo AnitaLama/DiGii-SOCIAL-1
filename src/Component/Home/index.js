@@ -1,5 +1,4 @@
 import BrandLogo from './BrandLogo';
-import LoginForm from './LoginForm';
-import StudentLoginForm from './StudentLoginForm';
+import { LoginForm, StudentLoginForm } from './LoginForm';
 
 export { BrandLogo, LoginForm, StudentLoginForm };

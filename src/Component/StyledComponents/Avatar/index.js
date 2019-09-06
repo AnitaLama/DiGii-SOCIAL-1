@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Avatar from 'avataaars';
-import { Images } from '../../Theme';
+import { Images } from '../../../Theme';
 
 const ImageAvatar = styled.img`
   height: ${props => `${props.height}px` || '56px'};
@@ -55,7 +55,6 @@ class UserAvatar extends Component {
     return <ImageAvatar src={Images.stockImage} {...this.props} />;
   }
 }
-export default UserAvatar;
 
 // const Avatar = props => {
 //   const { src } = props;
@@ -65,4 +64,4 @@ UserAvatar.propTypes = {
   avatar: PropTypes.object,
   height: PropTypes.number
 };
-// export default UserAvatar;
+export default UserAvatar;

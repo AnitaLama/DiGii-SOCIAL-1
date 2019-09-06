@@ -1,70 +1,7 @@
 import styled from '@emotion/styled';
-import { Colors, fontSize } from '../../Theme';
+import { Colors, fontSize } from '../../../Theme';
 
 const { secondary, pencil, blue } = Colors.colors;
-
-const FormInput = styled.input`
-  width: 100%;
-  border-radius: 40px;
-  padding: 10px 20px;
-  outline: none;
-  border: 1px solid ${pencil};
-  color: #495057;
-  margin-bottom: 10px;
-  &::placeholder {
-    ${fontSize(14)};
-    color: rgba(0, 0, 0, 0.2);
-  }
-  &:focus {
-    box-shadow: 0 0 6px ${secondary};
-  }
-  cursor: pointer;
-`;
-
-const FormTextArea = styled.textarea`
-  width: 100%;
-  border-radius: 10px;
-  outline: none;
-  border: 0;
-  outline:0
-  color: #495057;
-  margin-bottom: 10px;
-  background:transparent;
-  resize:none;
-  &::placeholder {
-    ${fontSize(14)};
-    color: rgba(0, 0, 0, 0.2);
-  }
-  cursor:pointer;
-`;
-
-const FormSelect = styled.select`
-  width: 100%;
-  border-radius: 40px;
-  padding: 10px 20px;
-  outline: none;
-  border: 1px solid ${pencil};
-  color: #495057;
-  margin-bottom: 10px;
-  &::placeholder {
-    ${fontSize(14)};
-    color: rgba(0, 0, 0, 0.2);
-  }
-  &:focus {
-    box-shadow: 0 0 6px ${secondary};
-  }
-  background: #e8f0fe;
-
-  option {
-    background: #e8f0fe;
-    border: 0;
-    outline: 0;
-    height: 20px;
-    &:hover {
-      background: ${blue};
-    }
-  }
-`;
 
 const ImageInputContainer = styled.div`
   position: relative;
@@ -119,6 +56,4 @@ const ImageInputContainer = styled.div`
     text-align: center;
   }
 `;
-export {
-  FormInput, FormTextArea, ImageInputContainer, FormSelect
-};
+export default ImageInputContainer;

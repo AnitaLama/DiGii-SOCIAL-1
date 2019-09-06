@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
-import { Button, FormInput } from '../StyledComponents';
+import { Button, FormInput } from '../../StyledComponents';
 
 const ResetPasswordModal = props => {
   const { isModalVisible, handleOk, handleCancel } = props;

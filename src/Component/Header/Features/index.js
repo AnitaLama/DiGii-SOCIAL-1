@@ -1,44 +1,12 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import {
   FiGift, FiSend, FiCreditCard, FiPlus
 } from 'react-icons/fi';
 import { Badge } from 'antd';
 import PropTypes from 'prop-types';
-import {
-  grid, Colors, fontSize, fontWeight
-} from '../../Theme';
+import { Colors } from '../../../Theme';
+import { FeatureContentWrapper, FeatureContent, FeatureText } from './style';
 
-const FeatureContentWrapper = styled.div`
-  ${grid(4, '1fr')};
-`;
-const FeatureContent = styled.div`
-  text-align: center;
-  cursor: pointer;
-  i {
-    padding-right: 6px;
-    ${fontSize(22)};
-  }
-  &:hover {
-    i {
-      ${fontWeight('900')};
-    }
-    span {
-      ${fontWeight('bold')};
-    }
-  }
-`;
-
-const FeatureText = styled.span`
-  padding-right: 4px;
-  &:hover {
-  }
-
-  @media (max-width: 480px) {
-    ${fontSize(10)};
-    display: none;
-  }
-`;
 const Feature = props => {
   const { count, icon, text } = props;
   return (

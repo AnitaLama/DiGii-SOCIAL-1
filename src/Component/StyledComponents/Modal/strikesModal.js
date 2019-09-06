@@ -14,10 +14,10 @@ import {
   Points,
   WhiteButton,
   ContentWrapper
-} from './index';
-import { Colors, Images, flexCentering } from '../../Theme';
-import { Warnings, BlacklistedWords } from '../Functions';
-import StrikeActions from '../../Redux/StrikeRedux';
+} from '../index';
+import { Colors, Images, flexCentering } from '../../../Theme';
+import { Warnings, BlacklistedWords } from '../../Functions';
+import StrikeActions from '../../../Redux/StrikeRedux';
 
 const { tint, peach } = Colors.colors;
 const User = styled.div`
