@@ -1,76 +1,19 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import { connect } from 'react-redux';
-import { Button, Modal } from '../StyledComponents';
+import { Button, Modal } from '../../StyledComponents';
+
+import { NoticeContainer } from '../index';
+import HelperActions from '../../../Redux/HelperRedux';
+import history from '../../../history';
 import {
-  Colors,
-  fontSize,
-  fontFilson,
-  fontWeight,
-  boxShadow,
-  Images
-} from '../../Theme';
-import { NoticeContainer } from './index';
-import HelperActions from '../../Redux/HelperRedux';
-import history from '../../history';
-
-const { black, snow } = Colors.colors;
-
-const WizardWrapper = styled.div`
-  min-height: calc(100vh - 100px);
-  display: flex;
-  @media (max-height: 900px) {
-    margin-top: 150px;
-  }
-`;
-
-const WizardContainer = styled.div`
-  margin: auto;
-  width: 365px;
-  padding: 30px;
-  text-align: center;
-  div {
-    padding: 10px 0;
-  }
-  ${boxShadow()};
-  border-radius: 42px;
-  position: relative;
-  @media (max-width: 800px) {
-    transform: translate(-35%, 0%);
-  }
-  // top: 200px;
-`;
-
-const WizardDescription = styled.div`
-  width: 295px;
-  margin: auto;
-`;
-
-const Title = styled.div`
-  color: ${black};
-  ${fontSize(28)};
-  ${fontFilson()};
-  line-height: 28px;
-  ${fontWeight('bold')}
-`;
-
-const Description = styled.div`
-  color: #777777;
-  ${fontSize(16)};
-  span {
-    display: block;
-    margin: 10px;
-  }
-`;
-const InternalHelper = styled.div`
-  padding: 10px;
-`;
-
-const ReasonsWrapper = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
+  WizardWrapper,
+  WizardContainer,
+  WizardDescription,
+  Title,
+  Description,
+  InternalHelper,
+  ReasonsWrapper
+} from './style';
 
 const CurrentWizardScreen = ({
   title,
@@ -108,19 +51,18 @@ const StepOne = ({ user, handleButtonClick }) => {
     isFirstTimeAskingHelp: false
   };
   let check;
-  // if (localData) {
-  //   const { username } = localData;
-  //   check = !(user.username === username);
-  // }
-  // {
-  //   // console.log('set localstorage', JSON.stringify(data));
-  //   check = !localData;
-  //   localStorage.setItem(
-  //     `${user.username}isFirstTimeAskingHelp`,
-  //     JSON.stringify(data)
-  //   );
-  // }
-  check = true;
+  if (localData) {
+    const { username } = localData;
+    check = !(user.username === username);
+  }
+  {
+    // console.log('set localstorage', JSON.stringify(data));
+    check = !localData;
+    localStorage.setItem(
+      `${user.username}isFirstTimeAskingHelp`,
+      JSON.stringify(data)
+    );
+  }
   // check = true;
   return (
     <WizardContainer>

@@ -1,17 +1,10 @@
 import React from 'react';
-import styled from '@emotion/styled';
-import { Images } from '../../Theme';
-import { Logo, WhiteButton } from '../StyledComponents';
-import history from '../../history';
+import PropTypes from 'prop-types';
+import { Images } from '../../../Theme';
+import { Logo, WhiteButton } from '../../StyledComponents';
+import history from '../../../history';
+import { HeaderWrapper, ButtonWrapper } from './style';
 
-const HeaderWrapper = styled.div`
-  padding: 20px 0;
-  display: grid;
-  grid-template-columns: 50% 50%;
-`;
-const ButtonWrapper = styled.div`
-  text-align: right;
-`;
 const Header = props => {
   const { goBack } = props;
   const goToFeed = () => {
@@ -29,4 +22,7 @@ const Header = props => {
   );
 };
 
+Header.propTypes = {
+  goBack: PropTypes.func
+};
 export default Header;

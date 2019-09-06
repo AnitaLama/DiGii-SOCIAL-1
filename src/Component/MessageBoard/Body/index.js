@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  NewPost, Posts, SideBar, ReportNotifications
-} from '../index';
+import { NewPost, Posts, SideBar } from '../index';
 import ReportActions from '../../../Redux/ReportRedux';
 import { BodyWrapper } from './style';
+import ReportNotifications from './index';
 
 class Body extends Component {
   componentDidUpdate(prevProps) {
@@ -26,7 +25,7 @@ class Body extends Component {
   };
 
   render() {
-    const { report, disableTheReportNotification } = this.props;
+    const { report } = this.props;
     const { enableNotification } = report;
 
     return (
