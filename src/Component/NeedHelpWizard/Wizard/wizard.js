@@ -4,7 +4,7 @@ import { Button, Modal } from '../../StyledComponents';
 
 import { NoticeContainer } from '../index';
 import HelperActions from '../../../Redux/HelperRedux';
-import history from '../../../history';
+import history from '../../../utils/history';
 import {
   WizardWrapper,
   WizardContainer,
@@ -54,8 +54,7 @@ const StepOne = ({ user, handleButtonClick }) => {
   if (localData) {
     const { username } = localData;
     check = !(user.username === username);
-  }
-  {
+  } else {
     // console.log('set localstorage', JSON.stringify(data));
     check = !localData;
     localStorage.setItem(
@@ -115,7 +114,7 @@ const StepTwo = ({ user, handleButtonClick }) => {
   };
   let check;
   if (localData) {
-    const { username, isFirstTimeAskingHelpFor } = localData;
+    const { username } = localData;
     check = !(user.username === username);
   }
   {

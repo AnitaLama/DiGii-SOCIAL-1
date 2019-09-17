@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Colors } from '../../Theme';
-import { DigiiPopupHeader } from '../NeedHelpWizard';
-import { WhiteButton } from '../StyledComponents';
+import { Colors } from '../../../Theme';
+import { DigiiPopupHeader } from '../../NeedHelpWizard';
+import { WhiteButton } from '../../StyledComponents';
 
 const { snow } = Colors.colors;
 const ReportMadeNotification = styled.div`

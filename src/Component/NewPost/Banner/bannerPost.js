@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { PostWrapperContainer, BannerImageModal } from './index';
-import BannerActions from '../../Redux/BannerRedux';
-import PostActions from '../../Redux/PostRedux';
-import { Moderator } from '../Functions';
-import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
+import { PostWrapperContainer, BannerImageModal } from '../index';
+import BannerActions from '../../../Redux/BannerRedux';
+import PostActions from '../../../Redux/PostRedux';
+import { Moderator } from '../../Functions';
+import LoginActions from '../../../Redux/LoginRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -64,7 +64,7 @@ class BannerPost extends Component {
   };
 
   onSubmitPost = data => {
-    const { onSubmitPost, resetPostType } = this.props;
+    const { onSubmitPost } = this.props;
     // this.props.saveBanner()
     onSubmitPost(data);
     this.hideModal();
@@ -99,7 +99,6 @@ class BannerPost extends Component {
       showWarning,
       resetPostType,
       onGetStrikesCountOfAUser,
-      data,
       post
       // onSubmitPost
     } = this.props;

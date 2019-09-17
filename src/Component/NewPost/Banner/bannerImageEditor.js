@@ -12,9 +12,9 @@ import {
   ButtonWrapper,
   Button,
   Modal
-} from '../StyledComponents';
-import { Colors, Images } from '../../Theme';
-import StrikeActions from '../../Redux/StrikeRedux';
+} from '../../StyledComponents';
+import { Colors, Images } from '../../../Theme';
+import StrikeActions from '../../../Redux/StrikeRedux';
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 

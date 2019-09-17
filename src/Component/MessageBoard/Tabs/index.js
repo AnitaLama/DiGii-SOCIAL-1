@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import history from '../../../history';
+import history from '../../../utils/history';
 import {
   TabsWrapper, Tab, Box, TabName
 } from './style';

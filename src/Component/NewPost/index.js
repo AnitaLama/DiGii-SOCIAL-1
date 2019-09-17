@@ -1,18 +1,19 @@
 import styled from '@emotion/styled';
 import NewPost from './NewPost';
-import ImagePost from './ImagePost';
+import { ImagePost, VideoPost, PhotoVideoPost } from './PhotoVideo';
 import NewPostType from './NewPostType';
-import GifContainer from './GifPost';
-import TextPost from './TextPost';
+import GifContainer from './Gif';
+import TextPost from './Text';
 import { fontSize } from '../../Theme';
 import Container from './Container';
-import FeelingsPost from './FeelingsPost';
-import PhotoVideoPost from './PhotoVideoPost';
-import VideoPost from './VideoPost';
-import BannerPost from './BannerPost';
-import BannerImageModal from './BannerImageEditor';
-import TagPost from './TagPost';
-import PollPost from './PollPost';
+import FeelingsPost from './Feelings';
+// import PhotoVideoPost from './PhotoVideoPost';
+// import VideoPost from './VideoPost';
+// import BannerPost from './BannerPost';
+// import BannerImageModal from './BannerImageEditor';
+import TagPost from './Tag';
+import PollPost from './Poll';
+import { BannerPost, BannerImageModal } from './Banner';
 
 export {
   NewPost,

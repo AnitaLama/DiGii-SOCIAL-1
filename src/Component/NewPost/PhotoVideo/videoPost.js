@@ -1,30 +1,21 @@
 import React, { Component } from 'react';
 import VideoRecorder from 'react-video-recorder';
-import styled from '@emotion/styled';
 
 import { connect } from 'react-redux';
-import { flexCentering } from '../../Theme';
-import PostActions from '../../Redux/PostRedux';
-import { FormTextArea, Button } from '../StyledComponents';
-import { PostWrapper } from './index';
-import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
-import { Moderator } from '../Functions';
+import PostActions from '../../../Redux/PostRedux';
+import { FormTextArea, Button } from '../../StyledComponents';
+import { PostWrapper } from '../index';
+import LoginActions from '../../../Redux/LoginRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
+import { Moderator } from '../../Functions';
+import { VideoPostWrapper, VideoDisplayWrapper } from './style';
 
-const VideoPostWrapper = styled.div`
-  ${flexCentering()};
-  height: 100%;
-`;
-const VideoDisplayWrapper = styled.div`
-  display: flex;
-`;
 class VideoPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
       postTypeId: props.postTypeId,
       username: props.username,
-      description: '',
       videoSrc: '',
       video: null
     };
@@ -89,7 +80,9 @@ class VideoPost extends Component {
     formData.append('strikeIsStudent', isBad);
     formData.append('strikeActorId', isBad);
     onVideoPost(formData);
-    if(!isBad){resetPostType();}
+    if (!isBad) {
+      resetPostType();
+    }
   };
 
   handleDescriptionChange = e => {

@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL } from '../config';
+import { DEV_URL } from '../utils/config';
 import ProfileActions from '../Redux/ProfileRedux';
 import LoginActions from '../Redux/LoginRedux';
 

@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import socketClient from 'socket.io-client';
 import { Colors, fontSize, Images } from '../../Theme';
 import { Tabs } from '../MessageBoard';
-import { strikeCount } from '../../config';
-import { SOCKET_URL } from '../../config';
+import { strikeCount } from '../../utils/config';
+import { SOCKET_URL } from '../../utils/config';
 import {
   SideBarContainer,
   SideBarWrapper,

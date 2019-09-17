@@ -10,6 +10,7 @@ import StudentLogin from './StudentLogin';
 import MessageBoard from './MessageBoard';
 import UserProfile from './UserProfile';
 import NeedHelp from './NeedHelp';
+import ErrorPage from './ErrorPage';
 import './styles.css';
 import { connect } from 'react-redux';
 
@@ -120,6 +121,7 @@ const Routes = props => (
     ))}
     <Route path="/" component={HomePage} exact />
     <Route path="/student/login" component={StudentLogin} exact />
+    <Route path="*" component={ErrorPage} />
   </Switch>
 );
 //

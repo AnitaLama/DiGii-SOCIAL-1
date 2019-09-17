@@ -10,6 +10,7 @@ import {
   ErrorMessage
 } from '../../StyledComponents';
 import LoginActions from '../../../Redux/LoginRedux';
+import ErrorActions from '../../../Redux/ErrorRedux';
 import SchoolActions from '../../../Redux/SchoolRedux';
 import {
   Colors, fontWeight, fontFilson, fontSize
@@ -82,8 +83,9 @@ class LoginForm extends Component {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            const { onFormLogin } = this.props;
+            const { onFormLogin, onClearReducer } = this.props;
             onFormLogin(values);
+            onClearReducer();
             setSubmitting(false);
           }}
         >
@@ -150,9 +152,7 @@ class LoginForm extends Component {
                 </ClickableSpan>
               </HelpBlock>
 
-              {studentLoginError && (
-                <ErrorMessage error="Looks like you have entered the wrong login information. Please try again." />
-              )}
+              {studentLoginError && <ErrorMessage error={studentLoginError} />}
             </form>
           )}
         </Formik>
@@ -178,7 +178,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onFormLogin: values => dispatch(LoginActions.onStudentFormLoginRequest(values)),
-  onGetAllSchools: () => dispatch(SchoolActions.onGetAllSchools())
+  onGetAllSchools: () => dispatch(SchoolActions.onGetAllSchools()),
+  onClearReducer: () => dispatch(ErrorActions.onClearReducer())
 });
 
 export default connect(

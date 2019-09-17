@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import { Colors, fontSize } from '../../../Theme';
-
-const { secondary, pencil, blue } = Colors.colors;
+import { fontSize } from '../../../Theme';
 
 const FormTextArea = styled.textarea`
   width: 100%;

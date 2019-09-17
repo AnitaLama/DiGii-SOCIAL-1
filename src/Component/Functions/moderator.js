@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-// import history from '../../history';
+// import history from '../../utils/history';
 import PropTypes from 'prop-types';
 import { Modal, VideoModal, StrikesModal } from '../StyledComponents';
 import { FilterKeyWords } from './index';
-import { strikeCount, strikeRound } from '../../config';
+import { strikeCount, strikeRound } from '../../utils/config';
 
 const Moderator = WrappedComponent => class ModeratorContainer extends Component {
   constructor() {

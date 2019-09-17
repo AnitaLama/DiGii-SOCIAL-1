@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Colors, fontSize, Images } from '../../Theme';
+import { Colors, fontSize } from '../../Theme';
 
 const { blue, grey, pen } = Colors.colors;
 const SideBarContainer = styled.div`

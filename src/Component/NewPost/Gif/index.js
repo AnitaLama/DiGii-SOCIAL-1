@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { FormTextArea, Button, Loader } from '../StyledComponents';
-import { PostWrapper } from './index';
-import { Colors } from '../../Theme';
-import PostActions from '../../Redux/PostRedux';
-import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
-import { Moderator, FilterKeyWords } from '../Functions';
+import { FormTextArea, Button, Loader } from '../../StyledComponents';
+import { PostWrapper } from '../index';
+import { Colors } from '../../../Theme';
+import PostActions from '../../../Redux/PostRedux';
+import LoginActions from '../../../Redux/LoginRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
+import { Moderator, FilterKeyWords } from '../../Functions';
 
 const { primary } = Colors.colors;
 const GifInputForm = styled.div`

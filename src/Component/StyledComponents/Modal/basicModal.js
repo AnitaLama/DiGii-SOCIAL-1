@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import history from '../../../history';
+import history from '../../../utils/history';
 import {
   ModalContainer,
   ModalBox,

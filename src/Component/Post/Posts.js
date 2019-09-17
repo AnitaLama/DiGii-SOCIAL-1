@@ -5,7 +5,7 @@ import socketClient from 'socket.io-client';
 // import InfiniteScroll from 'react-infinite-scroll-component';
 import PostAction from '../../Redux/PostRedux';
 import SinglePost from './SinglePost';
-import { SOCKET_URL } from '../../config';
+import { SOCKET_URL } from '../../utils/config';
 import { ErrorAlertMessage } from '../StyledComponents';
 
 // const socket = io.connect('http://localhost:4000');
@@ -84,6 +84,7 @@ class Posts extends Component {
             ) {
               return <SinglePost key={item + i} data={item} />;
             }
+            return true;
 
             // return (!item.isStudent && item.user)
             //   || (item.isStudent && item.student) ? (

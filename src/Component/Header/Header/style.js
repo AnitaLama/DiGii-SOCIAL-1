@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  Images, flexCentering, Colors, fontSize
-} from '../../../Theme';
+import { flexCentering, Colors, fontSize } from '../../../Theme';
 
 const { pen } = Colors.colors;
 
@@ -38,6 +36,7 @@ const Name = styled.span`
 
 const DiGiiIcon = styled.img`
   height: 20.91px;
+  margin-left: 6px;
 `;
 
 const AvatarWrapper = styled.div`

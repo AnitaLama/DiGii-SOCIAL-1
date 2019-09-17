@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, FormTextArea, Loader } from '../StyledComponents';
+import { Button, FormTextArea, Loader } from '../../StyledComponents';
 import 'emoji-mart/css/emoji-mart.css';
-import { Colors } from '../../Theme';
-import { PostWrapper, PostWrapperContainer } from './index';
-import PostActions from '../../Redux/PostRedux';
-import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
-import { Moderator, FeelingsList } from '../Functions';
+import { Colors } from '../../../Theme';
+import { PostWrapper, PostWrapperContainer } from '../index';
+import PostActions from '../../../Redux/PostRedux';
+import LoginActions from '../../../Redux/LoginRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
+import { Moderator, FeelingsList } from '../../Functions';
 
 const Input = styled.div`
   position: relative;
@@ -58,7 +58,7 @@ class FeelingsPost extends Component {
   };
 
   handleTextChange = e => {
-    const { handlePostText, onGetStrikesCountOfAUser, user } = this.props;
+    const { handlePostText } = this.props;
     // const { isStudent, id } = user.user;
     // onGetStrikesCountOfAUser({ isStudent, id });
     handlePostText(e);

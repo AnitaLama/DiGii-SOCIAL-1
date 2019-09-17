@@ -1,59 +1,15 @@
 // THIS IS THE SECTION WHERE THE COMMENTS ARE SHOWN
 
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 import { connect } from 'react-redux';
-import {
-  flex, fontSize, fontWeight, Colors
-} from '../../Theme';
-import { Avatar } from '../StyledComponents';
-import PostAction from '../../Redux/PostRedux';
-import { FeelingsList } from '../Functions';
 
-const { grey, pink } = Colors.colors;
-const CommentWrapper = styled.div`
-  ${flex};
-  padding: 8px 0;
-  width: 100%;
-`;
+import { Avatar } from '../../StyledComponents';
+import PostAction from '../../../Redux/PostRedux';
+import { FeelingsList } from '../../Functions';
+import { CommentWrapper, CommentDiv, Close } from './style';
 
-const CommentDiv = styled.div`
-  ${flex('column')};
-  position: relative;
-  width: 100%;
-  span:first-of-type {
-    ${fontWeight('bold')};
-  }
-  span:not(:first-of-type) {
-    ${fontSize(12)};
-  }
-  span.date {
-    ${fontSize(10)};
-  }
-  span:last-of-type {
-    color: ${grey};
-  }
-  span.name {
-    text-transform: capitalize;
-  }
-  img {
-    height: 50px;
-  }
-  span.emoji {
-    font-family: Segoe UI Emoji;
-  }
-`;
-const Close = styled.div`
-  position: absolute;
-  right: 0;
-  color: ${pink};
-  cursor: pointer;
-  svg {
-    ${fontSize(9)};
-  }
-`;
 class Comment extends Component {
   constructor() {
     super();

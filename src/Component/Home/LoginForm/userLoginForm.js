@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, FormInput, ErrorMessage } from '../../StyledComponents';
 import LoginActions from '../../../Redux/LoginRedux';
+import ErrorActions from '../../../Redux/ErrorRedux';
 
 // import ResetPasswordModal from './ResetPasswordModal';
 import {
@@ -53,8 +54,9 @@ class LoginForm extends Component {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            const { onFormLogin } = this.props;
+            const { onFormLogin, onClearReducer } = this.props;
             onFormLogin(values);
+            onClearReducer();
             setSubmitting(false);
           }}
         >
@@ -130,7 +132,8 @@ const mapStateToProps = state => ({
   loginErrors: state.error
 });
 const mapDispatchToProps = dispatch => ({
-  onFormLogin: values => dispatch(LoginActions.onFormLoginRequest(values))
+  onFormLogin: values => dispatch(LoginActions.onFormLoginRequest(values)),
+  onClearReducer: () => dispatch(ErrorActions.onClearReducer())
 });
 
 export default connect(

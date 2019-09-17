@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ModalContainer,
-  ModalBox,
-  Header,
-  ButtonWrapper,
-  Button,
-  Avatar
-} from '../StyledComponents';
-import { Colors } from '../../Theme';
-import { ShowFeed } from '../Functions';
+  ModalContainer, ModalBox, Header, ButtonWrapper
+} from './index';
+import { Button, Avatar } from '..';
+import { Colors } from '../../../Theme';
+import { ShowFeed } from '../../Functions';
 
 const { tint, peach } = Colors.colors;
 

@@ -7,7 +7,7 @@ import {
 } from '../../StyledComponents';
 import LoginActions from '../../../Redux/LoginRedux';
 import StrikeActions from '../../../Redux/StrikeRedux';
-import history from '../../../history';
+import history from '../../../utils/history';
 import PostActions from '../../../Redux/PostRedux';
 import HelperActions from '../../../Redux/HelperRedux';
 import { NeedHelp, Settings } from '../index';
@@ -68,6 +68,7 @@ class Header extends Component {
         // console.log('yes');
         localStorage.removeItem(item);
       }
+      return true;
     });
     // console.log('localStorage', Object.keys(localStorage));
     onMasterDelete(props);
@@ -76,9 +77,7 @@ class Header extends Component {
 
   goToNeedHelpPage = () => {
     const { user, onSaveNeedHelp } = this.props;
-    const {
-      isStudent, id, groupId, isFirstTimeAskingHelp
-    } = user;
+    const { isStudent, id, groupId } = user;
     if (isStudent) {
       // if (isFirstTimeAskingHelp) {
       //   onDisableFirstTimeAskingHelp();
@@ -99,11 +98,8 @@ class Header extends Component {
   };
 
   render() {
-    const { isListVisible } = this.state;
     const { user } = this.props;
-    const {
-      id, isStudent, groupId, username, avatar
-    } = user;
+    const { isStudent, username, avatar } = user;
     return (
       <HeaderMainContainer>
         <ContentWrapper>
@@ -113,7 +109,7 @@ class Header extends Component {
               <NeedHelp goToNeedHelpPage={this.goToNeedHelpPage} />
               <Button
                 className="roundedShadow default"
-                style={{ marginLeft: '20px', minWidth: '90px' }}
+                style={{ marginLeft: '20px', minWidth: '100px' }}
               >
                 100
                 <DiGiiIcon src={Images.digii5.DiGiit} />

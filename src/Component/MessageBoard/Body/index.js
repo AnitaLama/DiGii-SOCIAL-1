@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { NewPost, Posts, SideBar } from '../index';
 import ReportActions from '../../../Redux/ReportRedux';
 import { BodyWrapper } from './style';
-import ReportNotifications from './index';
+import ReportNotifications from './reportNotifications';
 
 class Body extends Component {
   componentDidUpdate(prevProps) {

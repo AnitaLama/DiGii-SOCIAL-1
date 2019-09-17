@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Colors, fontSize } from '../../../Theme';
 
-const { secondary, pencil, blue } = Colors.colors;
+const { secondary, pencil } = Colors.colors;
 
 const FormInput = styled.input`
   width: 100%;

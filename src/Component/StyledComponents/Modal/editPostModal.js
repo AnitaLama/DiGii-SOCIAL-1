@@ -7,9 +7,9 @@ import {
   ButtonWrapper,
   Button,
   Avatar
-} from '../StyledComponents';
-import { Colors } from '../../Theme';
-import { ShowFeed } from '../Functions';
+} from '..';
+import { Colors } from '../../../Theme';
+import { ShowFeed } from '../../Functions';
 
 const { tint, peach } = Colors.colors;
 

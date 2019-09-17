@@ -1,34 +1,37 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import Webcam from 'react-webcam';
 import { Modal } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import socketClient from 'socket.io-client';
-import { grid } from '../../Theme';
-import { Button, FormTextArea } from '../StyledComponents';
-import { PostWrapper, PostWrapperContainer } from './index';
-import PostActions from '../../Redux/PostRedux';
-import LoginActions from '../../Redux/LoginRedux';
-import { Moderator } from '../Functions';
+import { Button, FormTextArea } from '../../StyledComponents';
+import { PostWrapper, PostWrapperContainer } from '../index';
+import PostActions from '../../../Redux/PostRedux';
+import LoginActions from '../../../Redux/LoginRedux';
+import { Moderator } from '../../Functions';
 
-import StrikeActions from '../../Redux/StrikeRedux';
-import { SOCKET_URL } from '../../config';
+import StrikeActions from '../../../Redux/StrikeRedux';
+import { SOCKET_URL } from '../../../utils/config';
+import {
+  PhotoOptionContainer,
+  ImageWrapper,
+  PhotoOptionContent
+} from './style';
 
-const PhotoOptionContainer = styled.div`
-  height: 100%;
-`;
-const ImageWrapper = styled.div`
-  display: flex;
-  img {
-    height: 100px;
-  }
-`;
-const PhotoOptionContent = styled.div`
-  ${grid(2, '1fr')};
-  height: 100%;
-  align-items: center;
-`;
+// const PhotoOptionContainer = styled.div`
+//   height: 100%;
+// `;
+// const ImageWrapper = styled.div`
+//   display: flex;
+//   img {
+//     height: 100px;
+//   }
+// `;
+// const PhotoOptionContent = styled.div`
+//   ${grid(2, '1fr')};
+//   height: 100%;
+//   align-items: center;
+// `;
 class ImagePost extends Component {
   constructor(props) {
     super(props);

@@ -2,8 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import LoginActions from '../Redux/LoginRedux';
 import ErrorActions from '../Redux/ErrorRedux';
-import history from '../history';
-import { DEV_URL } from '../config';
+import history from '../utils/history';
+import { DEV_URL } from '../utils/config';
 
 export function* onLoginRequest(action) {
   try {
@@ -12,7 +12,7 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
-    console.log('SAGA LOGIN DATA:', data);
+    console.log('saga', data);
     if (data.success) {
       // const result = { ...data.result, ...data.postNumber };
       // console.log(data.result, data.postNumber);
@@ -40,7 +40,6 @@ export function* onStudentLoginRequest(action) {
       `${DEV_URL}/student/verifyStudent`,
       action.data
     );
-    console.log('>>>>', data);
 
     if (data.success) {
       yield put(
@@ -65,13 +64,11 @@ export function* onStudentLoginRequest(action) {
 
 export function* onBlockUser(action) {
   try {
-    console.log('block user saga');
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/deactivateUser`,
       action.data
     );
-    console.log(data);
     if (data.success) {
       alert('You\'ve been locked out.');
       yield localStorage.removeItem('user');

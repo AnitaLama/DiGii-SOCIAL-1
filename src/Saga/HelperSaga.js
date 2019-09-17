@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL } from '../config';
+import { DEV_URL } from '../utils/config';
 import HelperActions from '../Redux/HelperRedux';
 
 const URL = `${DEV_URL}/help`;
@@ -63,7 +63,6 @@ export function* onGetHelpNotificationsCount(action) {
       `${URL}/onGetHelpNotificationsCount`,
       action.data
     );
-    // console.log('saga output', data);
     if (data.success) {
       yield put(HelperActions.onGetHelpNotificationsCountSuccess(data.result));
     } else {

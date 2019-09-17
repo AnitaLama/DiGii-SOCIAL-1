@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL, GIPHY_API } from '../config';
+import { DEV_URL, GIPHY_API } from '../utils/config';
 import PostActions from '../Redux/PostRedux';
 
 const URL = `${DEV_URL}/post`;

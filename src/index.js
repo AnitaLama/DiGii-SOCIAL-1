@@ -4,7 +4,7 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
-import history from './history';
+import history from './utils/history';
 import 'antd/dist/antd.css';
 
 import App from './Container/App';

@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
-import { Button } from '../StyledComponents';
-import { ImagePost, VideoPost, PostWrapperContainer } from './index';
+import { Button } from '../../StyledComponents';
+import { ImagePost, VideoPost } from './index';
+import { PostWrapperContainer } from '../index';
+import { PhotoVideoPostWrapper } from './style';
 
-const PhotoVideoPostWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 120px;
-  div {
-    width: 90%;
-  }
-`;
 class PhotoVideoPost extends Component {
   constructor() {
     super();

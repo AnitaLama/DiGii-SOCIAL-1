@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Wizard } from '../index';
-import history from '../../../history';
+import history from '../../../utils/history';
 
 class MainWizard extends Component {
   state = {

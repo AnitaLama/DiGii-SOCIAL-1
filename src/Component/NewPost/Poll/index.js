@@ -1,55 +1,19 @@
 import React, { Component } from 'react';
 import { FaImage } from 'react-icons/fa';
-import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { PostWrapper } from './index';
-import { Button } from '../StyledComponents';
-import { flexCentering, fontSize } from '../../Theme';
-import PostActions from '../../Redux/PostRedux';
+import { PostWrapper } from '../index';
+import { Button } from '../../StyledComponents';
+import PostActions from '../../../Redux/PostRedux';
+import {
+  SingleOption,
+  ImageIcon,
+  QuestionWrapper,
+  PollOptionsWrapper,
+  CloseButton,
+  AddButton
+} from './style';
 
-const SingleOption = styled.div`
-  ${flexCentering()};
-  padding: 2px 0;
-  input {
-    border: 0;
-    outline: none;
-    margin-left: 6px;
-    &::placeholder {
-      font-family: Lato;
-    }
-  }
-`;
-const ImageIcon = styled.div`
-  input {
-    display: none;
-  }
-  color: #d5d4d4;
-  svg {
-    height: 20.73px;
-  }
-`;
-const QuestionWrapper = styled.div`
-  input {
-    border: 0;
-    outline: 0;
-    &:focus {
-      border: 0;
-    }
-  }
-`;
-const PollOptionsWrapper = styled.div`
-  padding: 10px 15px;
-`;
-const CloseButton = styled.span`
-  cursor: pointer;
-  color: #d5d4d4;
-`;
-const AddButton = styled.span`
-  cursor: pointer;
-  color: #61bbf7;
-  ${fontSize(14)}
-`;
 class PollPost extends Component {
   constructor(props) {
     super(props);
@@ -255,7 +219,10 @@ class PollPost extends Component {
 
 PollPost.propTypes = {
   username: PropTypes.string,
-  postTypeId: PropTypes.number
+  postTypeId: PropTypes.number,
+  onPostPoll: PropTypes.func,
+  user: PropTypes.object,
+  resetPostType: PropTypes.func
 };
 const mapStateToProps = state => ({
   user: state.user
@@ -264,6 +231,7 @@ const mapDispatchToProps = dispatch => ({
   onPostPoll: value => dispatch(PostActions.onPostPoll(value)),
   onUploadImage: value => dispatch(PostActions.onUploadImage(value))
 });
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

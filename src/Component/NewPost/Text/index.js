@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FormTextArea, Button, Loader } from '../StyledComponents';
-import { PostWrapper } from './index';
-import PostActions from '../../Redux/PostRedux';
-import LoginActions from '../../Redux/LoginRedux';
-import StrikeActions from '../../Redux/StrikeRedux';
-import { Moderator } from '../Functions';
+import { FormTextArea, Button, Loader } from '../../StyledComponents';
+import { PostWrapper } from '../index';
+import PostActions from '../../../Redux/PostRedux';
+import LoginActions from '../../../Redux/LoginRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
+import { Moderator } from '../../Functions';
 
 class TextPost extends Component {
   constructor(props) {
