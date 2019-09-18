@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import socketClient from 'socket.io-client';
 // import InfiniteScroll from 'react-infinite-scroll-component';
-import PostAction from '../../Redux/PostRedux';
-import SinglePost from './SinglePost';
-import { SOCKET_URL } from '../../utils/config';
-import { ErrorAlertMessage } from '../StyledComponents';
+import PostAction from '../../../Redux/PostRedux';
+import SinglePost from '../SinglePost';
+import { SOCKET_URL } from '../../../utils/config';
+import { ErrorAlertMessage } from '../../StyledComponents';
 
 // const socket = io.connect('http://localhost:4000');
 class Posts extends Component {

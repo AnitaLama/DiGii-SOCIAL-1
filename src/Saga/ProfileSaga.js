@@ -29,7 +29,7 @@ export function* onGetAvatarOfTheUser(action) {
         avatarId: action.data
       }
     );
-    console.log('saga output', data);
+    console.log('***** ONGETAVATAROFTHEUSER', data);
   } catch (err) {
     console.log(err.toString());
   }

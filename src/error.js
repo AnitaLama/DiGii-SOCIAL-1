@@ -4,10 +4,11 @@ import {
   ContainerWrapper,
   ContentWrapper,
   BigLogo
-} from '../../Component/StyledComponents';
-import { Images, fontSize, Colors } from '../../Theme';
+} from './Component/StyledComponents';
+import { Images, fontSize, Colors } from './Theme';
+import history from './utils/history';
 
-const { secondary } = Colors.colors;
+const { pen } = Colors.colors;
 const errorDescription = `We're sorry, the page you requested could not be found. Please go
 back to the homepage.`;
 const ErrorPageWrapper = styled.div`
@@ -16,7 +17,7 @@ const ErrorPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  color: ${secondary};
+  color: ${pen};
 `;
 
 const ErrorCode = styled.span`
@@ -33,13 +34,21 @@ const ErrorDescription = styled.p`
   text-align: center;
 `;
 class ErrorPage extends Component {
+  goToHomePage = () => {
+    history.push('/messageboard');
+  };
+
   render() {
     return (
       <ContainerWrapper>
         <ContentWrapper>
           <ErrorPageWrapper>
             <div>
-              <BigLogo src={Images.digii5.logo} height={75} />
+              <BigLogo
+                src={Images.digii5.logo}
+                height={75}
+                onClick={this.goToHomePage}
+              />
               <ErrorCode>404</ErrorCode>
             </div>
             <ErrorStatus>Page not found</ErrorStatus>

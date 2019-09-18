@@ -117,9 +117,11 @@ class ReportModalContainer extends Component {
   };
 
   reportThePost = () => {
-    const { reportThePost, makeTheReport } = this.props;
+    const { makeTheReport } = this.props;
     const { reason } = this.state;
-    reason && makeTheReport();
+    if (reason) {
+      makeTheReport();
+    }
   };
 
   render() {
@@ -143,9 +145,9 @@ class ReportModalContainer extends Component {
                 <DigiiPopupHeader />
                 <Notice>
                   <p>
-                    You're making a report - well done! It's a good way to look
+                    {`You're making a report - well done! It's a good way to look
                     after yourself and your friends online. Every time you make
-                    a report, it\'s good to ask yourself...
+                    a report, it's good to ask yourself...`}
                   </p>
                   <p>
                     Am I doing this to get someone into trouble or out of
@@ -212,7 +214,7 @@ class ReportModalContainer extends Component {
 ReportModalContainer.propTypes = {
   hideModal: PropTypes.func,
   selectReason: PropTypes.func,
-  reportThePost: PropTypes.func,
+  user: PropTypes.object,
   makeTheReport: PropTypes.func
 };
 
