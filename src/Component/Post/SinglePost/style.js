@@ -65,6 +65,7 @@ const PostWrapper = styled.div`
   border-radius: 40px;
   ${boxShadow()};
   ${grid(2, '1fr')};
+  max-width: 100%;
 `;
 const ActualPostWrapper = styled.div`
   padding-right: 20px;

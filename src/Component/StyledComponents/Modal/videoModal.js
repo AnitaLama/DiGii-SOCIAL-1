@@ -184,7 +184,9 @@ class VideoModalContainer extends Component {
     if (gotAllQuestionsCorrect) {
       return (
         <div>
-          {'You\'ve answered all the questions correctly. You can return now.'}
+          {
+            'You\'ve answered all the questions correctly. You can return back to chat now.'
+          }
         </div>
       );
     }
@@ -196,7 +198,6 @@ class VideoModalContainer extends Component {
 
   render() {
     const { hideModal, tutorial } = this.props;
-    console.log(tutorial);
     const {
       playing,
       showQuestions,
@@ -238,14 +239,14 @@ class VideoModalContainer extends Component {
                   preload="auto"
                 />
               )}
-              <VideoOverlay
+              {/* <VideoOverlay
                 onClick={() => {
                   const player = this.fullscreenVideo;
                   player.paused ? player.play() : player.pause();
                 }}
               >
                 <span>{playing ? <FaPause /> : <FaPlay />}</span>
-              </VideoOverlay>
+              </VideoOverlay> */}
             </div>
           </div>
         )}

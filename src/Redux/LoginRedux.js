@@ -12,7 +12,8 @@ const { Types, Creators } = createActions({
   onDisableFirstTimePosting: [],
   onBlockUser: ['data'],
   onSaveMyAvatar: ['data'],
-  onSaveMyAvatarSuccess: ['data']
+  onSaveMyAvatarSuccess: ['data'],
+  updateTotalActivities: []
 });
 
 export const LoginTypes = Types;
@@ -37,7 +38,8 @@ export const INITIAL_STATE = Immutable({
     isFirstTimeAskingHelp: true,
     isFirstTimeAskingHelpFor: true,
     isFirstTimeAskingHelpWhen: true,
-    isFirstTimeAskingHelpFrom: true
+    isFirstTimeAskingHelpFrom: true,
+    totalActivities: 0
   },
   error: null
 });
@@ -54,7 +56,8 @@ const onFormLoginSuccess = (state, action) => {
     user_profile,
     user_groups,
     avatar,
-    total
+    postCounts,
+    replyCounts
   } = action.data;
   // const firstname = user_profile.userProfileFirstname || '';
   // const lastname = user_profile.userProfileLastname || '';
@@ -80,7 +83,8 @@ const onFormLoginSuccess = (state, action) => {
       groupId: groups,
       avatarId: userAvatarId,
       avatar,
-      isFirstTimePosting: !(total > 0)
+      isFirstTimePosting: !(postCounts > 0),
+      totalActivities: postCounts + replyCounts
     }
   };
 };
@@ -101,8 +105,9 @@ const onStudentFormLoginSuccess = (state, action) => {
     student_group,
     studentAvatarId,
     avatar,
-    total,
-    helpsAsked
+    postCounts,
+    helpsAsked,
+    replyCounts
   } = action.data;
   const { school_group } = student_group;
   const { schoolGroupsId } = school_group;
@@ -127,26 +132,11 @@ const onStudentFormLoginSuccess = (state, action) => {
       groupId: groups,
       avatarId: studentAvatarId,
       avatar,
-      isFirstTimePosting: !(total > 0)
+      isFirstTimePosting: !(postCounts > 0),
+      totalActivities: postCounts + replyCounts
     },
     error: null
   };
-
-  // return {
-  //   ...state
-  //   // userType: 'Student',
-  //   // loading: true,
-  //   // error: null,
-  //   // user: {
-  //   //   ...state.user,
-  //   //   username: studentUsername,
-  //   //   firstname: studentFirstname,
-  //   //   lastname: st_lastname,
-  //   //   password: null,
-  //   //   id: studentId,
-  //   //   isStudent: true
-  //   // }
-  // };
 };
 
 const onLogOut = () => INITIAL_STATE;
@@ -164,6 +154,12 @@ const onSaveMyAvatarSuccess = (state, action) => ({
   ...state,
   user: { ...state.user, avatar: action.data }
 });
+
+const updateTotalActivities = state => ({
+  ...state,
+  totalActivities: state.totalActivities + 1
+});
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -174,5 +170,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
   [Types.ON_LOG_OUT]: onLogOut,
   [Types.ON_DISABLE_FIRST_TIME_POSTING]: onDisableFirstTimePosting,
-  [Types.ON_SAVE_MY_AVATAR_SUCCESS]: onSaveMyAvatarSuccess
+  [Types.ON_SAVE_MY_AVATAR_SUCCESS]: onSaveMyAvatarSuccess,
+  [Types.UPDATE_TOTAL_ACTIVITIES]: updateTotalActivities
 });

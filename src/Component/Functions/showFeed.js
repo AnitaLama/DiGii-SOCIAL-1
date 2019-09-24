@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { FormTextArea, Avatar } from '../StyledComponents';
 import { Colors, fontSize, flexCentering } from '../../Theme';
 
+const ShowFeedWrapper = styled.div`
+  width: 100%;
+`;
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
 const { snow } = Colors.colors;
@@ -368,7 +371,7 @@ class ShowData extends Component {
   };
 
   render() {
-    return <div>{this.getMessageBoardFeed()}</div>;
+    return <ShowFeedWrapper>{this.getMessageBoardFeed()}</ShowFeedWrapper>;
   }
 }
 

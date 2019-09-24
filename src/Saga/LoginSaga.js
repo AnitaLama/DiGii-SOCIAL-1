@@ -12,13 +12,17 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
-    console.log('saga', data);
+    // console.log('saga', data);
     if (data.success) {
       // const result = { ...data.result, ...data.postNumber };
       // console.log(data.result, data.postNumber);
       // console.log(result);
       yield put(
-        LoginActions.onFormLoginSuccess({ ...data.result, ...data.postNumber })
+        LoginActions.onFormLoginSuccess({
+          ...data.result,
+          ...data.postCounts,
+          ...data.replyCounts
+        })
       );
       yield localStorage.setItem('user', JSON.stringify(data.result));
       yield localStorage.setItem('token', data.token);
@@ -45,7 +49,8 @@ export function* onStudentLoginRequest(action) {
       yield put(
         LoginActions.onStudentFormLoginSuccess({
           ...data.result,
-          ...data.postNumber,
+          ...data.postCounts,
+          ...data.replyCounts,
           helpsAsked: data.helpsAsked
         })
       );

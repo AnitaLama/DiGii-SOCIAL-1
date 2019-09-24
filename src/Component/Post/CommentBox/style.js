@@ -39,6 +39,7 @@ const UserListElement = styled.li`
 const CommentBoxWrapper = styled.div`
   display: grid;
   grid-template-columns: 20px auto;
+
   width: 100%;
   position: relative;
   button:not(.findButton) {

@@ -1,8 +1,18 @@
 import styled from '@emotion/styled';
-import { centerContent } from '../../../Theme';
 
-const LogoWrapper = styled.div`
-  ${centerContent};
+const LogoContainer = styled.div`
+  position: relative;
 `;
 
-export { LogoWrapper };
+const LogoWrapper = styled.div`
+  @media (max-width: 720px) {
+    margin-top: 30px;
+  }
+  @media (min-width: 720px) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
+export { LogoWrapper, LogoContainer };

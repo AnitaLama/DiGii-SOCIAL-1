@@ -2,12 +2,22 @@ import { call } from 'redux-saga/effects';
 import axios from 'axios';
 import { DEV_URL } from '../utils/config';
 
-export default function* onSubmitComment(action) {
+const URL = `${DEV_URL}/comment`;
+
+export function* onSubmitComment(action) {
   try {
     console.log('saga', action.data);
+    const { data } = yield call(axios.post, `${URL}/addComment`, action.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onCommentDelete(action) {
+  try {
     const { data } = yield call(
       axios.post,
-      `${DEV_URL}/comment/addComment`,
+      `${URL}/onCommentDelete`,
       action.data
     );
   } catch (err) {

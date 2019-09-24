@@ -139,7 +139,8 @@ class TagPost extends Component {
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
-    if (postText.length > 0) {
+    if (postText.length < 250) {
+      console.log('post tag', data);
       onSubmitTagPost(data);
       if (!isBad) {
         resetPostType();

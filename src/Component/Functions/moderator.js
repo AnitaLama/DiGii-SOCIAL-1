@@ -45,6 +45,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       this.setState({ postText: `${newText} ` });
     };
 
+    showEducationalChallenge = () => {
+      console.log('show educational challenge to the student');
+    };
+
     handlePostText = e => {
       const value = e.target && e.target.value ? e.target.value : e;
       const actualValue = value.trim();

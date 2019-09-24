@@ -8,6 +8,7 @@ const CommentWrapper = styled.div`
   ${flex};
   padding: 8px 0;
   width: 100%;
+  word-break: break-word;
 `;
 
 const CommentDiv = styled.div`

@@ -16,10 +16,11 @@ const ModalContainer = styled.div`
   ${flexCentering()}
 `;
 const CenteredElementsModalWrapper = styled.div`
-  display: flex;
-
-  ${flexCentering('column')};
-  justify-content: space-around;
+  text-align:center;
+  // display: flex;
+  //
+  // ${flexCentering('column')};
+  // justify-content: space-around;
 `;
 const ModalBox = styled.div`
   width: 45%;
@@ -39,7 +40,7 @@ const ModalBox = styled.div`
     text-align: right;
   }
   &.centeredModal {
-    display: flex;
+    ${flexCentering()}
   }
 `;
 

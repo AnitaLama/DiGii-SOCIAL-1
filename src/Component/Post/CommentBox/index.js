@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
 import { FaCaretRight, FaImage, FaSmile } from 'react-icons/fa';
 import { MdGif } from 'react-icons/md';
 import PropTypes from 'prop-types';
@@ -143,9 +142,8 @@ class CommentBox extends Component {
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
-    if (postText.length > 0) {
+    if (postText.length > 0 && postText.length < 250) {
       onSubmitComment(comment);
-      // log
       // onGetStrikesCountOfAUser({ isStudent, id });
     }
   };

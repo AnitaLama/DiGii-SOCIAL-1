@@ -5,7 +5,7 @@ const { blue, grey, pen } = Colors.colors;
 const SideBarContainer = styled.div`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 230px auto;
   margin: 10px 0;
 `;
 const SideBarWrapper = styled.div`

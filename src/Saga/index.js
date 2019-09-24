@@ -32,7 +32,6 @@ import {
   onSubmitTagPost,
   onVideoPost,
   onPostDelete,
-  onCommentDelete,
   onMasterDelete,
   onEditPost,
   onFindGifForComments
@@ -43,7 +42,7 @@ import {
   onGetPostActivitiesReactionTypes,
   onSelectReaction
 } from './PostActivitySaga';
-import onSubmitComment from './CommentSaga';
+import { onSubmitComment, onCommentDelete } from './CommentSaga';
 import onGetStrikesCountOfAUser from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
