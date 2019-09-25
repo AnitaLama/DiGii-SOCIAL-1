@@ -200,8 +200,8 @@ class VideoModalContainer extends Component {
   resetStrikes = () => {
     const { resetStrikes, user, hideModal } = this.props;
     const { isStudent, id } = user;
-    hideModal();
     resetStrikes({ isStudent, id });
+    hideModal();
   };
 
   render() {

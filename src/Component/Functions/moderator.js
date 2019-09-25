@@ -51,14 +51,15 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     handlePostText = e => {
       const value = e.target && e.target.value ? e.target.value : e;
-      const actualValue = value.trim();
-      if (actualValue.length > 250) {
+      const actualValue = value.length > 0 ? value.trim() : '';
+
+      if (actualValue && actualValue.length > 250) {
         this.setState({
           isBasicModalVisible: true,
           alertMessage: 'Please limit the number of characters to 250'
         });
       }
-      this.setState({ postText: value });
+      this.setState({ postText: actualValue });
     };
 
     submitPost = () => {
