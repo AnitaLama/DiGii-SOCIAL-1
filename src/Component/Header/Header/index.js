@@ -99,7 +99,6 @@ class Header extends Component {
 
   render() {
     const { user } = this.props;
-    console.log('***USER***', user);
     const { isStudent, username, avatar } = user;
     return (
       <HeaderMainContainer>

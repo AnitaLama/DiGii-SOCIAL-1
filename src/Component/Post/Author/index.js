@@ -193,7 +193,6 @@ class Author extends Component {
       showReportModal
     } = this.state;
     const check = postActorId === id && postIsStudent == isStudent;
-    console.log('***check****', postActorId, id, postIsStudent, isStudent);
     const { open } = this.state;
     return (
       <AuthorWrapper>

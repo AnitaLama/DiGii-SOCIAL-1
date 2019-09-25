@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
 import Slider from 'react-slick';
 import TutorialActions from '../../../Redux/TutorialRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
 import {
   ModalContainer,
   ModalBox,
@@ -196,6 +197,13 @@ class VideoModalContainer extends Component {
     this.setState({ showVideo: true });
   };
 
+  resetStrikes = () => {
+    const { resetStrikes, user, hideModal } = this.props;
+    const { isStudent, id } = user;
+    hideModal();
+    resetStrikes({ isStudent, id });
+  };
+
   render() {
     const { hideModal, tutorial } = this.props;
     const {
@@ -264,7 +272,7 @@ class VideoModalContainer extends Component {
                   {`  You've answered all the questions correctly. You can return
                   now`}
                 </span>
-                <Button className="short" onClick={hideModal}>
+                <Button className="short" onClick={this.resetStrikes}>
                   OK
                 </Button>
               </CenteredElementsModalWrapper>
@@ -305,7 +313,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
-  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value)),
+  resetStrikes: value => dispatch(StrikeActions.resetStrikes(value))
 });
 
 const VideoModal = connect(

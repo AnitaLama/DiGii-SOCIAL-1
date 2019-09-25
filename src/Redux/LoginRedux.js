@@ -157,7 +157,10 @@ const onSaveMyAvatarSuccess = (state, action) => ({
 
 const updateTotalActivities = state => ({
   ...state,
-  totalActivities: state.totalActivities + 1
+  user: {
+    ...state.user,
+    totalActivities: state.totalActivities + 1
+  }
 });
 
 /* ------------- Hookup Reducers To Types ------------- */
