@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import LoginActions from '../Redux/LoginRedux';
 import ErrorActions from '../Redux/ErrorRedux';
+// import OptionActions from '../Redux/OptionRedux';
 import history from '../utils/history';
 import { DEV_URL } from '../utils/config';
 
@@ -14,9 +15,6 @@ export function* onLoginRequest(action) {
     );
     console.log('saga', data);
     if (data.success) {
-      // const result = { ...data.result, ...data.postNumber };
-      // console.log(data.result, data.postNumber);
-      // console.log(result);
       yield put(
         LoginActions.onFormLoginSuccess({
           ...data.result,
@@ -24,6 +22,7 @@ export function* onLoginRequest(action) {
           ...data.replyCounts
         })
       );
+      // yield put()
       yield localStorage.setItem('user', JSON.stringify(data.result));
       yield localStorage.setItem('token', data.token);
       history.push('/messageboard');
@@ -31,7 +30,7 @@ export function* onLoginRequest(action) {
       yield put(ErrorActions.onFormLoginFailure(data.error));
     }
   } catch (err) {
-    yield put(ErrorActions.onFormLoginFailure(err.toString()));
+    // yield put(ErrorActions.onFormLoginFailure(err.toString()));
     console.log(err);
     // yield put(LoginActions.onFormLoginFailure(err.toString()));
   }

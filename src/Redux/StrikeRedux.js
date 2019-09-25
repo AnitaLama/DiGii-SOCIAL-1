@@ -32,13 +32,13 @@ const onGetStrikesCountOfAUserFailure = state => ({
   ...state,
   loading: false
 });
-const resetStrikes = state => ({ ...state, strikes: 0 });
+// const resetStrikes = state => ({ ...state, strikes: 0 });
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_GET_STRIKES_COUNT_OF_A_USER]: onGetStrikesCountOfAUser,
   [Types.ON_GET_STRIKES_COUNT_OF_A_USER_SUCCESS]: onGetStrikesCountOfAUserSuccess,
-  [Types.ON_GET_STRIKES_COUNT_OF_A_USER_FAILURE]: onGetStrikesCountOfAUserFailure,
-  [Types.RESET_STRIKES]: resetStrikes
+  [Types.ON_GET_STRIKES_COUNT_OF_A_USER_FAILURE]: onGetStrikesCountOfAUserFailure
+  // [Types.RESET_STRIKES]: resetStrikes
 });

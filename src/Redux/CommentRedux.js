@@ -4,7 +4,8 @@ import Immutable from 'seamless-immutable';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  onSubmitCommentRequest: ['data']
+  onSubmitCommentRequest: ['data'],
+  onCommentDelete: ['data']
 });
 
 export const CommentTypes = Types;
@@ -27,4 +28,5 @@ const onSubmitCommentRequest = state => ({
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_SUBMIT_COMMENT_REQUEST]: onSubmitCommentRequest
+  // [Types.ON_COMMENT_DELETE]: onCommentDelete
 });

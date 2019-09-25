@@ -197,12 +197,12 @@ class VideoModalContainer extends Component {
     this.setState({ showVideo: true });
   };
 
-  resetStrikes = () => {
-    const { resetStrikes, user, hideModal } = this.props;
-    const { isStudent, id } = user;
-    resetStrikes({ isStudent, id });
-    hideModal();
-  };
+  // resetStrikes = () => {
+  //   const { resetStrikes, user, hideModal } = this.props;
+  //   const { isStudent, id } = user;
+  //   // resetStrikes({ isStudent, id });
+  //   hideModal();
+  // };
 
   render() {
     const { hideModal, tutorial } = this.props;
@@ -272,7 +272,7 @@ class VideoModalContainer extends Component {
                   {`  You've answered all the questions correctly. You can return
                   now`}
                 </span>
-                <Button className="short" onClick={this.resetStrikes}>
+                <Button className="short" onClick={hideModal}>
                   OK
                 </Button>
               </CenteredElementsModalWrapper>
@@ -313,8 +313,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
-  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value)),
-  resetStrikes: value => dispatch(StrikeActions.resetStrikes(value))
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
+  // resetStrikes: value => dispatch(StrikeActions.resetStrikes(value))
 });
 
 const VideoModal = connect(
