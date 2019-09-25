@@ -14,15 +14,15 @@ export function* onSubmitComment(action) {
 }
 
 export function* onCommentDelete(action) {
-  // try {
-  //   yield console.log(action.data);
-  //   // const { data } = yield call(
-  //   //   axios.post,
-  //   //   `${URL}/onCommentDelete`,
-  //   //   action.data
-  //   // );
-  //   // console.log('saga output', data);
-  // } catch (err) {
-  //   console.log(err);
-  // }
+  try {
+    console.log(action.data);
+    const { data } = yield call(
+      axios.post,
+      `${URL}/onCommentDelete`,
+      action.data
+    );
+    console.log('saga output', data);
+  } catch (err) {
+    console.log(err);
+  }
 }
