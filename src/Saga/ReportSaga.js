@@ -1,9 +1,9 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL } from '../config';
+import { DEV_URL } from '../utils/config';
 import ReportActions from '../Redux/ReportRedux';
 
-export default function* onReportAnArticle(action) {
+export default function* onReportTheArticle(action) {
   try {
     const { data } = yield call(
       axios.post,
@@ -11,9 +11,9 @@ export default function* onReportAnArticle(action) {
       action.data
     );
     if (data.success) {
-      yield put(ReportActions.onReportAnArticleSuccess(data.result));
+      yield put(ReportActions.onReportTheArticleSuccess(data.result));
     } else {
-      yield put(ReportActions.onReportAnArticleFailure(data.error));
+      yield put(ReportActions.onReportTheArticleFailure(data.error));
     }
   } catch (err) {
     console.log(err);

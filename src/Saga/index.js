@@ -32,7 +32,6 @@ import {
   onSubmitTagPost,
   onVideoPost,
   onPostDelete,
-  onCommentDelete,
   onMasterDelete,
   onEditPost,
   onFindGifForComments
@@ -43,11 +42,8 @@ import {
   onGetPostActivitiesReactionTypes,
   onSelectReaction
 } from './PostActivitySaga';
-import onSubmitComment from './CommentSaga';
-import {
-  onGetStrikesCountOfAUser,
-  onResetTheStrikesForUser
-} from './StrikeSaga';
+import { onSubmitComment, onCommentDelete } from './CommentSaga';
+import { onGetStrikesCountOfAUser, resetStrikes } from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
 import {
@@ -62,6 +58,7 @@ import {
   onSaveNeedHelp,
   onGetHelpNotificationsCount
 } from './HelperSaga';
+import onReportTheArticle from './ReportSaga';
 
 import onReportAnArticle from './ReportSaga';
 
@@ -103,10 +100,7 @@ export default function* root() {
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser
     ),
-    takeLatest(
-      StrikeTypes.ON_RESET_THE_STRIKES_FOR_USER,
-      onResetTheStrikesForUser
-    ),
+    takeLatest(StrikeTypes.RESET_STRIKES, resetStrikes),
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
     takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),
@@ -129,6 +123,6 @@ export default function* root() {
       HelperTypes.ON_GET_HELP_NOTIFICATIONS_COUNT,
       onGetHelpNotificationsCount
     ),
-    takeLatest(ReportTypes.ON_REPORT_AN_ARTICLE, onReportAnArticle)
+    takeLatest(ReportTypes.ON_REPORT_THE_ARTICLE, onReportTheArticle)
   ]);
 }

@@ -12,7 +12,7 @@ const HomeContainer = styled.div`
   }
 `;
 
-function Home() {
+function Home(props) {
   return (
     <HomeContainer>
       <BrandLogo />

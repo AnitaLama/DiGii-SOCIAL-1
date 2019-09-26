@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Header from './Header';
-import Wizard from './Wizard';
-import MainWizard from './MainWizard';
+import { Wizard, MainWizard } from './Wizard';
+// import MainWizard from './MainWizard';
 import {
   fontSize,
   fontWeight,
@@ -12,7 +12,7 @@ import {
   Images
 } from '../../Theme';
 
-const { snow, black } = Colors.colors;
+const { snow } = Colors.colors;
 
 const NoticePopup = styled.div`
   position: absolute;

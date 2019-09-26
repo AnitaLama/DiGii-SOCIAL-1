@@ -1,8 +1,8 @@
-import Moderator from './Moderator';
-import ShowFeed from './ShowFeed';
-import { FilterKeyWords, BlacklistedWords } from './FilterKeywords';
-import Warnings from './Warnings';
-import FeelingsList from './FeelingsList';
+import Moderator from './moderator';
+import ShowFeed from './showFeed';
+import { FilterKeyWords, BlacklistedWords } from './filterKeywords';
+import Warnings from './warnings';
+import FeelingsList from './feelingsList';
 
 export {
   Moderator,

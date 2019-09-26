@@ -1,15 +1,18 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { notification } from 'antd';
-// import NProgress from 'nprogress';
+import NProgress from 'nprogress';
 import { css } from '@emotion/core';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import HomePage from './Home';
 import StudentLogin from './StudentLogin';
 import MessageBoard from './MessageBoard';
 import UserProfile from './UserProfile';
 import NeedHelp from './NeedHelp';
+import ErrorPage from '../error';
 import './styles.css';
 
 const showTokenExpiredNotification = () => {
@@ -26,25 +29,35 @@ const showNoTokenNotification = () => {
 };
 class ActualRoute extends React.Component {
   // componentWillMount() {
-  //   NProgress.start();
-  // }
-  //
-  // componentWillUnmount() {
+  //   console.log('cwm');
   //   NProgress.start();
   // }
   //
   // componentDidMount() {
+  //   console.log('cdm');
   //   NProgress.done();
   // }
+  //
+  // componentWillUnmount() {
+  //   console.log('cwu');
+  //   NProgress.start();
+  // }
+
+  componentDidMount() {}
 
   render() {
     const token = localStorage.getItem('token');
+    const { user } = this.props;
+
     if (token) {
       axios.defaults.headers.common.Authorization = token;
       const decodedToken = jwt_decode(token).exp;
       const currentDate = new Date().getTime() / 1000;
       if (decodedToken < currentDate) {
         showTokenExpiredNotification();
+        if (user.isStudent) {
+          return <Redirect to={{ pathname: '/student/login' }} />;
+        }
         return <Redirect to={{ pathname: '/' }} />;
       }
 
@@ -57,18 +70,6 @@ class ActualRoute extends React.Component {
   }
 }
 const routes = [
-  // {
-  //   title: 'Login',
-  //   path: '/',
-  //   exact: true,
-  //   component: HomePage
-  // },
-  // {
-  //   title: 'Login',
-  //   path: '/student/login',
-  //   exact: true,
-  //   component: StudentLogin
-  // },
   {
     title: 'MessageBoard',
     path: '/messageboard',
@@ -86,7 +87,7 @@ const routes = [
   }
 ];
 
-const Routes = () => (
+const Routes = props => (
   <Switch
     className={css`
       #nprogress .bar {
@@ -110,11 +111,18 @@ const Routes = () => (
     `}
   >
     {routes.map(route => (
-      <ActualRoute key={route.title} {...route} />
+      <ActualRoute key={route.title} {...route} {...props} />
     ))}
     <Route path="/" component={HomePage} exact />
     <Route path="/student/login" component={StudentLogin} exact />
+    <Route path="*" component={ErrorPage} />
   </Switch>
 );
 //
-export default Routes;
+ActualRoute.propTypes = {
+  user: PropTypes.object
+};
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+export default connect(mapStateToProps)(Routes);

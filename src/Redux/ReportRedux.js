@@ -4,9 +4,9 @@ import Immutable from 'seamless-immutable';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  onReportAnArticle: ['data'],
-  onReportAnArticleSuccess: ['data'],
-  onReportAnArticleFailure: ['data'],
+  onReportTheArticle: ['data'],
+  onReportTheArticleSuccess: ['data'],
+  onReportTheArticleFailure: ['data'],
   disableTheReportNotification: []
 });
 
@@ -21,15 +21,18 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* ------------- Reducers ------------- */
-const onReportAnArticleSuccess = (state, action) => {
-  console.log('here', action.data);
-  return { ...state, enableNotification: true };
-};
 
-const onReportAnArticleFailure = (state, action) => {
-  console.log('here', action.data);
-  return { ...state, enableNotification: false };
-};
+const onReportTheArticleSuccess = state => ({
+  ...state,
+  loading: false,
+  enableNotification: true
+});
+
+const onReportTheArticleFailure = state => ({
+  ...state,
+  loading: false,
+  enableNotification: false
+});
 
 const disableTheReportNotification = state => ({
   ...state,
@@ -38,7 +41,7 @@ const disableTheReportNotification = state => ({
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.ON_REPORT_AN_ARTICLE_SUCCESS]: onReportAnArticleSuccess,
-  [Types.ON_REPORT_AN_ARTICLE_FAILURE]: onReportAnArticleFailure,
+  [Types.ON_REPORT_THE_ARTICLE_SUCCESS]: onReportTheArticleSuccess,
+  [Types.ON_REPORT_THE_ARTICLE_FAILURE]: onReportTheArticleFailure,
   [Types.DISABLE_THE_REPORT_NOTIFICATION]: disableTheReportNotification
 });

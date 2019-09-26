@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL } from '../config';
+import { DEV_URL } from '../utils/config';
 import PostTypeRedux from '../Redux/PostTypeRedux';
 
 const URL = `${DEV_URL}/postType`;

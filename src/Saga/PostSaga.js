@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL, GIPHY_API } from '../config';
+import { DEV_URL, GIPHY_API } from '../utils/config';
 import PostActions from '../Redux/PostRedux';
 
 const URL = `${DEV_URL}/post`;
@@ -179,25 +179,15 @@ export function* onPostDelete(action) {
   }
 }
 
-export function* onCommentDelete(action) {
-  try {
-    const { data } = yield call(
-      axios.post,
-      `${URL}/onCommentDelete`,
-      action.data
-    );
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 export function* onMasterDelete(action) {
   try {
+    console.log('master delete input', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/onMasterDelete`,
       action.data
     );
+    console.log('master delete output', data);
   } catch (err) {
     console.log(err);
   }

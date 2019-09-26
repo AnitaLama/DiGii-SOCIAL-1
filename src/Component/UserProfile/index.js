@@ -1,3 +1,3 @@
-import UserProfileComponent from './profileHeader';
+import UserProfileComponent from './ProfileHeader';
 
 export { UserProfileComponent };

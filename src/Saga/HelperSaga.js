@@ -1,19 +1,19 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { DEV_URL } from '../config';
+import { DEV_URL } from '../utils/config';
 import HelperActions from '../Redux/HelperRedux';
 
 const URL = `${DEV_URL}/help`;
 
 export function* onGetAllInternalHelpers(action) {
   try {
-    console.log('saga input>>>', action.data);
+    // console.log('saga input>>>', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/findHelpersFromSchool`,
       action.data
     );
-    console.log('saga >>>>', data);
+    // console.log('saga >>>>', data);
     if (data.success) {
       yield put(HelperActions.onGetAllInternalHelpersSuccess(data.result));
     } else {
@@ -26,13 +26,13 @@ export function* onGetAllInternalHelpers(action) {
 
 export function* onGetAllExternalHelpLines(action) {
   try {
-    console.log('saga input>>>', action.data);
+    // console.log('saga input>>>', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/findExternalHelplines`,
       action.data
     );
-    console.log(data);
+    // console.log(data);
     if (data.success) {
       yield put(HelperActions.onGetAllExternalHelpLinesSuccess(data.result));
     } else {
@@ -50,7 +50,7 @@ export function* onSaveNeedHelp(action) {
       `${URL}/saveNeedHelpInfo`,
       action.data
     );
-    console.log('on save need help>>>> output', data);
+    console.log('SAGA save need help info', data);
   } catch (err) {
     console.log(err);
   }
@@ -63,7 +63,6 @@ export function* onGetHelpNotificationsCount(action) {
       `${URL}/onGetHelpNotificationsCount`,
       action.data
     );
-    console.log('saga output', data);
     if (data.success) {
       yield put(HelperActions.onGetHelpNotificationsCountSuccess(data.result));
     } else {

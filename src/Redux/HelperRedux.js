@@ -28,25 +28,20 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-const onGetAllInternalHelpersSuccess = (state, action) => {
-  console.log('here>>>>', action);
-  return { ...state, loading: false, internalHelpersList: action.data };
-};
-
-const onGetAllInternalHelpersFailure = (state, action) => {
-  console.log('here', action);
-  return { ...state, loading: false };
-};
-
-const onGetHelpNotificationsCountSuccess = (state, action) => {
-  console.log('redux', action);
-  return {
+const onGetAllInternalHelpersSuccess = (state, action) =>
+  // console.log('here>>>>', action);
+  ({ ...state, loading: false, internalHelpersList: action.data });
+const onGetAllInternalHelpersFailure = (state, action) =>
+  // console.log('here', action);
+  ({ ...state, loading: false });
+const onGetHelpNotificationsCountSuccess = (state, action) =>
+  // console.log('redux', action);
+  ({
     ...state,
     loading: false,
     helpNotifications: action.data,
     error: null
-  };
-};
+  });
 const onGetHelpNotificationsCountFailure = (state, action) => ({
   ...state,
   loading: false,
