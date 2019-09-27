@@ -43,7 +43,7 @@ import {
   onSelectReaction
 } from './PostActivitySaga';
 import { onSubmitComment, onCommentDelete } from './CommentSaga';
-import { onGetStrikesCountOfAUser, resetStrikes } from './StrikeSaga';
+import { onGetStrikesCountOfAUser, onRemoveTheStrikes } from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
 import {
@@ -100,7 +100,7 @@ export default function* root() {
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser
     ),
-    takeLatest(StrikeTypes.RESET_STRIKES, resetStrikes),
+    takeLatest(StrikeTypes.ON_REMOVE_THE_STRIKES, onRemoveTheStrikes),
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
     takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),

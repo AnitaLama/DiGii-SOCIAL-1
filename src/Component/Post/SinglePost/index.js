@@ -326,15 +326,9 @@ class SinglePost extends Component {
             }}
           >
             {post_comments
-              && post_comments.map((comment, i) =>
-                // console.log(
-                //   'comment>>>>>',
-                //   comment.postCommentIsDeleted,
-                //   comment.postCommentIsBad
-                // );
-                (!comment.postCommentIsBad && !comment.postCommentIsDeleted ? (
-                  <Comment key={comment + i} data={comment} />
-                ) : null))}
+              && post_comments.map((comment, i) => (!comment.postCommentIsBad && !comment.postCommentIsDeleted ? (
+                <Comment key={comment + i} data={comment} />
+              ) : null))}
           </div>
           <div className="commentBox">
             {showCommentBox && <CommentBox data={data} />}

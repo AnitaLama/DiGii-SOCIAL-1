@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Sentry from '@sentry/browser';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Provider } from 'react-redux';
@@ -11,6 +12,10 @@ import App from './Container/App';
 // import * as serviceWorker from './serviceWorker';
 
 import configureStore from './Redux/configureStore';
+
+Sentry.init({
+  dsn: 'https://cee9bfaa024147f4b70809f4187cc5ec@sentry.io/1763253'
+});
 
 const { store, persistor } = configureStore();
 // const { store } = configureStore();

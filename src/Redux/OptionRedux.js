@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   onTestRequest: []
 });
 
-export const TestTypes = Types;
+export const OptionTypes = Types;
 export default Creators;
 
 /* ------------- Initial State ------------- */

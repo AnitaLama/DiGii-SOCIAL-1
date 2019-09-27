@@ -30,9 +30,10 @@ class VideoModalContainer extends Component {
     onTutorialRequest(type);
   }
 
-  componentDidUpdate(prevProps) {
-    const { tutorial } = this.props;
-
+  componentDidUpdate(prevProps, prevState) {
+    const { tutorial, user, onRemoveTheStrikes } = this.props;
+    const { isStudent, id } = user;
+    console.log('cdu', prevState, this.state);
     const player = this.fullscreenVideo;
     if (tutorial.tutorialList && tutorial.tutorialList.tutorialPath && player) {
       player.addEventListener('pause', () => {
@@ -45,6 +46,12 @@ class VideoModalContainer extends Component {
         this.saveTutorialWatchersInfo();
         this.setState({ showQuestions: true, showVideo: false });
       });
+    }
+    if (
+      this.state.gotAllQuestionsCorrect
+      && prevState.gotAllQuestionsCorrect !== this.state.gotAllQuestionsCorrect
+    ) {
+      onRemoveTheStrikes(user);
     }
   }
 
@@ -197,13 +204,6 @@ class VideoModalContainer extends Component {
     this.setState({ showVideo: true });
   };
 
-  // resetStrikes = () => {
-  //   const { resetStrikes, user, hideModal } = this.props;
-  //   const { isStudent, id } = user;
-  //   // resetStrikes({ isStudent, id });
-  //   hideModal();
-  // };
-
   render() {
     const { hideModal, tutorial } = this.props;
     const {
@@ -313,8 +313,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
-  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value))
-  // resetStrikes: value => dispatch(StrikeActions.resetStrikes(value))
+  onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value)),
+  onRemoveTheStrikes: value => dispatch(StrikeActions.onRemoveTheStrikes(value))
 });
 
 const VideoModal = connect(

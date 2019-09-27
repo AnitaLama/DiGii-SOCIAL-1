@@ -80,7 +80,7 @@ const onFormLoginSuccess = (state, action) => {
       groupId: groups,
       avatarId: userAvatarId,
       avatar,
-      isFirstTimePosting: !(postCounts > 0),
+      isFirstTimePosting: postCounts === 0,
       totalActivities: postCounts + replyCounts
     }
   };
@@ -116,7 +116,7 @@ const onStudentFormLoginSuccess = (state, action) => {
       groupId: groups,
       avatarId: studentAvatarId,
       avatar,
-      isFirstTimePosting: !(postCounts > 0),
+      isFirstTimePosting: postCounts === 0,
       totalActivities: postCounts + replyCounts
     },
     error: null
