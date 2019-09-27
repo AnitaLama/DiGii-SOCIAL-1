@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   onGetStrikesCountOfAUser: ['data'],
   onGetStrikesCountOfAUserSuccess: ['data'],
   onGetStrikesCountOfAUserFailure: ['data'],
-  resetStrikes: ['data']
+  onRemoveTheStrikes: ['data']
 });
 
 export const StrikeTypes = Types;
@@ -32,13 +32,14 @@ const onGetStrikesCountOfAUserFailure = state => ({
   ...state,
   loading: false
 });
-// const resetStrikes = state => ({ ...state, strikes: 0 });
+const onRemoveTheStrikes = state => ({ ...state, strikes: 0 });
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_GET_STRIKES_COUNT_OF_A_USER]: onGetStrikesCountOfAUser,
   [Types.ON_GET_STRIKES_COUNT_OF_A_USER_SUCCESS]: onGetStrikesCountOfAUserSuccess,
-  [Types.ON_GET_STRIKES_COUNT_OF_A_USER_FAILURE]: onGetStrikesCountOfAUserFailure
+  [Types.ON_GET_STRIKES_COUNT_OF_A_USER_FAILURE]: onGetStrikesCountOfAUserFailure,
+  [Types.ON_REMOVE_THE_STRIKES]: onRemoveTheStrikes
   // [Types.RESET_STRIKES]: resetStrikes
 });

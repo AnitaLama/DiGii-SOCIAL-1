@@ -326,7 +326,7 @@ class SinglePost extends Component {
             }}
           >
             {post_comments
-              && post_comments.map((comment, i) => (!comment.postCommentIsBad ? (
+              && post_comments.map((comment, i) => (!comment.postCommentIsBad && !comment.postCommentIsDeleted ? (
                 <Comment key={comment + i} data={comment} />
               ) : null))}
           </div>
