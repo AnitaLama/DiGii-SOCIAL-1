@@ -7,6 +7,7 @@ import PostAction from '../../../Redux/PostRedux';
 import SinglePost from '../SinglePost';
 import { SOCKET_URL } from '../../../utils/config';
 import { ErrorAlertMessage } from '../../StyledComponents';
+import PostActivityAction from '../../../Redux/PostActivityRedux';
 
 // const socket = io.connect('http://localhost:4000');
 class Posts extends Component {
@@ -19,10 +20,15 @@ class Posts extends Component {
   }
 
   componentWillMount() {
-    const { onFindPosts, user, post } = this.props;
+    const {
+      onFindPosts,
+      user,
+      post,
+      onGetPostActivitiesReactionTypes
+    } = this.props;
     const { posts } = post;
     const { isStudent, id } = user.user;
-
+    onGetPostActivitiesReactionTypes();
     onFindPosts({ isStudent, actorId: id });
     this.setState({ posts });
   }
@@ -53,6 +59,7 @@ class Posts extends Component {
   }
 
   componentWillUnmount() {
+    console.log('posts componentwillunmount');
     this.socket = null;
   }
 
@@ -110,7 +117,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onListPosts: () => dispatch(PostAction.onListPosts()),
-  onFindPosts: value => dispatch(PostAction.onFindPosts(value))
+  onFindPosts: value => dispatch(PostAction.onFindPosts(value)),
+  onGetPostActivitiesReactionTypes: value => dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value))
 });
 
 export default connect(

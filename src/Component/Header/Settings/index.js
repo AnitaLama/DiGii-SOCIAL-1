@@ -26,7 +26,7 @@ class Settings extends Component {
     console.log('reset');
     const { onReset, user } = this.props;
     const { id, isStudent, groupId } = user;
-    onReset({ isStudent, groupId, id });
+    // onReset({ isStudent, groupId, id });
   };
 
   render() {

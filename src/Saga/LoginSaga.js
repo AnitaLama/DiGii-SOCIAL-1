@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import LoginActions from '../Redux/LoginRedux';
 import ErrorActions from '../Redux/ErrorRedux';
-// import OptionActions from '../Redux/OptionRedux';
+import OptionActions from '../Redux/OptionRedux';
 import history from '../utils/history';
 import { DEV_URL } from '../utils/config';
 
@@ -13,7 +13,6 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
-    console.log('saga', data);
     if (data.success) {
       yield put(
         LoginActions.onFormLoginSuccess({
@@ -22,7 +21,9 @@ export function* onLoginRequest(action) {
           ...data.replyCounts
         })
       );
-      // yield put()
+      yield put(
+        OptionActions.onGetAllOptionsSuccess({ options: data.options })
+      );
       yield localStorage.setItem('user', JSON.stringify(data.result));
       yield localStorage.setItem('token', data.token);
       history.push('/messageboard');

@@ -159,7 +159,7 @@ const updateTotalActivities = state => ({
   ...state,
   user: {
     ...state.user,
-    totalActivities: state.totalActivities + 1
+    totalActivities: state.user.totalActivities + 1
   }
 });
 

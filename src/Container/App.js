@@ -38,10 +38,10 @@ class ActualRoute extends React.Component {
   //   NProgress.done();
   // }
   //
-  // componentWillUnmount() {
-  //   console.log('cwu');
-  //   NProgress.start();
-  // }
+  componentWillUnmount() {
+    console.log('cwu');
+    // NProgress.start();
+  }
 
   componentDidMount() {}
 

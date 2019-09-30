@@ -23,6 +23,10 @@ class TextPost extends Component {
     onGetStrikesCountOfAUser({ isStudent, id });
   }
 
+  componentWillUnmount() {
+    console.log('componnetwillunmount activated');
+  }
+
   handlePostText = e => {
     const { handlePostText, user, onGetStrikesCountOfAUser } = this.props;
     const { isStudent, id } = user.user;
@@ -52,12 +56,15 @@ class TextPost extends Component {
       onPostSubmit,
       showWarning,
       resetPostText,
-      post
+      post,
+      options,
+      updateTotalActivities
     } = this.props;
     const { page, pageSize } = post;
 
     const { postTypeId } = this.state;
-    const { isStudent, id } = user.user;
+    const { isStudent, id, totalActivities } = user.user;
+    const { educationalChallengeActivityCount } = options;
     const { strikes } = strike;
     const result = submitPost();
     // onGetStrikesCountOfAUser({ isStudent, id });
@@ -69,6 +76,8 @@ class TextPost extends Component {
       }
       showWarning(strikes, isStudent, result, null);
       isBad = 1;
+    } else {
+      updateTotalActivities();
     }
     const postToBeSubmitted = {
       postPostTypeId: postTypeId,
@@ -83,8 +92,13 @@ class TextPost extends Component {
       page,
       pageSize
     };
-    if (postText.trim().length > 0) {
+    if (postText.trim().length > 0 && postText.trim().length < 250) {
+      if (totalActivities === educationalChallengeActivityCount - 1) {
+        console.log('show educational challenge now');
+      }
+
       onPostSubmit(postToBeSubmitted);
+      console.log('props values', user, options);
       setTimeout(() => {
         resetPostText();
       }, 1500);
@@ -135,10 +149,12 @@ TextPost.propTypes = {
 const mapStateToProps = state => ({
   user: state.user,
   post: state.post,
-  strike: state.strike
+  strike: state.strike,
+  options: state.options.options
 });
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
+  updateTotalActivities: () => dispatch(LoginActions.updateTotalActivities()),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
   onBlockUser: value => dispatch(LoginActions.onBlockUser(value))

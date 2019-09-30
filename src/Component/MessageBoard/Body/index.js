@@ -19,6 +19,10 @@ class Body extends Component {
     }
   }
 
+  componentWillUnmount() {
+    console.log('component will unmount messageboard');
+  }
+
   hideNotification = () => {
     const { disableTheReportNotification } = this.props;
     disableTheReportNotification();

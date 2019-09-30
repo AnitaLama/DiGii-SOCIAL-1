@@ -33,7 +33,7 @@ const allReducers = combineReducers({
   school: SchoolRedux.reducer,
   helper: HelperRedux.reducer,
   report: ReportRedux.reducer,
-  config: OptionRedux.reducer
+  options: OptionRedux.reducer
 });
 
 export default allReducers;

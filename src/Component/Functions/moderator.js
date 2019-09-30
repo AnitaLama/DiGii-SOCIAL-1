@@ -51,7 +51,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     handlePostText = e => {
       const value = e.target && e.target.value ? e.target.value : e;
-      const actualValue = value.length > 0 ? value.trim() : '';
+      const actualValue = value.length > 0 ? value : '';
 
       if (actualValue && actualValue.length > 250) {
         this.setState({

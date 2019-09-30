@@ -72,8 +72,8 @@ class SinglePost extends Component {
 
     // Display total count of reactions
 
-    const { data, onHandleLikeReaction } = this.props;
-    onHandleLikeReaction();
+    const { data } = this.props;
+    // onHandleLikeReaction();
     const { post_activities } = data;
     const reactioncount = [];
     post_activities
@@ -91,6 +91,10 @@ class SinglePost extends Component {
         && reactioncount.push(item.postActivityActivityTypeId)
     );
     this.setState({ totalReactionCounts: reactioncount.length });
+  }
+
+  componentWillUnmount() {
+    console.log('cwu single post');
   }
 
   selectPollAnswer = (option, selected) => {
@@ -213,9 +217,11 @@ class SinglePost extends Component {
                   value => value.postActivityActivityTypeId
                       === reaction.activityTypeId
                     && (value.postActivityIsStudent ? (
-                      <li>{value.student.studentUsername}</li>
+                      <li key={value.postActivityId}>
+                        {value.student.studentUsername}
+                      </li>
                     ) : (
-                      <li>{value.user.userName}</li>
+                      <li key={value.postActivityId}>{value.user.userName}</li>
                     ))
                 )}
               </div>
@@ -347,7 +353,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRespondToPoll: value => dispatch(PostActions.onRespondToPoll(value)),
-  onHandleLikeReaction: value => dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value)),
+  // onHandleLikeReaction: value => dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value)),
   onSelectReaction: value => dispatch(PostActivityAction.onSelectReaction(value))
 });
 
