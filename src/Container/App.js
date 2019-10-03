@@ -115,7 +115,7 @@ const Routes = props => (
     ))}
     <Route path="/" component={HomePage} exact />
     <Route path="/student/login" component={StudentLogin} exact />
-    <Route path="*" component={ErrorPage} />
+    <Route path="*" component={ErrorPage} exact />
   </Switch>
 );
 //

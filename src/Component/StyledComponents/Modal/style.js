@@ -69,13 +69,13 @@ const Message = styled.div`
   }
 `;
 const ButtonWrapper = styled.div`
-  margin: auto;
   text-align: center;
   button {
     width: 30% !important;
   }
-  display: flex;
-  justify-content: space-around;
+  // margin: auto;
+  // display: flex;
+  // justify-content: space-around;
 `;
 
 const Points = styled.div`

@@ -8,7 +8,10 @@ import { Colors } from '../../../Theme';
 import { ShowFeed } from '../../Functions';
 
 const { tint, peach } = Colors.colors;
-
+const deleteModalStyle = {
+  display: 'flex',
+  flexDirection: 'column'
+};
 class DeletePostModal extends Component {
   getContent = () => {
     const { post, user } = this.props;
@@ -32,7 +35,7 @@ class DeletePostModal extends Component {
     const { avatar } = user;
     return (
       <ModalContainer>
-        <ModalBox>
+        <ModalBox style={deleteModalStyle}>
           <Header>
             <div>
               <Avatar avatar={avatar} height={60} />

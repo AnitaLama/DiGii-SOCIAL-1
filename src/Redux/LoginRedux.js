@@ -46,7 +46,7 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-const onFormLogin = (state, action) => ({ ...state, loading: false });
+const onFormLogin = state => ({ ...state, loading: false });
 const onFormLoginSuccess = (state, action) => {
   const {
     userId,
@@ -63,6 +63,7 @@ const onFormLoginSuccess = (state, action) => {
   // const lastname = user_profile.userProfileLastname || '';
   // const { user_groups } = user_profile;
   // const { ug_scg_id } = user_groups[0];
+  console.log(action);
   const groups = [];
   user_groups.map(item => {
     groups.push(item.school_group.schoolGroupsId);
@@ -94,7 +95,7 @@ const onFormLoginSuccess = (state, action) => {
 //   return { ...state, error: data, loading: false };
 // };
 
-const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
+const onStudentFormLogin = state => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const groups = [];
   const {
@@ -111,13 +112,6 @@ const onStudentFormLoginSuccess = (state, action) => {
   } = action.data;
   const { school_group } = student_group;
   const { schoolGroupsId } = school_group;
-  // const isFirstTimeAskingHelpFor = !!helpsAsked.map(
-  //   item => item.needHelpIdFor || item.needHelpForName
-  // );
-  // const isFirstTimeAskingHelpFrom = !!helpsAsked.map(
-  //   item => item.needhelpFromId || item.needhelpFromName
-  // );
-  // console.log('reducer:', isFirstTimeAskingHelpFor, isFirstTimeAskingHelpFrom);
   groups.push(schoolGroupsId);
   return {
     ...state,
@@ -168,7 +162,6 @@ const updateTotalActivities = state => ({
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FORM_LOGIN_REQUEST]: onFormLogin,
   [Types.ON_FORM_LOGIN_SUCCESS]: onFormLoginSuccess,
-  // [Types.ON_FORM_LOGIN_FAILURE]: onFormLoginFailure,
   [Types.ON_STUDENT_FORM_LOGIN_REQUEST]: onStudentFormLogin,
   [Types.ON_STUDENT_FORM_LOGIN_SUCCESS]: onStudentFormLoginSuccess,
   [Types.ON_LOG_OUT]: onLogOut,

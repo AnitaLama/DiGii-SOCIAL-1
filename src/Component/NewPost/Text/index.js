@@ -23,6 +23,14 @@ class TextPost extends Component {
     onGetStrikesCountOfAUser({ isStudent, id });
   }
 
+  componentDidUpdate(prevProps) {
+    console.log(
+      'component did update',
+      this.props.user.user.totalActivities,
+      prevProps.user.user.totalActivities
+    );
+  }
+
   componentWillUnmount() {
     console.log('componnetwillunmount activated');
   }
@@ -65,6 +73,12 @@ class TextPost extends Component {
     const { postTypeId } = this.state;
     const { isStudent, id, totalActivities } = user.user;
     const { educationalChallengeActivityCount } = options;
+    console.log(
+      'OPTIONS>>>>',
+      totalActivities,
+      educationalChallengeActivityCount
+    );
+    const showEducationalChallenge = totalActivities % (educationalChallengeActivityCount - 1) === 0;
     const { strikes } = strike;
     const result = submitPost();
     // onGetStrikesCountOfAUser({ isStudent, id });
@@ -93,15 +107,22 @@ class TextPost extends Component {
       pageSize
     };
     if (postText.trim().length > 0 && postText.trim().length < 250) {
-      if (totalActivities === educationalChallengeActivityCount - 1) {
-        console.log('show educational challenge now');
+      if (totalActivities % (educationalChallengeActivityCount - 1) === 0) {
+        // console.log('show educational challenge now');
+        this.props.showEducationalChallenge();
+        setTimeout(() => {
+          onPostSubmit(postToBeSubmitted);
+          resetPostText();
+        }, 1500);
+      } else {
+        onPostSubmit(postToBeSubmitted);
+
+        setTimeout(() => {
+          resetPostText();
+        }, 1500);
       }
 
-      onPostSubmit(postToBeSubmitted);
       console.log('props values', user, options);
-      setTimeout(() => {
-        resetPostText();
-      }, 1500);
     }
   };
 

@@ -13,6 +13,7 @@ export function* onLoginRequest(action) {
       `${DEV_URL}/verifyUser`,
       action.data
     );
+    console.log('saga login data', data);
     if (data.success) {
       yield put(
         LoginActions.onFormLoginSuccess({

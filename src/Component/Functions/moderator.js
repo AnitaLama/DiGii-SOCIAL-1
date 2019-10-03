@@ -21,7 +21,8 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       imageName: null,
       feeling: null,
       banner: null,
-      points: null
+      points: null,
+      isEducationalChallengeModal: false
     };
   }
 
@@ -47,6 +48,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
 
     showEducationalChallenge = () => {
       console.log('show educational challenge to the student');
+      this.setState({ isEducationalChallengeModal: true });
     };
 
     handlePostText = e => {
@@ -171,6 +173,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
             saveImage={this.saveImage}
             saveFeelings={this.saveFeelings}
             saveBanner={this.saveBanner}
+            showEducationalChallenge={this.showEducationalChallenge}
           />
           {isModalVisible && (
             <StrikesModal
