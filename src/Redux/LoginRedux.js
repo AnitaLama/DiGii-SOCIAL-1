@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   onLogOut: [],
   onStudentFormLoginRequest: ['data'],
   onStudentFormLoginSuccess: ['data'],
+  onEnableFirstTimePosting: [],
   onDisableFirstTimePosting: [],
   onBlockUser: ['data'],
   onSaveMyAvatar: ['data'],
@@ -59,11 +60,6 @@ const onFormLoginSuccess = (state, action) => {
     postCounts,
     replyCounts
   } = action.data;
-  // const firstname = user_profile.userProfileFirstname || '';
-  // const lastname = user_profile.userProfileLastname || '';
-  // const { user_groups } = user_profile;
-  // const { ug_scg_id } = user_groups[0];
-  console.log(action);
   const groups = [];
   user_groups.map(item => {
     groups.push(item.school_group.schoolGroupsId);
@@ -84,18 +80,12 @@ const onFormLoginSuccess = (state, action) => {
       groupId: groups,
       avatarId: userAvatarId,
       avatar,
-      isFirstTimePosting: !(postCounts > 0),
+      isFirstTimePosting: postCounts === 0,
       totalActivities: postCounts + replyCounts
     }
   };
 };
-
-// const onFormLoginFailure = (state, action) => {
-//   const { data } = action;
-//   return { ...state, error: data, loading: false };
-// };
-
-const onStudentFormLogin = state => ({ ...state, loading: false });
+const onStudentFormLogin = (state, action) => ({ ...state, loading: false });
 const onStudentFormLoginSuccess = (state, action) => {
   const groups = [];
   const {
@@ -126,7 +116,7 @@ const onStudentFormLoginSuccess = (state, action) => {
       groupId: groups,
       avatarId: studentAvatarId,
       avatar,
-      isFirstTimePosting: !(postCounts > 0),
+      isFirstTimePosting: postCounts === 0,
       totalActivities: postCounts + replyCounts
     },
     error: null
@@ -134,6 +124,15 @@ const onStudentFormLoginSuccess = (state, action) => {
 };
 
 const onLogOut = () => INITIAL_STATE;
+
+const onEnableFirstTimePosting = state => ({
+  ...state,
+  user: {
+    ...state.user,
+    isFirstTimePosting: true,
+    error: null
+  }
+});
 
 const onDisableFirstTimePosting = state => ({
   ...state,

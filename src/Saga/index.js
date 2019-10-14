@@ -60,6 +60,8 @@ import {
 } from './HelperSaga';
 import onReportTheArticle from './ReportSaga';
 
+import onReportAnArticle from './ReportSaga';
+
 export default function* root() {
   yield all([
     takeLatest(TestTypes.ON_TEST_REQUEST, testFunction),

@@ -5,9 +5,14 @@ import PropTypes from 'prop-types';
 import { FormTextArea, Avatar } from '../StyledComponents';
 import { Colors, fontSize, flexCentering } from '../../Theme';
 
+const PostContainer = styled.div`
+  word-break: break-word;
+`;
+
 const ShowFeedWrapper = styled.div`
   width: 100%;
 `;
+
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
 const { snow } = Colors.colors;
@@ -249,11 +254,11 @@ class ShowData extends Component {
     }
     switch (type) {
       case 'text':
-        return <div>{postText}</div>;
+        return <PostContainer>{postText}</PostContainer>;
       case 'gif':
         return (
           <div>
-            <div className="captions">{postText}</div>
+            <PostContainer className="captions">{postText}</PostContainer>
             <Gif src={`${postBody}`} />
           </div>
         );
@@ -262,14 +267,14 @@ class ShowData extends Component {
         if (postIsImage) {
           return (
             <div>
-              <div className="captions">{postText}</div>
+              <PostContainer className="captions">{postText}</PostContainer>
               <Gif src={`${postBody}`} />
             </div>
           );
         }
         return (
           <div>
-            <div className="captions">{postText}</div>
+            <PostContainer className="captions">{postText}</PostContainer>
             <Video src={`${postBody}`} controls />
           </div>
         );
@@ -281,7 +286,9 @@ class ShowData extends Component {
         isStudent = isStudent ? 1 : 0;
         return (
           <div>
-            <div className="captions">{pollOptionQuestion}</div>
+            <PostContainer className="captions">
+              {pollOptionQuestion}
+            </PostContainer>
             {poll_options.map((option, i) => {
               const { poll_responses } = option;
               const hasUserVoted = poll_responses.find(
@@ -362,11 +369,11 @@ class ShowData extends Component {
         // const { notificationIsStudent, student, user } = notifications;
         // console.log(notifications);
         // <div>{notificationIsStudent ? student.studentUsername : user.userName}</div>
-        return <div>{postText}</div>;
+        return <PostContainer>{postText}</PostContainer>;
       case 'feeling':
-        return <div>{postBody}</div>;
+        return <PostContainer>{postBody}</PostContainer>;
       default:
-        return <div>{postText}</div>;
+        return <PostContainer>{postText}</PostContainer>;
     }
   };
 

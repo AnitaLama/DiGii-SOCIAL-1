@@ -10,7 +10,6 @@ export function* onGetStrikesCountOfAUser(action) {
       `${DEV_URL}/strikes/getUserStrikeCount`,
       action.data
     );
-    console.log('data', data.result);
     if (data.success) {
       yield put(StrikeActions.onGetStrikesCountOfAUserSuccess(data.result));
     } else {

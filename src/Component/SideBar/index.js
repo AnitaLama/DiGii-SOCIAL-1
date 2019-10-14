@@ -24,6 +24,7 @@ const SideBarMenus = [
   { menu: 'Quizzes', icon: Images.digii5.Quiz },
   { menu: 'Report', icon: Images.digii5.Video }
 ];
+
 class SideBar extends Component {
   constructor() {
     super();

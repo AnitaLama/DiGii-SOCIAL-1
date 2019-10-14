@@ -287,7 +287,8 @@ Author.propTypes = {
   data: PropTypes.object,
   users: PropTypes.object,
   onDelete: PropTypes.func,
-  onEditPost: PropTypes.func
+  onEditPost: PropTypes.func,
+  reportAnArticle: PropTypes.func
 };
 const mapStateToProps = state => ({
   users: state.user.user,
