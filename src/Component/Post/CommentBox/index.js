@@ -61,7 +61,8 @@ class CommentBox extends Component {
   }
 
   componentWillUnmount() {
-    // console.log('UNMOUNTED');
+    this.props.hideCommentBox();
+    console.log('UNMOUNTED');
   }
 
   onFocus = () => {
@@ -87,7 +88,9 @@ class CommentBox extends Component {
     // if (e.key === '@') {
     //   this.setState({ showUsers: true });
     // }
+    const { hideCommentBox } = this.props;
     if (e.key === 'Enter') {
+      hideCommentBox();
       this.handleCommentReply();
     }
   };
@@ -144,7 +147,8 @@ class CommentBox extends Component {
     };
     if (postText.length > 0 && postText.length < 250) {
       onSubmitComment(comment);
-      // onGetStrikesCountOfAUser({ isStudent, id });
+      onGetStrikesCountOfAUser({ isStudent, id });
+      this.props.hideCommentBox();
     }
   };
 
@@ -322,93 +326,107 @@ class CommentBox extends Component {
         }}
       >
         <Avatar avatar={avatar} height={20} />
-        <div onKeyDown={this.handleKeyDown}>
-          <Mentions
-            style={{ width: '100%' }}
-            onChange={this.handleComment}
-            onSelect={this.onSelect}
-            placeholder="Write a comment"
-            ref={r => {
-              this.commentInput = r;
-            }}
-            value={postText}
-          >
-            {usersList.map(users => (
-              <Option
-                key={users.userName || users.studentUsername}
-                value={users.userName || users.studentUsername}
-                // onClick={() => {
-                //   this.userSelected(users);
-                // }}
-              >
-                {users.userName || users.studentUsername}
-              </Option>
-            ))}
-          </Mentions>
-        </div>
-
-        <GifContainer
+        <div
           style={{
-            bottom: '30px',
-            display: showFeelings ? 'block' : 'none'
+            display: 'grid',
+            gridTemplateColumns: 'auto auto'
           }}
         >
-          <FeelingsDiv>
-            {FeelingsList.map(feeling => (
-              <FeelingsButton
-                onClick={() => {
-                  this.handleClickOnFeeling(feeling);
-                }}
-                key={feeling.name}
-              >
-                {feeling.name}
-                {feeling.emoji}
-              </FeelingsButton>
-            ))}
-          </FeelingsDiv>
-        </GifContainer>
-        <GifContainer
-          style={{
-            display: showGifInput ? 'block' : 'none'
-          }}
-        >
-          {this.getGif()}
           <div>
-            <FormInput
-              placeholder="Find Gif"
-              onChange={this.handleGifText}
-              onBlur={this.onBlur}
-              ref={r => {
-                this.gifInput = r;
+            <div onKeyDown={this.handleKeyDown}>
+              <Mentions
+                onChange={this.handleComment}
+                onSelect={this.onSelect}
+                placeholder="Write a comment"
+                ref={r => {
+                  this.commentInput = r;
+                }}
+                value={postText}
+                style={{
+                  overflow: 'hidden'
+                }}
+              >
+                {usersList.map(users => (
+                  <Option
+                    key={users.userName || users.studentUsername}
+                    value={users.userName || users.studentUsername}
+                    // onClick={() => {
+                    //   this.userSelected(users);
+                    // }}
+                  >
+                    {users.userName || users.studentUsername}
+                  </Option>
+                ))}
+              </Mentions>
+            </div>
+
+            <GifContainer
+              style={{
+                bottom: '30px',
+                display: showFeelings ? 'block' : 'none'
               }}
-            />
-            <Button onClick={this.findGif} className="findButton rounded short">
-              Find
-            </Button>
+            >
+              <FeelingsDiv>
+                {FeelingsList.map(feeling => (
+                  <FeelingsButton
+                    onClick={() => {
+                      this.handleClickOnFeeling(feeling);
+                    }}
+                    key={feeling.name}
+                  >
+                    {feeling.name}
+                    {feeling.emoji}
+                  </FeelingsButton>
+                ))}
+              </FeelingsDiv>
+            </GifContainer>
+            <GifContainer
+              style={{
+                display: showGifInput ? 'block' : 'none'
+              }}
+            >
+              {this.getGif()}
+              <div>
+                <FormInput
+                  placeholder="Find Gif"
+                  onChange={this.handleGifText}
+                  onBlur={this.onBlur}
+                  ref={r => {
+                    this.gifInput = r;
+                  }}
+                />
+                <Button
+                  onClick={this.findGif}
+                  className="findButton rounded short"
+                >
+                  Find
+                </Button>
+              </div>
+            </GifContainer>
           </div>
-        </GifContainer>
-        <div className="buttonDiv">
-          <input
-            type="file"
-            multiple={false}
-            ref={r => {
-              this.fileInput = r;
-            }}
-            style={{ display: 'none' }}
-            onChange={e => this.selectImage({ e, data, user })}
-          />
-          <button type="submit" onClick={this.handleSelectImage}>
-            <FaImage />
-          </button>
-          <button type="submit" onClick={this.handleGifButtonClick}>
-            <MdGif />
-          </button>
-          <button type="submit" onClick={this.handleFeelingsClick}>
-            <FaSmile />
-          </button>
-          <button type="submit" onClick={this.handleCommentReply}>
-            <FaCaretRight />
-          </button>
+          <div className="buttonDiv">
+            <input
+              type="file"
+              multiple={false}
+              ref={r => {
+                this.fileInput = r;
+              }}
+              style={{ display: 'none', width: 'auto' }}
+              onChange={e => this.selectImage({ e, data, user })}
+            />
+            <button type="submit" onClick={this.handleSelectImage}>
+              <FaImage />
+            </button>
+            <button type="submit" onClick={this.handleGifButtonClick}>
+              <MdGif />
+            </button>
+            <button type="submit" onClick={this.handleFeelingsClick}>
+              <FaSmile />
+            </button>
+            <button type="submit" onClick={this.handleCommentReply}>
+              <FaCaretRight />
+            </button>
+          </div>
         </div>
       </CommentBoxWrapper>
     );

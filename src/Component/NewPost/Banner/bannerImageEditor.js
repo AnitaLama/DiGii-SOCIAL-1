@@ -119,17 +119,16 @@ class BannerImageModal extends Component {
                 onChange={this.handleTextChange}
                 placeholder="What do you want to say?"
                 onFocus={this.onFocus}
+                value={postText}
               />
               <ImageBackground>
                 <Image src={`${url}/${data.Key}`} />
                 <ImageOverlay
                   style={{
-                    fontSize:
-                      postText.length < 30
-                        ? '55px'
-                        : postText.length < 80
-                          ? '40px'
-                          : '35px'
+                    fontSize: '0.75rem',
+                    lineHeight: '0.75rem',
+                    wordBreak: 'break-all',
+                    textAlign: 'center'
                   }}
                 >
                   {postText}

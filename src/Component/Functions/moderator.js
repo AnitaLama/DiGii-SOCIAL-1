@@ -55,13 +55,13 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
       const value = e.target && e.target.value ? e.target.value : e;
       const actualValue = value.length > 0 ? value : '';
 
-      if (actualValue && actualValue.length > 250) {
+      if (actualValue && actualValue.length >= 250) {
         this.setState({
           isBasicModalVisible: true,
           alertMessage: 'Please limit the number of characters to 250'
         });
       }
-      this.setState({ postText: actualValue });
+      this.setState({ postText: actualValue.substring(0, 250) });
     };
 
     submitPost = () => {
@@ -85,8 +85,6 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
           points: '-5'
         });
       } else {
-        console.log('strikes count', count);
-
         let index = (count % strikeCount) + 1;
         index -= 1;
         this.setState({

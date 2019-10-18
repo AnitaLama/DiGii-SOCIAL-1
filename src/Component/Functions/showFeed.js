@@ -209,17 +209,18 @@ class ShowData extends Component {
                   <span
                     style={{
                       fontSize:
-                        text.length < 30
-                          ? '45px'
-                          : text.length < 80
-                            ? '30px'
-                            : '25px',
+                        postText.length < 30
+                          ? '1.5rem'
+                          : postText.length < 80
+                            ? '0.95rem'
+                            : '0.8rem',
                       lineHeight:
-                        text.length < 30
-                          ? '40px'
-                          : text.length < 80
-                            ? '30px'
-                            : '25px'
+                        postText.length < 30
+                          ? '1.5rem'
+                          : postText.length < 80
+                            ? '0.95rem'
+                            : '0.8rem',
+                      wordBreak: 'break-word'
                     }}
                   >
                     {' '}
@@ -347,16 +348,17 @@ class ShowData extends Component {
                 style={{
                   fontSize:
                     postText.length < 30
-                      ? '45px'
+                      ? '1.5rem'
                       : postText.length < 80
-                        ? '30px'
-                        : '25px',
+                        ? '0.95rem'
+                        : '0.8rem',
                   lineHeight:
                     postText.length < 30
-                      ? '40px'
+                      ? '1.5rem'
                       : postText.length < 80
-                        ? '30px'
-                        : '25px'
+                        ? '0.95rem'
+                        : '0.8rem',
+                  wordBreak: 'break-word'
                 }}
               >
                 {' '}

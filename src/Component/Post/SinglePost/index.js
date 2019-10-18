@@ -164,6 +164,8 @@ class SinglePost extends Component {
     const selectedReaction = likeReactions.find(
       item => item.activityTypeName === value
     );
+    console.log({ likeReactions });
+    console.log({ selectedReaction });
     const values = {
       postActivityActivityTypeId: selectedReaction.activityTypeId,
       postActivityActorId: id,
@@ -234,7 +236,7 @@ class SinglePost extends Component {
   };
 
   hideCommentBox = () => {
-    // this.setState({ showCommentBox: false });
+    this.setState({ showCommentBox: false });
   };
 
   render() {
@@ -337,7 +339,9 @@ class SinglePost extends Component {
               ) : null))}
           </div>
           <div className="commentBox">
-            {showCommentBox && <CommentBox data={data} />}
+            {showCommentBox && (
+              <CommentBox data={data} hideCommentBox={this.hideCommentBox} />
+            )}
           </div>
         </CommentContainer>
       </PostWrapper>

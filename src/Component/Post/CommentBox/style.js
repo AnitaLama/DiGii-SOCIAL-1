@@ -55,7 +55,8 @@ const CommentBoxWrapper = styled.div`
     padding: 10px;
   }
   .buttonDiv {
-    position: absolute;
+    // position: absolute;
+    display: flex;
     right: 0;
     top: 0;
     bottom: 0;

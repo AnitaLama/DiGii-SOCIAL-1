@@ -31,6 +31,8 @@ export function* onGetPostActivitiesReactionTypes(action) {
       `${DEV_URL}/postActivity/findActivityTypes`,
       action.data
     );
+    console.log('saga post reaction types');
+    console.log(data);
     if (data.success) {
       yield put(
         PostActivityActions.onGetPostActivitiesReactionTypesSuccess(data.result)

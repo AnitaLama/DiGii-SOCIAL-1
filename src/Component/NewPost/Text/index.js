@@ -73,11 +73,7 @@ class TextPost extends Component {
     const { postTypeId } = this.state;
     const { isStudent, id, totalActivities } = user.user;
     const { educationalChallengeActivityCount } = options;
-    console.log(
-      'OPTIONS>>>>',
-      totalActivities,
-      educationalChallengeActivityCount
-    );
+
     const showEducationalChallenge = totalActivities % (educationalChallengeActivityCount - 1) === 0;
     const { strikes } = strike;
     const result = submitPost();
@@ -138,6 +134,7 @@ class TextPost extends Component {
           onChange={this.handlePostText}
           onFocus={this.onFocus}
           value={postText}
+          ref={r => (this.inputArea = r)}
         />
 
         <div>
