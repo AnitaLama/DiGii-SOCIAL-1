@@ -145,7 +145,7 @@ class CommentBox extends Component {
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
-    if (postText.length > 0 && postText.length < 250) {
+    if (postText.length > 0 && postText.length <= 250) {
       onSubmitComment(comment);
       onGetStrikesCountOfAUser({ isStudent, id });
       this.props.hideCommentBox();

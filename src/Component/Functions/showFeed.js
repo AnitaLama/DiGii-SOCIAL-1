@@ -302,7 +302,7 @@ class ShowData extends Component {
               return (
                 <PollWrapper
                   onClick={() => {
-                    selectPollAnswer(option, hasUserVoted);
+                    selectPollAnswer(post, option, hasUserVoted);
                   }}
                   key={`${option}${i}`}
                 >

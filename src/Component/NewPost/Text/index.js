@@ -102,7 +102,7 @@ class TextPost extends Component {
       page,
       pageSize
     };
-    if (postText.trim().length > 0 && postText.trim().length < 250) {
+    if (postText.trim().length > 0 && postText.trim().length <= 250) {
       if (totalActivities % (educationalChallengeActivityCount - 1) === 0) {
         // console.log('show educational challenge now');
         this.props.showEducationalChallenge();

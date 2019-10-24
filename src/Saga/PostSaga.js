@@ -62,9 +62,24 @@ export function* onPostSubmit(action) {
 export function* onFindGif(action) {
   try {
     // axios.defaults.headers.common =
+    // const { data } = yield call(
+    //   axios,
+    //   `http://api.giphy.com/v1/gifs/search?rating=g&q=${
+    //     action.data
+    //   }&api_key=${GIPHY_API}`,
+    //   {
+    //     transformRequest: [
+    //       (data, headers) => {
+    //         delete headers.common.Authorization;
+    //         return data;
+    //       }
+    //     ]
+    //   }
+    // );
+
     const { data } = yield call(
       axios,
-      `http://api.giphy.com/v1/gifs/search?q=${
+      `http://api.giphy.com/v1/gifs/search?rating=g&q=${
         action.data
       }&api_key=${GIPHY_API}`,
       {
@@ -93,7 +108,7 @@ export function* onFindGifForComments(action) {
     console.log('saga gif comment search');
     const { data } = yield call(
       axios,
-      `http://api.giphy.com/v1/gifs/search?q=${text}&api_key=${GIPHY_API}&limit=${limit}`,
+      `http://api.giphy.com/v1/gifs/search?rating=g&q=${text}&api_key=${GIPHY_API}&limit=${limit}`,
       {
         transformRequest: [
           (data, headers) => {

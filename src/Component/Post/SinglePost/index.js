@@ -93,21 +93,21 @@ class SinglePost extends Component {
     this.setState({ totalReactionCounts: reactioncount.length });
   }
 
-  componentWillUnmount() {
-    console.log('cwu single post');
-  }
-
-  selectPollAnswer = (option, selected) => {
+  selectPollAnswer = (post, option, selected) => {
     const { pollOptionPollId, pollOptionId } = option;
     const { user, onRespondToPoll } = this.props;
+    console.log('POST>>>>>>>>>>>>>>>>>>>>>>>>>>', post);
+    const { postId } = post;
     const { isStudent, id } = user.user;
     const data = {
       pollResponsePollId: pollOptionPollId,
       pollResponsePollOptionId: pollOptionId,
       pollResponseIsStudent: isStudent ? 1 : 0,
       pollResponseCommentatorId: id,
-      pollResponseId: selected ? selected.pollResponseId : null
+      pollResponseId: selected ? selected.pollResponseId : null,
+      postId
     };
+    console.log('POLL RESPONSE POST>>>>>>>>>>>>', data);
     onRespondToPoll(data);
   };
 
@@ -164,8 +164,6 @@ class SinglePost extends Component {
     const selectedReaction = likeReactions.find(
       item => item.activityTypeName === value
     );
-    console.log({ likeReactions });
-    console.log({ selectedReaction });
     const values = {
       postActivityActivityTypeId: selectedReaction.activityTypeId,
       postActivityActorId: id,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { notification } from 'antd';
-import NProgress from 'nprogress';
+// import NProgress from 'nprogress';
 import { css } from '@emotion/core';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';

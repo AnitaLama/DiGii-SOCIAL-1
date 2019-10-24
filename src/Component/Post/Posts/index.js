@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import socketClient from 'socket.io-client';
 // import InfiniteScroll from 'react-infinite-scroll-component';
+import debounce from 'lodash.debounce';
 import PostAction from '../../../Redux/PostRedux';
 import SinglePost from '../SinglePost';
 import { SOCKET_URL } from '../../../utils/config';
@@ -14,9 +15,42 @@ class Posts extends Component {
   constructor() {
     super();
     this.state = {
-      posts: []
+      posts: [],
+      error: false,
+      hasMore: true,
+      isLoading: false,
+      page: 1
     };
     this.socket = socketClient(SOCKET_URL);
+    // const {
+    //   onFindPosts,
+    //   user,
+    //   post,
+    //   onGetPostActivitiesReactionTypes
+    // } = this.props;
+    // const { posts } = post;
+    // const { isStudent, id } = user.user;
+    window.onscroll = debounce(() => {
+      const {
+        loadUsers,
+        state: { error, isLoading, hasMore }
+      } = this;
+
+      if (error || isLoading || !hasMore) return;
+      console.log('LOADING>>>>> INNERHEIGHT', window.innerHeight);
+      console.log(
+        'LOADING>>>>>::::::: SCROLLTOP',
+        document.documentElement.scrollTop
+      );
+      if (
+        window.innerHeight + document.documentElement.scrollTop
+        === document.documentElement.offsetHeight
+      ) {
+        console.log('LOADING>>>reached bottom');
+        // onFindPosts({ isStudent, actorId: id });
+        // loadUsers();
+      }
+    }, 100);
   }
 
   componentWillMount() {
@@ -37,12 +71,29 @@ class Posts extends Component {
     const { user } = this.props;
     const { posts } = this.state;
     const { groupId } = user.user;
-    // //console.log('socket data user', user, this.socket);
 
     this.socket.on('posts', data => {
-      // console.log('data socket', data, groupId);
-      if (posts !== data.result && groupId.includes(data.group)) {
-        this.setState({ posts: data.result });
+      const { result, group } = data;
+      if (groupId.includes(group)) {
+        const checkIfPostExists = posts.find(
+          item => item.postId === result[0].postId
+        );
+        if (!checkIfPostExists) {
+          const newPostArray = this.state.posts;
+          newPostArray.push(result[0]);
+          this.setState({ posts: newPostArray });
+        } else {
+          const newPostArray = JSON.parse(JSON.stringify(this.state.posts)).map(
+            item => {
+              if (item.postId === result[0].postId) {
+                return result[0];
+              }
+              return item;
+            }
+          );
+
+          this.setState({ posts: newPostArray });
+        }
       }
     });
   }
@@ -59,7 +110,6 @@ class Posts extends Component {
   }
 
   componentWillUnmount() {
-    console.log('posts componentwillunmount');
     this.socket = null;
   }
 
@@ -73,15 +123,6 @@ class Posts extends Component {
         {post.error && <ErrorAlertMessage error={post.error} />}
         {posts.length > 0
           && posts.map((item, i) => {
-            // //console.log(item.postIsStudent && item.student);
-            // //console.log(!item.postIsStudent, item.user);
-            // {
-            //   //console.log(
-            //     item.postId,
-            //     (item.postIsStudent && item.student)
-            //       || (!item.postIsStudent && item.user)
-            //   );
-            // }
             if (item.postIsDeleted || item.postIsBad) {
               return <div key={item + i} />;
             }
@@ -92,13 +133,6 @@ class Posts extends Component {
               return <SinglePost key={item + i} data={item} />;
             }
             return true;
-
-            // return (!item.isStudent && item.user)
-            //   || (item.isStudent && item.student) ? (
-            //     <SinglePost key={item + i} data={item} />
-            //   ) : (
-            //     <div key={item + i} />
-            //   );
           })}
       </div>
     );
