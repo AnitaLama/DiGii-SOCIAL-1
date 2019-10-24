@@ -125,7 +125,7 @@ const onFindPostsSuccess = (state, action) => {
   });
   return {
     ...state,
-    posts: action.data,
+    posts: [...state.posts, ...action.data],
     gif: [],
     loading: false,
     posting: false

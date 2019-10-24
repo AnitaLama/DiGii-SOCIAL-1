@@ -34,7 +34,7 @@ import rootReducer from './index';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['error', 'group', 'tutorial']
+  blacklist: ['error', 'group', 'tutorial', 'post']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

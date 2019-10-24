@@ -37,21 +37,43 @@ class Posts extends Component {
       } = this;
 
       if (error || isLoading || !hasMore) return;
-      console.log('LOADING>>>>> INNERHEIGHT', window.innerHeight);
+      // console.log(
+      //   'LOADING>>>>> INNERHEIGHT',
+      //   window.innerHeight,
+      //   document.documentElement.scrollTop,
+      //   document.documentElement.offsetHeight
+      // );
       console.log(
-        'LOADING>>>>>::::::: SCROLLTOP',
-        document.documentElement.scrollTop
+        'LOADING>>>>> INNERHEIGHT',
+        window.innerHeight,
+        document.documentElement.scrollTop,
+        document.body.offsetHeight,
+        this.postContainer.clientHeight,
+        document.body.scrollHeight
       );
+      const boxHeight = this.postContainer.clientHeight || document.body.scrollHeight;
+      const { scrollHeight } = document.body;
       if (
         window.innerHeight + document.documentElement.scrollTop
-        === document.documentElement.offsetHeight
+        >= boxHeight + 120
       ) {
         console.log('LOADING>>>reached bottom');
+        this.loadMorePosts();
         // onFindPosts({ isStudent, actorId: id });
         // loadUsers();
       }
     }, 100);
   }
+
+  loadMorePosts = () => {
+    console.log('LOAD MORE POSTS');
+    const { page } = this.state;
+    const { user, onFindPosts } = this.props;
+    const { isStudent, id } = user.user;
+
+    this.setState({ page: page + 1 });
+    onFindPosts({ isStudent, actorId: id, page: page + 1 });
+  };
 
   componentWillMount() {
     const {
@@ -119,7 +141,7 @@ class Posts extends Component {
     let { posts } = this.state;
     posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
     return (
-      <div key={posts}>
+      <div key={posts} ref={r => (this.postContainer = r)}>
         {post.error && <ErrorAlertMessage error={post.error} />}
         {posts.length > 0
           && posts.map((item, i) => {

@@ -30,9 +30,11 @@ export function* onFindPosts(action) {
     //   `${DEV_URL}/post/findFeedsOfAGroup/${page}/${pageSize}`,
     //   action.data
     // );
+    const limit = page || 1;
+    const offset = pageSize || 20;
     const { data } = yield call(
       axios.post,
-      `${DEV_URL}/post/findFeedsOfAGroup`,
+      `${DEV_URL}/post/findFeedsOfAGroups/${limit}/${offset}`,
       action.data
     );
     if (data.success) {
@@ -79,7 +81,7 @@ export function* onFindGif(action) {
 
     const { data } = yield call(
       axios,
-      `http://api.giphy.com/v1/gifs/search?rating=g&q=${
+      `http://api.giphy.com/v1/gifs/search?rating=tv-y&q=${
         action.data
       }&api_key=${GIPHY_API}`,
       {
