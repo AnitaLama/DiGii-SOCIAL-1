@@ -220,7 +220,7 @@ class ShowData extends Component {
                           : postText.length < 80
                             ? '0.95rem'
                             : '0.8rem',
-                      wordBreak: 'break-word'
+                      wordWrap: 'break-word'
                     }}
                   >
                     {' '}
@@ -358,7 +358,7 @@ class ShowData extends Component {
                       : postText.length < 80
                         ? '0.95rem'
                         : '0.8rem',
-                  wordBreak: 'break-word'
+                  wordWrap: 'break-word'
                 }}
               >
                 {' '}

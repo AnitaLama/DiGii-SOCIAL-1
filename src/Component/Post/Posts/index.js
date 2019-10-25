@@ -97,7 +97,7 @@ class Posts extends Component {
     this.socket.on('posts', data => {
       const { result, group } = data;
       if (groupId.includes(group)) {
-        const checkIfPostExists = posts.find(
+        const checkIfPostExists = this.state.posts.find(
           item => item.postId === result[0].postId
         );
         if (!checkIfPostExists) {
@@ -105,14 +105,12 @@ class Posts extends Component {
           newPostArray.push(result[0]);
           this.setState({ posts: newPostArray });
         } else {
-          const newPostArray = JSON.parse(JSON.stringify(this.state.posts)).map(
-            item => {
-              if (item.postId === result[0].postId) {
-                return result[0];
-              }
-              return item;
+          const newPostArray = this.state.posts.map(item => {
+            if (item.postId === result[0].postId) {
+              return result[0];
             }
-          );
+            return item;
+          });
 
           this.setState({ posts: newPostArray });
         }
