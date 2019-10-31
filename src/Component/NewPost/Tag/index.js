@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Tag } from 'antd';
+import { Tag, Mentions } from 'antd';
 import { FormTextArea, Button, Loader } from '../../StyledComponents';
 import GroupActions from '../../../Redux/GroupRedux';
 import PostActions from '../../../Redux/PostRedux';
@@ -17,6 +17,7 @@ import {
 } from './style';
 import { Colors } from '../../../Theme';
 
+const { Option } = Mentions;
 const { primary } = Colors.colors;
 
 class TagPost extends Component {
@@ -172,21 +173,35 @@ class TagPost extends Component {
     }));
   };
 
+  handleComment = e => {
+    console.log('tagged users removedUser', e);
+    this.setState({ taggedUsersString: e });
+  };
+
   remove = user => {
-    const { taggedUsers } = this.state;
+    const { taggedUsers, taggedUsersString } = this.state;
     const { group } = this.props;
-    const removedUser = group.users.find(
-      item => item.userName === user || item.studentUsername === user
-    );
+    const taggedUserName = `@${user.userName}`;
+
+    const tempTaggedUsersString = taggedUsersString;
+    tempTaggedUsersString.replace(`${taggedUserName} `, '');
+    console.log('selected user', user, tempTaggedUsersString);
+    // const removedUser = group.users.find(
+    //   item => item.userName === user || item.studentUsername === user
+    // );
+    // console.log('removedUser', removedUser, taggedUsers);
     const newArr = taggedUsers.filter(item => item !== user && item !== user);
     this.setState(prevState => ({
-      users: [...prevState.users, removedUser],
-      taggedUsers: newArr
+      // users: [...prevState.users, removedUser],
+      taggedUsers: newArr,
+      taggedUsersString: tempTaggedUsersString
     }));
   };
 
   render() {
-    const { showUsers, taggedUsers, users } = this.state;
+    const {
+      showUsers, taggedUsers, users, taggedUsersString
+    } = this.state;
     const { post } = this.props;
     return (
       <PostWrapperContainer>
@@ -218,14 +233,44 @@ class TagPost extends Component {
           {/* ---------SHOW USERS IN CHIPS-----------------*/}
 
           <ChipContainer>
-            <input
+            <Mentions
+              onChange={this.handleComment}
+              onSelect={this.onSelect}
+              placeholder="Tag a friend"
+              style={{
+                overflow: 'hidden',
+                color: 'transparent'
+              }}
+              value={taggedUsersString}
+            >
+              {users.length > 0
+                && users.map(user => (
+                  <Option
+                    key={user.userName || user.studentUsername}
+                    value={user.userName || user.studentUsername}
+                  >
+                    <span
+                      onClick={() => {
+                        this.selectUser(user);
+                      }}
+                      style={{
+                        display: 'block'
+                      }}
+                    >
+                      {' '}
+                      {user.userName || user.studentUsername}
+                    </span>
+                  </Option>
+                ))}
+            </Mentions>
+            {/* }  <input
               onFocus={() => {
                 this.setState({ showUsers: true });
               }}
               onBlur={() => {
                 // this.setState({ showUsers: false });
               }}
-            />
+            /> */}
             <ChipsWrapper>
               {taggedUsers.map((user, i) => (
                 <Tag
@@ -243,7 +288,7 @@ x
           </ChipContainer>
           {/* ---------LIST OF USERS IN THAT GROUP-----------------*/}
 
-          {showUsers && (
+          {/* }  {showUsers && (
             <div>
               {users.length > 0 && (
                 <UserList>
@@ -265,7 +310,7 @@ x
                 </UserList>
               )}
             </div>
-          )}
+          )} */}
         </UserListWrapper>
       </PostWrapperContainer>
     );

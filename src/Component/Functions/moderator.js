@@ -61,7 +61,10 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
           alertMessage: 'Please limit the number of characters to 250'
         });
       }
-      this.setState({ postText: actualValue.substring(0, 250) });
+      this.setState({
+        postText: actualValue.substring(0, 250),
+        commentText: actualValue.substring(0, 250)
+      });
     };
 
     submitPost = () => {

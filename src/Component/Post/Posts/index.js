@@ -97,6 +97,7 @@ class Posts extends Component {
     this.socket.on('posts', data => {
       const { result, group } = data;
       if (groupId.includes(group)) {
+        console.log('=>', data);
         const checkIfPostExists = this.state.posts.find(
           item => item.postId === result[0].postId
         );

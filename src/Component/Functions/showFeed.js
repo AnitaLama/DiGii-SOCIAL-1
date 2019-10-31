@@ -44,15 +44,19 @@ const PollWrapper = styled.div`
     margin-right: 10px;
   }
 `;
-
+const ImageContainer = styled.div`
+  text-align: center;
+`;
 const Gif = styled.img`
   width: 100%;
+  max-width: 250px;
 `;
 
 const Banner = styled.img`
   width: 100%;
   @media (max-width: 960px) {
     width: 100%;
+    max-width: 250px;
   }
 `;
 const Video = styled.video`
@@ -110,7 +114,9 @@ class ShowData extends Component {
                 className="captions"
                 onChange={this.handleTextChange}
               />
-              <Gif src={`${postBody}`} />
+              <ImageContainer>
+                <Gif src={`${postBody}`} />
+              </ImageContainer>
             </div>
           );
         case 'photo/video':
@@ -123,7 +129,9 @@ class ShowData extends Component {
                   value={text}
                   onChange={this.handleTextChange}
                 />
-                <Gif src={`${postBody}`} />
+                <ImageContainer>
+                  <Gif src={`${postBody}`} />
+                </ImageContainer>
               </div>
             );
           }
@@ -134,7 +142,10 @@ class ShowData extends Component {
                 value={text}
                 onChange={this.handleTextChange}
               />
-              <Video src={`${postBody}`} controls />
+              <ImageContainer>
+                {' '}
+                <Video src={`${postBody}`} controls />
+              </ImageContainer>
             </div>
           );
         case 'poll':
@@ -260,7 +271,10 @@ class ShowData extends Component {
         return (
           <div>
             <PostContainer className="captions">{postText}</PostContainer>
-            <Gif src={`${postBody}`} />
+            <ImageContainer>
+              {' '}
+              <Gif src={`${postBody}`} />
+            </ImageContainer>
           </div>
         );
       case 'photo/video':
@@ -269,14 +283,20 @@ class ShowData extends Component {
           return (
             <div>
               <PostContainer className="captions">{postText}</PostContainer>
-              <Gif src={`${postBody}`} />
+              <ImageContainer>
+                {' '}
+                <Gif src={`${postBody}`} />
+              </ImageContainer>
             </div>
           );
         }
         return (
           <div>
             <PostContainer className="captions">{postText}</PostContainer>
-            <Video src={`${postBody}`} controls />
+            <ImageContainer>
+              {' '}
+              <Video src={`${postBody}`} controls />
+            </ImageContainer>
           </div>
         );
       case 'poll':

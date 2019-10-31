@@ -112,7 +112,8 @@ class CommentBox extends Component {
       onGetStrikesCountOfAUser,
       data,
       onSubmitComment,
-      resetPostText
+      resetPostText,
+      commentText
       // hideCommentBox
     } = this.props;
     const { postId } = data;
@@ -138,14 +139,14 @@ class CommentBox extends Component {
       postCommentIsStudent: user.user.isStudent,
       postCommentCommentatorId: user.user.id,
       postCommentTitle: 'Comment',
-      postCommentBody: postText,
+      postCommentBody: commentText,
       isBad,
       postCommentIsBad: isBad,
       strikeType: result,
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
-    if (postText.length > 0 && postText.length <= 250) {
+    if (commentText.length > 0 && commentText.length <= 250) {
       onSubmitComment(comment);
       onGetStrikesCountOfAUser({ isStudent, id });
       this.props.hideCommentBox();
@@ -191,7 +192,6 @@ class CommentBox extends Component {
   };
 
   findGif = () => {
-    console.log('findgif');
     const { onFindGifForComments } = this.props;
     const { gifText } = this.state;
     this.setState({ showGifInput: true, showFeelings: false });
@@ -284,14 +284,6 @@ class CommentBox extends Component {
     this.setState({ showFeelings: false });
   };
 
-  // userSelected = value => {
-  //   //console.log('here');
-  //   const { updatePostText, postText } = this.props;
-  //   updatePostText(postText + (value.userName || value.studentUsername));
-  //   this.setState({ showUsers: false });
-  //   this.commentInput.focus();
-  // };
-
   onChange = value => {
     // //console.log('Change: onchange', value);
     // this.commentInput.focus();
@@ -317,7 +309,9 @@ class CommentBox extends Component {
       showModal,
       alertMessage
     } = this.state;
-    const { postText, user, data } = this.props;
+    const {
+      postText, user, data, commentText
+    } = this.props;
     const { avatar } = user.user;
     return (
       <CommentBoxWrapper
@@ -341,7 +335,7 @@ class CommentBox extends Component {
                 ref={r => {
                   this.commentInput = r;
                 }}
-                value={postText}
+                value={commentText}
                 style={{
                   overflow: 'hidden'
                 }}
