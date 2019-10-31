@@ -81,7 +81,7 @@ export function* onFindGif(action) {
 
     const { data } = yield call(
       axios,
-      `http://api.giphy.com/v1/gifs/search?rating=tv-y&q=${
+      `http://api.giphy.com/v1/gifs/search?rating=g&q=${
         action.data
       }&api_key=${GIPHY_API}`,
       {
