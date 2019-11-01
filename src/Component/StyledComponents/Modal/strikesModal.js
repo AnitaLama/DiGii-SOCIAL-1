@@ -16,7 +16,7 @@ import {
   ContentWrapper
 } from '../index';
 import { Colors, Images, flexCentering } from '../../../Theme';
-import { Warnings, BlacklistedWords } from '../../Functions';
+import { Warnings, BlacklistedWords, StrikedTerms } from '../../Functions';
 import StrikeActions from '../../../Redux/StrikeRedux';
 
 const { tint, peach } = Colors.colors;
@@ -35,7 +35,7 @@ const ModeratedPost = styled.div`
   span {
     padding: 0 4px;
     margin: 0 4px;
-    background: rgba(245, 75, 100, 0.2);
+    color: rgba(245, 75, 100, 0.2);
   }
 `;
 
@@ -89,11 +89,15 @@ class StrikesModalContainer extends Component {
       index,
       user,
       feeling,
-      banner
+      banner,
+      post
     } = this.props;
     const { checkboxSelected, postText, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
-    const newText = BlacklistedWords(postText);
+    const { strikedTerms } = post;
+    console.log('strike modal content', post.strikedTerms, postText);
+    let newText = BlacklistedWords(postText);
+    newText = StrikedTerms(newText, strikedTerms);
     const hasToShowTutorial = (strike + 1) % 3 === 0;
     return (
       <ModalContainer>
@@ -198,7 +202,8 @@ StrikesModalContainer.propTypes = {
 const mapStateToProps = state => ({
   tutorial: state.tutorial,
   user: state.user.user,
-  strike: state.strike.strikes
+  strike: state.strike.strikes,
+  post: state.post
 });
 const mapDispatchToProps = dispatch => ({
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))

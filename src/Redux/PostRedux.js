@@ -14,6 +14,8 @@ const { Types, Creators } = createActions({
   onPostSubmitSuccess: ['data'],
   onPostSubmitFailure: ['data'],
   onTextPostSubmit: ['data'],
+  onTextPostSubmitSuccess: ['data'],
+  onTextPostSubmitFailure: ['data'],
   onSaveImage: ['data'],
   onSaveImageSuccess: ['data'],
   onSaveImageFailure: ['data'],
@@ -49,7 +51,8 @@ const INITIAL_STATE = Immutable({
   gif: [],
   page: 0,
   pageSize: 20,
-  commentGif: []
+  commentGif: [],
+  strikedTerms: null
 });
 
 /* ------------- Reducers ------------- */
@@ -87,6 +90,31 @@ const onPostSubmitFailure = state => ({
   posting: false,
   loading: false
 });
+
+// test
+const onTextPostSubmit = state => ({
+  ...state,
+  loading: true,
+  posting: true
+});
+const onTextPostSubmitSuccess = (state, action) => {
+  console.log('reducer moderation', action.data);
+  const { Terms, strike } = action.data;
+  return {
+    ...state,
+    posting: false,
+    loading: false,
+    strikedTerms: Terms,
+    showStrikeModal: strike
+  };
+};
+const onTextPostSubmitFailure = state => ({
+  ...state,
+  posting: false,
+  loading: false
+});
+
+// end of test
 const onSaveImage = state => ({ ...state, loading: true, posting: true });
 // console.log(action);
 const onSaveImageSuccess = state => ({
@@ -189,6 +217,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_POST_SUBMIT]: onPostSubmit,
   [Types.ON_POST_SUBMIT_SUCCESS]: onPostSubmitSuccess,
   [Types.ON_POST_SUBMIT_FAILURE]: onPostSubmitFailure,
+  // test
+  [Types.ON_TEXT_POST_SUBMIT]: onTextPostSubmit,
+  [Types.ON_TEXT_POST_SUBMIT_SUCCESS]: onTextPostSubmitSuccess,
+  [Types.ON_TEXT_POST_SUBMIT_FAILURE]: onTextPostSubmitFailure,
+  // end of test
   [Types.ON_SAVE_IMAGE]: onSaveImage,
   [Types.ON_SAVE_IMAGE_SUCCESS]: onSaveImageSuccess,
   [Types.ON_SAVE_IMAGE_FAILURE]: onSaveImageFailure,

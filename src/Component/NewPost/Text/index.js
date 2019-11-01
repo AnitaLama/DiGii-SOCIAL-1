@@ -26,13 +26,21 @@ class TextPost extends Component {
   componentDidUpdate(prevProps) {
     console.log(
       'component did update',
-      this.props.user.user.totalActivities,
-      prevProps.user.user.totalActivities
+      this.props.post.strikedTerms,
+      prevProps.post.strikedTerms
     );
-  }
+    const {
+      post, showWarning, strike, user
+    } = this.props;
+    const { isStudent } = user.user;
 
-  componentWillUnmount() {
-    console.log('componnetwillunmount activated');
+    const { strikes } = strike;
+    const { strikedTerms } = post;
+    if (strikedTerms && strikedTerms !== prevProps.post.strikedTerms) {
+      console.log('showModal');
+      console.log('strikes count, count, isStudent, moderationType, msg');
+      showWarning(strikes, isStudent, 'insults', null);
+    }
   }
 
   handlePostText = e => {
@@ -108,16 +116,16 @@ class TextPost extends Component {
         // console.log('show educational challenge now');
         this.props.showEducationalChallenge();
         setTimeout(() => {
-          onPostSubmit(postToBeSubmitted);
+          // onPostSubmit(postToBeSubmitted);
           onTextPostSubmit(postToBeSubmitted);
-          resetPostText();
+          // resetPostText();
         }, 1500);
       } else {
-        onPostSubmit(postToBeSubmitted);
-
-        setTimeout(() => {
-          resetPostText();
-        }, 1500);
+        // onPostSubmit(postToBeSubmitted);
+        onTextPostSubmit(postToBeSubmitted);
+        // setTimeout(() => {
+        //   resetPostText();
+        // }, 1500);
       }
 
       console.log('props values', user, options);
@@ -127,7 +135,6 @@ class TextPost extends Component {
   render() {
     const { username } = this.state;
     const { postText, post } = this.props;
-
     return (
       <PostWrapper>
         <FormTextArea

@@ -61,6 +61,23 @@ export function* onPostSubmit(action) {
   }
 }
 
+export function* onTextPostSubmit(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${URL}/moderation/addPost`,
+      action.data
+    );
+    console.log('saga moderation output', data);
+    if (data.success) {
+      yield put(PostActions.onTextPostSubmitSuccess(data.result));
+    } else {
+      yield put(PostActions.onTextPostSubmitFailure(data.error));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 export function* onFindGif(action) {
   try {
     // axios.defaults.headers.common =

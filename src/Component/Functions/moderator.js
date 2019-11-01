@@ -75,7 +75,7 @@ const Moderator = WrappedComponent => class ModeratorContainer extends Component
     };
 
     showWarning = (count, isStudent, moderationType, msg) => {
-      console.log('strikes count', count, isStudent, moderationType, msg);
+      console.log('showModal content', this.state.postText);
       if (msg) {
         this.setState({
           isModalVisible: true,
