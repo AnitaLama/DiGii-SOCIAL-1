@@ -15,7 +15,8 @@ class TextPost extends Component {
     super(props);
     this.state = {
       username: props.username,
-      postTypeId: props.postTypeId
+      postTypeId: props.postTypeId,
+      postIsClicked: false
     };
     this.socket = socketClient(SOCKET_URL);
   }
@@ -31,7 +32,7 @@ class TextPost extends Component {
       const { postIsClicked } = this.state;
       const { user } = this.props;
       const { groupId } = user.user;
-      const { result, group } = data;
+      const { group } = data;
       if (groupId.includes(group) && postIsClicked) {
         this.setState({ postIsClicked: false });
       }

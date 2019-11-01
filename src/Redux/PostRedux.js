@@ -52,7 +52,8 @@ const INITIAL_STATE = Immutable({
   page: 0,
   pageSize: 20,
   commentGif: [],
-  strikedTerms: null
+  strikedTerms: null,
+  strikedPost: null
 });
 
 /* ------------- Reducers ------------- */
@@ -99,13 +100,14 @@ const onTextPostSubmit = state => ({
 });
 const onTextPostSubmitSuccess = (state, action) => {
   console.log('reducer moderation', action.data);
-  const { Terms, strike } = action.data;
+  const { Terms, strike, strikedPost } = action.data;
   return {
     ...state,
     posting: false,
     loading: false,
     strikedTerms: Terms,
-    showStrikeModal: strike
+    showStrikeModal: strike,
+    strikedPost: strikedPost.postText
   };
 };
 const onTextPostSubmitFailure = state => ({

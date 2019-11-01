@@ -33,10 +33,12 @@ const BlacklistedWords = input => {
 const StrikedTerms = (input, terms) => {
   let value;
   let inputText = input.toLowerCase();
-  terms.map((term, i) => {
-    const regex = new RegExp(term.Term, 'g');
-    inputText = inputText.replace(regex, ` <span> ${term.Term} </span> `);
-  });
+  terms
+    && terms.length > 0
+    && terms.map((term, i) => {
+      const regex = new RegExp(term.Term, 'g');
+      inputText = inputText.replace(regex, ` <span> ${term.Term} </span> `);
+    });
   return inputText;
 };
 

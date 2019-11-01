@@ -35,7 +35,7 @@ const ModeratedPost = styled.div`
   span {
     padding: 0 4px;
     margin: 0 4px;
-    color: rgba(245, 75, 100, 0.2);
+    color: rgba(245, 75, 100, 1);
   }
 `;
 
@@ -94,10 +94,9 @@ class StrikesModalContainer extends Component {
     } = this.props;
     const { checkboxSelected, postText, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
-    const { strikedTerms } = post;
-    console.log('strike modal content', post.strikedTerms, postText);
+    const { strikedTerms, strikedPost } = post;
     let newText = BlacklistedWords(postText);
-    newText = StrikedTerms(newText, strikedTerms);
+    newText = strikedPost ? StrikedTerms(strikedPost, strikedTerms) : newText;
     const hasToShowTutorial = (strike + 1) % 3 === 0;
     return (
       <ModalContainer>

@@ -5,6 +5,7 @@ import socketClient from 'socket.io-client';
 // import InfiniteScroll from 'react-infinite-scroll-component';
 import debounce from 'lodash.debounce';
 import PostAction from '../../../Redux/PostRedux';
+import StrikeActions from '../../../Redux/StrikeRedux';
 import SinglePost from '../SinglePost';
 import { SOCKET_URL } from '../../../utils/config';
 import { ErrorAlertMessage } from '../../StyledComponents';
@@ -92,10 +93,10 @@ class Posts extends Component {
   }
 
   componentDidMount() {
-    const { user } = this.props;
+    const { user, onGetStrikesCountOfAUser } = this.props;
     const { posts } = this.state;
-    const { groupId } = user.user;
-
+    const { groupId, id, isStudent } = user.user;
+    onGetStrikesCountOfAUser({ isStudent, id });
     this.socket.on('posts', data => {
       const { result, group } = data;
       if (groupId.includes(group)) {
@@ -137,7 +138,6 @@ class Posts extends Component {
 
   render() {
     const { post } = this.props;
-
     let { posts, selectedPost } = this.state;
     posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
     return (
@@ -175,13 +175,15 @@ Posts.propTypes = {
 
 const mapStateToProps = state => ({
   post: state.post,
-  user: state.user
+  user: state.user,
+  strike: state.strike
 });
 
 const mapDispatchToProps = dispatch => ({
   onListPosts: () => dispatch(PostAction.onListPosts()),
   onFindPosts: value => dispatch(PostAction.onFindPosts(value)),
-  onGetPostActivitiesReactionTypes: value => dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value))
+  onGetPostActivitiesReactionTypes: value => dispatch(PostActivityAction.onGetPostActivitiesReactionTypes(value)),
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
 });
 
 export default connect(
