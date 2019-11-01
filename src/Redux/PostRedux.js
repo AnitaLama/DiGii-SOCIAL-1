@@ -13,6 +13,7 @@ const { Types, Creators } = createActions({
   onPostSubmit: ['data'],
   onPostSubmitSuccess: ['data'],
   onPostSubmitFailure: ['data'],
+  onTextPostSubmit: ['data'],
   onSaveImage: ['data'],
   onSaveImageSuccess: ['data'],
   onSaveImageFailure: ['data'],

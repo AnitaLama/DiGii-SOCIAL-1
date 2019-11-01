@@ -62,6 +62,7 @@ class TextPost extends Component {
       onBlockUser,
       postText,
       onPostSubmit,
+      onTextPostSubmit,
       showWarning,
       resetPostText,
       post,
@@ -108,6 +109,7 @@ class TextPost extends Component {
         this.props.showEducationalChallenge();
         setTimeout(() => {
           onPostSubmit(postToBeSubmitted);
+          onTextPostSubmit(postToBeSubmitted);
           resetPostText();
         }, 1500);
       } else {
@@ -172,6 +174,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   onPostSubmit: value => dispatch(PostActions.onPostSubmit(value)),
+  onTextPostSubmit: value => dispatch(PostActions.onTextPostSubmit(value)),
   updateTotalActivities: () => dispatch(LoginActions.updateTotalActivities()),
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
   disableFirstTimePosting: () => dispatch(LoginActions.onDisableFirstTimePosting()),
