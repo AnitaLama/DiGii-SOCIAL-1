@@ -140,8 +140,7 @@ class TagPost extends Component {
       strikeIsStudent: user.user.isStudent,
       strikeActorId: user.user.id
     };
-    if (postText.length < 250) {
-      console.log('post tag', data);
+    if (postText.length > 250 && postText.length < 250) {
       onSubmitTagPost(data);
       if (!isBad) {
         resetPostType();
@@ -149,33 +148,38 @@ class TagPost extends Component {
     }
   };
 
-  selectUser = user => {
+  handleChange = e => {
+    this.setState({ taggedUsersString: e });
+  };
+
+  onSearch = search => {};
+
+  //  SELECTING THE USER FROM DROP DOWN
+  onSelect = selection => {
     const { users } = this.state;
+    const { value } = selection;
+    const selectedUser = users.find(
+      item => item.userName === value || item.studentUsername === value
+    );
     const newArr = [];
     users.map(item => {
       if (
-        item.userName !== user.userName
-        || item.studentUsername !== user.studentUsername
+        item.userName !== selectedUser.userName
+        || item.studentUsername !== selectedUser.studentUsername
       ) {
         newArr.push(item);
       }
       return true;
     });
     const data = {
-      userName: user.userName || user.studentUsername,
-      isStudent: !!user.studentUsername,
-      id: user.userId || user.studentId
+      userName: selectedUser.userName || selectedUser.studentUsername,
+      isStudent: !!selectedUser.studentUsername,
+      id: selectedUser.userId || selectedUser.studentId
     };
     this.setState(prevState => ({
       taggedUsers: [...prevState.taggedUsers, data],
-      users: newArr,
-      showUsers: false
+      users: newArr
     }));
-  };
-
-  handleComment = e => {
-    console.log('tagged users removedUser', e);
-    this.setState({ taggedUsersString: e });
   };
 
   remove = user => {
@@ -183,16 +187,23 @@ class TagPost extends Component {
     const { group } = this.props;
     const taggedUserName = `@${user.userName}`;
 
-    const tempTaggedUsersString = taggedUsersString;
-    tempTaggedUsersString.replace(`${taggedUserName} `, '');
-    console.log('selected user', user, tempTaggedUsersString);
-    // const removedUser = group.users.find(
-    //   item => item.userName === user || item.studentUsername === user
-    // );
-    // console.log('removedUser', removedUser, taggedUsers);
+    // const tempTaggedUsersString = taggedUsersString;
+    const tempTaggedUsersString = taggedUsersString.replace(
+      `${taggedUserName}`,
+      ''
+    );
+    const removedUser = group.users.find(
+      item => item.userName === user.userName
+        || item.studentUsername === user.userName
+    );
     const newArr = taggedUsers.filter(item => item !== user && item !== user);
+    const toBeAddedUser = {
+      userName: removedUser.userName || removedUser.studentUsername,
+      isStudent: !removedUser.userName,
+      id: removedUser.userId
+    };
     this.setState(prevState => ({
-      // users: [...prevState.users, removedUser],
+      users: [...prevState.users, removedUser],
       taggedUsers: newArr,
       taggedUsersString: tempTaggedUsersString
     }));
@@ -200,7 +211,11 @@ class TagPost extends Component {
 
   render() {
     const {
-      showUsers, taggedUsers, users, taggedUsersString
+      showUsers,
+      taggedUsers,
+      users,
+      taggedUsersString,
+      loading
     } = this.state;
     const { post } = this.props;
     return (
@@ -234,14 +249,16 @@ class TagPost extends Component {
 
           <ChipContainer>
             <Mentions
-              onChange={this.handleComment}
+              onChange={this.handleChange}
               onSelect={this.onSelect}
               placeholder="Tag a friend"
+              loading={!users}
               style={{
                 overflow: 'hidden',
-                color: 'transparent'
+                fontSize: '8px'
               }}
               value={taggedUsersString}
+              onSearch={this.onSearch}
             >
               {users.length > 0
                 && users.map(user => (
@@ -249,17 +266,14 @@ class TagPost extends Component {
                     key={user.userName || user.studentUsername}
                     value={user.userName || user.studentUsername}
                   >
-                    <span
+                    <UserList
                       onClick={() => {
-                        this.selectUser(user);
-                      }}
-                      style={{
-                        display: 'block'
+                        // this.selectUser(user);
                       }}
                     >
                       {' '}
                       {user.userName || user.studentUsername}
-                    </span>
+                    </UserList>
                   </Option>
                 ))}
             </Mentions>

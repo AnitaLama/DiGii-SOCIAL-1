@@ -40,41 +40,47 @@ const UserListWrapper = styled.div`
     }
   }
 `;
-const UserList = styled.ul`
-  border: 1px solid ${grey};
-  ${boxShadow()};
-  background: ${snow};
-  position: absolute;
-  overflow-y: scroll;
-  height: ${props => (props.height ? `${props.height}px` : '130px')};
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  z-index: 2;
-  left: 0;
-  min-width: 150px;
-  li {
-    padding: 4px 10px;
-    &:hover {
-      cursor: pointer;
-      background-image: linear-gradient(to right, ${primary}, ${secondary});
-      color: ${snow};
-    }
-  }
-  overflow-y: auto;
-  overflow-x: hidden;
 
-  &::-webkit-scrollbar {
-    width: 0.25em;
-  }
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px ${pencil};
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${secondary};
-    outline: 1px solid ${secondary};
-  }
+const UserList = styled.span`
+  display: block;
+  margin: 5px 12px;
+  padding: 0;
 `;
+// const UserList = styled.ul`
+//   border: 1px solid ${grey};
+//   ${boxShadow()};
+//   background: ${snow};
+//   position: absolute;
+//   overflow-y: scroll;
+//   height: ${props => (props.height ? `${props.height}px` : '130px')};
+//   list-style-type: none;
+//   padding: 0;
+//   margin: 0;
+//   z-index: 2;
+//   left: 0;
+//   min-width: 150px;
+//   li {
+//     padding: 4px 10px;
+//     &:hover {
+//       cursor: pointer;
+//       background-image: linear-gradient(to right, ${primary}, ${secondary});
+//       color: ${snow};
+//     }
+//   }
+//   overflow-y: auto;
+//   overflow-x: hidden;
+//
+//   &::-webkit-scrollbar {
+//     width: 0.25em;
+//   }
+//   &::-webkit-scrollbar-track {
+//     -webkit-box-shadow: inset 0 0 6px ${pencil};
+//   }
+//   &::-webkit-scrollbar-thumb {
+//     background-color: ${secondary};
+//     outline: 1px solid ${secondary};
+//   }
+// `;
 
 export {
   ChipContainer,
