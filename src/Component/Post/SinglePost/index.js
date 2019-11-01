@@ -96,7 +96,6 @@ class SinglePost extends Component {
   selectPollAnswer = (post, option, selected) => {
     const { pollOptionPollId, pollOptionId } = option;
     const { user, onRespondToPoll } = this.props;
-    console.log('POST>>>>>>>>>>>>>>>>>>>>>>>>>>', post);
     const { postId } = post;
     const { isStudent, id } = user.user;
     const data = {
@@ -107,7 +106,6 @@ class SinglePost extends Component {
       pollResponseId: selected ? selected.pollResponseId : null,
       postId
     };
-    console.log('POLL RESPONSE POST>>>>>>>>>>>>', data);
     onRespondToPoll(data);
   };
 
@@ -124,8 +122,13 @@ class SinglePost extends Component {
   };
 
   handleReactionSelection = action => {
+    const { data, selectAPost } = this.props;
     if (action === 'comment') {
-      this.setState({ showCommentBox: !this.state.showCommentBox });
+      selectAPost(data);
+      this.setState({
+        showCommentBox: !this.state.showCommentBox,
+        showreactions: false
+      });
     }
   };
 
@@ -176,7 +179,12 @@ class SinglePost extends Component {
   };
 
   multipleLikes = () => {
-    this.setState({ showreactions: !this.state.showreactions });
+    const { data, selectAPost } = this.props;
+    selectAPost(data);
+    this.setState({
+      showreactions: !this.state.showreactions,
+      showCommentBox: false
+    });
   };
 
   toggleHoverleave = () => {
@@ -238,8 +246,9 @@ class SinglePost extends Component {
   };
 
   render() {
-    const { data, modalpopup } = this.props;
-    const { showCommentBox } = this.state;
+    const { data, modalpopup, selectedPost } = this.props;
+    const { showCommentBox, showreactions } = this.state;
+    const check = selectedPost === data.postId;
     let { post_comments } = data;
     post_comments = post_comments
       && post_comments.sort((a, b) => a.postCommentId - b.postCommentId);
@@ -266,7 +275,7 @@ class SinglePost extends Component {
               reactionpopup={this.multipleLikes}
             />
 
-            {this.state.showreactions && (
+            {showreactions && check && !showCommentBox && (
               <ReactionContainer>
                 <div
                   onClick={() => {
@@ -337,7 +346,7 @@ class SinglePost extends Component {
               ) : null))}
           </div>
           <div className="commentBox">
-            {showCommentBox && (
+            {showCommentBox && check && (
               <CommentBox data={data} hideCommentBox={this.hideCommentBox} />
             )}
           </div>

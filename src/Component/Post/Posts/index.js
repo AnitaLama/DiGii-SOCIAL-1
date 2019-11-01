@@ -43,21 +43,20 @@ class Posts extends Component {
       //   document.documentElement.scrollTop,
       //   document.documentElement.offsetHeight
       // );
-      console.log(
-        'LOADING>>>>> INNERHEIGHT',
-        window.innerHeight,
-        document.documentElement.scrollTop,
-        document.body.offsetHeight,
-        this.postContainer.clientHeight,
-        document.body.scrollHeight
-      );
+      // console.log(
+      //   'LOADING>>>>> INNERHEIGHT',
+      //   window.innerHeight,
+      //   document.documentElement.scrollTop,
+      //   document.body.offsetHeight,
+      //   this.postContainer.clientHeight,
+      //   document.body.scrollHeight
+      // );
       const boxHeight = this.postContainer.clientHeight || document.body.scrollHeight;
       const { scrollHeight } = document.body;
       if (
         window.innerHeight + document.documentElement.scrollTop
         >= boxHeight + 120
       ) {
-        console.log('LOADING>>>reached bottom');
         this.loadMorePosts();
         // onFindPosts({ isStudent, actorId: id });
         // loadUsers();
@@ -66,13 +65,16 @@ class Posts extends Component {
   }
 
   loadMorePosts = () => {
-    console.log('LOAD MORE POSTS');
     const { page } = this.state;
     const { user, onFindPosts } = this.props;
     const { isStudent, id } = user.user;
 
     this.setState({ page: page + 1 });
     onFindPosts({ isStudent, actorId: id, page: page + 1 });
+  };
+
+  selectAPost = post => {
+    this.setState({ selectedPost: post.postId });
   };
 
   componentWillMount() {
@@ -97,7 +99,6 @@ class Posts extends Component {
     this.socket.on('posts', data => {
       const { result, group } = data;
       if (groupId.includes(group)) {
-        console.log('=>', data);
         const checkIfPostExists = this.state.posts.find(
           item => item.postId === result[0].postId
         );
@@ -137,7 +138,7 @@ class Posts extends Component {
   render() {
     const { post } = this.props;
 
-    let { posts } = this.state;
+    let { posts, selectedPost } = this.state;
     posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
     return (
       <div key={posts} ref={r => (this.postContainer = r)}>
@@ -151,7 +152,14 @@ class Posts extends Component {
               (item.postIsStudent && item.student)
               || (!item.postIsStudent && item.user)
             ) {
-              return <SinglePost key={item + i} data={item} />;
+              return (
+                <SinglePost
+                  key={item + i}
+                  data={item}
+                  selectAPost={this.selectAPost}
+                  selectedPost={selectedPost}
+                />
+              );
             }
             return true;
           })}

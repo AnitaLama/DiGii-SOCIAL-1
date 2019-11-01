@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import socketClient from 'socket.io-client';
 import { FormTextArea, Button, Loader } from '../../StyledComponents';
 import { PostWrapper } from '../index';
 import PostActions from '../../../Redux/PostRedux';
 import LoginActions from '../../../Redux/LoginRedux';
 import StrikeActions from '../../../Redux/StrikeRedux';
 import { Moderator } from '../../Functions';
+import { SOCKET_URL } from '../../../utils/config';
 
 class TextPost extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class TextPost extends Component {
       username: props.username,
       postTypeId: props.postTypeId
     };
+    this.socket = socketClient(SOCKET_URL);
   }
 
   componentWillMount() {
@@ -23,23 +26,31 @@ class TextPost extends Component {
     onGetStrikesCountOfAUser({ isStudent, id });
   }
 
+  componentDidMount() {
+    this.socket.on('posts', data => {
+      const { postIsClicked } = this.state;
+      const { user } = this.props;
+      const { groupId } = user.user;
+      const { result, group } = data;
+      if (groupId.includes(group) && postIsClicked) {
+        this.setState({ postIsClicked: false });
+      }
+    });
+  }
+
   componentDidUpdate(prevProps) {
-    console.log(
-      'component did update',
-      this.props.post.strikedTerms,
-      prevProps.post.strikedTerms
-    );
     const {
-      post, showWarning, strike, user
+      post, showWarning, strike, user, resetPostText
     } = this.props;
     const { isStudent } = user.user;
-
+    const { postIsClicked } = this.state;
     const { strikes } = strike;
-    const { strikedTerms } = post;
+    const { strikedTerms, loading } = post;
     if (strikedTerms && strikedTerms !== prevProps.post.strikedTerms) {
-      console.log('showModal');
-      console.log('strikes count, count, isStudent, moderationType, msg');
       showWarning(strikes, isStudent, 'insults', null);
+    }
+    if (!loading && postIsClicked) {
+      resetPostText();
     }
   }
 
@@ -78,7 +89,6 @@ class TextPost extends Component {
       updateTotalActivities
     } = this.props;
     const { page, pageSize } = post;
-
     const { postTypeId } = this.state;
     const { isStudent, id, totalActivities } = user.user;
     const { educationalChallengeActivityCount } = options;
@@ -118,14 +128,17 @@ class TextPost extends Component {
         setTimeout(() => {
           // onPostSubmit(postToBeSubmitted);
           onTextPostSubmit(postToBeSubmitted);
+          this.setState({ postIsClicked: true });
+
           // resetPostText();
         }, 1500);
       } else {
         // onPostSubmit(postToBeSubmitted);
         onTextPostSubmit(postToBeSubmitted);
-        // setTimeout(() => {
-        //   resetPostText();
-        // }, 1500);
+        setTimeout(() => {
+          this.setState({ postIsClicked: true });
+          // resetPostText();
+        }, 1500);
       }
 
       console.log('props values', user, options);
