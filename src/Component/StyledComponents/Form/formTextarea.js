@@ -8,7 +8,7 @@ const FormTextArea = styled.textarea`
   border: 0;
   outline:0
   color: #495057;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   background:transparent;
   resize:none;
   &::placeholder {

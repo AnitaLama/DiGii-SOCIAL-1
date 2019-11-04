@@ -1,64 +1,118 @@
-import styled from '@emotion/styled';
-import NewPost from './NewPost';
-import { ImagePost, VideoPost, PhotoVideoPost } from './PhotoVideo';
-import NewPostType from './NewPostType';
-import GifContainer from './Gif';
-import TextPost from './Text';
-import { fontSize } from '../../Theme';
-import Container from './Container';
-import FeelingsPost from './Feelings';
-// import PhotoVideoPost from './PhotoVideoPost';
-// import VideoPost from './VideoPost';
-// import BannerPost from './BannerPost';
-// import BannerImageModal from './BannerImageEditor';
-import TagPost from './Tag';
-import PollPost from './Poll';
-import { BannerPost, BannerImageModal } from './Banner';
+import React, { Component } from 'react';
+import { NewPostWrapper, NewPostContainer } from './style';
+import PostTypes from './postTypes';
+import TextPost from './textbox';
+import ImagePost from './image';
+import BannerPost from './banner';
+import GifPost from './gif';
+import FeelingsPost from './feeling';
+import PollPost from './poll';
 
-export {
-  NewPost,
-  ImagePost,
-  NewPostType,
-  GifContainer,
-  TextPost,
-  Container,
-  FeelingsPost,
-  PhotoVideoPost,
-  VideoPost,
-  BannerPost,
-  BannerImageModal,
-  TagPost,
-  PollPost
-};
+class NewPost extends Component {
+  state = {
+    isImagePost: false,
+    isBannerPost: false,
+    isFeelingPost: false,
+    isTagPost: false,
+    isPollPost: false,
+    isGifPost: false,
+    showPostTypes: false
+  };
 
-export const PostWrapper = styled.div`
-  padding: 10px 15px;
-  display: grid;
-  grid-template-columns: auto 86.76px;
-  button {
-    &.small {
-      ${fontSize(22)};
-      top: 10px;
-      right: 10px;
-      width: 86.76px;
+  handleNewPostFocus = () => {
+    this.setState({ showPostTypes: true });
+  };
+
+  handleNewPostBlur = () => {
+    this.setState({ showPostTypes: false });
+  };
+
+  handlePostTypeOptionClick = option => {
+    const {
+      isImagePost,
+      isBannerPost,
+      isFeelingPost,
+      isTagPost,
+      isPollPost,
+      isGifPost
+    } = this.state;
+    switch (option.value) {
+      case 'image':
+        this.setState({
+          isImagePost: !isImagePost,
+          isBannerPost: false,
+          isGifPost: false,
+          isPollPost: false
+        });
+        break;
+      case 'banner':
+        this.setState({
+          isBannerPost: !isBannerPost,
+          isImagePost: false,
+          isGifPost: false,
+          isPollPost: false
+        });
+        break;
+      case 'feeling':
+        this.setState({ isFeelingPost: !isFeelingPost });
+        break;
+      case 'tag':
+        this.setState({ isTagPost: !isTagPost });
+        break;
+      case 'poll':
+        this.setState({
+          isPollPost: !isPollPost,
+          isBannerPost: false,
+          isImagePost: false,
+          isGifPost: false,
+          isFeelingPost: false
+        });
+        break;
+      case 'gif':
+        this.setState({
+          isGifPost: !isGifPost,
+          isImagePost: false,
+          isBannerPost: false,
+          isPollPost: false
+        });
+        break;
+      default:
+        break;
     }
-  }
-  min-height: 150px;
-  .redFont {
-    color: red;
-  }
-`;
+  };
 
-export const PostWrapperContainer = styled.div`
-  padding: 10px 15px;
-
-  button {
-    &.small {
-      ${fontSize(22)};
-      top: 10px;
-      right: 10px;
-      width: 86.76px;
-    }
+  render() {
+    const {
+      showPostTypes,
+      isImagePost,
+      isBannerPost,
+      isFeelingPost,
+      isPollPost,
+      isGifPost
+    } = this.state;
+    const check = isImagePost || isBannerPost || isFeelingPost || isPollPost || isGifPost;
+    return (
+      <NewPostWrapper
+        tabIndex="-1"
+        onFocus={this.handleNewPostFocus}
+        onBlur={this.handleNewPostBlur}
+      >
+        <NewPostContainer>
+          <TextPost />
+          {isPollPost && <PollPost />}
+          {isFeelingPost && <FeelingsPost />}
+          {isGifPost && <GifPost />}
+          {isImagePost && <ImagePost />}
+          {isBannerPost && <BannerPost />}
+        </NewPostContainer>
+        {(showPostTypes || check) && (
+          <PostTypes
+            handlePostTypeOptionClick={this.handlePostTypeOptionClick}
+          />
+        )}
+      </NewPostWrapper>
+    );
   }
-  min-height: 150px;
-`;
+}
+
+export default NewPost;

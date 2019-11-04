@@ -49,7 +49,7 @@ const INITIAL_STATE = Immutable({
   loading: false,
   posts: [],
   error: null,
-  gif: [],
+  gif: null,
   page: 0,
   pageSize: 20,
   commentGif: [],
@@ -134,7 +134,7 @@ const onSaveImageFailure = state => ({
 const onFindPosts = (state, action) => ({
   ...state,
   loading: true,
-  gif: [],
+  gif: null,
   error: null,
   posting: false
 });
@@ -159,7 +159,7 @@ const onFindPostsSuccess = (state, action) => {
   return {
     ...state,
     posts: [...state.posts, ...action.data],
-    gif: [],
+    gif: null,
     loading: false,
     posting: false
   };
@@ -169,8 +169,8 @@ const onFindGifSuccess = (state, action) => {
   console.log(action.data);
   return {
     ...state,
-    gif: action.data,
-    error: null,
+    gif: action.data.length > 0 ? action.data : [],
+    error: 'No gif found',
     loading: false,
     posting: false
   };

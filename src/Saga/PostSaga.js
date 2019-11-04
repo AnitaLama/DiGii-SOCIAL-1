@@ -80,27 +80,13 @@ export function* onTextPostSubmit(action) {
 }
 export function* onFindGif(action) {
   try {
-    // axios.defaults.headers.common =
-    // const { data } = yield call(
-    //   axios,
-    //   `http://api.giphy.com/v1/gifs/search?rating=g&q=${
-    //     action.data
-    //   }&api_key=${GIPHY_API}`,
-    //   {
-    //     transformRequest: [
-    //       (data, headers) => {
-    //         delete headers.common.Authorization;
-    //         return data;
-    //       }
-    //     ]
-    //   }
-    // );
-
+    const limit = 9;
+    console.log('search saga', action.data);
     const { data } = yield call(
       axios,
       `http://api.giphy.com/v1/gifs/search?rating=g&q=${
         action.data
-      }&api_key=${GIPHY_API}`,
+      }&api_key=${GIPHY_API}&limit=${limit}`,
       {
         transformRequest: [
           (data, headers) => {
@@ -111,6 +97,7 @@ export function* onFindGif(action) {
       }
     );
 
+    console.log('saga output', data);
     if (data) {
       yield put(PostActions.onFindGifSuccess(data.data));
     } else {
