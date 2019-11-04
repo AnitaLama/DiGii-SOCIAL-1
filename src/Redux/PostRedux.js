@@ -36,7 +36,8 @@ const { Types, Creators } = createActions({
   onFindGifForComments: ['data'],
   onFindGifForCommentsSuccess: ['data'],
   onFindGifForCommentsFailure: ['data'],
-  clearCommentGif: []
+  clearCommentGif: [],
+  onDisableStrikesModal: []
 });
 
 export const PostTypes = Types;
@@ -53,7 +54,8 @@ const INITIAL_STATE = Immutable({
   pageSize: 20,
   commentGif: [],
   strikedTerms: null,
-  strikedPost: null
+  strikedPost: null,
+  showStrikeModal: false
 });
 
 /* ------------- Reducers ------------- */
@@ -209,6 +211,7 @@ const clearGifList = state => ({
 const clearCommentGif = state => ({ ...state, commentGif: [] });
 /* ------------- Hookup Reducers To Types ------------- */
 
+const onDisableStrikesModal = state => ({ ...state, showStrikeModal: false });
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_LIST_POSTS]: onListPosts,
   [Types.ON_LIST_POSTS_SUCCESS]: onListPostsSuccess,
@@ -232,5 +235,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_FIND_GIF_FOR_COMMENTS_SUCCESS]: onFindGifForCommentsSuccess,
   [Types.ON_FIND_GIF_FOR_COMMENTS_FAILURE]: onFindGifForCommentsFailure,
   [Types.CLEAR_GIF_LIST]: clearGifList,
-  [Types.CLEAR_COMMENT_GIF]: clearCommentGif
+  [Types.CLEAR_COMMENT_GIF]: clearCommentGif,
+  [Types.ON_DISABLE_STRIKES_MODAL]: onDisableStrikesModal
 });

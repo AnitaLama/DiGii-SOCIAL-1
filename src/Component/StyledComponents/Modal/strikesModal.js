@@ -18,6 +18,7 @@ import {
 import { Colors, Images, flexCentering } from '../../../Theme';
 import { Warnings, BlacklistedWords, StrikedTerms } from '../../Functions';
 import StrikeActions from '../../../Redux/StrikeRedux';
+import PostActions from '../../../Redux/PostRedux';
 
 const { tint, peach } = Colors.colors;
 const User = styled.div`
@@ -61,7 +62,12 @@ class StrikesModalContainer extends Component {
   };
 
   handleOK = () => {
-    const { hideModal, onGetStrikesCountOfAUser, user } = this.props;
+    const {
+      hideModal,
+      onGetStrikesCountOfAUser,
+      user,
+      onDisableStrikesModal
+    } = this.props;
     const { isStudent, id } = user;
     // const { hideModal, showVideo, strike } = this.props;
     // if ((strike + 1) % 3 === 0) {
@@ -70,6 +76,7 @@ class StrikesModalContainer extends Component {
     //   hideModal();
     // }
     hideModal();
+    onDisableStrikesModal();
     onGetStrikesCountOfAUser({ isStudent, id });
   };
 
@@ -205,7 +212,8 @@ const mapStateToProps = state => ({
   post: state.post
 });
 const mapDispatchToProps = dispatch => ({
-  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
+  onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
+  onDisableStrikesModal: () => dispatch(PostActions.onDisableStrikesModal())
 });
 const StrikesModal = connect(
   mapStateToProps,

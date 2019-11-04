@@ -46,13 +46,13 @@ class TextPost extends Component {
     const { isStudent } = user.user;
     const { postIsClicked } = this.state;
     const { strikes } = strike;
-    const { strikedTerms, loading } = post;
-    if (strikedTerms && strikedTerms !== prevProps.post.strikedTerms) {
+    const { showStrikeModal, strikedTerms, loading } = post;
+    if (showStrikeModal) {
       showWarning(strikes, isStudent, 'insults', null);
     }
-    if (!loading && postIsClicked) {
-      resetPostText();
-    }
+    // if (!loading && postIsClicked) {
+    // resetPostText();
+    // }
   }
 
   handlePostText = e => {
@@ -131,14 +131,14 @@ class TextPost extends Component {
           onTextPostSubmit(postToBeSubmitted);
           this.setState({ postIsClicked: true });
 
-          // resetPostText();
+          resetPostText();
         }, 1500);
       } else {
         // onPostSubmit(postToBeSubmitted);
         onTextPostSubmit(postToBeSubmitted);
         setTimeout(() => {
           this.setState({ postIsClicked: true });
-          // resetPostText();
+          resetPostText();
         }, 1500);
       }
 
