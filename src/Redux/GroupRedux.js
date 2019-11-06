@@ -15,14 +15,14 @@ export default Creators;
 
 export const INITIAL_STATE = Immutable({
   loading: false,
-  users: []
+  groupsMemberList: []
 });
 
 /* ------------- Reducers ------------- */
 
 export const onGetAllUsersOfAGroupSuccess = (state, action) => {
   console.log('here', action);
-  return { ...state, loading: false, users: action.data };
+  return { ...state, loading: false, groupsMemberList: action.data };
 };
 
 /* ------------- Hookup Reducers To Types ------------- */

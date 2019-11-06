@@ -102,9 +102,12 @@ class StrikesModalContainer extends Component {
     const { checkboxSelected, postText, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
     const { strikedTerms, strikedPost } = post;
-    let newText = BlacklistedWords(postText);
+    let newText = BlacklistedWords(strikedPost);
     newText = strikedPost ? StrikedTerms(strikedPost, strikedTerms) : newText;
-    const hasToShowTutorial = (strike + 1) % 3 === 0;
+    // const newText = 'hey oh';
+    const hasToShowTutorial = 0;
+    // const hasToShowTutorial = (strike + 1) % 3 === 0;
+
     return (
       <ModalContainer>
         <ContentWrapper style={{ display: 'flex' }}>
@@ -150,7 +153,7 @@ class StrikesModalContainer extends Component {
             {message && <Message>{message}</Message>}
             {index !== -1 && !message && (
               <Message>
-                <Warnings index={index} />
+                <Warnings index={1} />
               </Message>
             )}
             {!hasToShowTutorial && (

@@ -23,8 +23,7 @@ export function* onListPosts() {
 
 export function* onFindPosts(action) {
   try {
-    // console.log('saga data', action.data);
-    const { page, pageSize } = action.data;
+    const { page, pageSize, schoolGroupId } = action.data;
     // const { data } = yield call(
     //   axios.post,
     //   `${DEV_URL}/post/findFeedsOfAGroup/${page}/${pageSize}`,
@@ -34,8 +33,10 @@ export function* onFindPosts(action) {
     const offset = pageSize || 20;
     const { data } = yield call(
       axios.post,
-      `${DEV_URL}/post/findFeedsOfAGroups/${limit}/${offset}`,
-      action.data
+      `${DEV_URL}/post/findFeedsOfAGroup/${limit}/${offset}`,
+      {
+        schoolGroupId
+      }
     );
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
@@ -68,7 +69,6 @@ export function* onTextPostSubmit(action) {
       `${URL}/moderation/addPost`,
       action.data
     );
-    console.log('saga moderation output', data);
     if (data.success) {
       yield put(PostActions.onTextPostSubmitSuccess(data.result));
     } else {
@@ -97,7 +97,6 @@ export function* onFindGif(action) {
       }
     );
 
-    console.log('saga output', data);
     if (data) {
       yield put(PostActions.onFindGifSuccess(data.data));
     } else {
@@ -111,7 +110,6 @@ export function* onFindGif(action) {
 export function* onFindGifForComments(action) {
   try {
     const { text, limit } = action.data;
-    console.log('saga gif comment search');
     const { data } = yield call(
       axios,
       `http://api.giphy.com/v1/gifs/search?rating=g&q=${text}&api_key=${GIPHY_API}&limit=${limit}`,
@@ -202,13 +200,11 @@ export function* onPostDelete(action) {
 
 export function* onMasterDelete(action) {
   try {
-    console.log('master delete input', action.data);
     const { data } = yield call(
       axios.post,
       `${URL}/onMasterDelete`,
       action.data
     );
-    console.log('master delete output', data);
   } catch (err) {
     console.log(err);
   }
@@ -229,7 +225,23 @@ export function* onEditPost(action) {
 export function* reportAnArticle(action) {
   try {
     const { data } = yield call(axios.post, `${URL}/reportAnArticle`);
-    console.log('saga output report ing an article', data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* onSubmitPost(action) {
+  try {
+    const { data } = yield call(
+      axios.post,
+      `${URL}/moderation/addPost`,
+      action.data
+    );
+    if (data.success) {
+      yield put(PostActions.onPostSubmitSuccess(data.result));
+    } else {
+      yield put(PostActions.onPostSubmitFailure(data.error));
+    }
   } catch (err) {
     console.log(err);
   }

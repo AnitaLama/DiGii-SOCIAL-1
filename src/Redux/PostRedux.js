@@ -83,11 +83,17 @@ const onPostSubmit = state => ({
   loading: true,
   posting: true
 });
-const onPostSubmitSuccess = state => ({
-  ...state,
-  posting: false,
-  loading: false
-});
+const onPostSubmitSuccess = (state, action) => {
+  const { Terms, strike, strikedPost } = action.data;
+  return {
+    ...state,
+    posting: false,
+    loading: false,
+    strikedTerms: Terms,
+    showStrikeModal: strike,
+    strikedPost: strikedPost ? strikedPost.postText : null
+  };
+};
 const onPostSubmitFailure = state => ({
   ...state,
   posting: false,
@@ -101,7 +107,6 @@ const onTextPostSubmit = state => ({
   posting: true
 });
 const onTextPostSubmitSuccess = (state, action) => {
-  console.log('reducer moderation', action.data);
   const { Terms, strike, strikedPost } = action.data;
   return {
     ...state,
@@ -165,27 +170,21 @@ const onFindPostsSuccess = (state, action) => {
   };
 };
 
-const onFindGifSuccess = (state, action) => {
-  console.log(action.data);
-  return {
-    ...state,
-    gif: action.data.length > 0 ? action.data : [],
-    error: 'No gif found',
-    loading: false,
-    posting: false
-  };
-};
+const onFindGifSuccess = (state, action) => ({
+  ...state,
+  gif: action.data.length > 0 ? action.data : [],
+  error: 'No gif found',
+  loading: false,
+  posting: false
+});
 
-const onFindGifFailure = (state, action) => {
-  console.log(action.data);
-  return {
-    ...state,
-    gif: action.data,
-    error: null,
-    loading: false,
-    posting: false
-  };
-};
+const onFindGifFailure = (state, action) => ({
+  ...state,
+  gif: action.data,
+  error: null,
+  loading: false,
+  posting: false
+});
 const onFindGifForCommentsSuccess = (state, action) => ({
   ...state,
   commentGif: action.data,

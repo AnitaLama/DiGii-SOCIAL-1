@@ -33,16 +33,18 @@ class Body extends Component {
     const { enableNotification } = report;
 
     return (
-      <BodyWrapper>
-        <div>
-          <NewPost />
-          {enableNotification && (
-            <ReportNotifications hideNotification={this.hideNotification} />
-          )}
-          <Posts />
-        </div>
-        <SideBar />
-      </BodyWrapper>
+      <div>
+        <BodyWrapper>
+          <div>
+            <NewPost />
+            {enableNotification && (
+              <ReportNotifications hideNotification={this.hideNotification} />
+            )}
+            <Posts />
+          </div>
+          <SideBar />
+        </BodyWrapper>
+      </div>
     );
   }
 }

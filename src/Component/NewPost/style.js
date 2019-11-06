@@ -10,9 +10,11 @@ import {
   fontFilson
 } from '../../Theme';
 
-const { snow, grey } = Colors.colors;
+export const {
+  snow, grey, secondary, primary
+} = Colors.colors;
 
-const NewPostWrapper = styled.div`
+export const NewPostWrapper = styled.div`
   background: ${snow};
   margin: 10px 0;
   padding: 20px;
@@ -24,21 +26,21 @@ const NewPostWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const NewPostContainer = styled.div`
+export const NewPostContainer = styled.div`
   // display: grid;
   // grid-template-columns: auto auto;
 `;
 
-const PostTypesWrapper = styled.div`
+export const PostTypesWrapper = styled.div`
   display: flex;
 `;
-const PostTypesContainer = styled.div`
+export const PostTypesContainer = styled.div`
   ${grid(6, '1fr')};
   width: 100%;
   text-align: center;
 `;
 
-const SinglePostTypeWrapper = styled.div`
+export const SinglePostTypeWrapper = styled.div`
   cursor: pointer;
 
   span {
@@ -61,29 +63,37 @@ const SinglePostTypeWrapper = styled.div`
   }
 `;
 
-const Icon = styled.div`
+export const Icon = styled.div`
   img {
     height: 20.73px;
     margin-right: 4px;
   }
 `;
 
-const TextBoxWrapper = styled.div`
+export const TextBoxWrapper = styled.div`
   display: flex;
 `;
-const TextBoxContainer = styled.div`
+export const TextBoxContainer = styled.div`
   display: grid;
   grid-template-columns: auto 86.76px;
   width: 100%;
 `;
 
-const Input = styled.div`
+export const Input = styled.div`
   width: 100%;
   margin: 0 10px;
 `;
 
-const ImageUploadWrapper = styled.div`
+export const Username = styled.span`
+  text-transform: capitalize;
+  ${fontWeight('bold')}
+`;
+export const Feeling = styled.span`
+  ${fontWeight('bold')}
+`;
+export const ImageUploadWrapper = styled.div`
   margin: 10px 0;
+  padding: 20px;
   border: 4px dashed #d4d3d3;
   min-height: 200px;
   position: relative;
@@ -96,9 +106,22 @@ const ImageUploadWrapper = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
   }
+  input {
+    display: none;
+  }
+`;
+export const ImageWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
 `;
 
-const BannerPostWrapper = styled.div`
+export const BannerPostWrapper = styled.div`
   background-image: ${props => (props.background
     ? `url(${props.background})`
     : 'linear-gradient(244deg, #f78361 0%, #f54b64 100%)')};
@@ -109,9 +132,26 @@ const BannerPostWrapper = styled.div`
   border-radius: 20px;
   position: relative;
   margin: 20px 0;
+  position: relative;
 `;
 
-const BannerOptionContainer = styled.div`
+export const BannerInput = styled.textarea`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 20px;
+`;
+export const BannerOptionContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -120,8 +160,9 @@ const BannerOptionContainer = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
+  z-index: 2;
 `;
-const BannerOption = styled.span`
+export const BannerOption = styled.span`
   img {
     height: 23px;
     width: 23px;
@@ -129,25 +170,25 @@ const BannerOption = styled.span`
   }
 `;
 
-const GifPostWrapper = styled.div`
+export const GifPostWrapper = styled.div`
   margin: 20px 0;
 `;
-const GifListContainer = styled.div`
+export const GifListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  img {
-    width: 100%;
-  }
+`;
+export const GifListItem = styled.img`
+  width: 100%;
 `;
 
-const FeelingPostWrapper = styled.div`
+export const FeelingPostWrapper = styled.div`
   margin: 10px 0;
 `;
-const FeelingPostContainer = styled.div`
+export const FeelingPostContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 `;
-const FeelingPostOptionWrapper = styled.div`
+export const FeelingPostOptionWrapper = styled.div`
   box-shadow: 3px 3px 6px #00000029;
   border-radius: 15px;
   margin: 8px;
@@ -172,15 +213,15 @@ const FeelingPostOptionWrapper = styled.div`
   }
 `;
 
-const PollPostWrapper = styled.div``;
-const PollPostQuestionWrapper = styled.div``;
-const PollPostOptionWrapper = styled.div``;
-const AddButton = styled.span`
+export const PollPostWrapper = styled.div``;
+export const PollPostQuestionWrapper = styled.div``;
+export const PollPostOptionWrapper = styled.div``;
+export const AddButton = styled.span`
   cursor: pointer;
   color: #61bbf7;
   ${fontSize(14)}
 `;
-const SingleOption = styled.div`
+export const SingleOption = styled.div`
   display: flex;
   align-items: center;
   padding: 2px 10px;
@@ -194,7 +235,7 @@ const SingleOption = styled.div`
     width: 100%;
   }
 `;
-const ImageIcon = styled.div`
+export const ImageIcon = styled.div`
   input {
     display: none;
   }
@@ -204,34 +245,80 @@ const ImageIcon = styled.div`
     height: 20.73px;
   }
 `;
-const CloseButton = styled.span`
+export const CloseButton = styled.span`
   cursor: pointer;
   color: #d5d4d4;
 `;
-export {
-  NewPostWrapper,
-  NewPostContainer,
-  PostTypesWrapper,
-  PostTypesContainer,
-  SinglePostTypeWrapper,
-  Icon,
-  TextBoxWrapper,
-  TextBoxContainer,
-  Input,
-  ImageUploadWrapper,
-  BannerPostWrapper,
-  BannerOptionContainer,
-  BannerOption,
-  GifPostWrapper,
-  GifListContainer,
-  FeelingPostWrapper,
-  FeelingPostContainer,
-  FeelingPostOptionWrapper,
-  PollPostWrapper,
-  PollPostQuestionWrapper,
-  PollPostOptionWrapper,
-  AddButton,
-  SingleOption,
-  ImageIcon,
-  CloseButton
-};
+
+export const TagPostWrapper = styled.div`
+  position: relative;
+  min-height: 50px;
+  li {
+    background: linear-gradient(to right, ${primary}, ${secondary});
+    border-radius: 20px !important;
+    // padding: 6px 10px !important;
+    // margin: 10px;
+    color: ${snow} !important;
+  }
+`;
+export const TagPostContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+`;
+export const UserDropdownListWrapper = styled.li`
+  box-shadow: 3px 3px 6px #00000029;
+  border-radius: 18px;
+  float: left;
+  max-width: 180px;
+  li.ant-select-selection__choice {
+    display: none;
+  }
+`;
+export const UserDropdownListContainer = styled.ul`
+  background: ${snow};
+  // position: absolute;
+  // top: 0;
+  // right: 0;
+  // z-index: 3;
+`;
+export const UserDropdownList = styled.ul`
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  overflow-y: scroll;
+  max-height: 224px;
+`;
+export const UserDropdownListItem = styled.li`
+  cursor: pointer;
+  padding: 4px 10px;
+  &:hover {
+    background: #00000029;
+  }
+  &.chosen {
+    background: ${secondary};
+  }
+`;
+export const TaggedMembersChipWrapper = styled.ul`
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  &.clearfix {
+    overflow: auto;
+  }
+  &.clearfix::after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+`;
+export const TaggedMembersChip = styled.li`
+  float: left;
+  background: linear-gradient(to right, ${primary}, ${secondary});
+  border-radius: 14px;
+  padding: 6px 10px;
+  margin: 10px;
+  color: ${snow};
+`;

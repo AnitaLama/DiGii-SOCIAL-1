@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { GifPostWrapper, GifListContainer } from './style';
+import { FaTimes } from 'react-icons/fa';
+import {
+  GifPostWrapper,
+  GifListContainer,
+  GifListItem,
+  ImageWrapper
+} from './style';
 import { FormInput } from '../StyledComponents';
 import PostActions from '../../Redux/PostRedux.js';
 
@@ -26,9 +32,26 @@ class GifPost extends Component {
     onFindGif(selectedGif);
   };
 
+  handleGifPost = gif => {
+    const { handleGifPost } = this.props;
+    handleGifPost(gif);
+  };
+
   render() {
-    const { gifData } = this.props;
+    const { gifData, gifPost, deleteSelectedGif } = this.props;
     const { gif, error } = gifData;
+    if (gifPost) {
+      return (
+        <GifPostWrapper>
+          <ImageWrapper>
+            <img src={gifPost} />
+            <span>
+              <FaTimes onClick={deleteSelectedGif} />
+            </span>
+          </ImageWrapper>
+        </GifPostWrapper>
+      );
+    }
     return (
       <GifPostWrapper>
         <FormInput
@@ -41,7 +64,15 @@ class GifPost extends Component {
           {gif
             && gif.map(item => {
               const actualGif = item.images.fixed_height.url;
-              return <img src={actualGif} />;
+              return (
+                <GifListItem
+                  src={actualGif}
+                  key={actualGif}
+                  onClick={() => {
+                    this.handleGifPost(actualGif);
+                  }}
+                />
+              );
             })}
         </GifListContainer>
       </GifPostWrapper>

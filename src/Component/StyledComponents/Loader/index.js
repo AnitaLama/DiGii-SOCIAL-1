@@ -8,7 +8,7 @@ const bouncedelay = keyframes`
 const Spinner = styled.div`
   width: 70px;
   text-align: center;
-
+  margin: auto;
   div {
     width: ${props => (props && props.size ? `${props.size}px` : '6px')};
     height: ${props => (props && props.size ? `${props.size}px` : '6px')};

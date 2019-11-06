@@ -66,7 +66,10 @@ class BasicModal extends Component {
           <CenteredDiv>
             <WhiteButton
               className="roundedShadow short "
-              onClick={check ? this.logout : this.handleOK}
+              onClick={() => {
+                this.handleOk();
+                // check ? this.logout : this.handleOK}
+              }}
             >
               {check ? 'Logout' : 'Back to Chat'}
             </WhiteButton>

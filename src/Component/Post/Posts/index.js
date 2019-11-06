@@ -8,7 +8,7 @@ import PostAction from '../../../Redux/PostRedux';
 import StrikeActions from '../../../Redux/StrikeRedux';
 import SinglePost from '../SinglePost';
 import { SOCKET_URL } from '../../../utils/config';
-import { ErrorAlertMessage } from '../../StyledComponents';
+import { ErrorAlertMessage, Loader } from '../../StyledComponents';
 import PostActivityAction from '../../../Redux/PostActivityRedux';
 
 // const socket = io.connect('http://localhost:4000');
@@ -23,14 +23,7 @@ class Posts extends Component {
       page: 1
     };
     this.socket = socketClient(SOCKET_URL);
-    // const {
-    //   onFindPosts,
-    //   user,
-    //   post,
-    //   onGetPostActivitiesReactionTypes
-    // } = this.props;
-    // const { posts } = post;
-    // const { isStudent, id } = user.user;
+
     window.onscroll = debounce(() => {
       const {
         loadUsers,
@@ -38,29 +31,16 @@ class Posts extends Component {
       } = this;
 
       if (error || isLoading || !hasMore) return;
-      // console.log(
-      //   'LOADING>>>>> INNERHEIGHT',
-      //   window.innerHeight,
-      //   document.documentElement.scrollTop,
-      //   document.documentElement.offsetHeight
-      // );
-      // console.log(
-      //   'LOADING>>>>> INNERHEIGHT',
-      //   window.innerHeight,
-      //   document.documentElement.scrollTop,
-      //   document.body.offsetHeight,
-      //   this.postContainer.clientHeight,
-      //   document.body.scrollHeight
-      // );
-      const boxHeight = this.postContainer.clientHeight || document.body.scrollHeight;
-      const { scrollHeight } = document.body;
-      if (
-        window.innerHeight + document.documentElement.scrollTop
-        >= boxHeight + 120
-      ) {
-        this.loadMorePosts();
-        // onFindPosts({ isStudent, actorId: id });
-        // loadUsers();
+
+      if (this.postContainer) {
+        const boxHeight = this.postContainer.clientHeight || document.body.scrollHeight;
+        const { scrollHeight } = document.body;
+        if (
+          window.innerHeight + document.documentElement.scrollTop
+          >= boxHeight + 120
+        ) {
+          this.loadMorePosts();
+        }
       }
     }, 100);
   }
@@ -68,10 +48,11 @@ class Posts extends Component {
   loadMorePosts = () => {
     const { page } = this.state;
     const { user, onFindPosts } = this.props;
-    const { isStudent, id } = user.user;
-
-    this.setState({ page: page + 1 });
-    onFindPosts({ isStudent, actorId: id, page: page + 1 });
+    const { isStudent, id, groupId } = user.user;
+    this.setState({ page: page + 1 }, () => {
+      console.log('load more posts', this.state.page);
+    });
+    onFindPosts({ schoolGroupId: groupId, page: page + 1 });
   };
 
   selectAPost = post => {
@@ -86,9 +67,10 @@ class Posts extends Component {
       onGetPostActivitiesReactionTypes
     } = this.props;
     const { posts } = post;
-    const { isStudent, id } = user.user;
+    const { groupId } = user.user;
+    const { page } = this.state;
     onGetPostActivitiesReactionTypes();
-    onFindPosts({ isStudent, actorId: id });
+    !posts.length && onFindPosts({ schoolGroupId: groupId });
     this.setState({ posts });
   }
 
@@ -98,14 +80,15 @@ class Posts extends Component {
     const { groupId, id, isStudent } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
     this.socket.on('posts', data => {
+      // console.log('socket data', data);
       const { result, group } = data;
       if (groupId.includes(group)) {
         const checkIfPostExists = this.state.posts.find(
           item => item.postId === result[0].postId
         );
         if (!checkIfPostExists) {
-          const newPostArray = this.state.posts;
-          newPostArray.push(result[0]);
+          const newPostArray = [result[0], ...this.state.posts];
+          // newPostArray.push(result[0]);
           this.setState({ posts: newPostArray });
         } else {
           const newPostArray = this.state.posts.map(item => {
@@ -138,8 +121,20 @@ class Posts extends Component {
 
   render() {
     const { post } = this.props;
-    let { posts, selectedPost } = this.state;
-    posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
+    const { posts, selectedPost } = this.state;
+    // posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
+    // console.log('posts', posts);
+    if (!posts || posts.length === 0) {
+      return (
+        <div
+          style={{
+            textAlign: 'center'
+          }}
+        >
+          <Loader color="red" size={20} />
+        </div>
+      );
+    }
     return (
       <div key={posts} ref={r => (this.postContainer = r)}>
         {post.error && <ErrorAlertMessage error={post.error} />}
@@ -152,6 +147,12 @@ class Posts extends Component {
               (item.postIsStudent && item.student)
               || (!item.postIsStudent && item.user)
             ) {
+              // return (
+              //   <div>
+              //     post:
+              //     {item.postText}
+              //   </div>
+              // );
               return (
                 <SinglePost
                   key={item + i}

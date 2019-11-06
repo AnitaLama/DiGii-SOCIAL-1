@@ -16,12 +16,24 @@ const Name = styled.div`
   ${fontWeight('bold')};
   ${fontFilson()};
   text-transform: capitalize;
-  span.emoji {
-    font-family: 'Segoe UI Emoji';
-    font-family: Lato;
+  span {
     color: ${light};
     ${fontSize(14)};
     text-transform: none;
+  }
+  span.emoji {
+    font-family: 'Segoe UI Emoji';
+    font-family: Lato;
+  }
+  span.userList {
+    &:last-of-type {
+      &:after {
+        content: ' ';
+      }
+    }
+    &:after {
+      content: ', ';
+    }
   }
 `;
 // const Post = styled.div`

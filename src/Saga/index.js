@@ -35,7 +35,8 @@ import {
   onMasterDelete,
   onEditPost,
   onFindGifForComments,
-  onTextPostSubmit
+  onTextPostSubmit,
+  onSubmitPost
 } from './PostSaga';
 import onListPostTypes from './PostTypeSaga';
 import {
@@ -77,7 +78,7 @@ export default function* root() {
     takeLatest(PostTypes.ON_FIND_POSTS, onFindPosts),
     takeLatest(PostTypes.ON_FIND_GIF, onFindGif),
     takeLatest(PostTypes.ON_FIND_GIF_FOR_COMMENTS, onFindGifForComments),
-    takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit),
+    // takeLatest(PostTypes.ON_POST_SUBMIT, onPostSubmit),
     takeLatest(PostTypes.ON_TEXT_POST_SUBMIT, onTextPostSubmit),
     takeLatest(PostTypes.ON_POST_IMAGE, onPostImage),
     takeLatest(PostTypes.ON_POST_POLL, onPostPoll),
@@ -125,6 +126,9 @@ export default function* root() {
       HelperTypes.ON_GET_HELP_NOTIFICATIONS_COUNT,
       onGetHelpNotificationsCount
     ),
-    takeLatest(ReportTypes.ON_REPORT_THE_ARTICLE, onReportTheArticle)
+    takeLatest(ReportTypes.ON_REPORT_THE_ARTICLE, onReportTheArticle),
+
+    // submit combined prefer-const
+    takeLatest(PostTypes.ON_POST_SUBMIT, onSubmitPost)
   ]);
 }

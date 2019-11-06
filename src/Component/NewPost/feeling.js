@@ -4,26 +4,21 @@ import {
   FeelingPostContainer,
   FeelingPostOptionWrapper
 } from './style';
-
-const FeelingsList = [
-  { name: 'happy', unicode: '&#128515;', emoji: '😃' },
-  { name: 'excited', unicode: '&#128516;', emoji: '😄' },
-  { name: 'loved', unicode: '&#128536;', emoji: '😘' },
-  { name: 'sad', unicode: '&#128542;', emoji: '😞' },
-  { name: 'lovely', unicode: '&#128536;', emoji: '😘' },
-  { name: 'thankful', unicode: '&#128522;', emoji: '😊' },
-  { name: 'blessed', unicode: '&#128519;', emoji: '😇' },
-  { name: 'in love', unicode: '&#128536;', emoji: '😘' },
-  { name: 'crazy', unicode: '&#128518;', emoji: '😆' }
-];
+import { FeelingsList } from '../Functions';
 
 class FeelingsPost extends Component {
   render() {
+    const { handleFeelingPostChange } = this.props;
     return (
       <FeelingPostWrapper>
         <FeelingPostContainer>
           {FeelingsList.map(feeling => (
-            <FeelingPostOptionWrapper key={feeling.name}>
+            <FeelingPostOptionWrapper
+              key={feeling.name}
+              onClick={() => {
+                handleFeelingPostChange(feeling);
+              }}
+            >
               <span>{feeling.name}</span>
               <span>{feeling.emoji}</span>
             </FeelingPostOptionWrapper>

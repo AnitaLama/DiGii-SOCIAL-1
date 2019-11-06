@@ -1,4 +1,5 @@
 import { Posts, SinglePost } from '../Post';
+// import Posts from '../Post';
 import { Header } from '../Header';
 import SideBar from '../SideBar';
 import Body from './Body';

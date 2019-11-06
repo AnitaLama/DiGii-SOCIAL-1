@@ -42,37 +42,55 @@ class Author extends Component {
     };
   }
 
+  getUserName = user => {
+    const nameOfUser = user.taggedUserIsStudent
+      ? user.user.userNmae
+      : user.student.studentFirstname;
+    return <span>{nameOfUser}</span>;
+  };
+
   getExtraInfo = () => {
     const { data } = this.props;
-    const { post_type, postText, notifications } = data;
-    const type = (post_type && post_type.postTypeTitle) || '';
-    const emoji = type === 'feeling' && FeelingsList.find(item => item.name === postText);
-    if (type === 'feeling') {
-      return (
-        emoji && (
+    const {
+      postFeeling, postText, notifications, tagged_users
+    } = data;
+    // const type = (post_type && post_type.postTypeTitle) || '';
+    const emoji = postFeeling && FeelingsList.find(item => item.name === postFeeling);
+    return (
+      <span>
+        {postFeeling && emoji && (
           <span className="emoji">
-            {` is feeling ${postText} ${emoji.emoji}`}
+            {` is feeling ${postFeeling} ${emoji.emoji}`}
           </span>
-        )
-      );
-    }
-    if (type === 'tag') {
-      return (
-        <TaggedList>
-          {notifications.map((item, i) => {
-            const { notificationIsStudent, student, user } = item;
-            if (notificationIsStudent) {
+        )}
+        {tagged_users && tagged_users.length > 0 && (
+          <span className="emoji">
+            {' '}
+            with
+            {' '}
+            {tagged_users.slice(0, 2).map(user => {
+              const nameOfUser = user.taggedUserIsStudent
+                ? user.user.userName
+                : user.student.studentFirstname;
               return (
-                <span key={`${item}-${student}-${i}`}>
-                  {student.studentUsername}
+                <span className="userList" key={nameOfUser}>
+                  {nameOfUser}
                 </span>
               );
-            }
-            return <span key={`${item}-${user}-${i}`}>{user.userName}</span>;
-          })}
-        </TaggedList>
-      );
-    }
+            })}
+            {tagged_users.length > 2 && (
+              <span>
+                {' '}
+                and
+                {tagged_users.length - 2}
+                {' '}
+others
+              </span>
+            )}
+          </span>
+        )}
+      </span>
+    );
   };
 
   onPostChange = () => {

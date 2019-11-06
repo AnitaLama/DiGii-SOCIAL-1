@@ -109,16 +109,11 @@ class SinglePost extends Component {
     onRespondToPoll(data);
   };
 
-  getContent = data => {
-    const { user } = this.props;
+  getContent = () => {
+    const { user, data } = this.props;
     // const type = post_type && post_type.postTypeTitle;
-    return (
-      <ShowFeed
-        post={data}
-        user={user.user}
-        selectPollAnswer={this.selectPollAnswer}
-      />
-    );
+    const { postText } = data;
+    return <div>{postText && <div>{postText}</div>}</div>;
   };
 
   handleReactionSelection = action => {
@@ -257,7 +252,7 @@ class SinglePost extends Component {
         <ActualPostWrapper>
           <div>
             <Author data={data} modalpopup={modalpopup} />
-            <ActualPost>{this.getContent(data)}</ActualPost>
+            <ActualPost>{this.getContent()}</ActualPost>
           </div>
           <DisplayReactionWrapper>
             <DisplayReaction>

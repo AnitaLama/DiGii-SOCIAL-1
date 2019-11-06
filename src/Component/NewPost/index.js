@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
-import { NewPostWrapper, NewPostContainer } from './style';
+import { connect } from 'react-redux';
+import {
+  NewPostWrapper,
+  NewPostContainer,
+  TaggedMembersChipWrapper,
+  TaggedMembersChip,
+  TagPostContainer
+} from './style';
 import PostTypes from './postTypes';
-import TextPost from './textbox';
+import TextPost from './textPost';
 import ImagePost from './image';
 import BannerPost from './banner';
 import GifPost from './gif';
 import FeelingsPost from './feeling';
 import PollPost from './poll';
+import TagPost from './tag';
+import PostActions from '../../Redux/PostRedux.js';
+
+const { onPostSubmit } = PostActions;
 
 class NewPost extends Component {
   state = {
@@ -16,7 +27,14 @@ class NewPost extends Component {
     isTagPost: false,
     isPollPost: false,
     isGifPost: false,
-    showPostTypes: false
+    showPostTypes: false,
+    textPost: null,
+    feelingPost: null,
+    bannerImage: null,
+    bannerText: null,
+    gifPost: null,
+    taggedPost: [],
+    taggedUsersArray: []
   };
 
   handleNewPostFocus = () => {
@@ -25,6 +43,10 @@ class NewPost extends Component {
 
   handleNewPostBlur = () => {
     this.setState({ showPostTypes: false });
+  };
+
+  handleNewPostClick = () => {
+    this.setState({ focusTextDiv: true });
   };
 
   handlePostTypeOptionClick = option => {
@@ -42,7 +64,8 @@ class NewPost extends Component {
           isImagePost: !isImagePost,
           isBannerPost: false,
           isGifPost: false,
-          isPollPost: false
+          isPollPost: false,
+          isTagPost: false
         });
         break;
       case 'banner':
@@ -50,14 +73,20 @@ class NewPost extends Component {
           isBannerPost: !isBannerPost,
           isImagePost: false,
           isGifPost: false,
-          isPollPost: false
+          isPollPost: false,
+          isTagPost: false
         });
         break;
       case 'feeling':
-        this.setState({ isFeelingPost: !isFeelingPost });
+        this.setState({
+          isFeelingPost: !isFeelingPost,
+          isTagPost: false
+        });
         break;
       case 'tag':
-        this.setState({ isTagPost: !isTagPost });
+        this.setState({
+          isTagPost: !isTagPost
+        });
         break;
       case 'poll':
         this.setState({
@@ -65,7 +94,8 @@ class NewPost extends Component {
           isBannerPost: false,
           isImagePost: false,
           isGifPost: false,
-          isFeelingPost: false
+          isFeelingPost: false,
+          isTagPost: false
         });
         break;
       case 'gif':
@@ -73,12 +103,116 @@ class NewPost extends Component {
           isGifPost: !isGifPost,
           isImagePost: false,
           isBannerPost: false,
-          isPollPost: false
+          isPollPost: false,
+          isTagPost: false
         });
         break;
       default:
         break;
     }
+  };
+
+  handleTextPostChange = e => {
+    const { value } = e.target;
+    this.setState({ textPost: value });
+  };
+
+  handleImagePostSelect = e => {
+    const file = e.target.files;
+    console.log('imagepost:::', file);
+    // if (file[0].name.toLowerCase() === 'people.jpg') {
+    //   this.setState({
+    //     imageIsBad: true
+    //   });
+    // }
+    // this.setState({
+    //   selectedImage: URL.createObjectURL(file[0]),
+    //   showPostButton: true,
+    //   fromWebcam: false,
+    //   fileName: file[0].name,
+    //   file: e.target.files
+    // });
+    this.setState({
+      imagePost: URL.createObjectURL(file[0]),
+      gifPost: null,
+      bannerPost: null
+    });
+  };
+
+  deleteSelectedImage = () => {
+    this.setState({ imagePost: null });
+  };
+
+  handleFeelingPostChange = feeling => {
+    const { feelingPost } = this.state;
+    if (feelingPost !== feeling) {
+      this.setState({ feelingPost: feeling.name, isFeelingPost: false });
+    }
+  };
+
+  handleBannerPost = banner => {
+    const { bannerImage } = this.state;
+    if (bannerImage !== banner) {
+      this.setState({ bannerImage: banner });
+    }
+  };
+
+  handleBannerPostText = e => {
+    const { value } = e.target;
+    this.setState({ bannerText: value });
+  };
+
+  handleGifPost = gif => {
+    this.setState({ gifPost: gif, imagePost: null });
+  };
+
+  deleteSelectedGif = () => {
+    this.setState({ gifPost: null });
+  };
+
+  handleTagPost = (taggedPost, taggedUsersArray) => {
+    this.setState({ taggedPost, taggedUsersArray });
+  };
+
+  getTaggedMembersList = () => {
+    const { taggedPost } = this.state;
+    const newArr = taggedPost.length > 0 && taggedPost.slice(0, 3);
+    return (
+      newArr
+      && newArr.map(user => (
+        <TaggedMembersChip key={user.username}>
+          <span>
+            {' '}
+            {user.username}
+          </span>
+        </TaggedMembersChip>
+      ))
+    );
+  };
+
+  handlePostButtonClick = () => {
+    const { onPostSubmit, user } = this.props;
+    const { id, isStudent } = user;
+    const {
+      bannerImage,
+      bannerText,
+      feelingPost,
+      gifPost,
+      taggedPost,
+      textPost
+    } = this.state;
+    const dataToBePosted = {
+      postText: textPost,
+      postBanner: bannerImage,
+      postBannerText: bannerText,
+      postFeeling: feelingPost,
+      gifPost,
+      taggedUsers: taggedPost,
+      postActorId: id,
+      postIsStudent: isStudent
+    };
+    console.log('handle post button click', dataToBePosted);
+    onPostSubmit(dataToBePosted);
   };
 
   render() {
@@ -88,9 +222,17 @@ class NewPost extends Component {
       isBannerPost,
       isFeelingPost,
       isPollPost,
-      isGifPost
+      isGifPost,
+      isTagPost,
+      taggedPost
     } = this.state;
-    const check = isImagePost || isBannerPost || isFeelingPost || isPollPost || isGifPost;
+    const check = isImagePost
+      || isBannerPost
+      || isFeelingPost
+      || isPollPost
+      || isGifPost
+      || isTagPost;
+    const props = { ...this.state };
     return (
       <NewPostWrapper
         tabIndex="-1"
@@ -98,12 +240,52 @@ class NewPost extends Component {
         onBlur={this.handleNewPostBlur}
       >
         <NewPostContainer>
-          <TextPost />
+          <TextPost
+            handleTextPostChange={this.handleTextPostChange}
+            handlePostButtonClick={this.handlePostButtonClick}
+            {...props}
+          />
+          <div>
+            <TaggedMembersChipWrapper className="clearfix">
+              {this.getTaggedMembersList()}
+              {taggedPost && taggedPost.length > 3 && (
+                <TaggedMembersChip>
++
+                  {taggedPost.length - 3}
+                </TaggedMembersChip>
+              )}
+              {isTagPost && (
+                <TagPost handleTagPost={this.handleTagPost} {...props} />
+              )}
+            </TaggedMembersChipWrapper>
+          </div>
+          {isFeelingPost && (
+            <FeelingsPost
+              handleFeelingPostChange={this.handleFeelingPostChange}
+            />
+          )}
           {isPollPost && <PollPost />}
-          {isFeelingPost && <FeelingsPost />}
-          {isGifPost && <GifPost />}
-          {isImagePost && <ImagePost />}
-          {isBannerPost && <BannerPost />}
+          {isGifPost && (
+            <GifPost
+              handleGifPost={this.handleGifPost}
+              deleteSelectedGif={this.deleteSelectedGif}
+              {...props}
+            />
+          )}
+          {isImagePost && (
+            <ImagePost
+              handleImagePostSelect={this.handleImagePostSelect}
+              deleteSelectedImage={this.deleteSelectedImage}
+              {...props}
+            />
+          )}
+          {isBannerPost && (
+            <BannerPost
+              handleBannerPost={this.handleBannerPost}
+              handleBannerPostText={this.handleBannerPostText}
+              {...props}
+            />
+          )}
         </NewPostContainer>
         {(showPostTypes || check) && (
           <PostTypes
@@ -114,5 +296,13 @@ class NewPost extends Component {
     );
   }
 }
-
-export default NewPost;
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+const mapDispatchToProps = dispatch => ({
+  onPostSubmit: value => dispatch(onPostSubmit(value))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewPost);
