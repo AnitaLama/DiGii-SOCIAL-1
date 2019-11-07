@@ -79,6 +79,7 @@ class Posts extends Component {
     const { posts } = this.state;
     const { groupId, id, isStudent } = user.user;
     onGetStrikesCountOfAUser({ isStudent, id });
+
     this.socket.on('posts', data => {
       // console.log('socket data', data);
       const { result, group } = data;

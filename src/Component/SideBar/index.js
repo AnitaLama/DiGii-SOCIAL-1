@@ -17,6 +17,9 @@ import {
   Title,
   Count
 } from './style';
+import StrikeActions from '../../Redux/StrikeRedux.js';
+
+const { updateStrikeCount } = StrikeActions;
 
 const SideBarMenus = [
   { menu: 'Videos', icon: Images.digii5.Video },
@@ -28,16 +31,36 @@ const SideBarMenus = [
 class SideBar extends Component {
   constructor() {
     super();
+    this.state = {
+      strikeCurrentCount: 0
+    };
     this.socket = socketClient(SOCKET_URL);
   }
 
-  render() {
-    const { strike } = this.props;
-    const count = strike % strikeCount;
-    const check = strike !== 0 && count === 0;
+  componentDidMount() {
+    const { strike, user } = this.props;
+    this.setState({ strikeCurrentCount: strike });
+
     this.socket.on('strikes', data => {
-      console.log('data sockets strikes', data);
+      const { strikeCurrentCount } = this.state;
+      if (data.strikes !== strikeCurrentCount && user === data.studentId) {
+        const { updateStrikeCount } = this.props;
+        console.log('strike>>>>>>>>>>>>>', data.strikes);
+        updateStrikeCount(data.strikes);
+        this.setState({ strikeCurrentCount: data.strikes });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.socket = null;
+  }
+
+  render() {
+    const { strikeCurrentCount } = this.state;
+    const count = strikeCurrentCount % strikeCount;
+    const check = strikeCurrentCount !== 0 && count === 0;
+
     return (
       <SideBarContainer>
         <SideBarWrapper>
@@ -73,6 +96,15 @@ class SideBar extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.user.user.id,
   strike: state.strike.strikes
 });
-export default connect(mapStateToProps)(SideBar);
+const mapDispatchToProps = dispatch => ({
+  updateStrikeCount: value => {
+    dispatch(updateStrikeCount(value));
+  }
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SideBar);

@@ -7,7 +7,9 @@ import {
   Username,
   Feeling
 } from './style';
-import { Avatar, FormTextArea, Button } from '../StyledComponents';
+import {
+  Avatar, FormTextArea, Button, Loader
+} from '../StyledComponents';
 import { FeelingsList } from '../Functions';
 import InputBox from './inputBox';
 
@@ -15,6 +17,7 @@ class TextBox extends Component {
   showFeelingsData = () => {
     const { user, handleTextPostChange, feelingPost } = this.props;
     const { avatar, firstname, lastname } = user;
+
     const { emoji } = FeelingsList.find(
       feeling => feeling.name === feelingPost
     );
@@ -36,8 +39,10 @@ class TextBox extends Component {
       user,
       handleTextPostChange,
       feelingPost,
-      handlePostButtonClick
+      handlePostButtonClick,
+      post
     } = this.props;
+    const { posting } = post;
     const { avatar, firstname, lastname } = user;
     const userFirstName = firstname.charAt(0).toUpperCase() + firstname.slice(1);
 
@@ -48,9 +53,11 @@ class TextBox extends Component {
           <Input>
             {feelingPost && this.showFeelingsData()}
             <InputBox
+              value={this.props.textPost || ''}
               placeholder={`What do you want to say, ${userFirstName}?`}
               onChange={handleTextPostChange}
               {...this.state}
+              {...this.props}
             />
           </Input>
           <Button
@@ -60,7 +67,7 @@ class TextBox extends Component {
             }}
             onClick={handlePostButtonClick}
           >
-            POST
+            {posting ? <Loader color="white" /> : 'POST'}
           </Button>
         </TextBoxContainer>
       </TextBoxWrapper>

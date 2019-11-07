@@ -45,12 +45,14 @@ class InputBox extends Component {
   onChange = e => {
     const { value } = e.target;
     const { onChange } = this.props;
+    const { textInput } = this;
     onChange(e);
     if (value.length >= 250) {
       this.setState({
         showBasicModal: true,
         alertMessage: 'more than 250'
       });
+      textInput.blur();
     }
   };
 
@@ -72,6 +74,9 @@ class InputBox extends Component {
     return (
       <div>
         <FormTextArea
+          ref={r => {
+            this.textInput = r;
+          }}
           {...this.props}
           onFocus={this.onFocus}
           onBlur={this.onBlur}

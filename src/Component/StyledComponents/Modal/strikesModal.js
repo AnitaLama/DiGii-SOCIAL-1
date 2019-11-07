@@ -51,6 +51,10 @@ class StrikesModalContainer extends Component {
     };
   }
 
+  componentWillMount() {
+    console.log('strikemodal cwm');
+  }
+
   handleCheckboxClick = () => {
     const { checkboxSelected } = this.state;
     this.setState({ checkboxSelected: !checkboxSelected });
@@ -75,9 +79,11 @@ class StrikesModalContainer extends Component {
     // } else {
     //   hideModal();
     // }
-    hideModal();
     onDisableStrikesModal();
-    onGetStrikesCountOfAUser({ isStudent, id });
+    setTimeout(() => {
+      hideModal();
+    }, 1000);
+    // onGetStrikesCountOfAUser({ isStudent, id });
   };
 
   showVideo = () => {
@@ -93,7 +99,7 @@ class StrikesModalContainer extends Component {
       showCheckButton,
       strike,
       showVideo,
-      index,
+      // index,
       user,
       feeling,
       banner,
@@ -105,9 +111,12 @@ class StrikesModalContainer extends Component {
     let newText = BlacklistedWords(strikedPost);
     newText = strikedPost ? StrikedTerms(strikedPost, strikedTerms) : newText;
     // const newText = 'hey oh';
-    const hasToShowTutorial = 0;
-    // const hasToShowTutorial = (strike + 1) % 3 === 0;
-
+    // const hasToShowTutorial = 0;
+    console.log('strike count inside strikemodal', strike);
+    const hasToShowTutorial = strike % 3 === 0;
+    let index = (strike % 3) - 1;
+    index = index >= 0 ? index : 0;
+    console.log('>>>>>>>>>>>>>>>>>>', strike, index, hasToShowTutorial);
     return (
       <ModalContainer>
         <ContentWrapper style={{ display: 'flex' }}>
@@ -153,7 +162,7 @@ class StrikesModalContainer extends Component {
             {message && <Message>{message}</Message>}
             {index !== -1 && !message && (
               <Message>
-                <Warnings index={1} />
+                <Warnings index={index} />
               </Message>
             )}
             {!hasToShowTutorial && (

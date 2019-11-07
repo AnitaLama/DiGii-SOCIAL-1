@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { IconContext } from 'react-icons';
-import { FaEllipsisH, FaTimes, FaTimesCircle } from 'react-icons/fa';
+import { FaEllipsisH, FaTimes, FaEllipsisV } from 'react-icons/fa';
 import PostAction from '../../../Redux/PostRedux';
 import {
   Avatar,
@@ -28,7 +28,7 @@ import {
 } from './style';
 import { Colors } from '../../../Theme';
 
-const { tint } = Colors.colors;
+const { primary } = Colors.colors;
 
 class Author extends Component {
   constructor(props) {
@@ -235,7 +235,7 @@ others
             ) : (
               <IconContext.Provider
                 value={{
-                  color: tint,
+                  color: primary,
                   className: 'global-class-name'
                 }}
               >
@@ -250,7 +250,7 @@ others
                     padding: '12px'
                   }}
                 >
-                  <FaTimesCircle />
+                  <FaEllipsisV />
                 </button>
               </IconContext.Provider>
             )}
@@ -269,7 +269,7 @@ others
                 padding: '12px'
               }}
             >
-              <FaTimesCircle />
+              <FaEllipsisV />
             </button>
           </EditOptionsContainer>
         )}

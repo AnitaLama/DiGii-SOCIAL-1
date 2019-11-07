@@ -67,7 +67,7 @@ class BasicModal extends Component {
             <WhiteButton
               className="roundedShadow short "
               onClick={() => {
-                this.handleOk();
+                this.handleOK();
                 // check ? this.logout : this.handleOK}
               }}
             >

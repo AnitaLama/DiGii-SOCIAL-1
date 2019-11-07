@@ -201,18 +201,40 @@ class NewPost extends Component {
       taggedPost,
       textPost
     } = this.state;
-    const dataToBePosted = {
-      postText: textPost,
-      postBanner: bannerImage,
-      postBannerText: bannerText,
-      postFeeling: feelingPost,
-      gifPost,
-      taggedUsers: taggedPost,
-      postActorId: id,
-      postIsStudent: isStudent
-    };
-    console.log('handle post button click', dataToBePosted);
-    onPostSubmit(dataToBePosted);
+    if (
+      bannerImage
+      || bannerText
+      || feelingPost
+      || gifPost
+      || taggedPost
+      || textPost
+    ) {
+      const dataToBePosted = {
+        postText: textPost,
+        postBanner: bannerImage,
+        postBannerText: bannerText,
+        postFeeling: feelingPost,
+        gifPost,
+        taggedUsers: taggedPost,
+        postActorId: id,
+        postIsStudent: isStudent
+      };
+      console.log('handle post button click', dataToBePosted);
+      if (textPost && textPost.length < 250) {
+        onPostSubmit(dataToBePosted);
+        this.setState({
+          textPost: null,
+          feelingPost: null,
+          bannerImage: null,
+          bannerText: null,
+          gifPost: null,
+          taggedPost: [],
+          taggedUsersArray: []
+        });
+        // onGetStrikesCountOfAUser({ isStudent, id });
+      }
+      this.setState(this.initialState);
+    }
   };
 
   render() {
