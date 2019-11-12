@@ -45,7 +45,7 @@ class SideBar extends Component {
       const { strikeCurrentCount } = this.state;
       if (data.strikes !== strikeCurrentCount && user === data.studentId) {
         const { updateStrikeCount } = this.props;
-        console.log('strike>>>>>>>>>>>>>', data.strikes);
+        // console.log('current strike>>>>>>>>>>>>>', data.strikes);
         updateStrikeCount(data.strikes);
         this.setState({ strikeCurrentCount: data.strikes });
       }

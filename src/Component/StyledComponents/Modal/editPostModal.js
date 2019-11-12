@@ -8,8 +8,19 @@ import {
   Button,
   Avatar
 } from '..';
+import { FaCircle } from 'react-icons/fa';
 import { Colors } from '../../../Theme';
 import { ShowFeed } from '../../Functions';
+import {
+  ActualPost,
+  ImageWrapper,
+  ImageContainer,
+  BannerContainer,
+  BannerText,
+  PostContent,
+  PollWrapper,
+  PostText
+} from './style';
 
 const { tint, peach } = Colors.colors;
 
@@ -23,12 +34,82 @@ class EditModal extends Component {
 
   getContent = () => {
     const { user, post } = this.props;
+    const data = post;
+    const {
+      postText,
+      postBanner,
+      postBannerText,
+      postGif,
+      postImage,
+      poll
+    } = data;
     return (
-      <ShowFeed
-        post={{ ...post, edit: true }}
-        user={user}
-        handlePostChange={this.handlePostChange}
-      />
+      <PostContent>
+        {postText && <PostText>{postText}</PostText>}
+        {postBanner && (
+          <ImageWrapper>
+            <BannerContainer background={postBanner}>
+              <BannerText>{postBannerText}</BannerText>
+            </BannerContainer>
+          </ImageWrapper>
+        )}
+        {postGif && (
+          <ImageWrapper>
+            <ImageContainer src={postGif} />
+          </ImageWrapper>
+        )}
+        {postImage && (
+          <ImageWrapper>
+            <ImageContainer src={postImage} />
+          </ImageWrapper>
+        )}
+        {poll && (
+          <div>
+            <PostText className="captions">{poll.pollOptionQuestion}</PostText>
+            {poll.poll_options
+              && poll.poll_options.map((option, i) => {
+                const { poll_responses } = option;
+
+                // const selectedAnswer = hasUserVoted
+                // && hasUserVoted.pollResponsePollOptionId === option.pollOptionId;
+                return (
+                  <PollWrapper
+                    // onClick={() => {
+                    //   this.selectPollAnswer(option, hasUserVoted);
+                    // }}
+                    key={`${option}${i}`}
+                  >
+                    <div>
+                      <FaCircle />
+                      {option.pollOptionImagePath && (
+                        <img
+                          src={`${option.pollOptionImagePath}`}
+                          alt={`${poll.pollOptionQuestion}-option${i}`}
+                        />
+                      )}
+                      {option.pollOptionText}
+                    </div>
+                    <span>
+                      {poll_responses.slice(0, 3).map(item => {
+                        const avatar = item.pollResponseIsStudent
+                          ? item.student.avatar
+                          : item.user.avatar;
+                        return (
+                          <Avatar
+                            key={`poll_responses-${item}`}
+                            avatar={avatar}
+                            height={17.75}
+                          />
+                        );
+                      })}
+                      {poll_responses.length > 3 && poll_responses.length - 3}
+                    </span>
+                  </PollWrapper>
+                );
+              })}
+          </div>
+        )}
+      </PostContent>
     );
     // return <div>POST</div>;
   };

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Colors, flexCentering } from '../../../Theme';
+import { Colors, flexCentering, fontSize } from '../../../Theme';
 
 const { snow } = Colors.colors;
 
@@ -154,3 +154,66 @@ export {
   QuestionOptions,
   CenteredDiv
 };
+
+export const PostContent = styled.div`
+  color: ${Colors.colors.light};
+  ${fontSize(14)};
+  line-height: 17px;
+`;
+export const ImageWrapper = styled.div`
+  // text-align: center;
+`;
+export const ImageContainer = styled.img`
+  width: 100%;
+  max-width: 250px;
+`;
+export const BannerContainer = styled.div`
+  background: ${props => `url('${props.background}')`};
+  position: relative;
+  width: 100%;
+  height: 135px;
+`;
+export const BannerText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  color: ${snow};
+  background: transparent;
+  transform: translate(-50%, -50%);
+  word-wrap: break-word;
+  text-align: center;
+`;
+
+export const PollWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  span {
+    display: flex;
+    svg {
+      border: 0;
+      margin-right: 4px;
+    }
+    color: ${Colors.colors.pencil};
+    ${fontSize(12)};
+  }
+  svg {
+    color: white;
+    border: 1px solid #707070;
+    border-radius: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 8px;
+  }
+  img {
+    height: 22px;
+    width: 22px;
+    border-radius: 22px;
+    margin-right: 10px;
+  }
+`;
+export const PostText = styled.div`
+  word-break: break-word;
+  word-wrap: break-word;
+`;

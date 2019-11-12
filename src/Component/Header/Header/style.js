@@ -4,19 +4,19 @@ import { flexCentering, Colors, fontSize } from '../../../Theme';
 const { pen } = Colors.colors;
 
 const HeaderMainContainer = styled.div`
-  position:sticky;
-  top:0;
-  border-bottom 1px solid rgba(0,0,0,0.15);
-  z-index:10;
-  background:white;
-  box-shadow:0px 2px 10px 0px rgba(0,0,0,0.15)
+  position: sticky;
+  top: 0;
+  // border-bottom 1px solid rgba(0,0,0,0.15);
+  z-index: 10;
+  background: white;
+  // box-shadow:0px 2px 10px 0px rgba(0,0,0,0.15)
 `;
 
 const HeaderWrapper = styled.div`
   padding: 20px 0;
   display: grid;
   grid-template-columns: 50% 50%;
-  @media (max-width: 780px) {
+  @media (max-width: 768px) {
     grid-template-columns: auto auto;
   }
 `;

@@ -21,9 +21,8 @@ export function* onGetStrikesCountOfAUser(action) {
   }
 }
 
-export function* onRemoveTheStrikes(action) {
+export function* resetStrikeOfTheUserRequest(action) {
   try {
-    console.log('saga action data', action.data);
     const { data } = yield call(
       axios.post,
       `${DEV_URL}/strikes/updateUserStrikes`,

@@ -4,8 +4,7 @@ import {
   NewPostWrapper,
   NewPostContainer,
   TaggedMembersChipWrapper,
-  TaggedMembersChip,
-  TagPostContainer
+  TaggedMembersChip
 } from './style';
 import PostTypes from './postTypes';
 import TextPost from './textPost';
@@ -16,26 +15,62 @@ import FeelingsPost from './feeling';
 import PollPost from './poll';
 import TagPost from './tag';
 import PostActions from '../../Redux/PostRedux.js';
+import StrikeActions from '../../Redux/StrikeRedux.js';
+import { Avatar } from '../StyledComponents';
 
-const { onPostSubmit } = PostActions;
+const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
+const { onPostSubmit, onUploadImage } = PostActions;
+const { onGetStrikesCountOfAUser } = StrikeActions;
+const pollOption = [
+  {
+    id: Math.random(0, 1).toFixed(3),
+    text: '',
+    img: ''
+  },
+  {
+    id: Math.random(0, 1).toFixed(3),
+    text: '',
+    img: ''
+  },
+  {
+    id: Math.random(0, 1).toFixed(3),
+    text: '',
+    img: ''
+  }
+];
+const postVisibilityState = {
+  isImagePost: false,
+  isBannerPost: false,
+  isFeelingPost: false,
+  isTagPost: false,
+  isPollPost: false,
+  isGifPost: false,
+  showPostTypes: false
+};
+const postValues = {
+  bannerImage: null,
+  bannerText: null,
+  gifPost: null,
+  pollQuestion: null,
+  imagePost: null
+};
 class NewPost extends Component {
   state = {
-    isImagePost: false,
-    isBannerPost: false,
-    isFeelingPost: false,
-    isTagPost: false,
-    isPollPost: false,
-    isGifPost: false,
-    showPostTypes: false,
-    textPost: null,
+    ...postVisibilityState,
+    ...postValues,
+    postText: null,
     feelingPost: null,
-    bannerImage: null,
-    bannerText: null,
-    gifPost: null,
     taggedPost: [],
-    taggedUsersArray: []
+    taggedUsersArray: [],
+    options: [...pollOption]
   };
+
+  componentDidMount() {
+    const { user, onGetStrikesCountOfAUser } = this.props;
+    const { isStudent, id } = user;
+    onGetStrikesCountOfAUser({ isStudent, id });
+  }
 
   handleNewPostFocus = () => {
     this.setState({ showPostTypes: true });
@@ -61,50 +96,38 @@ class NewPost extends Component {
     switch (option.value) {
       case 'image':
         this.setState({
-          isImagePost: !isImagePost,
-          isBannerPost: false,
-          isGifPost: false,
-          isPollPost: false,
-          isTagPost: false
+          ...postVisibilityState,
+          isImagePost: !isImagePost
         });
         break;
       case 'banner':
         this.setState({
-          isBannerPost: !isBannerPost,
-          isImagePost: false,
-          isGifPost: false,
-          isPollPost: false,
-          isTagPost: false
+          ...postVisibilityState,
+          isBannerPost: !isBannerPost
         });
         break;
       case 'feeling':
         this.setState({
-          isFeelingPost: !isFeelingPost,
-          isTagPost: false
+          ...postVisibilityState,
+          isFeelingPost: !isFeelingPost
         });
         break;
       case 'tag':
         this.setState({
+          ...postVisibilityState,
           isTagPost: !isTagPost
         });
         break;
       case 'poll':
         this.setState({
-          isPollPost: !isPollPost,
-          isBannerPost: false,
-          isImagePost: false,
-          isGifPost: false,
-          isFeelingPost: false,
-          isTagPost: false
+          ...postVisibilityState,
+          isPollPost: !isPollPost
         });
         break;
       case 'gif':
         this.setState({
-          isGifPost: !isGifPost,
-          isImagePost: false,
-          isBannerPost: false,
-          isPollPost: false,
-          isTagPost: false
+          ...postVisibilityState,
+          isGifPost: !isGifPost
         });
         break;
       default:
@@ -114,28 +137,17 @@ class NewPost extends Component {
 
   handleTextPostChange = e => {
     const { value } = e.target;
-    this.setState({ textPost: value });
+    this.setState({ postText: value });
   };
 
   handleImagePostSelect = e => {
     const file = e.target.files;
-    console.log('imagepost:::', file);
-    // if (file[0].name.toLowerCase() === 'people.jpg') {
-    //   this.setState({
-    //     imageIsBad: true
-    //   });
-    // }
-    // this.setState({
-    //   selectedImage: URL.createObjectURL(file[0]),
-    //   showPostButton: true,
-    //   fromWebcam: false,
-    //   fileName: file[0].name,
-    //   file: e.target.files
-    // });
+
     this.setState({
+      ...postValues,
       imagePost: URL.createObjectURL(file[0]),
-      gifPost: null,
-      bannerPost: null
+      file,
+      options: [...pollOption]
     });
   };
 
@@ -146,32 +158,48 @@ class NewPost extends Component {
   handleFeelingPostChange = feeling => {
     const { feelingPost } = this.state;
     if (feelingPost !== feeling) {
-      this.setState({ feelingPost: feeling.name, isFeelingPost: false });
+      this.setState({ feelingPost: feeling.name });
     }
   };
 
   handleBannerPost = banner => {
-    const { bannerImage } = this.state;
+    const { bannerImage, bannerText } = this.state;
     if (bannerImage !== banner) {
-      this.setState({ bannerImage: banner });
+      this.setState({
+        ...postValues,
+        bannerImage: banner,
+        bannerText,
+        options: [...pollOption]
+      });
     }
   };
 
   handleBannerPostText = e => {
     const { value } = e.target;
-    this.setState({ bannerText: value });
+    const { bannerImage } = this.state;
+
+    this.setState({
+      ...postValues,
+      bannerImage,
+      bannerText: value,
+      options: [...pollOption]
+    });
   };
 
   handleGifPost = gif => {
-    this.setState({ gifPost: gif, imagePost: null });
+    this.setState({
+      ...postValues,
+      gifPost: gif,
+      options: [...pollOption]
+    });
   };
 
   deleteSelectedGif = () => {
     this.setState({ gifPost: null });
   };
 
-  handleTagPost = (taggedPost, taggedUsersArray) => {
-    this.setState({ taggedPost, taggedUsersArray });
+  handleTagPost = taggedPost => {
+    this.setState({ taggedPost });
   };
 
   getTaggedMembersList = () => {
@@ -181,17 +209,18 @@ class NewPost extends Component {
       newArr
       && newArr.map(user => (
         <TaggedMembersChip key={user.username}>
-          <span>
-            {' '}
-            {user.username}
-          </span>
+          <Avatar avatar={user.avatar} height={20} />
+          <span> 
+{' '}
+{user.username}
+</span>
         </TaggedMembersChip>
       ))
     );
   };
 
   handlePostButtonClick = () => {
-    const { onPostSubmit, user } = this.props;
+    const { onPostSubmit, user, onUploadImage } = this.props;
     const { id, isStudent } = user;
     const {
       bannerImage,
@@ -199,42 +228,164 @@ class NewPost extends Component {
       feelingPost,
       gifPost,
       taggedPost,
-      textPost
+      postText,
+      file,
+      imagePost,
+      pollQuestion,
+      options
     } = this.state;
+
     if (
       bannerImage
       || bannerText
       || feelingPost
       || gifPost
-      || taggedPost
-      || textPost
+      || taggedPost.length > 0
+      || postText
+      || imagePost
+      || pollQuestion
     ) {
       const dataToBePosted = {
-        postText: textPost,
+        postText: postText && postText.slice(0, 250),
         postBanner: bannerImage,
-        postBannerText: bannerText,
+        postBannerText: bannerText && bannerText.slice(0, 250),
         postFeeling: feelingPost,
-        gifPost,
+        postGif: gifPost,
         taggedUsers: taggedPost,
         postActorId: id,
-        postIsStudent: isStudent
+        postIsStudent: isStudent,
+        question: pollQuestion && pollQuestion.slice(0, 250),
+        options
       };
-      console.log('handle post button click', dataToBePosted);
-      if (textPost && textPost.length < 250) {
+      if (postText && postText.length > 0 && postText.length < 250) {
         onPostSubmit(dataToBePosted);
-        this.setState({
-          textPost: null,
-          feelingPost: null,
-          bannerImage: null,
-          bannerText: null,
-          gifPost: null,
-          taggedPost: [],
-          taggedUsersArray: []
+        this.resetPostType();
+      } else if (
+        pollQuestion
+        && pollQuestion.length > 0
+        && pollQuestion.length < 250
+      ) {
+        const pollOptions = options.filter(item => item.img || item.text);
+        console.log('POLL', pollQuestion, options);
+        pollOptions.map(item => {
+          const formData = new FormData();
+          if (item.img) {
+            formData.append('file', item.img);
+            formData.append('name', item.name);
+            onUploadImage(formData);
+          }
+          return true;
         });
-        // onGetStrikesCountOfAUser({ isStudent, id });
+        onPostSubmit({ ...dataToBePosted, options: pollOptions });
+        this.resetPostType();
+      } else if (
+        imagePost
+        || bannerImage
+        || bannerText
+        || feelingPost
+        || gifPost
+        || taggedPost
+      ) {
+        if (imagePost) {
+          const formData = new FormData();
+          formData.append('file', file[0]);
+          formData.append('isImage', 1);
+          formData.append('fileProps', JSON.stringify(dataToBePosted));
+          onPostSubmit(formData);
+          this.resetPostType();
+        } else {
+          onPostSubmit(dataToBePosted);
+        }
       }
-      this.setState(this.initialState);
     }
+  };
+
+  resetPostType = () => {
+    this.setState({
+      ...postValues,
+      ...postVisibilityState,
+      postText: null,
+      feelingPost: null,
+      taggedPost: [],
+      taggedUsersArray: [],
+      options: [...pollOption]
+    });
+  };
+
+  handleOptionChange = (e, option) => {
+    const { options, pollQuestion } = this.state;
+    const { value } = e.target;
+    const newArr = [];
+    options.forEach(item => {
+      if (item.id !== option.id) {
+        newArr.push(item);
+      } else {
+        newArr.push({ ...option, text: value });
+      }
+    });
+    this.setState({ options: newArr, ...postValues, pollQuestion });
+  };
+
+  selectImage = (e, option) => {
+    const { options } = this.state;
+    const newArr = [];
+
+    let fileName = e.target.files[0].name.replace(/\s/g, '-');
+    // SAVE NAME ALONG WITH CURRENT TIME FOR UNIQUE NAME
+    const currentDate = new Date();
+    fileName = currentDate.getTime() + fileName;
+    options.forEach(item => (option.id === item.id
+        ? newArr.push({
+            ...item,
+            img: e.target.files[0],
+            fileName: URL.createObjectURL(e.target.files[0]),
+            name: `${url}/${fileName}`,
+            url: `${url}/${URL.createObjectURL(e.target.files[0])}`
+          })
+        : newArr.push(item)));
+    this.setState({ options: newArr, ...postValues });
+  };
+
+  openFileSystem = id => {
+    document.getElementById(id).click();
+  };
+
+  addNewOption = () => {
+    const { options } = this.state;
+    const optionLength = options.length;
+    // MAXIMUM 20 OPTIONS ONLY
+    if (optionLength < 20) {
+      this.setState(prevState => ({
+        options: [
+          ...prevState.options,
+          {
+            id: Math.random(0, 100).toFixed(3),
+            text: '',
+            img: '',
+            name: ''
+          }
+        ]
+      }));
+    }
+  };
+
+  removeOption = option => {
+    // REMOVE THE PARTICULAR OPTION FROM THE LIST
+    const { options } = this.state;
+    const tempArr = options;
+    const newArr = [];
+    tempArr.forEach(item => {
+      if (item.id !== option.id) {
+        newArr.push(item);
+      }
+    });
+    this.setState({ options: newArr });
+  };
+
+  handleQuestionChange = e => {
+    const { value } = e.target;
+    console.log('poll question change', value);
+    this.setState({ ...postValues, pollQuestion: value });
   };
 
   render() {
@@ -248,7 +399,7 @@ class NewPost extends Component {
       isTagPost,
       taggedPost
     } = this.state;
-    const check = isImagePost
+    const check =      isImagePost
       || isBannerPost
       || isFeelingPost
       || isPollPost
@@ -267,26 +418,35 @@ class NewPost extends Component {
             handlePostButtonClick={this.handlePostButtonClick}
             {...props}
           />
-          <div>
-            <TaggedMembersChipWrapper className="clearfix">
-              {this.getTaggedMembersList()}
-              {taggedPost && taggedPost.length > 3 && (
-                <TaggedMembersChip>
+          <TaggedMembersChipWrapper className="clearfix">
+            {this.getTaggedMembersList()}
+            {taggedPost && taggedPost.length > 3 && (
+              <TaggedMembersChip>
 +
-                  {taggedPost.length - 3}
-                </TaggedMembersChip>
-              )}
-              {isTagPost && (
-                <TagPost handleTagPost={this.handleTagPost} {...props} />
-              )}
-            </TaggedMembersChipWrapper>
-          </div>
+{taggedPost.length - 3}
+</TaggedMembersChip>
+            )}
+            {isTagPost && (
+              <TagPost handleTagPost={this.handleTagPost} {...props} />
+            )}
+          </TaggedMembersChipWrapper>
           {isFeelingPost && (
             <FeelingsPost
               handleFeelingPostChange={this.handleFeelingPostChange}
+              {...props}
             />
           )}
-          {isPollPost && <PollPost />}
+          {isPollPost && (
+            <PollPost
+              handleOptionChange={this.handleOptionChange}
+              selectImage={this.selectImage}
+              openFileSystem={this.openFileSystem}
+              addNewOption={this.addNewOption}
+              removeOption={this.removeOption}
+              handleQuestionChange={this.handleQuestionChange}
+              {...props}
+            />
+          )}
           {isGifPost && (
             <GifPost
               handleGifPost={this.handleGifPost}
@@ -322,9 +482,9 @@ const mapStateToProps = state => ({
   user: state.user.user
 });
 const mapDispatchToProps = dispatch => ({
-  onPostSubmit: value => dispatch(onPostSubmit(value))
+  onPostSubmit: value => dispatch(onPostSubmit(value)),
+  onUploadImage: value => dispatch(onUploadImage(value)),
+  // poll functions
+  onGetStrikesCountOfAUser: value => dispatch(onGetStrikesCountOfAUser(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewPost);
+export default connect(mapStateToProps, mapDispatchToProps)(NewPost);

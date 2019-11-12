@@ -1,5 +1,8 @@
 import Moderator from './moderator';
 import ShowFeed from './showFeed';
+import InputBox from './inputBox';
+import TextAreaBox from './textareaBox.js';
+import ReactionsList from './reactionList';
 import {
   FilterKeyWords,
   BlacklistedWords,
@@ -15,5 +18,8 @@ export {
   BlacklistedWords,
   Warnings,
   FeelingsList,
-  StrikedTerms
+  StrikedTerms,
+  InputBox,
+  TextAreaBox,
+  ReactionsList
 };

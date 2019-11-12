@@ -5,9 +5,8 @@ import TutorialActions from '../Redux/TutorialRedux';
 
 export function* onTutorialRequest(action) {
   try {
-    const { data } = yield call(axios.post, `${DEV_URL}/tutorial`, {
-      type: action.data
-    });
+    
+    const { data } = yield call(axios.post, `${DEV_URL}/tutorial/get`, action.data);
     if (data.success) {
       yield put(TutorialActions.onTutorialRequestSuccess(data.result));
     } else {

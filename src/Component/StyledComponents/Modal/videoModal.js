@@ -26,14 +26,14 @@ class VideoModalContainer extends Component {
   };
 
   componentWillMount() {
-    const { onTutorialRequest, type } = this.props;
-    onTutorialRequest(type);
+    const { onTutorialRequest, videoType } = this.props;
+    onTutorialRequest({ tutorialType: videoType });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { tutorial, user, onRemoveTheStrikes } = this.props;
+    const { tutorial, user, resetStrikeOfTheUserRequest } = this.props;
     const { isStudent, id } = user;
-    console.log('cdu', prevState, this.state);
+    // console.log('cdu', prevState, this.state);
     const player = this.fullscreenVideo;
     if (tutorial.tutorialList && tutorial.tutorialList.tutorialPath && player) {
       player.addEventListener('pause', () => {
@@ -51,7 +51,7 @@ class VideoModalContainer extends Component {
       this.state.gotAllQuestionsCorrect
       && prevState.gotAllQuestionsCorrect !== this.state.gotAllQuestionsCorrect
     ) {
-      onRemoveTheStrikes(user);
+      resetStrikeOfTheUserRequest(user);
     }
   }
 
@@ -130,7 +130,7 @@ class VideoModalContainer extends Component {
               <CenteredDiv>{tutorialQuestions}</CenteredDiv>
               <div>
                 {tutorials_questions_options.map(option => {
-                  const check = userAnswer[index]
+                  const check =                    userAnswer[index]
                     && userAnswer[index].answer
                       === option.tutorialQuestionOptionOption;
 
@@ -204,6 +204,14 @@ class VideoModalContainer extends Component {
     this.setState({ showVideo: true });
   };
 
+  handleOK = () => {
+    const { hideModal, resetStrikeOfTheUserRequest, user } = this.props;
+    const { isStudent, id } = user;
+    console.log('caall here reset the strikes');
+    resetStrikeOfTheUserRequest({ isStudent, id });
+    hideModal();
+  };
+
   render() {
     const { hideModal, tutorial } = this.props;
     const {
@@ -232,10 +240,13 @@ class VideoModalContainer extends Component {
                 position: 'relative'
               }}
             >
-              {!tutorialPath && <Loader size={20} />}
+              {/*! tutorialPath && <Loader size={20} /> */}
               {tutorialPath && (
                 <video
-                  src={tutorialPath}
+                  src={
+                    tutorialPath
+                    || 'https://digii-posts.s3-ap-southeast-2.amazonaws.com/Tutorials/puttingDown.mp4'
+                  }
                   autoPlay
                   controls
                   ref={r => {
@@ -259,10 +270,10 @@ class VideoModalContainer extends Component {
           </div>
         )}
         {showQuestions && (
-          <ModalBox>
-            {' '}
-            {this.getQuestions(tutorials_questions)}
-          </ModalBox>
+          <ModalBox> 
+{' '}
+{this.getQuestions(tutorials_questions)}
+</ModalBox>
         )}
         {showFinalMessage && !showVideo && !showQuestions && (
           <ModalBox className="centeredModal">
@@ -272,7 +283,7 @@ class VideoModalContainer extends Component {
                   {`  You've answered all the questions correctly. You can return
                   now`}
                 </span>
-                <Button className="short" onClick={hideModal}>
+                <Button className="short" onClick={this.handleOK}>
                   OK
                 </Button>
               </CenteredElementsModalWrapper>
@@ -314,7 +325,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onTutorialRequest: value => dispatch(TutorialActions.onTutorialRequest(value)),
   onSaveTutorialWatchersInfo: value => dispatch(TutorialActions.onSaveTutorialWatchersInfo(value)),
-  onRemoveTheStrikes: value => dispatch(StrikeActions.onRemoveTheStrikes(value))
+  resetStrikeOfTheUserRequest: value => dispatch(StrikeActions.resetStrikeOfTheUserRequest(value))
 });
 
 const VideoModal = connect(

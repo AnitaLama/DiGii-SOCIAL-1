@@ -27,7 +27,7 @@ export function* onLoginRequest(action) {
       );
       yield localStorage.setItem('user', JSON.stringify(data.result));
       yield localStorage.setItem('token', data.token);
-      history.push('/messageboard');
+      history.push('/teacher/dashboard');
     } else {
       yield put(ErrorActions.onFormLoginFailure(data.error));
     }

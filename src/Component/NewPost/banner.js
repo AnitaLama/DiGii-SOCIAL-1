@@ -6,6 +6,10 @@ import {
   BannerOptionContainer,
   BannerInput
 } from './style';
+import BannerActions from '../../Redux/BannerRedux.js';
+import { TextAreaBox } from '../Functions';
+
+const { onGetAllBanners } = BannerActions;
 
 const url = 'https://digii-posts.s3-ap-southeast-2.amazonaws.com';
 
@@ -16,8 +20,14 @@ class BannerPost extends Component {
   };
 
   componentWillMount() {
-    const { bannerPost, bannerText } = this.props;
+    const { bannerPost, bannerText, onGetAllBanners } = this.props;
+    onGetAllBanners();
     this.setState({ selectedBanner: bannerPost, bannerText });
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('>>>>>>>>>>>>>.', prevProps, this.props);
+    // if(prevProps.)
   }
 
   selectBanner = banner => {
@@ -32,17 +42,25 @@ class BannerPost extends Component {
   };
 
   render() {
-    const { banner, handleBannerPost } = this.props;
-    const { selectedBanner, bannerText } = this.state;
-    console.log('selectedBanner', selectedBanner);
+    const {
+      banner,
+      handleBannerPost,
+      bannerImage,
+      bannerText,
+      bannerPost
+    } = this.props;
+    // const { selectedBanner, bannerText } = this.state;
+    // console.log('selectedBanner', selectedBanner);
     return (
-      <BannerPostWrapper background={selectedBanner}>
-        <BannerInput
-          ref={r => (this.bannerPost = r)}
-          onChange={this.handleBannerPostText}
-          value={bannerText || ''}
-        />
-
+      <BannerPostWrapper background={bannerImage}>
+        <BannerInput>
+          <TextAreaBox
+            className="textBox"
+            ref={r => (this.bannerPost = r)}
+            onChange={this.handleBannerPostText}
+            value={bannerText || ''}
+          />
+        </BannerInput>
         <BannerOptionContainer>
           {banner.map(item => {
             if (item.Size > 0) {
@@ -67,4 +85,10 @@ class BannerPost extends Component {
 const mapStateToProps = state => ({
   banner: state.banner.banners
 });
-export default connect(mapStateToProps)(BannerPost);
+const mapDispatchToProps = dispatch => ({
+  onGetAllBanners: () => dispatch(onGetAllBanners())
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BannerPost);

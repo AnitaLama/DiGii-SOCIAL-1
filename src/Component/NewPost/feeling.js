@@ -8,21 +8,31 @@ import { FeelingsList } from '../Functions';
 
 class FeelingsPost extends Component {
   render() {
-    const { handleFeelingPostChange } = this.props;
+    const { handleFeelingPostChange, feelingPost } = this.props;
     return (
       <FeelingPostWrapper>
         <FeelingPostContainer>
-          {FeelingsList.map(feeling => (
-            <FeelingPostOptionWrapper
-              key={feeling.name}
-              onClick={() => {
-                handleFeelingPostChange(feeling);
-              }}
-            >
-              <span>{feeling.name}</span>
-              <span>{feeling.emoji}</span>
-            </FeelingPostOptionWrapper>
-          ))}
+          {FeelingsList.map(feeling => {
+            console.log(
+              'feelingPost',
+              feelingPost,
+              feeling.name,
+              feelingPost,
+              feeling.name
+            );
+            return (
+              <FeelingPostOptionWrapper
+                key={feeling.name}
+                onClick={() => {
+                  handleFeelingPostChange(feeling);
+                }}
+                className={feelingPost === feeling.name && 'selected'}
+              >
+                <span>{feeling.name}</span>
+                <span>{feeling.emoji}</span>
+              </FeelingPostOptionWrapper>
+            );
+          })}
         </FeelingPostContainer>
       </FeelingPostWrapper>
     );

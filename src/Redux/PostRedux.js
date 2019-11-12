@@ -153,6 +153,7 @@ const onFindPostsFailure = (state, action) => ({
 
 const onFindPostsSuccess = (state, action) => {
   const { data } = action;
+  const { message } = data;
   const posts = [];
 
   data.map(item => {
@@ -166,7 +167,8 @@ const onFindPostsSuccess = (state, action) => {
     posts: [...state.posts, ...action.data],
     gif: null,
     loading: false,
-    posting: false
+    posting: false,
+    message
   };
 };
 

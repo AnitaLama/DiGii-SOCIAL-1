@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { FaImage } from 'react-icons/fa';
+import React, { Component } from "react";
+import { FaImage } from "react-icons/fa";
 import {
   PollPostWrapper,
   PollPostQuestionWrapper,
@@ -8,80 +8,38 @@ import {
   CloseButton,
   SingleOption,
   ImageIcon
-} from './style';
-import { FormInput } from '../StyledComponents';
-import InputBox from './inputBox.js';
+} from "./style";
+import { FormInput } from "../StyledComponents";
+import { InputBox } from "../Functions";
 
 class PollPost extends Component {
-  state = {
-    question: null,
-    options: [
-      {
-        id: Math.random(0, 1).toFixed(3),
-        text: '',
-        img: ''
-      },
-      {
-        id: Math.random(0, 1).toFixed(3),
-        text: '',
-        img: ''
-      },
-      {
-        id: Math.random(0, 1).toFixed(3),
-        text: '',
-        img: ''
-      }
-    ]
-  };
-
-  handleOptionChange = (e, option) => {
-    const { options } = this.state;
-    const { value } = e.target;
-    const newArr = [];
-    options.forEach(item => {
-      if (item.id !== option.id) {
-        newArr.push(item);
-      } else {
-        newArr.push({ ...option, text: value });
-      }
-    });
-    this.setState({ options: newArr });
-  };
-
-  selectImage = (e, option) => {
-    const { options } = this.state;
-    const newArr = [];
-
-    let fileName = e.target.files[0].name.replace(/\s/g, '-');
-    // SAVE NAME ALONG WITH CURRENT TIME FOR UNIQUE NAME
-    const currentDate = new Date();
-    fileName = currentDate.getTime() + fileName;
-    options.forEach(item => (option.id === item.id
-      ? newArr.push({
-        ...item,
-        img: e.target.files[0],
-        name: fileName,
-        url: URL.createObjectURL(e.target.files[0])
-      })
-      : newArr.push(item)));
-    this.setState({ options: newArr });
-  };
-
-  openFileSystem = id => {
-    document.getElementById(id).click();
-  };
+  //
+  // componentDidUpdate(prevProps) {
+  //   if (this.props !== prevProps) {
+  //     this.setState({
+  //       options: this.props.options,
+  //       pollQuestion: this.props.pollQuestion
+  //     });
+  //   }
+  // }
 
   showAllOptions = () => {
-    const { options } = this.state;
+    const { options } = this.props;
+    const {
+      openFileSystem,
+      selectImage,
+      handleOptionChange,
+      removeOption
+    } = this.props;
     return options.map((item, i) => (
       <SingleOption key={`${item}+${i}`}>
         <ImageIcon
           onClick={() => {
-            this.openFileSystem(`openFSInput${item.id}`);
+            openFileSystem(`openFSInput${item.id}`);
           }}
         >
-          {item.url ? (
-            <img src={item.url} height={25} width={25} alt={item.name} />
+          {item.fileName ? (
+            <img src={item.fileName} height={25} width={25} alt={item.name} />
           ) : (
             <FaImage />
           )}
@@ -90,7 +48,7 @@ class PollPost extends Component {
             id={`openFSInput${item.id}`}
             multiple
             onChange={e => {
-              this.selectImage(e, item);
+              selectImage(e, item);
             }}
           />
         </ImageIcon>
@@ -98,14 +56,14 @@ class PollPost extends Component {
         <input
           placeholder="Add option..."
           onChange={e => {
-            this.handleOptionChange(e, item);
+            handleOptionChange(e, item);
           }}
           value={item.text}
         />
 
         <CloseButton
           onClick={() => {
-            this.removeOption(item);
+            removeOption(item);
           }}
         >
           x
@@ -114,56 +72,21 @@ class PollPost extends Component {
     ));
   };
 
-  addNewOption = () => {
-    const { options } = this.state;
-    const optionLength = options.length;
-    // MAXIMUM 20 OPTIONS ONLY
-    if (optionLength < 20) {
-      this.setState(prevState => ({
-        options: [
-          ...prevState.options,
-          {
-            id: Math.random(0, 100).toFixed(3),
-            text: '',
-            img: '',
-            name: ''
-          }
-        ]
-      }));
-    }
-  };
-
-  removeOption = option => {
-    // REMOVE THE PARTICULAR OPTION FROM THE LIST
-    const { options } = this.state;
-    const tempArr = options;
-    const newArr = [];
-    tempArr.forEach(item => {
-      if (item.id !== option.id) {
-        newArr.push(item);
-      }
-    });
-    this.setState({ options: newArr });
-  };
-
-  handleQuestionChange = e => {
-    const { value } = e.target;
-    this.setState({ question: value });
-  };
-
   render() {
+    const { pollQuestion, handleQuestionChange, addNewOption } = this.props;
+    console.log("poll question", this.props.pollQuestion);
     return (
       <PollPostWrapper>
         <PollPostQuestionWrapper>
           <InputBox
             placeholder="What do you want to ask?"
-            value={this.state.question}
-            onChange={this.handleQuestionChange}
+            value={pollQuestion || ""}
+            onChange={handleQuestionChange}
           />
         </PollPostQuestionWrapper>
         <PollPostOptionWrapper>
           {this.showAllOptions()}
-          <AddButton onClick={this.addNewOption}>+Add option</AddButton>
+          <AddButton onClick={addNewOption}>+Add option</AddButton>
         </PollPostOptionWrapper>
       </PollPostWrapper>
     );

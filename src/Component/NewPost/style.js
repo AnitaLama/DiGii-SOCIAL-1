@@ -135,21 +135,23 @@ export const BannerPostWrapper = styled.div`
   position: relative;
 `;
 
-export const BannerInput = styled.textarea`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 60px;
-  width: 100%;
-  background: transparent;
-  border: 0;
-  outline: 0;
-  text-align: center;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 20px;
+export const BannerInput = styled.div`
+  textarea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 20px;
+  }
 `;
 export const BannerOptionContainer = styled.div`
   display: flex;
@@ -174,11 +176,12 @@ export const GifPostWrapper = styled.div`
   margin: 20px 0;
 `;
 export const GifListContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 export const GifListItem = styled.img`
-  width: 100%;
+  height: 100px;
 `;
 
 export const FeelingPostWrapper = styled.div`
@@ -210,6 +213,9 @@ export const FeelingPostOptionWrapper = styled.div`
     &:last-of-type {
       padding-left: 6px;
     }
+  }
+  &.selected {
+    background: #00000029;
   }
 `;
 
@@ -269,13 +275,23 @@ export const TagPostContainer = styled.div`
   z-index: 3;
 `;
 export const UserDropdownListWrapper = styled.li`
-  box-shadow: 3px 3px 6px #00000029;
-  border-radius: 18px;
+  margin: 1px 10px;
   float: left;
   max-width: 180px;
-  li.ant-select-selection__choice {
-    display: none;
+
+  &.ant-select-dropdown {
+    box-shadow: 3px 3px 6px #00000029 !important;
+    border-radius: 18px !important;
   }
+`;
+
+export const UserOption = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const User = styled.div`
+  ${flexCentering()}
 `;
 export const UserDropdownListContainer = styled.ul`
   background: ${snow};
@@ -313,12 +329,14 @@ export const TaggedMembersChipWrapper = styled.ul`
     clear: both;
     display: table;
   }
+  margin-left: 50px;
 `;
 export const TaggedMembersChip = styled.li`
   float: left;
   background: linear-gradient(to right, ${primary}, ${secondary});
   border-radius: 14px;
   padding: 6px 10px;
-  margin: 10px;
+  margin: 0 10px;
   color: ${snow};
+  ${flexCentering()}
 `;

@@ -44,8 +44,12 @@ import {
   onGetPostActivitiesReactionTypes,
   onSelectReaction
 } from './PostActivitySaga';
-import { onSubmitComment, onCommentDelete } from './CommentSaga';
-import { onGetStrikesCountOfAUser, onRemoveTheStrikes } from './StrikeSaga';
+import {
+  onSubmitComment,
+  onCommentDelete,
+  onReactToAComment
+} from './CommentSaga';
+import { onGetStrikesCountOfAUser, resetStrikeOfTheUserRequest } from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
 import {
@@ -89,6 +93,7 @@ export default function* root() {
     takeLatest(PostTypes.ON_MASTER_DELETE, onMasterDelete),
     takeLatest(PostTypeTypes.ON_LIST_POST_TYPES, onListPostTypes),
     takeLatest(CommentTypes.ON_SUBMIT_COMMENT_REQUEST, onSubmitComment),
+    takeLatest(CommentTypes.ON_REACT_TO_A_COMMENT, onReactToAComment),
     takeLatest(
       PostActivityTypes.ON_GET_POST_ACTIVITIES_OF_A_USER,
       onGetPostActivitiesOfAUser
@@ -103,7 +108,7 @@ export default function* root() {
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser
     ),
-    takeLatest(StrikeTypes.ON_REMOVE_THE_STRIKES, onRemoveTheStrikes),
+    takeLatest(StrikeTypes.RESET_STRIKE_OF_THE_USER_REQUEST, resetStrikeOfTheUserRequest),
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
     takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),

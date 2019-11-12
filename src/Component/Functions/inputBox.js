@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  FormTextArea,
+  FormInput,
   Modal,
   StrikesModal,
   VideoModal
@@ -12,18 +12,47 @@ class InputBox extends Component {
     showBasicModal: false,
     alertMessage: null,
     showStrikeModal: false,
-    showVideoModal: false
+    showVideoModal: false,
+    points: null,
+    videoType: null
   };
 
-  componentDidUpdate(prevProps) {
-    const { post } = this.props;
+  componentWillReceiveProps(nextProp) {
+    const { post, comment } = nextProp;
     const { showStrikeModal } = post;
     if (showStrikeModal && showStrikeModal !== this.state.showStrikeModal) {
+      console.log('show post', showStrikeModal, this.state.showStrikeModal);
+      this.setState({ showStrikeModal: true });
+    }
+
+    if (
+      comment.showStrikeModal
+      && comment.showStrikeModal !== this.state.showStrikeModal
+    ) {
+      console.log(
+        'show commet',
+        comment.showStrikeModal,
+        this.state.showStrikeModal
+      );
       this.setState({ showStrikeModal: true });
     }
   }
+  // componentDidUpdate(prevProps) {
+  //   const { post, comment } = this.props;
+  //   const { showStrikeModal } = post;
+  //   if (showStrikeModal && showStrikeModal !== this.state.showStrikeModal) {
+  //   console.log('show post', showStrikeModal, this.state.showStrikeModal);
+  //   this.setState({ showStrikeModal: true });
+  //   }
+
+  //   if (comment.showStrikeModal && comment.showStrikeModal !== this.state.showStrikeModal) {
+  //   console.log('show commet', comment.showStrikeModal, this.state.showStrikeModal);
+  //   this.setState({ showStrikeModal: true });
+  //   }
+  // }
 
   hideStrikesModal = () => {
+    console.log('hide the strikes modal now');
     this.setState({ showStrikeModal: false });
   };
 
@@ -37,7 +66,8 @@ class InputBox extends Component {
     if (isFirstTimePosting) {
       this.setState({
         showBasicModal: true,
-        alertMessage: 'congratulations first time'
+        alertMessage: 'Congratulations!!! It\'s your first time posting.',
+        points: '+5'
       });
     }
   };
@@ -50,14 +80,14 @@ class InputBox extends Component {
     if (value.length >= 250) {
       this.setState({
         showBasicModal: true,
-        alertMessage: 'more than 250'
+        alertMessage: 'Please limit the number of characters to 250'
       });
       textInput.blur();
     }
   };
 
-  showVideo = () => {
-    this.setState({ showVideoModal: true });
+  showVideo = type => {
+    this.setState({ showVideoModal: true, videoType: type });
   };
 
   hideVideoModal = () => {
@@ -69,11 +99,14 @@ class InputBox extends Component {
       showBasicModal,
       alertMessage,
       showStrikeModal,
-      showVideoModal
+      showVideoModal,
+      videoType
     } = this.state;
+    console.log('show modal', showStrikeModal);
+
     return (
       <div>
-        <FormTextArea
+        <FormInput
           ref={r => {
             this.textInput = r;
           }}
@@ -81,24 +114,28 @@ class InputBox extends Component {
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           onChange={this.onChange}
+          className="textBox"
         />
         {showBasicModal && (
           <Modal message={alertMessage} hideModal={this.hideBasicModal} />
         )}
-        {showStrikeModal && (
+        {!!showStrikeModal && (
           <StrikesModal
             hideModal={this.hideStrikesModal}
             showVideo={this.showVideo}
             showCheckButton
           />
         )}
-        {showVideoModal && <VideoModal hideModal={this.showVideoModal} />}
+        {showVideoModal && (
+          <VideoModal hideModal={this.hideVideoModal} {...this.state} />
+        )}
       </div>
     );
   }
 }
 const mapStateToProps = state => ({
   user: state.user.user,
-  post: state.post
+  post: state.post,
+  comment: state.comment
 });
 export default connect(mapStateToProps)(InputBox);

@@ -33,7 +33,7 @@ class Posts extends Component {
       if (error || isLoading || !hasMore) return;
 
       if (this.postContainer) {
-        const boxHeight = this.postContainer.clientHeight || document.body.scrollHeight;
+        const boxHeight =          this.postContainer.clientHeight || document.body.scrollHeight;
         const { scrollHeight } = document.body;
         if (
           window.innerHeight + document.documentElement.scrollTop
@@ -49,9 +49,7 @@ class Posts extends Component {
     const { page } = this.state;
     const { user, onFindPosts } = this.props;
     const { isStudent, id, groupId } = user.user;
-    this.setState({ page: page + 1 }, () => {
-      console.log('load more posts', this.state.page);
-    });
+    this.setState({ page: page + 1 });
     onFindPosts({ schoolGroupId: groupId, page: page + 1 });
   };
 
@@ -70,7 +68,7 @@ class Posts extends Component {
     const { groupId } = user.user;
     const { page } = this.state;
     onGetPostActivitiesReactionTypes();
-    !posts.length && onFindPosts({ schoolGroupId: groupId });
+    posts.length === 0 && onFindPosts({ schoolGroupId: groupId });
     this.setState({ posts });
   }
 
@@ -81,7 +79,6 @@ class Posts extends Component {
     onGetStrikesCountOfAUser({ isStudent, id });
 
     this.socket.on('posts', data => {
-      // console.log('socket data', data);
       const { result, group } = data;
       if (groupId.includes(group)) {
         const checkIfPostExists = this.state.posts.find(
@@ -98,7 +95,6 @@ class Posts extends Component {
             }
             return item;
           });
-
           this.setState({ posts: newPostArray });
         }
       }
@@ -122,10 +118,15 @@ class Posts extends Component {
 
   render() {
     const { post } = this.props;
-    const { posts, selectedPost } = this.state;
+    let { posts, selectedPost } = this.state;
+    const { message } = posts;
+    if (posts.length > 1) {
+      posts = posts.sort((a, b) => new Date(b.sharedAt) - new Date(a.sharedAt));
+    }
+    console.log('socket data new array', posts);
     // posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
     // console.log('posts', posts);
-    if (!posts || posts.length === 0) {
+    if (!posts) {
       return (
         <div
           style={{
@@ -133,6 +134,17 @@ class Posts extends Component {
           }}
         >
           <Loader color="red" size={20} />
+        </div>
+      );
+    }
+    if (posts.length === 0 && message) {
+      return (
+        <div
+          style={{
+            textAlign: 'center'
+          }}
+        >
+          {message}
         </div>
       );
     }
@@ -188,7 +200,4 @@ const mapDispatchToProps = dispatch => ({
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Posts);
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

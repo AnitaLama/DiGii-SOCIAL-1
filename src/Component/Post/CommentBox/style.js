@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import { Colors } from '../../../Theme';
 
-const {
+export const {
   snow, primary, secondary, pencil
 } = Colors.colors;
 
-const ClickableButton = styled.div``;
-const UserList = styled.ul`
+export const ClickableButton = styled.div``;
+export const UserList = styled.ul`
   list-style-type: none;
   background: white;
   min-width: 150px;
@@ -28,7 +28,7 @@ const UserList = styled.ul`
     outline: 1px solid ${secondary};
   }
 `;
-const UserListElement = styled.li`
+export const UserListElement = styled.li`
   padding: 4px 10px;
   &:hover {
     cursor: pointer;
@@ -36,41 +36,62 @@ const UserListElement = styled.li`
     color: red;
   }
 `;
-const CommentBoxWrapper = styled.div`
+export const CommentBoxWrapper = styled.div`
   display: grid;
   grid-template-columns: 20px auto;
-
-  width: 100%;
-  position: relative;
-  button:not(.findButton) {
-    background: none;
-    border: 0;
-    outline: 0;
-    width: auto;
-  }
-  .findButton {
-    height: 45px;
-  }
-  input {
-    padding: 10px;
-  }
-  .buttonDiv {
-    // position: absolute;
-    display: flex;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    vertical-align: ;
-    color: grey;
-    button {
-      height: 10px;
-      svg {
-        height: 14px;
-      }
-    }
-  }
+  grid-gap: 6px;
+  //
+  // width: 100%;
+  // position: relative;
+  // button:not(.findButton) {
+  //   background: none;
+  //   border: 0;
+  //   outline: 0;
+  //   width: auto;
+  // }
+  // .findButton {
+  //   height: 45px;
+  // }
+  // input {
+  //   padding: 10px;
+  // }
+  // .buttonDiv {
+  //   // position: absolute;
+  //   display: flex;
+  //   right: 0;
+  //   top: 0;
+  //   bottom: 0;
+  //   vertical-align: ;
+  //   color: grey;
+  //   button {
+  //     height: 10px;
+  //     svg {
+  //       height: 14px;
+  //     }
+  //   }
+  // }
 `;
-const GifContainer = styled.div`
+
+export const CommentBoxContainer = styled.div`
+  border-radius: 13px;
+  height: 25px;
+  box-shadow: 2px 2px 4px #00000040;
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 0 10px;
+`;
+export const CommentBoxReactionWrapper = styled.div`
+  color: #61bbf7;
+  svg {
+    &:not(:last-of-type) {
+      padding-right: 4px;
+    }
+    height: 10px;
+    width: 10px;
+  }
+  overflow: hidden;
+`;
+export const GifContainer = styled.div`
   max-height: 250px;
   width: 100%;
   position: absolute;
@@ -83,7 +104,7 @@ const GifContainer = styled.div`
     margin-bottom: 0;
   }
 `;
-const FeelingsDiv = styled.div`
+export const FeelingsDiv = styled.div`
   display: grid !important;
   grid-template-columns: repeat(3, auto);
   background: rgba(52, 52, 52, 0.7);
@@ -95,14 +116,4 @@ const FeelingsDiv = styled.div`
     cursor: pointer;
   }
 `;
-const FeelingsButton = styled.span``;
-
-export {
-  ClickableButton,
-  UserList,
-  UserListElement,
-  CommentBoxWrapper,
-  GifContainer,
-  FeelingsDiv,
-  FeelingsButton
-};
+export const FeelingsButton = styled.span``;

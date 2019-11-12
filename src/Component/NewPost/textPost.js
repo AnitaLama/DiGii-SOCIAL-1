@@ -10,8 +10,7 @@ import {
 import {
   Avatar, FormTextArea, Button, Loader
 } from '../StyledComponents';
-import { FeelingsList } from '../Functions';
-import InputBox from './inputBox';
+import { FeelingsList, TextAreaBox } from '../Functions';
 
 class TextBox extends Component {
   showFeelingsData = () => {
@@ -40,7 +39,8 @@ class TextBox extends Component {
       handleTextPostChange,
       feelingPost,
       handlePostButtonClick,
-      post
+      post,
+      postText
     } = this.props;
     const { posting } = post;
     const { avatar, firstname, lastname } = user;
@@ -52,21 +52,15 @@ class TextBox extends Component {
         <TextBoxContainer>
           <Input>
             {feelingPost && this.showFeelingsData()}
-            <InputBox
-              value={this.props.textPost || ''}
+            <TextAreaBox
+              value={postText || ''}
               placeholder={`What do you want to say, ${userFirstName}?`}
               onChange={handleTextPostChange}
               {...this.state}
               {...this.props}
             />
           </Input>
-          <Button
-            className="rounded"
-            style={{
-              height: '50px'
-            }}
-            onClick={handlePostButtonClick}
-          >
+          <Button className="rounded" onClick={handlePostButtonClick}>
             {posting ? <Loader color="white" /> : 'POST'}
           </Button>
         </TextBoxContainer>

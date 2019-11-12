@@ -38,6 +38,7 @@ export function* onFindPosts(action) {
         schoolGroupId
       }
     );
+    // console.log('posts saga', limit, offset, data);
     if (data.success) {
       yield put(PostActions.onFindPostsSuccess(data.result));
     } else {

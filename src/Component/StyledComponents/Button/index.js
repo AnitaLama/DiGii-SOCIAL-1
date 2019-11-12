@@ -58,6 +58,7 @@ const Button = styled.button`
     width: auto;
     padding: 10px 20px;
   }
+  height: 44px;
 `;
 
 const WhiteButton = styled.button`

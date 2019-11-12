@@ -19,6 +19,7 @@ import { Colors, Images, flexCentering } from '../../../Theme';
 import { Warnings, BlacklistedWords, StrikedTerms } from '../../Functions';
 import StrikeActions from '../../../Redux/StrikeRedux';
 import PostActions from '../../../Redux/PostRedux';
+import CommentActions from '../../../Redux/CommentRedux';
 
 const { tint, peach } = Colors.colors;
 const User = styled.div`
@@ -41,19 +42,12 @@ const ModeratedPost = styled.div`
 `;
 
 class StrikesModalContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      checkboxSelected: false,
-      postText: props.postText,
-      imageName: props.imageName,
-      banner: props.banner
-    };
-  }
-
-  componentWillMount() {
-    console.log('strikemodal cwm');
-  }
+  state = {
+    checkboxSelected: false
+    // postText: props.postText,
+    // imageName: props.imageName,
+    // banner: props.banner
+  };
 
   handleCheckboxClick = () => {
     const { checkboxSelected } = this.state;
@@ -68,29 +62,35 @@ class StrikesModalContainer extends Component {
   handleOK = () => {
     const {
       hideModal,
-      onGetStrikesCountOfAUser,
       user,
-      onDisableStrikesModal
+      onDisableStrikesModal,
+      onDisableCommentStrikesModal
     } = this.props;
-    const { isStudent, id } = user;
-    // const { hideModal, showVideo, strike } = this.props;
-    // if ((strike + 1) % 3 === 0) {
-    //   showVideo();
-    // } else {
-    //   hideModal();
-    // }
+    console.log('here hide the modal');
+
     onDisableStrikesModal();
+    onDisableCommentStrikesModal();
     setTimeout(() => {
       hideModal();
     }, 1000);
-    // onGetStrikesCountOfAUser({ isStudent, id });
   };
 
   showVideo = () => {
-    const { showVideo, onGetStrikesCountOfAUser, user } = this.props;
-    const { isStudent, id } = user;
-    onGetStrikesCountOfAUser({ isStudent, id });
-    showVideo();
+    const {
+      showVideo,
+      hideModal,
+      onDisableStrikesModal,
+      onDisableCommentStrikesModal
+    } = this.props;
+    onDisableStrikesModal();
+    onDisableCommentStrikesModal();
+    showVideo('insult');
+    hideModal();
+    // setTimeout(() => {
+    // }, 1000);
+
+    // const { isStudent, id } = user;
+    // onGetStrikesCountOfAUser({ isStudent, id });
   };
 
   render() {
@@ -103,20 +103,28 @@ class StrikesModalContainer extends Component {
       user,
       feeling,
       banner,
-      post
+      post,
+      comment
     } = this.props;
     const { checkboxSelected, postText, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
     const { strikedTerms, strikedPost } = post;
-    let newText = BlacklistedWords(strikedPost);
-    newText = strikedPost ? StrikedTerms(strikedPost, strikedTerms) : newText;
+    const { strikedComment, strikedCommentTerms } = comment;
+    let newText = '';
+    if (strikedPost) {
+      newText = BlacklistedWords(strikedPost);
+    } else {
+      newText = BlacklistedWords(strikedComment);
+    }
+    newText = strikedPost
+      ? StrikedTerms(strikedPost, strikedTerms)
+      : StrikedTerms(strikedComment, strikedCommentTerms);
+
     // const newText = 'hey oh';
     // const hasToShowTutorial = 0;
-    console.log('strike count inside strikemodal', strike);
     const hasToShowTutorial = strike % 3 === 0;
     let index = (strike % 3) - 1;
     index = index >= 0 ? index : 0;
-    console.log('>>>>>>>>>>>>>>>>>>', strike, index, hasToShowTutorial);
     return (
       <ModalContainer>
         <ContentWrapper style={{ display: 'flex' }}>
@@ -125,17 +133,17 @@ class StrikesModalContainer extends Component {
               <Avatar avatar={avatar} height={42} />
               <div>
                 <div className="username">
-                  {firstname}
-                  {' '}
-                  {lastname}
+                  {firstname} 
+{' '}
+{lastname}
                 </div>
                 {feeling && (
                   <div>
-                    - is feeling
-                    {' '}
-                    {feeling.name}
-                    {' '}
-                    {feeling.emoji}
+                    - is feeling 
+{' '}
+{feeling.name} 
+{' '}
+{feeling.emoji}
                   </div>
                 )}
               </div>
@@ -221,11 +229,13 @@ const mapStateToProps = state => ({
   tutorial: state.tutorial,
   user: state.user.user,
   strike: state.strike.strikes,
-  post: state.post
+  post: state.post,
+  comment: state.comment
 });
 const mapDispatchToProps = dispatch => ({
   onGetStrikesCountOfAUser: value => dispatch(StrikeActions.onGetStrikesCountOfAUser(value)),
-  onDisableStrikesModal: () => dispatch(PostActions.onDisableStrikesModal())
+  onDisableStrikesModal: () => dispatch(PostActions.onDisableStrikesModal()),
+  onDisableCommentStrikesModal: () => dispatch(CommentActions.onDisableCommentStrikesModal())
 });
 const StrikesModal = connect(
   mapStateToProps,

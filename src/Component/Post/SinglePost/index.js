@@ -2,27 +2,31 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FacebookEmoji from 'react-facebook-emoji';
+import { FaCircle } from 'react-icons/fa';
 import { Images } from '../../../Theme';
 import Author from '../Author';
 import Comment from '../Comment';
 import CommentBox from '../CommentBox';
 import PostActions from '../../../Redux/PostRedux';
-import { ShowFeed } from '../../Functions';
-
+import { PostActivity, ReactionCount } from '../PostActivity';
 import PostActivityAction from '../../../Redux/PostActivityRedux';
+import { Avatar } from '../../StyledComponents';
 
 import {
-  ReactionContainer,
-  ReactionNumberStyle,
-  DisplayReactionWrapper,
-  DisplayReaction,
   ReactorsList,
   PostWrapper,
   ActualPostWrapper,
   CommentContainer,
   ReactionsContainer,
   ReactionType,
-  ActualPost
+  ActualPost,
+  ImageWrapper,
+  ImageContainer,
+  BannerContainer,
+  BannerText,
+  PostContent,
+  PollWrapper,
+  PostText
 } from './style';
 
 const Reactions = ({ handleReactionSelection, reactionpopup }) => (
@@ -67,11 +71,6 @@ class SinglePost extends Component {
   }
 
   componentWillMount() {
-    // console.log('mount', this.state);
-    // this.props.onHandleLikeReaction();
-
-    // Display total count of reactions
-
     const { data } = this.props;
     // onHandleLikeReaction();
     const { post_activities } = data;
@@ -93,12 +92,14 @@ class SinglePost extends Component {
     this.setState({ totalReactionCounts: reactioncount.length });
   }
 
-  selectPollAnswer = (post, option, selected) => {
+  selectPollAnswer = (option, selected) => {
+    const { data, user, onRespondToPoll } = this.props;
+    const { postId } = data;
     const { pollOptionPollId, pollOptionId } = option;
-    const { user, onRespondToPoll } = this.props;
-    const { postId } = post;
+    // const { user, onRespondToPoll } = this.props;
+    // const { postId } = post;
     const { isStudent, id } = user.user;
-    const data = {
+    const pollResponse = {
       pollResponsePollId: pollOptionPollId,
       pollResponsePollOptionId: pollOptionId,
       pollResponseIsStudent: isStudent ? 1 : 0,
@@ -106,16 +107,119 @@ class SinglePost extends Component {
       pollResponseId: selected ? selected.pollResponseId : null,
       postId
     };
-    onRespondToPoll(data);
+    onRespondToPoll(pollResponse);
   };
 
+  // NEW CODE
   getContent = () => {
     const { user, data } = this.props;
     // const type = post_type && post_type.postTypeTitle;
-    const { postText } = data;
-    return <div>{postText && <div>{postText}</div>}</div>;
+    const { isStudent, id } = user.user;
+    const {
+      postText,
+      postBanner,
+      postBannerText,
+      postGif,
+      postImage,
+      poll
+    } = data;
+    return (
+      <PostContent>
+        {postText && <PostText>{postText}</PostText>}
+        {postBanner && (
+          <ImageWrapper>
+            <BannerContainer background={postBanner}>
+              <BannerText>{postBannerText}</BannerText>
+            </BannerContainer>
+          </ImageWrapper>
+        )}
+        {postGif && (
+          <ImageWrapper>
+            <ImageContainer src={postGif} />
+          </ImageWrapper>
+        )}
+        {postImage && (
+          <ImageWrapper>
+            <ImageContainer src={postImage} />
+          </ImageWrapper>
+        )}
+        {poll && (
+          <div>
+            <PostText className="captions">{poll.pollOptionQuestion}</PostText>
+            {poll.poll_options
+              && poll.poll_options.map((option, i) => {
+                const { poll_responses } = option;
+                const hasUserVoted = poll_responses.find(
+                  item => item.pollResponseIsStudent == isStudent
+                    && item.pollResponseCommentatorId === id
+                );
+                const selectedAnswer =                  hasUserVoted
+                  && hasUserVoted.pollResponsePollOptionId === option.pollOptionId;
+                return (
+                  <PollWrapper
+                    onClick={() => {
+                      this.selectPollAnswer(option, hasUserVoted);
+                    }}
+                    key={`${option}${i}`}
+                  >
+                    <div>
+                      <FaCircle
+                        style={{ color: selectedAnswer ? '#707070' : 'white' }}
+                      />
+                      {option.pollOptionImagePath && (
+                        <img
+                          src={`${option.pollOptionImagePath}`}
+                          alt={`${poll.pollOptionQuestion}-option${i}`}
+                        />
+                      )}
+                      {option.pollOptionText}
+                    </div>
+                    <span>
+                      {poll_responses.slice(0, 3).map(item => {
+                        const avatar = item.pollResponseIsStudent
+                          ? item.student.avatar
+                          : item.user.avatar;
+                        return (
+                          <Avatar
+                            key={`poll_responses-${item}`}
+                            avatar={avatar}
+                            height={17.75}
+                          />
+                        );
+                      })}
+                      {poll_responses.length > 3 && poll_responses.length - 3}
+                    </span>
+                  </PollWrapper>
+                );
+              })}
+          </div>
+        )}
+      </PostContent>
+    );
   };
 
+  handleReactionClick = reaction => {
+    const { data, user, onSelectReaction } = this.props;
+    console.log('reaction clicked', data, user);
+    const { isStudent, id } = user.user;
+    const { postId } = data;
+    const values = {
+      postActivityActivityTypeId: reaction.id,
+      postActivityActorId: id,
+      postActivityIsStudent: isStudent,
+      postActivityPostId: postId
+    };
+
+    onSelectReaction(values);
+  };
+
+  showReactionCount = () => {
+    const { data } = this.props;
+    const { post_activities } = data;
+    return <div>{post_activities.length}</div>;
+  };
+
+  //  END OF NEW CODE HERe
   handleReactionSelection = action => {
     const { data, selectAPost } = this.props;
     if (action === 'comment') {
@@ -154,8 +258,8 @@ class SinglePost extends Component {
 
   handleReactionClicked = value => {
     const {
-      onSelectReaction, data, user, likeReactions
-    } = this.props;
+ onSelectReaction, data, user, likeReactions 
+} = this.props;
     const { postId, postIsStudent } = data;
 
     const { id } = user.user;
@@ -213,7 +317,7 @@ class SinglePost extends Component {
             key={reaction.activityTypeId}
           >
             <FacebookEmoji type={reaction.activityTypeName} size="xxs" />
-            {' '}
+{" "}
             {this.state.toggleHover && (
               <div className="listOfReactors">
                 {this.state.getOnlyReactionOnHover.map(
@@ -240,12 +344,19 @@ class SinglePost extends Component {
     this.setState({ showCommentBox: false });
   };
 
+  showCommentBox = () => {
+    const { showCommentBox } = this.state;
+    const { selectAPost, data } = this.props;
+    selectAPost(data);
+    this.setState({ showCommentBox: true });
+  };
+
   render() {
-    const { data, modalpopup, selectedPost } = this.props;
+    const { data, selectedPost, modalpopup } = this.props;
     const { showCommentBox, showreactions } = this.state;
-    const check = selectedPost === data.postId;
-    let { post_comments } = data;
-    post_comments = post_comments
+    let { post_comments, postId } = data;
+    const check = selectedPost === postId;
+    post_comments =      post_comments
       && post_comments.sort((a, b) => a.postCommentId - b.postCommentId);
     return (
       <PostWrapper style={{ position: 'relative' }}>
@@ -254,78 +365,12 @@ class SinglePost extends Component {
             <Author data={data} modalpopup={modalpopup} />
             <ActualPost>{this.getContent()}</ActualPost>
           </div>
-          <DisplayReactionWrapper>
-            <DisplayReaction>
-              <div>{this.showCurrentReactions()}</div>
 
-              <ReactionNumberStyle>
-                {this.state.totalReactionCounts !== 0
-                  && this.state.totalReactionCounts}
-                {' '}
-              </ReactionNumberStyle>
-            </DisplayReaction>
-
-            <Reactions
-              handleReactionSelection={this.handleReactionSelection}
-              reactionpopup={this.multipleLikes}
-            />
-
-            {showreactions && check && !showCommentBox && (
-              <ReactionContainer>
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('like');
-                  }}
-                >
-                  <FacebookEmoji type="like" size="xs" />
-                </div>
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('love');
-                  }}
-                >
-                  <FacebookEmoji type="love" size="xs" />
-                </div>
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('wow');
-                  }}
-                >
-                  <FacebookEmoji type="wow" size="xs" />
-                </div>
-                {' '}
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('yay');
-                  }}
-                >
-                  <FacebookEmoji type="yay" size="xs" />
-                </div>
-                {' '}
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('angry');
-                  }}
-                >
-                  <FacebookEmoji type="angry" size="xs" />
-                </div>
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('haha');
-                  }}
-                >
-                  <FacebookEmoji type="haha" size="xs" />
-                </div>
-                <div
-                  onClick={() => {
-                    this.handleReactionClicked('sad');
-                  }}
-                >
-                  <FacebookEmoji type="sad" size="xs" />
-                </div>
-              </ReactionContainer>
-            )}
-          </DisplayReactionWrapper>
+          <ReactionCount {...this.props} />
+          <PostActivity
+            showCommentBox={this.showCommentBox}
+            handleReactionClick={this.handleReactionClick}
+          />
         </ActualPostWrapper>
 
         <CommentContainer>
@@ -337,8 +382,8 @@ class SinglePost extends Component {
           >
             {post_comments
               && post_comments.map((comment, i) => (!comment.postCommentIsBad && !comment.postCommentIsDeleted ? (
-                <Comment key={comment + i} data={comment} />
-              ) : null))}
+                  <Comment key={comment + i} data={comment} />
+                ) : null))}
           </div>
           <div className="commentBox">
             {showCommentBox && check && (
@@ -363,7 +408,4 @@ const mapDispatchToProps = dispatch => ({
   onSelectReaction: value => dispatch(PostActivityAction.onSelectReaction(value))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SinglePost);
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePost);
