@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { FaImage } from "react-icons/fa";
+import React, { Component } from 'react';
+import { FaImage } from 'react-icons/fa';
 import {
   PollPostWrapper,
   PollPostQuestionWrapper,
@@ -8,9 +8,8 @@ import {
   CloseButton,
   SingleOption,
   ImageIcon
-} from "./style";
-import { FormInput } from "../StyledComponents";
-import { InputBox } from "../Functions";
+} from './style';
+import { InputBox } from '../Functions';
 
 class PollPost extends Component {
   //
@@ -74,13 +73,13 @@ class PollPost extends Component {
 
   render() {
     const { pollQuestion, handleQuestionChange, addNewOption } = this.props;
-    console.log("poll question", this.props.pollQuestion);
+    console.log('poll question', this.props.pollQuestion);
     return (
       <PollPostWrapper>
         <PollPostQuestionWrapper>
           <InputBox
             placeholder="What do you want to ask?"
-            value={pollQuestion || ""}
+            value={pollQuestion || ''}
             onChange={handleQuestionChange}
           />
         </PollPostQuestionWrapper>

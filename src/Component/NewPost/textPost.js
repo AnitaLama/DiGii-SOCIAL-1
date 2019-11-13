@@ -7,15 +7,13 @@ import {
   Username,
   Feeling
 } from './style';
-import {
-  Avatar, FormTextArea, Button, Loader
-} from '../StyledComponents';
+import { Avatar, Button, Loader } from '../StyledComponents';
 import { FeelingsList, TextAreaBox } from '../Functions';
 
 class TextBox extends Component {
   showFeelingsData = () => {
-    const { user, handleTextPostChange, feelingPost } = this.props;
-    const { avatar, firstname, lastname } = user;
+    const { user, feelingPost } = this.props;
+    const { firstname, lastname } = user;
 
     const { emoji } = FeelingsList.find(
       feeling => feeling.name === feelingPost
@@ -25,9 +23,9 @@ class TextBox extends Component {
         <Username>{`${firstname} ${lastname}`}</Username>
         {' is feeling - '}
         <Feeling>
-          {`${feelingPost}`}
-          {' '}
-          {emoji}
+          {`${feelingPost}`} 
+{' '}
+{emoji}
         </Feeling>
       </div>
     );
@@ -43,8 +41,8 @@ class TextBox extends Component {
       postText
     } = this.props;
     const { posting } = post;
-    const { avatar, firstname, lastname } = user;
-    const userFirstName = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+    const { avatar, firstname } = user;
+    const userFirstName =      firstname.charAt(0).toUpperCase() + firstname.slice(1);
 
     return (
       <TextBoxWrapper>

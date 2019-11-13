@@ -21,7 +21,6 @@ import {
   AuthorWrapper,
   AuthorInfo,
   Name,
-  TaggedList,
   EditOptionsContainer,
   EditOptionsWrapper,
   PostOptionButton
@@ -51,11 +50,9 @@ class Author extends Component {
 
   getExtraInfo = () => {
     const { data } = this.props;
-    const {
-      postFeeling, postText, notifications, tagged_users
-    } = data;
+    const { postFeeling, tagged_users } = data;
     // const type = (post_type && post_type.postTypeTitle) || '';
-    const emoji = postFeeling && FeelingsList.find(item => item.name === postFeeling);
+    const emoji =      postFeeling && FeelingsList.find(item => item.name === postFeeling);
     return (
       <span>
         {postFeeling && emoji && (
@@ -67,13 +64,13 @@ class Author extends Component {
           <span className="emoji">
             {' '}
             with
-            {' '}
+{" "}
             {tagged_users.slice(0, 2).map(user => {
               const nameOfUser = user.taggedUserIsStudent
                 ? user.user.userName
                 : user.student.studentFirstname;
               return (
-                <span className="userList" key={nameOfUser}>
+                <span key={nameOfUser} className="userList">
                   {nameOfUser}
                 </span>
               );
@@ -83,9 +80,9 @@ class Author extends Component {
                 {' '}
                 and
                 {tagged_users.length - 2}
-                {' '}
+{' '}
 others
-              </span>
+</span>
             )}
           </span>
         )}
@@ -144,7 +141,7 @@ others
 
   onDeletePost = posts => {
     const { onDelete, post } = this.props;
-    const { page, pageSize } = post;
+    // const { page, pageSize } = post;
     onDelete(posts);
     this.setState({ showDeleteModal: false });
   };
@@ -217,13 +214,13 @@ others
         <Avatar avatar={userAvatar} height={53} />
         <AuthorInfo>
           <Name>
-            {firstname}
-            {' '}
-            {lastname}
-            {' '}
-            {this.getExtraInfo()}
+            {firstname} 
+{' '}
+{lastname} 
+{' '}
+{this.getExtraInfo()}
           </Name>
-          {' '}
+{" "}
           {/* <Post>{this.getContent()}</Post>
             <PostedDate>{postDate}</PostedDate> */}
         </AuthorInfo>
@@ -317,7 +314,4 @@ const mapDispatchToProps = dispatch => ({
   onEditPost: value => dispatch(PostAction.onEditPost(value)),
   onMakeTheReport: value => dispatch(ReportAction.onReportTheArticle(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Author);
+export default connect(mapStateToProps, mapDispatchToProps)(Author);

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import history from '../../../utils/history';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import history from "../../../utils/history";
 import {
   ModalContainer,
   ModalBox,
@@ -10,10 +10,10 @@ import {
   Points,
   Message,
   CenteredDiv
-} from './index';
-import { Images } from '../../../Theme';
-import { WhiteButton } from '../index';
-import { Warnings } from '../../Functions';
+} from "./index";
+import { Images } from "../../../Theme";
+import { WhiteButton } from "../index";
+import { Warnings } from "../../Functions";
 
 class BasicModal extends Component {
   constructor() {
@@ -31,17 +31,16 @@ class BasicModal extends Component {
   logout = () => {
     const { user } = this.props;
     if (user.isStudent) {
-      history.push('/student/login');
+      history.push("/student/login");
     } else {
-      history.push('/');
+      history.push("/");
     }
   };
 
   render() {
-    const {
-      message, strike, index, text, points
-    } = this.props;
-    const check = message && message === 'You have been excluded from the Message Board.';
+    const { message, index, points } = this.props;
+    const check =
+      message && message === "You have been excluded from the Message Board.";
     return (
       <ModalContainer>
         <ModalBox>
@@ -71,7 +70,7 @@ class BasicModal extends Component {
                 // check ? this.logout : this.handleOK}
               }}
             >
-              {check ? 'Logout' : 'Back to Chat'}
+              {check ? "Logout" : "Back to Chat"}
             </WhiteButton>
           </CenteredDiv>
         </ModalBox>

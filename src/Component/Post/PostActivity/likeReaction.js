@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import FacebookEmoji from 'react-facebook-emoji';
 import {
-  PostActivityWrapper,
   PostActivityContainer,
   PostActivityIcon,
   PostReactionsWrapper,
@@ -40,18 +38,18 @@ class LikeReaction extends Component {
   };
 
   getReactions = () => ReactionsList.map(reaction => (
-    <ReactionComponent
-      key={reaction.name}
-      onClick={() => {
-        this.onReactionClick(reaction);
-      }}
-    >
-      {reaction.value}
-    </ReactionComponent>
-  ));
+      <ReactionComponent
+        key={reaction.name}
+        onClick={() => {
+          this.onReactionClick(reaction);
+        }}
+      >
+        {reaction.value}
+      </ReactionComponent>
+    ));
 
   render() {
-    const { showCommentBox, showReactionList } = this.props;
+    const { showReactionList } = this.props;
     const { showReactions } = this.state;
 
     return (

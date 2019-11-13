@@ -19,12 +19,12 @@ const FilterKeyWords = input => {
 };
 
 const BlacklistedWords = input => {
-  let value;
   let inputText = input.toLowerCase();
   blacklist.map((blacklistType, i) => {
     blacklistType.array.map(blackListWord => {
-      const regex = new RegExp(blackListWord, 'g');
+      const regex = new RegExp(blackListWord, "g");
       inputText = inputText.replace(regex, ` <span> ${blackListWord} </span> `);
+      
     });
   });
   return inputText;

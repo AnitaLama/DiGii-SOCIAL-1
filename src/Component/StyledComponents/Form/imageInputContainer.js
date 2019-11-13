@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
-import { Colors, fontSize } from '../../../Theme';
+import styled from "@emotion/styled";
+import { Colors } from "../../../Theme";
 
-const { secondary, pencil, blue } = Colors.colors;
+const { blue } = Colors.colors;
 
 const ImageInputContainer = styled.div`
   position: relative;
@@ -33,7 +33,7 @@ const ImageInputContainer = styled.div`
     left: 0;
     width: 50px;
     height: 50px;
-    content: '';
+    content: "";
     background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
     display: block;
     margin: 0 auto;
@@ -48,7 +48,7 @@ const ImageInputContainer = styled.div`
     height: 32px;
     pointer-events: none;
     width: 100%;
-    content: ' or drag it here. ';
+    content: " or drag it here. ";
     display: block;
     margin: 0 auto;
     color: ${blue};

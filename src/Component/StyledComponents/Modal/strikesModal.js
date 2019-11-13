@@ -15,13 +15,12 @@ import {
   WhiteButton,
   ContentWrapper
 } from '../index';
-import { Colors, Images, flexCentering } from '../../../Theme';
+import { Images, flexCentering } from '../../../Theme';
 import { Warnings, BlacklistedWords, StrikedTerms } from '../../Functions';
 import StrikeActions from '../../../Redux/StrikeRedux';
 import PostActions from '../../../Redux/PostRedux';
 import CommentActions from '../../../Redux/CommentRedux';
 
-const { tint, peach } = Colors.colors;
 const User = styled.div`
   ${flexCentering()};
   justify-content: flex-start;
@@ -98,15 +97,13 @@ class StrikesModalContainer extends Component {
       message,
       showCheckButton,
       strike,
-      showVideo,
-      // index,
       user,
       feeling,
       banner,
       post,
       comment
     } = this.props;
-    const { checkboxSelected, postText, imageName } = this.state;
+    const { checkboxSelected, imageName } = this.state;
     const { avatar, firstname, lastname } = user;
     const { strikedTerms, strikedPost } = post;
     const { strikedComment, strikedCommentTerms } = comment;
@@ -153,8 +150,12 @@ class StrikesModalContainer extends Component {
                 __html: newText
               }}
             />
-            {imageName && <img src={imageName} style={{ width: '100%' }} />}
-            {banner && <img src={banner} style={{ width: '100%' }} />}
+            {imageName && (
+              <img src={imageName} alt={imageName} style={{ width: '100%' }} />
+            )}
+            {banner && (
+              <img src={banner} alt={banner} style={{ width: '100%' }} />
+            )}
           </ModalBox>
           <ModalBox>
             <Header>

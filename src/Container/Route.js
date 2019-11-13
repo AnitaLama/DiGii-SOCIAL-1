@@ -31,7 +31,7 @@ const showNoTokenNotification = () => {
 };
 class ActualRoute extends React.Component {
   componentWillMount() {
-    console.log('cwm');
+    // console.log('cwm');
     NProgress.start();
   }
 
@@ -42,7 +42,7 @@ class ActualRoute extends React.Component {
 
   render() {
     const token = localStorage.getItem('token');
-    const { user } = this.props;
+    const { user, role } = this.props;
     const { isStudent } = user;
     console.log(this.props);
     if (token) {
@@ -56,8 +56,11 @@ class ActualRoute extends React.Component {
         }
         return <Redirect to={{ pathname: '/' }} />;
       }
-
-      return <Route {...this.props} strict />;
+      const userRole = isStudent ? 'student' : 'teacher';
+      if (role === userRole) {
+        return <Route {...this.props} strict />;
+      }
+      return <Route path="*" component={ErrorPage} exact />;
     }
     axios.defaults.headers.common.Authorization = null;
     showNoTokenNotification();
@@ -92,7 +95,7 @@ const routes = [
   {
     title: 'DiGii Tutorial',
     role: 'student',
-    path: '/student',
+    path: '/student/videos',
     component: VideoTutorialListings
   }
 ];

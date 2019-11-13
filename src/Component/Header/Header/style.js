@@ -27,6 +27,7 @@ const UserInfoWrapper = styled.div`
   padding: 0 10px;
   border-radius: 6px;
 `;
+
 const Name = styled.span`
   color: ${pen};
   margin-left: 20px;

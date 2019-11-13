@@ -12,9 +12,7 @@ import {
 import LoginActions from '../../../Redux/LoginRedux';
 import ErrorActions from '../../../Redux/ErrorRedux';
 import SchoolActions from '../../../Redux/SchoolRedux';
-import {
-  Colors, fontWeight, fontFilson, fontSize
-} from '../../../Theme';
+
 import {
   ResetPasswordModal,
   FormWrapper,
@@ -111,10 +109,10 @@ class LoginForm extends Component {
                 {this.getSchoolsList()}
               </FormSelect>
 
-              <p>
-                {' '}
-                {errors.school && touched.school && errors.school}
-              </p>
+              <p> 
+{' '}
+{errors.school && touched.school && errors.school}
+</p>
               <FormInput
                 type="text"
                 name="username"
@@ -124,10 +122,10 @@ class LoginForm extends Component {
                 placeholder="Username"
               />
 
-              <p>
-                {' '}
-                {errors.username && touched.username && errors.username}
-              </p>
+              <p> 
+{' '}
+{errors.username && touched.username && errors.username}
+</p>
               <FormInput
                 type="password"
                 name="password"
@@ -182,7 +180,4 @@ const mapDispatchToProps = dispatch => ({
   onClearReducer: () => dispatch(ErrorActions.onClearReducer())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

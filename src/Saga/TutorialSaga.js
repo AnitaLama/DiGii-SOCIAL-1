@@ -5,8 +5,11 @@ import TutorialActions from '../Redux/TutorialRedux';
 
 export function* onTutorialRequest(action) {
   try {
-    
-    const { data } = yield call(axios.post, `${DEV_URL}/tutorial/get`, action.data);
+    const { data } = yield call(
+      axios.post,
+      `${DEV_URL}/tutorial/get`,
+      action.data
+    );
     if (data.success) {
       yield put(TutorialActions.onTutorialRequestSuccess(data.result));
     } else {
@@ -24,6 +27,7 @@ export function* onSaveTutorialWatchersInfo(action) {
       `${DEV_URL}/tutorial/saveTutorialWatchersInfo`,
       action.data
     );
+    console.log('saga watchers info', data);
   } catch (err) {
     console.log(err);
   }

@@ -29,35 +29,6 @@ import {
   PostText
 } from './style';
 
-const Reactions = ({ handleReactionSelection, reactionpopup }) => (
-  <ReactionsContainer>
-    <ReactionType className="like" name="like" onClick={() => reactionpopup()}>
-      <img src={Images.digii5.LikeIcon} alt="DiGii-like-icon" />
-      Like
-    </ReactionType>
-    <ReactionType
-      className="comment"
-      name="comment"
-      onClick={() => {
-        handleReactionSelection('comment');
-      }}
-    >
-      <img src={Images.digii5.CommentIcon} alt="DiGii-comment-icon" />
-      Comment
-    </ReactionType>
-    <ReactionType
-      className="share"
-      name="share"
-      onClick={() => {
-        handleReactionSelection('share');
-      }}
-    >
-      <img src={Images.digii5.DiGiiShareIcon} alt="DiGii-share-icon" />
-      Share
-    </ReactionType>
-  </ReactionsContainer>
-);
-
 class SinglePost extends Component {
   constructor() {
     super();
@@ -241,17 +212,18 @@ class SinglePost extends Component {
 
   getCurrentLikesReactions = param => {
     const getOnlyReactionOnHover1 = [];
-    const { data, likeReactions } = this.props;
+    const { data } = this.props;
     const { post_activities } = data;
 
     post_activities.map(item => {
       if (
-        item
-        && item.activity_type
-        && item.activity_type.activityTypeId === param
+        item &&
+        item.activity_type &&
+        item.activity_type.activityTypeId === param
       ) {
         getOnlyReactionOnHover1.push(item);
       }
+      
     });
     this.setState({ getOnlyReactionOnHover: getOnlyReactionOnHover1 });
   };
@@ -345,7 +317,7 @@ class SinglePost extends Component {
   };
 
   showCommentBox = () => {
-    const { showCommentBox } = this.state;
+    // const { showCommentBox } = this.state;
     const { selectAPost, data } = this.props;
     selectAPost(data);
     this.setState({ showCommentBox: true });
@@ -353,7 +325,7 @@ class SinglePost extends Component {
 
   render() {
     const { data, selectedPost, modalpopup } = this.props;
-    const { showCommentBox, showreactions } = this.state;
+    const { showCommentBox } = this.state;
     let { post_comments, postId } = data;
     const check = selectedPost === postId;
     post_comments =      post_comments

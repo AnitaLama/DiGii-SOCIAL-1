@@ -26,7 +26,6 @@ class Posts extends Component {
 
     window.onscroll = debounce(() => {
       const {
-        loadUsers,
         state: { error, isLoading, hasMore }
       } = this;
 
@@ -34,7 +33,7 @@ class Posts extends Component {
 
       if (this.postContainer) {
         const boxHeight =          this.postContainer.clientHeight || document.body.scrollHeight;
-        const { scrollHeight } = document.body;
+        // const { scrollHeight } = document.body;
         if (
           window.innerHeight + document.documentElement.scrollTop
           >= boxHeight + 120
@@ -48,7 +47,7 @@ class Posts extends Component {
   loadMorePosts = () => {
     const { page } = this.state;
     const { user, onFindPosts } = this.props;
-    const { isStudent, id, groupId } = user.user;
+    const { groupId } = user.user;
     this.setState({ page: page + 1 });
     onFindPosts({ schoolGroupId: groupId, page: page + 1 });
   };
@@ -66,7 +65,7 @@ class Posts extends Component {
     } = this.props;
     const { posts } = post;
     const { groupId } = user.user;
-    const { page } = this.state;
+    // const { page } = this.state;
     onGetPostActivitiesReactionTypes();
     posts.length === 0 && onFindPosts({ schoolGroupId: groupId });
     this.setState({ posts });
@@ -123,7 +122,6 @@ class Posts extends Component {
     if (posts.length > 1) {
       posts = posts.sort((a, b) => new Date(b.sharedAt) - new Date(a.sharedAt));
     }
-    console.log('socket data new array', posts);
     // posts = posts.length > 1 ? posts.sort((a, b) => b.postId - a.postId) : posts;
     // console.log('posts', posts);
     if (!posts) {

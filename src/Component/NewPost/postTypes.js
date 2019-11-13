@@ -29,7 +29,7 @@ class PostTypes extends Component {
               }}
             >
               <Icon>
-                <img src={postType.icon} />
+                <img src={postType.icon} alt={`icon-of-${postType.value}`} />
               </Icon>
               <span>{postType.text}</span>
             </SinglePostTypeWrapper>

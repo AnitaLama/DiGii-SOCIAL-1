@@ -116,8 +116,7 @@ const StepTwo = ({ user, handleButtonClick }) => {
   if (localData) {
     const { username } = localData;
     check = !(user.username === username);
-  }
-  {
+  } else {
     // console.log('set localstorage', JSON.stringify(data));
     check = !localData;
     localStorage.setItem(
@@ -276,8 +275,8 @@ const ReasonsDiv = (
 );
 const StepFour = props => {
   const {
-    helper, selectHelper, findHelpFromList, askForHelp, forWhom
-  } = props;
+ helper, selectHelper, findHelpFromList, askForHelp, forWhom 
+} = props;
   const { internalHelpersList } = helper;
   console.log('forWhom', forWhom);
   // console.log('stepfour inside >>>>>>>>>>>>', props);
@@ -310,10 +309,10 @@ const StepFour = props => {
               />
               <span>
                 {role && role.roleName}
-                {' '}
+{' '}
 -
-                {internalHelpFirstname}
-                {' '}
+{internalHelpFirstname}
+{" "}
                 {internalHelpLastname}
               </span>
             </InternalHelper>
@@ -384,9 +383,6 @@ class Wizard extends Component {
   };
 
   handleButtonClick = (nextStep, temp, values) => {
-    // console.log('values', values, temp, nextStep);
-    const { user } = this.props;
-    // console.log(user);
     const { next } = this.props;
     this.setState({ [temp]: values });
 
@@ -399,6 +395,8 @@ class Wizard extends Component {
         break;
       case 'when':
         // console.log('disable when');
+        break;
+      default:
         break;
     }
     if (this.props.step === 3) {
@@ -430,16 +428,14 @@ class Wizard extends Component {
     const { internalHelpFirstname, role } = findHelpFromList;
     this.setState({
       showModal: true,
-      alertMessage: `${firstname}, your help request has been sent to your ${
-        role.roleName
-      } ${internalHelpFirstname}. Well done on asking help! ${internalHelpFirstname} will message you soon `,
+      alertMessage: `${firstname}, your help request has been sent to your ${role.roleName} ${internalHelpFirstname}. Well done on asking help! ${internalHelpFirstname} will message you soon `,
       points: '=5'
     });
   };
 
   selectHelper = (e, helper) => {
     const { checked } = e.target;
-    const { findHelpFromList } = this.state;
+    // const { findHelpFromList } = this.state;
     // let newArr;
     // if (checked) {
     //   newArr = findHelpFromList;
@@ -461,7 +457,7 @@ class Wizard extends Component {
   };
 
   render() {
-    const { step, user } = this.props;
+    const { step } = this.props;
     const props = {
       ...this.props,
       ...this.state,
@@ -521,7 +517,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onGetAllInternalHelpers: value => dispatch(HelperActions.onGetAllInternalHelpers(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Wizard);
+export default connect(mapStateToProps, mapDispatchToProps)(Wizard);

@@ -99,10 +99,8 @@ class InputBox extends Component {
       showBasicModal,
       alertMessage,
       showStrikeModal,
-      showVideoModal,
-      videoType
+      showVideoModal
     } = this.state;
-    console.log('show modal', showStrikeModal);
 
     return (
       <div>

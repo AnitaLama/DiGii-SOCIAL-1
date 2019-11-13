@@ -18,7 +18,7 @@ class TextAreaBox extends Component {
   };
 
   componentWillReceiveProps(nextProp) {
-    const { post, comment } = nextProp;
+    const { post } = nextProp;
     const { showStrikeModal } = post;
     if (showStrikeModal && showStrikeModal !== this.state.showStrikeModal) {
       this.setState({ showStrikeModal: true });
@@ -74,7 +74,6 @@ class TextAreaBox extends Component {
       showStrikeModal,
       showVideoModal
     } = this.state;
-    console.log('textbox strike show', showStrikeModal);
 
     return (
       <div>

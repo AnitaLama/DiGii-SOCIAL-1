@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FaCaretRight, FaImage, FaSmile } from 'react-icons/fa';
+import { FaImage, FaSmile } from 'react-icons/fa';
 import { MdGif } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { Mentions } from 'antd';
-import { FormInput, Avatar, Button } from '../../StyledComponents';
+import { Avatar } from '../../StyledComponents';
 import CommentActions from '../../../Redux/CommentRedux';
 import LoginActions from '../../../Redux/LoginRedux';
 import StrikeActions from '../../../Redux/StrikeRedux';
 import PostActions from '../../../Redux/PostRedux';
 import GroupActions from '../../../Redux/GroupRedux';
-import { Moderator, FeelingsList, InputBox } from '../../Functions';
+import { Moderator, InputBox } from '../../Functions';
 
 import {
-  ClickableButton,
   CommentBoxWrapper,
   CommentBoxContainer,
-  GifContainer,
-  FeelingsDiv,
-  FeelingsButton,
   CommentBoxReactionWrapper
 } from './style';
-
-const { Option } = Mentions;
 
 class CommentBox extends Component {
   state = {
@@ -57,7 +51,7 @@ class CommentBox extends Component {
   };
 
   render() {
-    const { postText, user, data } = this.props;
+    const { user } = this.props;
     const { commentText } = this.state;
     const { avatar } = user.user;
     return (
@@ -124,8 +118,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default Moderator(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CommentBox)
+  connect(mapStateToProps, mapDispatchToProps)(CommentBox)
 );

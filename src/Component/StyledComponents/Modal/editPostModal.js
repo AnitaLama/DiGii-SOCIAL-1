@@ -10,9 +10,7 @@ import {
 } from '..';
 import { FaCircle } from 'react-icons/fa';
 import { Colors } from '../../../Theme';
-import { ShowFeed } from '../../Functions';
 import {
-  ActualPost,
   ImageWrapper,
   ImageContainer,
   BannerContainer,
@@ -33,7 +31,7 @@ class EditModal extends Component {
   }
 
   getContent = () => {
-    const { user, post } = this.props;
+    const { post } = this.props;
     const data = post;
     const {
       postText,
@@ -151,7 +149,7 @@ class EditModal extends Component {
             >
               Edit
             </Button>
-            {' '}
+{" "}
             <Button className="rounded short" onClick={closeEditModal}>
               Cancel
             </Button>

@@ -19,7 +19,11 @@ class ImagePost extends Component {
         <div>
           <ImageUploadWrapper>
             <ImageWrapper>
-              <img src={imagePost} style={{ height: '100px' }} />
+              <img
+                src={imagePost}
+                style={{ height: '100px' }}
+                alt={imagePost}
+              />
               <span>
                 <FaTimes onClick={deleteSelectedImage} />
               </span>

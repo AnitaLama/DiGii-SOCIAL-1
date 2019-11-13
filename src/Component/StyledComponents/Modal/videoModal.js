@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import Slider from 'react-slick';
 import TutorialActions from '../../../Redux/TutorialRedux';
 import StrikeActions from '../../../Redux/StrikeRedux';
@@ -10,10 +10,9 @@ import {
   ModalBox,
   CenteredDiv,
   QuestionOptions,
-  VideoOverlay,
   CenteredElementsModalWrapper
 } from './index';
-import { Button, Loader, WhiteButton } from '../index';
+import { Button } from '../index';
 
 class VideoModalContainer extends Component {
   state = {
@@ -32,7 +31,7 @@ class VideoModalContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { tutorial, user, resetStrikeOfTheUserRequest } = this.props;
-    const { isStudent, id } = user;
+    // const { isStudent, id } = user;
     // console.log('cdu', prevState, this.state);
     const player = this.fullscreenVideo;
     if (tutorial.tutorialList && tutorial.tutorialList.tutorialPath && player) {
@@ -213,9 +212,8 @@ class VideoModalContainer extends Component {
   };
 
   render() {
-    const { hideModal, tutorial } = this.props;
+    const { tutorial } = this.props;
     const {
-      playing,
       showQuestions,
       showVideo,
       showFinalMessage,

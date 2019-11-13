@@ -23,7 +23,6 @@ import {
 import {
   onListPosts,
   onFindPosts,
-  onPostSubmit,
   onFindGif,
   onPostImage,
   onPostPoll,
@@ -49,7 +48,10 @@ import {
   onCommentDelete,
   onReactToAComment
 } from './CommentSaga';
-import { onGetStrikesCountOfAUser, resetStrikeOfTheUserRequest } from './StrikeSaga';
+import {
+  onGetStrikesCountOfAUser,
+  resetStrikeOfTheUserRequest
+} from './StrikeSaga';
 import onGetAllBanners from './BannerSaga';
 import onGetAllUsersOfAGroup from './GroupSaga';
 import {
@@ -65,8 +67,6 @@ import {
   onGetHelpNotificationsCount
 } from './HelperSaga';
 import onReportTheArticle from './ReportSaga';
-
-import onReportAnArticle from './ReportSaga';
 
 export default function* root() {
   yield all([
@@ -108,7 +108,10 @@ export default function* root() {
       StrikeTypes.ON_GET_STRIKES_COUNT_OF_A_USER,
       onGetStrikesCountOfAUser
     ),
-    takeLatest(StrikeTypes.RESET_STRIKE_OF_THE_USER_REQUEST, resetStrikeOfTheUserRequest),
+    takeLatest(
+      StrikeTypes.RESET_STRIKE_OF_THE_USER_REQUEST,
+      resetStrikeOfTheUserRequest
+    ),
     takeLatest(BannerTypes.ON_GET_ALL_BANNERS, onGetAllBanners),
     takeLatest(GroupTypes.ON_GET_ALL_USERS_OF_A_GROUP, onGetAllUsersOfAGroup),
     takeLatest(ProfileTypes.ON_GET_USER_INFO, onGetUserInfo),

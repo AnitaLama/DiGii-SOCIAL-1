@@ -156,7 +156,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onGetAllUsersOfAGroup: value => dispatch(onGetAllUsersOfAGroup(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TagPost);
+export default connect(mapStateToProps, mapDispatchToProps)(TagPost);

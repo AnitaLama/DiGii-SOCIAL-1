@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import styled from '@emotion/styled';
 import { FaRegTimesCircle, FaRegCircle } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import socketClient from 'socket.io-client';
-import { Colors, fontSize, Images } from '../../Theme';
+import { Images } from '../../Theme';
 import { Tabs } from '../MessageBoard';
 import { strikeCount } from '../../utils/config';
 import { SOCKET_URL } from '../../utils/config';
@@ -18,11 +17,12 @@ import {
   Count
 } from './style';
 import StrikeActions from '../../Redux/StrikeRedux.js';
+import history from '../../utils/history';
 
 const { updateStrikeCount } = StrikeActions;
 
 const SideBarMenus = [
-  { menu: 'Videos', icon: Images.digii5.Video },
+  { menu: 'Videos', icon: Images.digii5.Video, link: '/student/videos' },
   { menu: 'Tutorials', icon: Images.digii5.Video },
   { menu: 'Quizzes', icon: Images.digii5.Quiz },
   { menu: 'Report', icon: Images.digii5.Video }
@@ -56,6 +56,12 @@ class SideBar extends Component {
     this.socket = null;
   }
 
+  handleRouting = route => {
+    console.log('routed route', route);
+    const { link } = route;
+    history.push(link);
+  };
+
   render() {
     const { strikeCurrentCount } = this.state;
     const count = strikeCurrentCount % strikeCount;
@@ -66,7 +72,12 @@ class SideBar extends Component {
         <SideBarWrapper>
           <GroupOne>
             {SideBarMenus.map((item, i) => (
-              <GroupElement key={`menu${i}`}>
+              <GroupElement
+                key={`menu${i}`}
+                onClick={() => {
+                  this.handleRouting(item);
+                }}
+              >
                 <Icon src={item.icon} alt={`icon-${item.menu}`} />
                 <Type>{item.menu}</Type>
               </GroupElement>
@@ -104,7 +115,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateStrikeCount(value));
   }
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SideBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);
