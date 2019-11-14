@@ -1,4 +1,19 @@
 version: 0.1
+
+env:
+  variables:
+    key: "value"
+    key: "value"
+  parameter-store:
+    key: "value"
+    key: "value"
+  exported-variables:
+    - variable
+    - variable
+  secrets-manager:
+    key: ZZvxfefuOSYXMmAPn5BkSdu/JiVs2IfauoC/npar
+  git-credential-helper: yes
+
 phases:
   pre_build:
     commands:
