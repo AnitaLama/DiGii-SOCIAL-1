@@ -29,9 +29,9 @@ phases:
         ./build/index.html s3://digii-staging/
       # invalidate the CloudFront cache for index.html and service-worker.js
       # to force CloudFront to update its edge locations with the new versions
-      - >
-        aws cloudfront create-invalidation --distribution-id E3NCPO3QLAYC5K
-        --paths /index.html /service-worker.js
+#       - >
+#         aws cloudfront create-invalidation --distribution-id E3NCPO3QLAYC5K
+#         --paths /index.html /service-worker.js
 artifacts:
   files:
     - '**/*'
