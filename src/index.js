@@ -12,7 +12,7 @@ import App from './Container/App';
 // import * as serviceWorker from './serviceWorker';
 
 import configureStore from './Redux/configureStore';
-
+      
 Sentry.init({
   dsn: 'https://cee9bfaa024147f4b70809f4187cc5ec@sentry.io/1763253'
 });
